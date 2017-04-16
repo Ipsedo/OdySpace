@@ -1,0 +1,46 @@
+package com.samuelberrien.odyspace;
+
+import android.content.Context;
+import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
+
+/**
+ * Created by samuel on 16/04/17.
+ * Copyright samuel, 2016 - 2017.
+ * Toute reproduction ou utilisation sans l'autorisation
+ * de l'auteur engendrera des poursuites judiciaires.
+ */
+
+public class MyGLSurfaceView extends GLSurfaceView {
+
+    private MyGLRenderer renderer;
+
+    /**
+     * @param context
+     * @param useSample
+     * @param id_visualisation
+     */
+    public MyGLSurfaceView(Context context, boolean useSample, String id_visualisation) {
+        super(context);
+        // Create an OpenGL ES 2.0 context.
+        setEGLContextClientVersion(2);
+
+        setRenderer(this.renderer);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        return true;
+    }
+
+    public void onPause() {
+
+        super.onPause();
+    }
+
+    public void onResume() {
+        super.onResume();
+    }
+
+
+}

@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.renderer;
+package com.samuelberrien.odyspace;
 
 /**
  * Created by samuel on 16/04/17.
@@ -50,7 +50,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthMask(true);
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLES20.glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
     }
 
     /**
