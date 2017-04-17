@@ -11,6 +11,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.Joystick;
 
@@ -36,6 +37,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float maxRange = 1f;
     private float projectionAngle = 40f;
     private float ratio = 1f;
+    private int width;
+    private int height;
 
     private Joystick joystick;
 
@@ -108,8 +111,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(this.mLightPosInEyeSpace, 0, this.mViewMatrix, 0, this.mLightPosInWorldSpace, 0);
     }
 
-    public void setJoystickCenter(float x,  float y){
-        this.joystick.updatePosition(x, y);
+    public void updateMotion(MotionEvent e){
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                this.joystick.setVisible(true);
+                this.joystick.updatePosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
+                break;
+            case MotionEvent.ACTION_MOVE:
+                this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
+                break;
+            case MotionEvent.ACTION_UP:
+                this.joystick.setVisible(false);
+                break;
+        }
     }
 
     public void onDrawFrame(GL10 unused) {
@@ -128,6 +142,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Adjust the viewport based on geometry changes,
         // such as screen rotation
         GLES20.glViewport(0, 0, width, height);
+
+        this.width = width;
+        this.height = height;
 
         this.ratio = (float) width / height;
 

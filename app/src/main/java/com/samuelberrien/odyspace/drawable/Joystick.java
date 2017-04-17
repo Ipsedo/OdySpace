@@ -21,13 +21,19 @@ import java.nio.ShortBuffer;
 
 public class Joystick {
 
-    private int nbPoint = 32;
-    private float[] mCirclePoint = new float[nbPoint * 3];
+    private boolean isVisible;
 
-    private FloatBuffer vertexBuffer;
-    private ShortBuffer drawListBuffer;
+    private int nbPoint = 32;
+    private double circleLength = 0.6d;
+    private float[] mCirclePoint = new float[nbPoint * 3];
+    private double stickLength = 0.2d;
+    private float[] mStickPoint = new float[nbPoint* 3];
+
+    private FloatBuffer circleVertexBuffer;
+    private FloatBuffer stickVertexBuffer;
 
     private float[] mPosition = new float[3];
+    private float[] mStickPosition = new float[3];
 
     private float ratio;
 
@@ -41,6 +47,7 @@ public class Joystick {
     public Joystick(Context context){
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.joystick_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.joystick_fs));
+        this.isVisible = false;
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
@@ -48,47 +55,73 @@ public class Joystick {
         GLES20.glLinkProgram(this.mProgram);
 
         this.makeCricle();
+        this.makeStick();
         this.bind();
     }
 
     private void makeCricle(){
-        short[] drawOrder = new short[this.nbPoint];
-        for(int i = 0; i < this.nbPoint; i++){
+        for(int i = 0; i < this.mCirclePoint.length / 3; i++){
             double mTmpAngle = (double) i * Math.PI * 2d / (double) this.nbPoint;
-            this.mCirclePoint[i * 3 + 0] = (float) (0.3d * Math.cos(mTmpAngle));
-            this.mCirclePoint[i * 3 + 1] = (float) (0.3d * Math.sin(mTmpAngle));
+            this.mCirclePoint[i * 3 + 0] = (float) (this.circleLength * Math.cos(mTmpAngle));
+            this.mCirclePoint[i * 3 + 1] = (float) (this.circleLength * Math.sin(mTmpAngle));
             this.mCirclePoint[i * 3 + 2] = 0f;
-            drawOrder[i] = (short) i;
         }
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
                 this.mCirclePoint.length * 4);
         bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(this.mCirclePoint);
-        vertexBuffer.position(0);
+        circleVertexBuffer = bb.asFloatBuffer();
+        circleVertexBuffer.put(this.mCirclePoint);
+        circleVertexBuffer.position(0);
+    }
 
-        // initialize byte buffer for the draw list
-        ByteBuffer dlb = ByteBuffer.allocateDirect(
-                // (# of coordinate values * 2 bytes per short)
-                drawOrder.length * 2);
-        dlb.order(ByteOrder.nativeOrder());
-        drawListBuffer = dlb.asShortBuffer();
-        drawListBuffer.put(drawOrder);
-        drawListBuffer.position(0);
+    private void makeStick(){
+        for(int i = 0; i < this.mStickPoint.length / 3; i++){
+            double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
+            this.mStickPoint[i * 3 + 0] = (float) (this.stickLength * Math.cos(mTmpAngle));
+            this.mStickPoint[i * 3 + 1] = (float) (this.stickLength * Math.sin(mTmpAngle));
+            this.mStickPoint[i * 3 + 2] = 0f;
+        }
+        ByteBuffer bb = ByteBuffer.allocateDirect(
+                // (# of coordinate values * 4 bytes per float)
+                this.mStickPoint.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        stickVertexBuffer = bb.asFloatBuffer();
+        stickVertexBuffer.put(this.mStickPoint);
+        stickVertexBuffer.position(0);
     }
 
     private void bind(){
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
-
     }
 
     public void updatePosition(float x, float y){
         this.mPosition[0] = x * this.ratio;
         this.mPosition[1] = y;
         this.mPosition[2] = 0f;
+
+        this.mStickPosition[0] = x * this.ratio;
+        this.mStickPosition[1] = y;
+        this.mStickPosition[2] = 0f;
+    }
+
+    public void updateStickPosition(float x, float y){
+        double length = Math.sqrt(Math.pow(this.mPosition[0] - x * this.ratio, 2d) + Math.pow(this.mPosition[1] - y, 2d));
+        if(length > this.circleLength - this.stickLength){
+            this.mStickPosition[0] = this.mPosition[0] + (float) (this.circleLength - this.stickLength) * x * this.ratio / (float) length;
+            this.mStickPosition[1] = this.mPosition[1] + (float) (this.circleLength - this.stickLength) * y / (float) length;
+            this.mStickPosition[2] = 0f;
+        } else {
+            this.mStickPosition[0] = x * this.ratio;
+            this.mStickPosition[1] = y;
+            this.mStickPosition[2] = 0f;
+        }
+    }
+
+    public void setVisible(boolean isVisible){
+        this.isVisible = isVisible;
     }
 
     public void setRatio(float ratio){
@@ -96,34 +129,35 @@ public class Joystick {
     }
 
     public void draw() {
-        GLES20.glUseProgram(this.mProgram);
+        if(this.isVisible) {
+            GLES20.glUseProgram(this.mProgram);
 
-        float[] mViewMatrix = new float[16];
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-        float[] mVPMatrix = new float[16];
-        float[] mPMatrix = new float[16];
-        Matrix.orthoM(mPMatrix, 0, -1f * this.ratio, 1f * this.ratio, -1f, 1f, -1f, 1f);
-        Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
-        float[] mMVPMatrix = new float[16];
-        float[] mMMatrix = new float[16];
-        Matrix.setIdentityM(mMMatrix, 0);
-        Matrix.translateM(mMMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
-        Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+            float[] mViewMatrix = new float[16];
+            Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+            float[] mVPMatrix = new float[16];
+            float[] mPMatrix = new float[16];
+            Matrix.orthoM(mPMatrix, 0, -1f * this.ratio, 1f * this.ratio, -1f, 1f, -1f, 1f);
+            Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
+            float[] mMVPMatrix = new float[16];
+            float[] mMMatrix = new float[16];
+            Matrix.setIdentityM(mMMatrix, 0);
+            Matrix.translateM(mMMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
+            Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
+            GLES20.glEnableVertexAttribArray(mPositionHandle);
+            GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, circleVertexBuffer);
+            GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+            GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+            GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mCirclePoint.length / 3);
 
-        // Prepare the triangle coordinate data
-        GLES20.glVertexAttribPointer(
-                mPositionHandle, 3,
-                GLES20.GL_FLOAT, false,
-                3 * 4, vertexBuffer);
-
-        GLES20.glUniform4fv(mColorHandle, 1, color, 0);
-
-        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-
-        GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.nbPoint);
-
-        ShaderLoader.checkGlError("all");
+            //Stick
+            GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, stickVertexBuffer);
+            Matrix.setIdentityM(mMMatrix, 0);
+            Matrix.translateM(mMMatrix, 0, this.mStickPosition[0], this.mStickPosition[1], this.mStickPosition[2]);
+            Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+            GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+            GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mStickPoint.length / 3);
+            GLES20.glDisableVertexAttribArray(mPositionHandle);
+        }
     }
 }
