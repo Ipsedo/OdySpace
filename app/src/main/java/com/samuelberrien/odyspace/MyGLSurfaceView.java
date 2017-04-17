@@ -17,14 +17,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     /**
      * @param context
-     * @param useSample
-     * @param id_visualisation
      */
-    public MyGLSurfaceView(Context context, boolean useSample, String id_visualisation) {
+    public MyGLSurfaceView(Context context) {
         super(context);
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
-
+        this.renderer = new MyGLRenderer(context);
         setRenderer(this.renderer);
     }
 

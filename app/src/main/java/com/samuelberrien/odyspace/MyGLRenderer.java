@@ -12,6 +12,8 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.Joystick;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -27,15 +29,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mLightModelMatrix = new float[16];
     private final float[] mLightPosInWorldSpace = new float[4];
 
-    protected float mCameraX = 0f;
-    protected float mCameraY = 0f;
-    protected float mCameraZ = 0f;
+    protected float[] mCameraPosition = new float[3];
     protected float[] mCameraDirection = new float[3];
     private float phi = 0f;
     private float theta = 0f;
     private float maxRange = 1f;
     private float projectionAngle = 40f;
     private float ratio = 1f;
+
+    private Joystick joystick;
 
     /**
      * @param context
@@ -45,12 +47,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        this.mCameraDirection = new float[]{mCameraX, mCameraY, mCameraZ + 1f};
+        this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthMask(true);
-        GLES20.glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
+        GLES20.glClearColor(0.05f, 0.0f, 0.2f, 1.0f);
+        this.joystick = new Joystick(this.context);
     }
 
     /**
@@ -79,9 +82,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             this.phi -= phi * 2;
         }
 
-        this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraX;
-        this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraY;
-        this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraZ;
+        this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraPosition[0];
+        this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraPosition[1];
+        this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraPosition[2];
+    }
+
+    /**
+     * Update the camera position
+     *
+     * @param mCameraPosition A 3D vector contening x, y and z new camera position
+     */
+    public void updateCameraPosition(float[] mCameraPosition){
+        this.mCameraPosition = mCameraPosition;
     }
 
     /**
@@ -102,7 +114,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.updateProjection();
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
+        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
+
+        this.joystick.draw(this.mProjectionMatrix);
     }
 
     @Override

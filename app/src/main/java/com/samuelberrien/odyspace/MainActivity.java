@@ -1,5 +1,6 @@
 package com.samuelberrien.odyspace;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void start(View v){
-        System.out.println("not implemented yet");
+
+        Intent intent = new Intent(this, LevelActivity.class);
+        startActivity(intent);
     }
 }
