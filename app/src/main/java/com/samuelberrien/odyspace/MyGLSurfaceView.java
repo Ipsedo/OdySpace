@@ -28,6 +28,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
+
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                this.renderer.setJoystickCenter(-(2f * e.getX() / this.getWidth() - 1f), -(2f * e.getY() / this.getHeight() - 1f));
+            case MotionEvent.ACTION_MOVE:
+                requestRender();
+        }
         return true;
     }
 

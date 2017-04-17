@@ -27,6 +27,10 @@ public class Joystick {
     private FloatBuffer vertexBuffer;
     private ShortBuffer drawListBuffer;
 
+    private float[] mPosition = new float[3];
+
+    private float ratio;
+
     private int mPositionHandle;
     private int mColorHandle;
     private int mMVPMatrixHandle;
@@ -81,15 +85,30 @@ public class Joystick {
 
     }
 
-    public void draw(float[] mPMatrix) {
+    public void updatePosition(float x, float y){
+        this.mPosition[0] = x * this.ratio;
+        this.mPosition[1] = y;
+        this.mPosition[2] = 0f;
+    }
+
+    public void setRatio(float ratio){
+        this.ratio = ratio;
+    }
+
+    public void draw() {
         GLES20.glUseProgram(this.mProgram);
 
         float[] mViewMatrix = new float[16];
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-
-        // Calculate the projection and view transformation
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        float[] mVPMatrix = new float[16];
+        float[] mPMatrix = new float[16];
+        Matrix.orthoM(mPMatrix, 0, -1f * this.ratio, 1f * this.ratio, -1f, 1f, -1f, 1f);
+        Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
         float[] mMVPMatrix = new float[16];
-        Matrix.multiplyMM(mMVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
+        float[] mMMatrix = new float[16];
+        Matrix.setIdentityM(mMMatrix, 0);
+        Matrix.translateM(mMMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
+        Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
         GLES20.glEnableVertexAttribArray(mPositionHandle);
 

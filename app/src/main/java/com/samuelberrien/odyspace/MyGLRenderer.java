@@ -108,6 +108,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(this.mLightPosInEyeSpace, 0, this.mViewMatrix, 0, this.mLightPosInWorldSpace, 0);
     }
 
+    public void setJoystickCenter(float x,  float y){
+        this.joystick.updatePosition(x, y);
+    }
+
     public void onDrawFrame(GL10 unused) {
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -116,7 +120,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the camera position (View matrix)
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
 
-        this.joystick.draw(this.mProjectionMatrix);
+        this.joystick.draw();
     }
 
     @Override
@@ -126,6 +130,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glViewport(0, 0, width, height);
 
         this.ratio = (float) width / height;
+
+        this.joystick.setRatio(this.ratio);
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
