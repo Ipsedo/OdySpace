@@ -98,23 +98,27 @@ public class Joystick {
     }
 
     public void updatePosition(float x, float y){
-        this.mPosition[0] = x * this.ratio;
+        x = x * this.ratio;
+        this.mPosition[0] = x;
         this.mPosition[1] = y;
         this.mPosition[2] = 0f;
 
-        this.mStickPosition[0] = x * this.ratio;
+        this.mStickPosition[0] = x;
         this.mStickPosition[1] = y;
         this.mStickPosition[2] = 0f;
     }
 
     public void updateStickPosition(float x, float y){
-        double length = Math.sqrt(Math.pow(this.mPosition[0] - x * this.ratio, 2d) + Math.pow(this.mPosition[1] - y, 2d));
+        x = x * this.ratio;
+        double length = Math.sqrt(Math.pow(this.mPosition[0] - x, 2d) + Math.pow(this.mPosition[1] - y, 2d));
         if(length > this.circleLength - this.stickLength){
-            this.mStickPosition[0] = this.mPosition[0] + (float) (this.circleLength - this.stickLength) * x * this.ratio / (float) length;
-            this.mStickPosition[1] = this.mPosition[1] + (float) (this.circleLength - this.stickLength) * y / (float) length;
+            double xDist = x - this.mPosition[0];
+            double yDist = y - this.mPosition[1];
+            this.mStickPosition[0] = this.mPosition[0] + (float) ((this.circleLength - this.stickLength) * xDist / length);
+            this.mStickPosition[1] = this.mPosition[1] + (float) ((this.circleLength - this.stickLength) * yDist / length);
             this.mStickPosition[2] = 0f;
         } else {
-            this.mStickPosition[0] = x * this.ratio;
+            this.mStickPosition[0] = x;
             this.mStickPosition[1] = y;
             this.mStickPosition[2] = 0f;
         }
