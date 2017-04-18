@@ -142,12 +142,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the camera position (View matrix)
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
 
-        this.joystick.draw();
-
         float[] tmp = this.joystick.getStickPosition();
         this.ship.move(tmp[0], tmp[1]);
 
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         this.ship.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
+
+        GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+        this.joystick.draw();
     }
 
     @Override
