@@ -24,6 +24,8 @@ public class BaseItem extends ObjModelMtl {
     protected float[] mSpeed;
     protected float[] mAcceleration;
 
+    protected float[] mRotationMatrix;
+
     protected float[] mModelMatrix;
 
     public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration){
@@ -32,6 +34,7 @@ public class BaseItem extends ObjModelMtl {
         this.mPosition = mPosition;
         this.mSpeed = mSpeed;
         this.mAcceleration = mAcceleration;
+        this.mRotationMatrix = new float[16];
         this.mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
     }
