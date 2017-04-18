@@ -124,6 +124,14 @@ public class Joystick {
         }
     }
 
+    public float[] getStickPosition(){
+        if(this.isVisible) {
+            return new float[]{-(this.mStickPosition[0] - this.mPosition[0]) / (float) (this.circleLength - this.stickLength), (this.mStickPosition[1] - this.mPosition[1]) / (float) (this.circleLength - this.stickLength)};
+        } else {
+            return new float[]{0f, 0f};
+        }
+    }
+
     public void setVisible(boolean isVisible){
         this.isVisible = isVisible;
     }

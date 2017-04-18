@@ -135,6 +135,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
 
         this.joystick.draw();
+
+        float[] tmp = this.joystick.getStickPosition();
+        System.out.println("stick x : " + tmp[0] + ", y : " + tmp[1]);
     }
 
     @Override
