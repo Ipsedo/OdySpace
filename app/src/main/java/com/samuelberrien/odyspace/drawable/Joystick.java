@@ -10,7 +10,6 @@ import com.samuelberrien.odyspace.utils.ShaderLoader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 
 /**
  * Created by samuel on 17/04/17.
@@ -60,15 +59,13 @@ public class Joystick {
     }
 
     private void makeCricle(){
-        for(int i = 0; i < this.mCirclePoint.length / 3; i++){
+        for(int i = 0; i < this.nbPoint; i++){
             double mTmpAngle = (double) i * Math.PI * 2d / (double) this.nbPoint;
             this.mCirclePoint[i * 3 + 0] = (float) (this.circleLength * Math.cos(mTmpAngle));
             this.mCirclePoint[i * 3 + 1] = (float) (this.circleLength * Math.sin(mTmpAngle));
             this.mCirclePoint[i * 3 + 2] = 0f;
         }
-        ByteBuffer bb = ByteBuffer.allocateDirect(
-                // (# of coordinate values * 4 bytes per float)
-                this.mCirclePoint.length * 4);
+        ByteBuffer bb = ByteBuffer.allocateDirect(this.mCirclePoint.length * 4);
         bb.order(ByteOrder.nativeOrder());
         circleVertexBuffer = bb.asFloatBuffer();
         circleVertexBuffer.put(this.mCirclePoint);
@@ -76,15 +73,13 @@ public class Joystick {
     }
 
     private void makeStick(){
-        for(int i = 0; i < this.mStickPoint.length / 3; i++){
+        for(int i = 0; i < this.nbPoint; i++){
             double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
             this.mStickPoint[i * 3 + 0] = (float) (this.stickLength * Math.cos(mTmpAngle));
             this.mStickPoint[i * 3 + 1] = (float) (this.stickLength * Math.sin(mTmpAngle));
             this.mStickPoint[i * 3 + 2] = 0f;
         }
-        ByteBuffer bb = ByteBuffer.allocateDirect(
-                // (# of coordinate values * 4 bytes per float)
-                this.mStickPoint.length * 4);
+        ByteBuffer bb = ByteBuffer.allocateDirect(this.mStickPoint.length * 4);
         bb.order(ByteOrder.nativeOrder());
         stickVertexBuffer = bb.asFloatBuffer();
         stickVertexBuffer.put(this.mStickPoint);

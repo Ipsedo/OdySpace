@@ -14,6 +14,8 @@ import android.opengl.Matrix;
 import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.Joystick;
+import com.samuelberrien.odyspace.objects.Ship;
+import com.samuelberrien.odyspace.utils.Level;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -42,6 +44,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Joystick joystick;
 
+    private Level currentLevel;
+
+    private Ship ship;
+
     /**
      * @param context
      */
@@ -57,6 +63,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthMask(true);
         GLES20.glClearColor(0.05f, 0.0f, 0.2f, 1.0f);
         this.joystick = new Joystick(this.context);
+        this.ship = new Ship(this.context);
+        this.mCameraPosition = new float[]{0f, 0f, -10f};
     }
 
     /**
@@ -137,7 +145,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.joystick.draw();
 
         float[] tmp = this.joystick.getStickPosition();
-        System.out.println("stick x : " + tmp[0] + ", y : " + tmp[1]);
+        this.ship.move(tmp[0], tmp[1]);
+
+        this.ship.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
     }
 
     @Override
