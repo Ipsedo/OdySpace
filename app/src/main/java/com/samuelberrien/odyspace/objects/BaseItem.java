@@ -35,8 +35,9 @@ public class BaseItem extends ObjModelMtl {
         this.mSpeed = mSpeed;
         this.mAcceleration = mAcceleration;
         this.mRotationMatrix = new float[16];
+        Matrix.setIdentityM(this.mRotationMatrix, 0);
         this.mModelMatrix = new float[16];
-        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.setIdentityM(this.mModelMatrix, 0);
     }
 
     public void changeColor(Random rand){

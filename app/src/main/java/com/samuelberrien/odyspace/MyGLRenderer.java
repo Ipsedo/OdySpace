@@ -13,6 +13,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
 
+import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.Level;
@@ -46,6 +47,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Level currentLevel;
 
+    private HeightMap heightMap;
+
     private Ship ship;
 
     /**
@@ -61,9 +64,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthMask(true);
-        GLES20.glClearColor(0.05f, 0.0f, 0.2f, 1.0f);
+        GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
         this.joystick = new Joystick(this.context);
         this.ship = new Ship(this.context);
+        this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 50f);
         this.mCameraPosition = new float[]{0f, 0f, -10f};
     }
 
@@ -74,8 +78,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * @param theta angle theta
      */
     public void updateCameraOrientation(float phi, float theta) {
-        this.phi += phi;
-        this.theta += theta;
+        this.phi = phi;
+        this.theta = theta;
 
         if (this.phi > Math.PI * 2) {
             this.phi -= Math.PI * 2;
@@ -96,6 +100,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraPosition[0];
         this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraPosition[1];
         this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraPosition[2];
+    }
+
+    public void updateCamLookVec(float[] xyz){
+        this.mCameraDirection[0] = this.maxRange * xyz[0] + this.mCameraPosition[0];
+        this.mCameraDirection[1] = this.maxRange * xyz[1] + this.mCameraPosition[1];
+        this.mCameraDirection[2] = this.maxRange * xyz[2] + this.mCameraPosition[2];
     }
 
     /**
@@ -134,6 +144,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+
+
     public void onDrawFrame(GL10 unused) {
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -145,8 +157,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         float[] tmp = this.joystick.getStickPosition();
         this.ship.move(tmp[0], tmp[1]);
 
+        this.updateCameraPosition(this.ship.getCamPosition());
+        //float[] phiTheta = this.ship.getPhiTheta();
+        this.updateCamLookVec(this.ship.getCamLookAtVec());
+
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         this.ship.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
+        this.heightMap.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
 
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();

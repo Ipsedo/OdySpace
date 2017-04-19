@@ -2,9 +2,8 @@ package com.samuelberrien.odyspace.objects;
 
 import android.content.Context;
 import android.opengl.Matrix;
-import android.provider.Settings;
 
-import com.samuelberrien.odyspace.drawable.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.Vector;
 
 /**
  * Created by samuel on 18/04/17.
@@ -18,12 +17,17 @@ public class Ship extends BaseItem {
     private float phi;
     private float theta;
 
-    private final float maxSpeed = 0.01f;
-    private final float angleCoeff = 0.01f;
+    private float[] mRotAxis;
+
+    private final float maxSpeed = 0.1f;
+    private final float angleCoeff = 0.1f;
+
+    private final float[] speedInit = new float[]{0f, 0f, this.maxSpeed};
+    private final float[] perVecIni = new float[]{0f, this.maxSpeed, 0f};
 
     public Ship(Context context){
         super(context, "ship.obj", "ship.mtl", 1f, 0f, 100, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0.0f}, new float[]{0f, 0f, 0f});
-        super.mSpeed = new float[]{0f, 0f, maxSpeed};
+        super.mSpeed = this.speedInit;
         this.phi = 0f;
         this.theta = 0f;
     }
@@ -48,32 +52,38 @@ public class Ship extends BaseItem {
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
 
-        float[] normIni = this.normalize(new float[]{0f, 1e-10f, maxSpeed});
-        float[] normSpeed = this.normalize(super.mSpeed);
-        float[] mRotAxis = this.cross(normIni, normSpeed);
-        float mAngle = (float) (Math.acos(this.dot(normIni, normSpeed)) * 360d / (Math.PI * 2d));
-        Matrix.setRotateM(super.mRotationMatrix, 0, mAngle, mRotAxis[0], mRotAxis[1], mRotAxis[2]);
+        float[] normIni = Vector.normalize3f(new float[]{0f, 1e-10f, maxSpeed});
+        float[] normSpeed = Vector.normalize3f(super.mSpeed);
+        this.mRotAxis = Vector.cross3f(normIni, normSpeed);
+        float mAngle = (float) (Math.acos(Vector.dot3f(normIni, normSpeed)) * 360d / (Math.PI * 2d));
+        Matrix.setRotateM(super.mRotationMatrix, 0, mAngle, this.mRotAxis[0], this.mRotAxis[1], this.mRotAxis[2]);
         float[] tmpMat = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
 
         super.mModelMatrix = mModelMatrix.clone();
     }
 
-    private float dot(float[] u, float[] v){
-        return u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+
+
+    public float[] getCamPosition(){
+        float[] tmp = Vector.normalize3f(this.perVecIni);
+        float[] upVec = new float[]{tmp[0], tmp[1], tmp[2], 1f};
+        Matrix.multiplyMV(upVec, 0, super.mRotationMatrix, 0, upVec.clone(), 0);
+
+        float[] res = new float[3];
+        tmp = Vector.normalize3f(super.mSpeed);
+        res[0] += -10f * tmp[0] + super.mPosition[0] + 3f * upVec[0];
+        res[1] += -10f * tmp[1] + super.mPosition[1] + 3f * upVec[1];
+        res[2] += -10f * tmp[2] + super.mPosition[2] + 3f * upVec[2];
+        return res;
     }
 
-    private float[] cross(float[] u, float[] v){
-        return new float[]{u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]};
+    public float[] getCamLookAtVec(){
+        return this.mSpeed;
     }
 
-    private float[] normalize(float[] u){
-        float length = this.length(u);
-        return new float[]{u[0] / length, u[1] / length, u[2] / length};
-    }
-
-    private float length(float[] u){
-        return (float) Math.sqrt(Math.pow(u[0], 2d) + Math.pow(u[1], 2d) + Math.pow(u[2], 2d));
+    public float[] getPhiTheta(){
+        return new float[]{this.phi, this.theta};
     }
 
     @Override
