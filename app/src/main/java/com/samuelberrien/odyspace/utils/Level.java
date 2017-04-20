@@ -13,13 +13,13 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-    public void init(Ship ship, HeightMap heightMap);
+    void init(Ship ship, HeightMap heightMap);
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
+    void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
-    public void update(Joystick joystick);
+    void update(Joystick joystick);
 
-    public boolean isDead();
+    boolean isDead();
 
-    public boolean isWinner();
+    boolean isWinner();
 }
