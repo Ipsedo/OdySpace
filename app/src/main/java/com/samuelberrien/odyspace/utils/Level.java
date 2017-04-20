@@ -17,7 +17,7 @@ public interface Level {
 
     void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
-    void update(Joystick joystick);
+    void update(Joystick joystick, boolean fire);
 
     boolean isDead();
 

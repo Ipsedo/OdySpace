@@ -5,6 +5,8 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.utils.Vector;
 
+import java.util.ArrayList;
+
 /**
  * Created by samuel on 18/04/17.
  * Copyright samuel, 2016 - 2017.
@@ -13,6 +15,8 @@ import com.samuelberrien.odyspace.utils.Vector;
  */
 
 public class Ship extends BaseItem {
+
+    private Context context;
 
     private final float maxSpeed = 0.05f;
     private final float rollCoeff = 2f;
@@ -23,6 +27,7 @@ public class Ship extends BaseItem {
 
     public Ship(Context context){
         super(context, "ship.obj", "ship.mtl", 1f, 0f, 100, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f});
+        this.context = context;
     }
 
     public void move(float phi, float theta){
@@ -56,7 +61,9 @@ public class Ship extends BaseItem {
         super.mModelMatrix = mModelMatrix;
     }
 
-
+    public void fire(ArrayList<Rocket> rockets){
+        rockets.add(new Rocket(this.context, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone()));
+    }
 
     public float[] getCamPosition(){
         float[] res = new float[3];

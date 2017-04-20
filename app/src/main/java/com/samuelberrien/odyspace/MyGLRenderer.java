@@ -167,7 +167,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 100f);
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
-        this.currentLevel.update(this.joystick);
+        this.currentLevel.update(this.joystick, false);
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
