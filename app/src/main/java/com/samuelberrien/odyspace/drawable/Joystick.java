@@ -22,7 +22,7 @@ public class Joystick {
 
     private boolean isVisible;
 
-    private int nbPoint = 32;
+    private int nbPoint = 64;
     private double circleLength = 0.6d;
     private float[] mCirclePoint = new float[nbPoint * 3];
     private double stickLength = 0.2d;

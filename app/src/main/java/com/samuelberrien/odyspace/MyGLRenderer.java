@@ -114,6 +114,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraDirection[2] = this.maxRange * xyz[2] + this.mCameraPosition[2];
     }
 
+    /**
+     * Update the camera up vector
+     * @param xyz The x y z vector
+     */
     private void updateCamUpVec(float[] xyz){
         this.mCameraUpVec[0] = xyz[0];
         this.mCameraUpVec[1] = xyz[1];
@@ -160,8 +164,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        this.updateProjection();
-        // Set the camera position (View matrix)
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 100f);
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
         this.currentLevel.update(this.joystick);
@@ -190,14 +193,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.joystick.setRatio(this.ratio);
 
-        // this projection matrix is applied to object coordinates
-        // in the onDrawFrame() method
         //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
-
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, 100f);
-    }
-
-    private void updateProjection() {
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 100f);
     }
 }
