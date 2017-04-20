@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
+import com.samuelberrien.odyspace.levels.Test;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.Level;
 
@@ -48,8 +49,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Level currentLevel;
 
-    private HeightMap heightMap;
-
     private Ship ship;
 
     /**
@@ -68,9 +67,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
         this.joystick = new Joystick(this.context);
         this.ship = new Ship(this.context);
-        this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 100f);
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
+        this.currentLevel = new Test();
+        this.currentLevel.init(this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 100f));
     }
 
     /**
@@ -79,7 +79,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * @param phi   angle phi
      * @param theta angle theta
      */
-    public void updateCameraOrientation(float phi, float theta) {
+    protected void updateCameraOrientation(float phi, float theta) {
         this.phi = phi;
         this.theta = theta;
 
@@ -108,13 +108,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * Update the camera look at vector (normalized)
      * @param xyz The x y z vector
      */
-    public void updateCamLookVec(float[] xyz){
+    private void updateCamLookVec(float[] xyz){
         this.mCameraDirection[0] = this.maxRange * xyz[0] + this.mCameraPosition[0];
         this.mCameraDirection[1] = this.maxRange * xyz[1] + this.mCameraPosition[1];
         this.mCameraDirection[2] = this.maxRange * xyz[2] + this.mCameraPosition[2];
     }
 
-    public void updateCamUpVec(float[] xyz){
+    private void updateCamUpVec(float[] xyz){
         this.mCameraUpVec[0] = xyz[0];
         this.mCameraUpVec[1] = xyz[1];
         this.mCameraUpVec[2] = xyz[2];
@@ -125,7 +125,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      *
      * @param mCameraPosition A 3D vector contening x, y and z new camera position
      */
-    public void updateCameraPosition(float[] mCameraPosition){
+    private void updateCameraPosition(float[] mCameraPosition){
         this.mCameraPosition = mCameraPosition;
     }
 
@@ -134,7 +134,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * @param y
      * @param z
      */
-    protected void updateLight(float x, float y, float z) {
+    private void updateLight(float x, float y, float z) {
         Matrix.setIdentityM(this.mLightModelMatrix, 0);
         Matrix.translateM(this.mLightModelMatrix, 0, x, y, z);
         Matrix.multiplyMV(this.mLightPosInWorldSpace, 0, this.mLightModelMatrix, 0, this.mLightPosInModelSpace, 0);
@@ -156,8 +156,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
-
-
     public void onDrawFrame(GL10 unused) {
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -166,17 +164,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the camera position (View matrix)
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
-        float[] tmp = this.joystick.getStickPosition();
-        this.ship.move(tmp[0], tmp[1]);
+        this.currentLevel.update(this.joystick);
 
         this.updateCameraPosition(this.ship.getCamPosition());
-        //float[] phiTheta = this.ship.getPhiTheta();
         this.updateCamLookVec(this.ship.getCamLookAtVec());
         this.updateCamUpVec(this.ship.getCamUpVec());
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        this.ship.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
-        this.heightMap.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
+        this.currentLevel.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
 
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
@@ -199,10 +194,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // in the onDrawFrame() method
         //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
 
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, 50f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, 100f);
     }
 
     private void updateProjection() {
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 50f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 100f);
     }
 }

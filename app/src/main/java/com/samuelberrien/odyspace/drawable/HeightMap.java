@@ -50,6 +50,7 @@ public class HeightMap {
     private float lightCoeff;
     private float distanceCoeff;
 
+    private float limitHeight = -10f;
 
     private float mScale;
     private float[] mModelMatrix;
@@ -124,9 +125,13 @@ public class HeightMap {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
-        Matrix.translateM(mModelMatrix, 0, -0.5f * this.mScale, -10f, -0.5f * this.mScale);
+        Matrix.translateM(mModelMatrix, 0, -0.5f * this.mScale, this.limitHeight, -0.5f * this.mScale);
         Matrix.scaleM(mModelMatrix, 0, this.mScale, this.mScale, this.mScale);
         this.mModelMatrix = mModelMatrix.clone();
+    }
+
+    public float getLimitHeight(){
+        return this.limitHeight;
     }
 
     /**

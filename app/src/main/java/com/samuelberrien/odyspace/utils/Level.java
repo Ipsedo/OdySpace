@@ -1,5 +1,6 @@
 package com.samuelberrien.odyspace.utils;
 
+import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
 import com.samuelberrien.odyspace.objects.Ship;
 
@@ -12,9 +13,9 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-    public void init(Ship ship);
+    public void init(Ship ship, HeightMap heightMap);
 
-    public void draw();
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
     public void update(Joystick joystick);
 

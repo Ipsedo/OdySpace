@@ -51,8 +51,12 @@ public class BaseItem extends ObjModelMtl {
         return this.life > 0;
     }
 
-    public boolean isCollide(BaseItem other){
+    public boolean isCollided(BaseItem other){
         return false;
+    }
+
+    public boolean isOutOfBound(float limitDown){
+        return this.mPosition[1] < limitDown;
     }
 
     public void move(){
