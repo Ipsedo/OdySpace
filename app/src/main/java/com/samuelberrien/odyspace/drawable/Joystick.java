@@ -22,6 +22,8 @@ public class Joystick {
 
     private boolean isVisible;
 
+    private boolean fire;
+
     private int nbPoint = 64;
     private double circleLength = 0.6d;
     private float[] mCirclePoint = new float[nbPoint * 3];
@@ -46,7 +48,9 @@ public class Joystick {
     public Joystick(Context context){
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.joystick_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.joystick_fs));
+
         this.isVisible = false;
+        this.fire = false;
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
@@ -129,6 +133,14 @@ public class Joystick {
 
     public void setVisible(boolean isVisible){
         this.isVisible = isVisible;
+    }
+
+    public void setFire(boolean fire) {
+        this.fire = fire;
+    }
+
+    public boolean isFire(){
+        return this.fire;
     }
 
     public void setRatio(float ratio){

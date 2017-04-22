@@ -11,6 +11,9 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.os.Looper;
+import android.support.v4.view.MotionEventCompat;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.HeightMap;
@@ -146,17 +149,33 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void updateMotion(MotionEvent e){
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                this.joystick.setVisible(true);
-                this.joystick.updatePosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
-                break;
-            case MotionEvent.ACTION_MOVE:
-                this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
-                break;
-            case MotionEvent.ACTION_UP:
-                this.joystick.setVisible(false);
-                break;
+        if(e.getPointerCount() == 2) {
+            this.joystick.setFire(true);
+            switch (e.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    this.joystick.setVisible(true);
+                    this.joystick.updatePosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
+                    break;
+                case MotionEvent.ACTION_UP:
+                    this.joystick.setVisible(false);
+                    break;
+            }
+        } else {
+            switch (e.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    this.joystick.setVisible(true);
+                    this.joystick.updatePosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
+                    break;
+                case MotionEvent.ACTION_UP:
+                    this.joystick.setVisible(false);
+                    break;
+            }
         }
     }
 
@@ -167,7 +186,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 100f);
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
-        this.currentLevel.update(this.joystick, false);
+        this.currentLevel.update(this.joystick);
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());

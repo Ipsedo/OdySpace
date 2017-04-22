@@ -13,7 +13,7 @@ import com.samuelberrien.odyspace.utils.ShaderLoader;
  */
 
 public class Rocket extends BaseItem {
-    private final float maxSpeed = 0.5f;
+    private final float maxSpeed = 1f;
 
     public Rocket(Context context, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix) {
         super(context, "rocket.obj", "rocket.mtl", 1f, 0f, 1, mPosition, mSpeed, mAcceleration);
@@ -21,9 +21,13 @@ public class Rocket extends BaseItem {
     }
 
     public void move(){
-        super.mPosition[0] += this.maxSpeed * super.mSpeed[0];
-        super.mPosition[1] += this.maxSpeed * super.mSpeed[1];
-        super.mPosition[2] += this.maxSpeed * super.mSpeed[2];
+        float[] realSpeed = new float[]{super.mSpeed[0], super.mSpeed[1], super.mSpeed[2], 1f};
+
+        Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, realSpeed.clone(), 0);
+
+        super.mPosition[0] += this.maxSpeed * realSpeed[0];
+        super.mPosition[1] += this.maxSpeed * realSpeed[1];
+        super.mPosition[2] += this.maxSpeed * realSpeed[2];
 
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
