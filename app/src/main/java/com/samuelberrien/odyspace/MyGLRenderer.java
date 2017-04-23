@@ -186,7 +186,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                     }
                     if(!this.joystickFst && (e.getX(1) / this.height) < 0.5f) {
                         this.joystick.updateStickPosition(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f));
-                    } 
+                    }
                     if(!this.joystickFst && (e.getX(0) / this.height) > 0.5f) {
                         this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.height - 1f));
                     }

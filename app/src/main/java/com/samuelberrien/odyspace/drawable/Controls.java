@@ -176,6 +176,10 @@ public class Controls {
         this.isFire = false;
     }
 
+    public float getBoost(){
+        return 2f * (this.mBoostStickPosition[1] - this.mBoostPosition[1] + 1f) / this.boostHeight;
+    }
+
     public void setBoostVisible(boolean isBoostVisible){
         this.isBoostVisible = isBoostVisible;
     }

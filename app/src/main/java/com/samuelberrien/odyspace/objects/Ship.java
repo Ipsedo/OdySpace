@@ -18,7 +18,8 @@ public class Ship extends BaseItem {
 
     private Context context;
 
-    private final float maxSpeed = 0.05f;
+    private final float originalMaxSpeed = 0.05f;
+    private float maxSpeed = this.originalMaxSpeed;
     private final float rollCoeff = 2f;
     private final float pitchCoeff = 1f;
 
@@ -102,6 +103,10 @@ public class Ship extends BaseItem {
         res[2] = u[2];
 
         return res;
+    }
+
+    public void updateMaxSpeed(float coeff){
+        this.maxSpeed = this.originalMaxSpeed * coeff;
     }
 
     @Override

@@ -40,6 +40,7 @@ public class Test implements Level {
     @Override
     public void update(Joystick joystick, Controls controls) {
         float[] tmp = joystick.getStickPosition();
+        this.ship.updateMaxSpeed(controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
         if(controls.isFire()){
             this.ship.fire(this.rockets);
