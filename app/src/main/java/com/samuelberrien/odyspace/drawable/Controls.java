@@ -177,7 +177,7 @@ public class Controls {
     }
 
     public float getBoost(){
-        return 2f * (this.mBoostStickPosition[1] - this.mBoostPosition[1] + 1f) / this.boostHeight;
+        return 2f * (this.mBoostStickPosition[1] - this.mBoostPosition[1] + 1f) / (this.boostHeight - this.boostWidth);
     }
 
     public void setBoostVisible(boolean isBoostVisible){
