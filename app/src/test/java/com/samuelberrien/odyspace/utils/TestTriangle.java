@@ -27,6 +27,16 @@ public class TestTriangle {
 
         assertTrue(Triangle.tr_tri_intersect3D(u0, u1, u2, v0, v1, v2) == 0);
 
-        assertTrue(Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), u0.clone(), v1.clone(), v2.clone()) > 0);
+        assertTrue(Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), u0.clone(), u1.clone(), u2.clone()) > 0);
+
+        u0 = new double[]{0d, 0d, 1d};
+        u1 = new double[]{1d, 0d, 0d};
+        u2 = new double[]{0d, 1d, 0d};
+
+        v0 = new double[]{0.5d + 0d, 0.5d + 0d, 1d};
+        v1 = new double[]{0.5d + -1d, 0.5d + 0d, 0d};
+        v2 = new double[]{0.5d + 0d, 0.5d + -1d, 0d};
+
+        assertTrue(Triangle.tr_tri_intersect3D(u0, u1, u2, v0, v1, v2) > 0);
     }
 }
