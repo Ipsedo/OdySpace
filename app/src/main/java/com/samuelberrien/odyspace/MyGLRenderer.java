@@ -239,8 +239,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if(this.currentLevel.isDead()){
             this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         }
-
-        // Draw background color
+        
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
