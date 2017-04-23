@@ -17,6 +17,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.Controls;
+import com.samuelberrien.odyspace.drawable.GameOver;
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
 import com.samuelberrien.odyspace.levels.Test;
@@ -28,21 +29,21 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    protected Context context;
+    private Context context;
 
-    protected MyGLSurfaceView myGLSurfaceView;
+    private MyGLSurfaceView myGLSurfaceView;
 
-    protected final float[] mProjectionMatrix = new float[16];
-    protected final float[] mViewMatrix = new float[16];
+    private final float[] mProjectionMatrix = new float[16];
+    private final float[] mViewMatrix = new float[16];
 
     private final float[] mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
-    protected final float[] mLightPosInEyeSpace = new float[4];
+    private final float[] mLightPosInEyeSpace = new float[4];
     private final float[] mLightModelMatrix = new float[16];
     private final float[] mLightPosInWorldSpace = new float[4];
 
-    protected float[] mCameraPosition = new float[3];
-    protected float[] mCameraDirection = new float[3];
-    protected float[] mCameraUpVec = new float[3];
+    private float[] mCameraPosition = new float[3];
+    private float[] mCameraDirection = new float[3];
+    private float[] mCameraUpVec = new float[3];
     private float phi = 0f;
     private float theta = 0f;
     private float maxRange = 1f;
@@ -93,8 +94,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * @param theta angle theta
      */
     protected void updateCameraOrientation(float phi, float theta) {
-        this.phi = phi;
-        this.theta = theta;
+        this.phi += phi;
+        this.theta += theta;
 
         if (this.phi > Math.PI * 2) {
             this.phi -= Math.PI * 2;
@@ -242,10 +243,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        if(this.currentLevel.isDead()){
-            this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        }
-
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
@@ -263,6 +260,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
         this.controls.draw();
+        if(this.currentLevel.isDead()){
+            new GameOver(this.context).draw(this.ratio);
+            this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        }
     }
 
     @Override
