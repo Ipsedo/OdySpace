@@ -28,6 +28,10 @@ public class Controls {
     private FloatBuffer boostVertexBuffer;
     private float[] mBoostPosition = new float[3];
 
+    private float[] mBoostStickPoint = new float[3 * 4];
+    private FloatBuffer boostStickVertexBuffer;
+    private float[] mBoostStickPosition = new float[3];
+
     private int nbPoint = 64;
     private float fireButtonRay = 0.3f;
     private float[] fireButtonPoints = new float[this.nbPoint * 3];
@@ -60,6 +64,7 @@ public class Controls {
         this.bind();
         this.makeBoost();
         this.makeFireButton();
+        this.makeBoostStick();
         this.fireText = new ObjModel(context, "fire.obj", color[0], color[1], color[2], 1f, 0f);
 
     }
@@ -94,6 +99,30 @@ public class Controls {
         this.boostVertexBuffer.position(0);
     }
 
+    private void makeBoostStick(){
+        this.mBoostStickPoint[0] = this.boostWidth / 2;
+        this.mBoostStickPoint[1] = this.boostWidth / 2;
+        this.mBoostPoint[2] = 0f;
+
+        this.mBoostStickPoint[3] = this.boostWidth / 2;
+        this.mBoostStickPoint[4] = -this.boostWidth / 2;
+        this.mBoostStickPoint[5] = 0f;
+
+        this.mBoostStickPoint[6] = -this.boostWidth / 2;
+        this.mBoostStickPoint[7] = -this.boostWidth / 2;
+        this.mBoostStickPoint[8] = 0f;
+
+        this.mBoostStickPoint[9] = -this.boostWidth / 2;
+        this.mBoostStickPoint[10] = this.boostWidth / 2;
+        this.mBoostStickPoint[11] = 0f;
+
+        ByteBuffer bb = ByteBuffer.allocateDirect(this.mBoostStickPoint.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        this.boostStickVertexBuffer = bb.asFloatBuffer();
+        this.boostStickVertexBuffer.put(this.mBoostStickPoint);
+        this.boostStickVertexBuffer.position(0);
+    }
+
     private void makeFireButton(){
         for(int i = 0; i < this.nbPoint; i++){
             double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
@@ -113,6 +142,18 @@ public class Controls {
         this.mBoostPosition[0] = x;
         this.mBoostPosition[1] = y;
         this.mBoostPosition[2] = 0f;
+
+        this.mBoostStickPosition = this.mBoostPosition.clone();
+    }
+
+    public void updateBoostStickPosition(float y){
+        if(y > this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2){
+            this.mBoostStickPosition[1] = this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2;
+        } else if(y < this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2) {
+            this.mBoostStickPosition[1] = this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2;
+        } else {
+            this.mBoostStickPosition[1] = y;
+        }
     }
 
     public boolean isTouchFireButton(float x, float y) {
@@ -167,11 +208,22 @@ public class Controls {
             GLES20.glUniform4fv(mColorHandle, 1, color, 0);
             GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
             GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostPoint.length / 3);
+
+            Matrix.setIdentityM(mMMatrix, 0);
+            Matrix.translateM(mMMatrix, 0, this.mBoostStickPosition[0], this.mBoostStickPosition[1], this.mBoostStickPosition[2]);
+            Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+
+            GLES20.glEnableVertexAttribArray(mPositionHandle);
+            GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.boostStickVertexBuffer);
+            GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+            GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+            GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostStickPoint.length / 3);
         }
 
         Matrix.setIdentityM(mMMatrix, 0);
         Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0], this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
         Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.fireButtonVertexBuffer);
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
@@ -182,6 +234,7 @@ public class Controls {
         Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0], this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
         Matrix.scaleM(mMMatrix, 0, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f);
         Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+
         this.fireText.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f});
 
     }

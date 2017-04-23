@@ -180,18 +180,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 if(e.getPointerCount() == 2) {
                     if(this.joystickFst && (e.getX(0) / this.height) < 0.5f) {
                         this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
-                    } else if(this.joystickFst && (e.getX(1) / this.height) > 0.5f) {
-
-                    } else if(!this.joystickFst && (e.getX(1) / this.height) < 0.5f) {
+                    }
+                    if(this.joystickFst && (e.getX(1) / this.height) > 0.5f) {
+                        this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.height - 1f));
+                    }
+                    if(!this.joystickFst && (e.getX(1) / this.height) < 0.5f) {
                         this.joystick.updateStickPosition(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f));
-                    } else if(!this.joystickFst && (e.getX(0) / this.height) > 0.5f) {
-
+                    } 
+                    if(!this.joystickFst && (e.getX(0) / this.height) > 0.5f) {
+                        this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.height - 1f));
                     }
                 } else {
                     if(e.getX() / this.height < 1f) {
                         this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
                     } else {
-
+                        this.controls.updateBoostStickPosition(-(2f * e.getY() / this.height - 1f));
                     }
                 }
                 break;
