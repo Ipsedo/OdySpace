@@ -54,7 +54,7 @@ public class ObjModelMtl {
 
     // number of coordinates per vertex in this array
     private final int COORDS_PER_VERTEX = 3;
-    private ArrayList<float[]> allCoords = new ArrayList<>();
+    protected ArrayList<float[]> allCoords = new ArrayList<>();
     private ArrayList<float[]> allNormals = new ArrayList<>();
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.Triangle;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -52,6 +53,23 @@ public class BaseItem extends ObjModelMtl {
     }
 
     public boolean isCollided(BaseItem other){
+        for(float[] currMtl : super.allCoords){
+            for(int i = 0; i < currMtl.length / 9 ; i++){
+                double[] u0 = new double[]{currMtl[i * 9 + 0], currMtl[i * 9 + 1], currMtl[i * 9 + 2]};
+                double[] u1 = new double[]{currMtl[i * 9 + 3], currMtl[i * 9 + 4], currMtl[i * 9 + 5]};
+                double[] u2 = new double[]{currMtl[i * 9 + 6], currMtl[i * 9 + 7], currMtl[i * 9 + 8]};
+                for(float[] otherCurrMtl : other.allCoords){
+                    for(int j = 0; j < otherCurrMtl.length / 9; j++){
+                        double[] v0 = new double[]{otherCurrMtl[j * 9 + 0], otherCurrMtl[j * 9 + 1], otherCurrMtl[j * 9 + 2]};
+                        double[] v1 = new double[]{otherCurrMtl[j * 9 + 3], otherCurrMtl[j * 9 + 4], otherCurrMtl[j * 9 + 5]};
+                        double[] v2 = new double[]{otherCurrMtl[j * 9 + 6], otherCurrMtl[j * 9 + 7], otherCurrMtl[j * 9 + 8]};
+                        if(Triangle.tr_tri_intersect3D(u0, u1, u2, v0, v1, v2) > 0){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
