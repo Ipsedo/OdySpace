@@ -50,7 +50,7 @@ public class HeightMap {
     private float lightCoeff;
     private float distanceCoeff;
 
-    private float limitHeight = -10f;
+    private float limitHeight;
 
     private float mScale;
     private float[] mModelMatrix;
@@ -64,7 +64,7 @@ public class HeightMap {
      * @param lightCoeff
      * @param distanceCoeff
      */
-    public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff, float scale){
+    public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff, float scale, float limitHeight){
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.height_map_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.height_map_fs));
 
@@ -81,6 +81,7 @@ public class HeightMap {
         this.distanceCoeff = distanceCoeff;
 
         this.mScale = scale;
+        this.limitHeight = limitHeight;
         this.mModelMatrix = new float[16];
 
         this.initPlan();

@@ -157,7 +157,7 @@ public class Controls {
     }
 
     public boolean isTouchFireButton(float x, float y) {
-        float xRef = x * this.ratio - this.mFireButtonPosition[0];
+        float xRef = x * this.ratio - this.mFireButtonPosition[0] * this.ratio;
         float yRef = y - this.mFireButtonPosition[1];
         if(xRef * xRef + yRef * yRef < this.fireButtonRay * this.fireButtonRay){
             this.isFire = true;
@@ -177,7 +177,7 @@ public class Controls {
     }
 
     public float getBoost(){
-        return 2f * (this.mBoostStickPosition[1] - this.mBoostPosition[1] + 1f) / (this.boostHeight - this.boostWidth);
+        return (this.mBoostStickPosition[1] - this.mBoostPosition[1]) / (0.5f * (this.boostHeight - this.boostWidth));
     }
 
     public void setBoostVisible(boolean isBoostVisible){
@@ -185,8 +185,7 @@ public class Controls {
     }
 
     public void setRatio(float ratio){
-        this.ratio = ratio;
-        this.mFireButtonPosition[0] *= this.ratio;
+        this.ratio = ratio;;
     }
 
     public void draw() {
@@ -225,7 +224,7 @@ public class Controls {
         }
 
         Matrix.setIdentityM(mMMatrix, 0);
-        Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0], this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
+        Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * this.ratio, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
         Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
         GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -235,7 +234,7 @@ public class Controls {
         GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.fireButtonPoints.length / 3);
 
         Matrix.setIdentityM(mMMatrix, 0);
-        Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0], this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
+        Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * this.ratio, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
         Matrix.scaleM(mMMatrix, 0, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f);
         Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 

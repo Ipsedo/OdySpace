@@ -63,7 +63,7 @@ public class Ship extends BaseItem {
     }
 
     public void fire(ArrayList<Rocket> rockets){
-        rockets.add(new Rocket(this.context, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone()));
+        rockets.add(new Rocket(this.context, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone(), this.maxSpeed));
     }
 
     public float[] getCamPosition(){
@@ -106,7 +106,7 @@ public class Ship extends BaseItem {
     }
 
     public void updateMaxSpeed(float coeff){
-        this.maxSpeed = this.originalMaxSpeed * coeff;
+        this.maxSpeed = this.originalMaxSpeed * (float) Math.pow((coeff + 2f) * 2f, 2d);
     }
 
     @Override

@@ -45,6 +45,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float theta = 0f;
     private float maxRange = 1f;
     private float projectionAngle = 40f;
+    private float maxProjDist = 300f;
     private float ratio = 1f;
     private int width;
     private int height;
@@ -78,7 +79,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
         this.currentLevel = new Test();
-        this.currentLevel.init(this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 100f));
+        this.currentLevel.init(this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 1000f, -100f));
     }
 
     /**
@@ -182,19 +183,31 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                         this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
                     }
                     if(this.joystickFst && (e.getX(1) / this.height) > 0.5f) {
-                        this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.height - 1f));
+                        if(!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f))) {
+                            this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.height - 1f));
+                        } else {
+                            this.controls.turnOffFire();
+                        }
                     }
                     if(!this.joystickFst && (e.getX(1) / this.height) < 0.5f) {
                         this.joystick.updateStickPosition(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f));
                     }
                     if(!this.joystickFst && (e.getX(0) / this.height) > 0.5f) {
-                        this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.height - 1f));
+                        if(!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f))) {
+                            this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.height - 1f));
+                        } else {
+                            this.controls.turnOffFire();
+                        }
                     }
                 } else {
                     if(e.getX() / this.height < 1f) {
                         this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
                     } else {
-                        this.controls.updateBoostStickPosition(-(2f * e.getY() / this.height - 1f));
+                        if(!this.controls.isTouchFireButton(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f))) {
+                            this.controls.updateBoostStickPosition(-(2f * e.getY() / this.height - 1f));
+                        } else {
+                            this.controls.turnOffFire();
+                        }
                     }
                 }
                 break;
@@ -223,7 +236,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 100f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
         this.currentLevel.update(this.joystick, this.controls);
@@ -233,7 +246,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.updateCamUpVec(this.ship.getCamUpVec());
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        this.currentLevel.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
+        this.currentLevel.draw(this.mProjectionMatrix.clone(), this.mViewMatrix.clone(), this.mLightPosInEyeSpace.clone(), this.mCameraPosition.clone());
 
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
@@ -255,6 +268,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.controls.setRatio(this.ratio);
 
         //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, 100f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, this.maxProjDist);
     }
 }
