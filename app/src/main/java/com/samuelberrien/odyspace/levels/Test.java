@@ -1,5 +1,6 @@
 package com.samuelberrien.odyspace.levels;
 
+import com.samuelberrien.odyspace.drawable.Controls;
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
 import com.samuelberrien.odyspace.objects.Rocket;
@@ -37,13 +38,12 @@ public class Test implements Level {
     }
 
     @Override
-    public void update(Joystick joystick) {
+    public void update(Joystick joystick, Controls controls) {
         float[] tmp = joystick.getStickPosition();
         this.ship.move(tmp[0], tmp[1]);
-        if(joystick.isFire()) {
+        if(controls.isFire()){
             this.ship.fire(this.rockets);
-            joystick.setFire(false);
-            System.out.println("fire");
+            controls.turnOffFire();
         }
         for(Rocket r : this.rockets)
             r.move();

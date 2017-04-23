@@ -16,6 +16,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.samuelberrien.odyspace.drawable.Controls;
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
 import com.samuelberrien.odyspace.levels.Test;
@@ -49,6 +50,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private int height;
 
     private Joystick joystick;
+    private Controls controls;
+    private boolean joystickFst;
 
     private Level currentLevel;
 
@@ -69,6 +72,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthMask(true);
         GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
         this.joystick = new Joystick(this.context);
+        this.controls = new Controls(this.context);
+        this.joystickFst = true;
         this.ship = new Ship(this.context);
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
@@ -149,33 +154,65 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void updateMotion(MotionEvent e){
-        if(e.getPointerCount() == 2) {
-            this.joystick.setFire(true);
-            switch (e.getAction()) {
-                case MotionEvent.ACTION_DOWN:
+        int pointerIndex = e.getActionIndex();
+        switch (e.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                if(e.getX(pointerIndex) / this.height > 1f){
+                    if(!this.controls.isTouchFireButton(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f))) {
+                        this.joystickFst = false;
+                        this.controls.setBoostVisible(true);
+                        this.controls.updateBoostPosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                    }
+                } else {
+                    this.joystickFst = true;
                     this.joystick.setVisible(true);
-                    this.joystick.updatePosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
-                    break;
-                case MotionEvent.ACTION_UP:
+                    this.joystick.updatePosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if(e.getX(pointerIndex) / this.height > 1f){
+                    this.controls.setBoostVisible(false);
+                } else {
                     this.joystick.setVisible(false);
-                    break;
-            }
-        } else {
-            switch (e.getAction()) {
-                case MotionEvent.ACTION_DOWN:
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if(e.getPointerCount() == 2) {
+                    if(this.joystickFst && (e.getX(0) / this.height) < 0.5f) {
+                        this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
+                    } else if(this.joystickFst && (e.getX(1) / this.height) > 0.5f) {
+
+                    } else if(!this.joystickFst && (e.getX(1) / this.height) < 0.5f) {
+                        this.joystick.updateStickPosition(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f));
+                    } else if(!this.joystickFst && (e.getX(0) / this.height) > 0.5f) {
+
+                    }
+                } else {
+                    if(e.getX() / this.height < 1f) {
+                        this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
+                    } else {
+
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                if(e.getX(pointerIndex) / this.height > 1f){
+                    if(!this.controls.isTouchFireButton(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f))) {
+                        this.controls.setBoostVisible(true);
+                        this.controls.updateBoostPosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                    }
+                } else {
                     this.joystick.setVisible(true);
-                    this.joystick.updatePosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
-                    break;
-                case MotionEvent.ACTION_UP:
+                    this.joystick.updatePosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                }
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                if(e.getX(pointerIndex) / this.height > 1f){
+                    this.controls.setBoostVisible(false);
+                } else {
                     this.joystick.setVisible(false);
-                    break;
-            }
+                }
+                break;
         }
     }
 
@@ -186,7 +223,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 100f);
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
-        this.currentLevel.update(this.joystick);
+        this.currentLevel.update(this.joystick, this.controls);
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
@@ -197,6 +234,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
+        this.controls.draw();
     }
 
     @Override
@@ -211,6 +249,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.ratio = (float) width / height;
 
         this.joystick.setRatio(this.ratio);
+        this.controls.setRatio(this.ratio);
 
         //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, 100f);

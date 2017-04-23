@@ -1,5 +1,6 @@
 package com.samuelberrien.odyspace.utils;
 
+import com.samuelberrien.odyspace.drawable.Controls;
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
 import com.samuelberrien.odyspace.objects.Ship;
@@ -17,7 +18,7 @@ public interface Level {
 
     void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
-    void update(Joystick joystick);
+    void update(Joystick joystick, Controls controls);
 
     boolean isDead();
 
