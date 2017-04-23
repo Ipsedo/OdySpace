@@ -30,6 +30,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     protected Context context;
 
+    protected MyGLSurfaceView myGLSurfaceView;
+
     protected final float[] mProjectionMatrix = new float[16];
     protected final float[] mViewMatrix = new float[16];
 
@@ -61,8 +63,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     /**
      * @param context
      */
-    public MyGLRenderer(Context context) {
+    public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView) {
         this.context = context;
+        this.myGLSurfaceView = myGLSurfaceView;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -233,6 +236,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void onDrawFrame(GL10 unused) {
+        if(this.currentLevel.isDead()){
+            this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        }
+
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
