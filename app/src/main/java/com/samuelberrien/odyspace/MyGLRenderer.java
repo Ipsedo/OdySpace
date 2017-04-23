@@ -262,8 +262,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
-        // Adjust the viewport based on geometry changes,
-        // such as screen rotation
         GLES20.glViewport(0, 0, width, height);
 
         this.width = width;
