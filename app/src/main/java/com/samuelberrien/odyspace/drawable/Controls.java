@@ -23,7 +23,7 @@ public class Controls {
     private boolean isBoostVisible;
 
     private float boostWidth = 0.3f;
-    private float boostHeight = 0.8f;
+    private float boostHeight = 1f;
     private float[] mBoostPoint = new float[3 * 4];
     private FloatBuffer boostVertexBuffer;
     private float[] mBoostPosition = new float[3];

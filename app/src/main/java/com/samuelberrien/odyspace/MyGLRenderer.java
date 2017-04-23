@@ -11,9 +11,6 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.os.Looper;
-import android.support.v4.view.MotionEventCompat;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.Controls;
@@ -85,6 +82,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
         this.currentLevel = new Test();
         this.currentLevel.init(this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 1000f, -100f));
+
+        this.updateCameraPosition(this.ship.getCamPosition());
+        this.updateCamLookVec(this.ship.getCamLookAtVec());
+        this.updateCamUpVec(this.ship.getCamUpVec());
     }
 
     /**
