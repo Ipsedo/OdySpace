@@ -68,6 +68,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.myGLSurfaceView = myGLSurfaceView;
     }
 
+    @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
@@ -157,6 +158,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(this.mLightPosInEyeSpace, 0, this.mViewMatrix, 0, this.mLightPosInWorldSpace, 0);
     }
 
+    /**
+     *
+     * @param e
+     */
     public void updateMotion(MotionEvent e){
         int pointerIndex = e.getActionIndex();
         switch (e.getActionMasked()) {
@@ -235,11 +240,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+    @Override
     public void onDrawFrame(GL10 unused) {
         if(this.currentLevel.isDead()){
             this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         }
-        
+
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
