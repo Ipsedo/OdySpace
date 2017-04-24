@@ -77,7 +77,7 @@ public class BaseItem extends ObjModelMtl {
                         double[] V0 = new double[]{v0[0], v0[1], v0[2]};
                         double[] V1 = new double[]{v1[0], v1[1], v1[2]};
                         double[] V2 = new double[]{v2[0], v2[1], v2[2]};
-                        if(Triangle.tr_tri_intersect3D(U0, U1, U2, V0, V1, V2) > 0){
+                        if(Triangle.tr_tri_intersect3D(U0.clone(), U1.clone(), U2.clone(), V0.clone(), V1.clone(), V2.clone()) > 0){
                             return true;
                         }
                     }
