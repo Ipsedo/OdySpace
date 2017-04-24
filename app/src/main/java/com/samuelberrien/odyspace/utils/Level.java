@@ -22,6 +22,8 @@ public interface Level {
 
     void update(Joystick joystick, Controls controls);
 
+    void collision();
+
     boolean isDead();
 
     boolean isWinner();

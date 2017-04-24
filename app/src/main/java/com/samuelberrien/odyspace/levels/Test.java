@@ -57,11 +57,17 @@ public class Test implements Level {
             controls.turnOffFire();
         }
         for(Rocket r : this.rockets) {
-            if(r.isCollided(this.icosahedron)){
-                this.isIcosahedronAlive = false;
-            }
             r.move();
         }
+    }
+
+    @Override
+    public void collision() {
+       for(Rocket r : this.rockets){
+           if(r.isCollided(this.icosahedron)){
+               this.isIcosahedronAlive = false;
+           }
+       }
     }
 
     @Override

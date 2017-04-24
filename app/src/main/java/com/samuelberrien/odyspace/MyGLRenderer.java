@@ -265,6 +265,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             new GameOver(this.context).draw(this.ratio);
             this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         }
+
+        this.currentLevel.collision();
     }
 
     @Override
