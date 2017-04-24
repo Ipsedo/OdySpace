@@ -55,15 +55,29 @@ public class BaseItem extends ObjModelMtl {
     public boolean isCollided(BaseItem other){
         for(float[] currMtl : super.allCoords){
             for(int i = 0; i < currMtl.length / 9 ; i++){
-                double[] u0 = new double[]{currMtl[i * 9 + 0], currMtl[i * 9 + 1], currMtl[i * 9 + 2]};
-                double[] u1 = new double[]{currMtl[i * 9 + 3], currMtl[i * 9 + 4], currMtl[i * 9 + 5]};
-                double[] u2 = new double[]{currMtl[i * 9 + 6], currMtl[i * 9 + 7], currMtl[i * 9 + 8]};
+                float[] u0 = new float[]{currMtl[i * 9 + 0], currMtl[i * 9 + 1], currMtl[i * 9 + 2], 1f};
+                float[] u1 = new float[]{currMtl[i * 9 + 3], currMtl[i * 9 + 4], currMtl[i * 9 + 5], 1f};
+                float[] u2 = new float[]{currMtl[i * 9 + 6], currMtl[i * 9 + 7], currMtl[i * 9 + 8], 1f};
+                Matrix.multiplyMV(u0, 0, this.mModelMatrix, 0, u0.clone(), 0);
+                Matrix.multiplyMV(u1, 0, this.mModelMatrix, 0, u1.clone(), 0);
+                Matrix.multiplyMV(u2, 0, this.mModelMatrix, 0, u2.clone(), 0);
+
+                double[] U0 = new double[]{u0[0], u0[1], u0[2]};
+                double[] U1 = new double[]{u1[0], u1[1], u1[2]};
+                double[] U2 = new double[]{u2[0], u2[1], u2[2]};
                 for(float[] otherCurrMtl : other.allCoords){
                     for(int j = 0; j < otherCurrMtl.length / 9; j++){
-                        double[] v0 = new double[]{otherCurrMtl[j * 9 + 0], otherCurrMtl[j * 9 + 1], otherCurrMtl[j * 9 + 2]};
-                        double[] v1 = new double[]{otherCurrMtl[j * 9 + 3], otherCurrMtl[j * 9 + 4], otherCurrMtl[j * 9 + 5]};
-                        double[] v2 = new double[]{otherCurrMtl[j * 9 + 6], otherCurrMtl[j * 9 + 7], otherCurrMtl[j * 9 + 8]};
-                        if(Triangle.tr_tri_intersect3D(u0, u1, u2, v0, v1, v2) > 0){
+                        float[] v0 = new float[]{otherCurrMtl[j * 9 + 0], otherCurrMtl[j * 9 + 1], otherCurrMtl[j * 9 + 2], 1f};
+                        float[] v1 = new float[]{otherCurrMtl[j * 9 + 3], otherCurrMtl[j * 9 + 4], otherCurrMtl[j * 9 + 5], 1f};
+                        float[] v2 = new float[]{otherCurrMtl[j * 9 + 6], otherCurrMtl[j * 9 + 7], otherCurrMtl[j * 9 + 8], 1f};
+                        Matrix.multiplyMV(v0, 0, other.mModelMatrix, 0, v0.clone(), 0);
+                        Matrix.multiplyMV(v1, 0, other.mModelMatrix, 0, v1.clone(), 0);
+                        Matrix.multiplyMV(v2, 0, other.mModelMatrix, 0, v2.clone(), 0);
+
+                        double[] V0 = new double[]{v0[0], v0[1], v0[2]};
+                        double[] V1 = new double[]{v1[0], v1[1], v1[2]};
+                        double[] V2 = new double[]{v2[0], v2[1], v2[2]};
+                        if(Triangle.tr_tri_intersect3D(U0, U1, U2, V0, V1, V2) > 0){
                             return true;
                         }
                     }

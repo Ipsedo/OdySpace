@@ -1,5 +1,7 @@
 package com.samuelberrien.odyspace.utils;
 
+import android.content.Context;
+
 import com.samuelberrien.odyspace.drawable.Controls;
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.Joystick;
@@ -14,7 +16,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-    void init(Ship ship, HeightMap heightMap);
+    void init(Context context, Ship ship, HeightMap heightMap);
 
     void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 

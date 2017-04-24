@@ -63,7 +63,9 @@ public class Ship extends BaseItem {
     }
 
     public void fire(ArrayList<Rocket> rockets){
-        rockets.add(new Rocket(this.context, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone(), this.maxSpeed));
+        Rocket tmp = new Rocket(this.context, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+        tmp.move();
+        rockets.add(tmp);
     }
 
     public float[] getCamPosition(){

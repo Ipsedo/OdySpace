@@ -81,7 +81,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
         this.currentLevel = new Test();
-        this.currentLevel.init(this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 1000f, -100f));
+        this.currentLevel.init(this.context, this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 1000f, -100f));
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
