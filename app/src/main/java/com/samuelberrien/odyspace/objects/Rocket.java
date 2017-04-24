@@ -41,6 +41,5 @@ public class Rocket extends BaseItem {
 
     public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
         super.draw(pMatrix, vMatrix, mLightPosInEyeSpace, mCameraPosition);
-        ShaderLoader.checkGlError("aaaaa");
     }
 }

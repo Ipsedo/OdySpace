@@ -64,7 +64,7 @@ public class Test implements Level {
     @Override
     public void collision() {
        for(Rocket r : this.rockets){
-           if(r.isCollided(this.icosahedron)){
+           if(this.icosahedron.isCollided(r)){
                this.isIcosahedronAlive = false;
            }
        }
