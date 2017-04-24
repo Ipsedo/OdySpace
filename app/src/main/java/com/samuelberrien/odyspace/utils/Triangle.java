@@ -119,7 +119,9 @@ public class Triangle {
         c = -a * U2[i0] - b * U2[i1];
         d2 = a * V0[i0] + b * V0[i1] + c;
         if (d0 * d1 > 0.0) {
-            if (d0 * d2 > 0.0) return true;
+            if (d0 * d2 > 0.0) {
+                return true;
+            }
         }
         return false;
     }
@@ -201,8 +203,9 @@ public class Triangle {
 
 
         if ((dq1 == 0) && (dq2 == 0)) {
-            if (dr != 0) return 0;  // triangles are on parallel planes
-            else {                        // triangles are on the same plane
+            if (dr != 0) {
+                return 0;  // triangles are on parallel planes
+            } else {                        // triangles are on the same plane
                 double C2[] = new double[3];
                 double C3[] = new double[3];
                 double D2[] = new double[3];
@@ -217,7 +220,9 @@ public class Triangle {
                 cross(N1, P1, P2);
                 return coplanar_tri_tri(N1, C1, C2, C3, D1, D2, D3);
             }
-        } else if (!beta2_legal && !beta1_legal) return 0;// fast reject-all vertices are on
+        } else if (!beta2_legal && !beta1_legal) {
+            return 0;// fast reject-all vertices are on
+        }
             // the same side of the triangle plane
 
         else if (beta2_legal && beta1_legal)    //beta1, beta2

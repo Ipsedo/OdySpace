@@ -11,6 +11,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.Level;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by samuel on 20/04/17.
@@ -25,15 +26,21 @@ public class Test implements Level {
     private HeightMap heightMap;
     private ArrayList<Rocket> rockets;
 
-    private Icosahedron icosahedron;
-    private boolean isIcosahedronAlive = true;
+    private ArrayList<Icosahedron> icosahedrons;
+    private int nbIcosahedron = 50;
 
     @Override
     public void init(Context context, Ship ship, HeightMap heightMap) {
         this.ship = ship;
         this.heightMap = heightMap;
         this.rockets = new ArrayList<>();
-        this.icosahedron = new Icosahedron(context, new float[]{0f, 0f, 50f});
+        this.icosahedrons = new ArrayList<>();
+        Random rand = new Random(System.currentTimeMillis());
+        for(int i = 0; i < this.nbIcosahedron; i++){
+            Icosahedron ico = new Icosahedron(context, new float[]{rand.nextFloat() * 250f - 125f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * 250f - 125f});
+            ico.changeColor(rand);
+            this.icosahedrons.add(ico);
+        }
     }
 
     @Override
@@ -42,8 +49,10 @@ public class Test implements Level {
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         for(Rocket r : this.rockets)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        if(this.isIcosahedronAlive)
-            this.icosahedron.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+
+        for(Icosahedron i : this.icosahedrons)
+            if(i.isAlive())
+                i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
     }
 
     @Override
@@ -51,21 +60,24 @@ public class Test implements Level {
         float[] tmp = joystick.getStickPosition();
         this.ship.updateMaxSpeed(controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
-        this.icosahedron.move();
         if(controls.isFire()){
             this.ship.fire(this.rockets);
             controls.turnOffFire();
         }
-        for(Rocket r : this.rockets) {
+        for(Rocket r : this.rockets)
             r.move();
-        }
+        for(Icosahedron i : this.icosahedrons)
+            i.move();
     }
 
     @Override
     public void collision() {
-       for(Rocket r : this.rockets){
-           if(this.icosahedron.isCollided(r)){
-               this.isIcosahedronAlive = false;
+       for(int i = 0; i < this.icosahedrons.size(); i++){
+           for(int j = 0; j < this.rockets.size(); j++){
+               if(this.icosahedrons.get(i).isCollided(this.rockets.get(j))){
+                   //this.icosahedrons.remove(i);
+                   this.rockets.remove(j);
+               }
            }
        }
     }
