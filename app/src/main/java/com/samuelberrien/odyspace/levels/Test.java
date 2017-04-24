@@ -75,7 +75,7 @@ public class Test implements Level {
        for(int i = 0; i < this.icosahedrons.size(); i++){
            for(int j = 0; j < this.rockets.size(); j++){
                if(this.icosahedrons.get(i).isCollided(this.rockets.get(j))){
-                   //this.icosahedrons.remove(i);
+                   this.icosahedrons.remove(i);
                    this.rockets.remove(j);
                }
            }
