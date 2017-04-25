@@ -44,8 +44,8 @@ public class Joystick {
     float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
     public Joystick(Context context){
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.joystick_vs));
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.joystick_fs));
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
         this.isVisible = false;
 

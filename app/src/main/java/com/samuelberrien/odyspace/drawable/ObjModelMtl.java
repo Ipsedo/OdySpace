@@ -35,7 +35,7 @@ public class ObjModelMtl {
     private ArrayList<FloatBuffer> allSpecColorBuffer = new ArrayList<>();
     private ArrayList<Float> allSpecShininess = new ArrayList<>();
 
-    private final int mProgram;
+    private int mProgram;
     private int mPositionHandle;
     private int mNormalHandle;
     private int mAmbColorHandle;
@@ -80,7 +80,7 @@ public class ObjModelMtl {
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
 
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_vs));
+        /*int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.specular_fs));
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
@@ -88,7 +88,8 @@ public class ObjModelMtl {
         GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(this.mProgram);
 
-        this.bind();
+        this.bind();*/
+        this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
     }
 
     /**
@@ -122,8 +123,21 @@ public class ObjModelMtl {
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
 
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_vs));
+        /*int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.specular_fs));
+
+        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
+        GLES20.glLinkProgram(this.mProgram);
+
+        this.bind();*/
+        this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+    }
+
+    protected void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId){
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, vertexShaderResId));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, fragmentShaderResId));
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
@@ -438,47 +452,6 @@ public class ObjModelMtl {
             GLES20.glUniform1f(mSpecShininessHandle, this.allSpecShininess.get(i));
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.allCoords.get(i).length / 3);
-
-            GLES20.glDisableVertexAttribArray(mPositionHandle);
-        }
-    }
-
-    public void drawExplosion(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-        for (int i = 0; i < this.allVertexBuffer.size(); i++) {
-            GLES20.glUseProgram(mProgram);
-
-            GLES20.glEnableVertexAttribArray(mPositionHandle);
-            GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.allVertexBuffer.get(i));
-
-            GLES20.glEnableVertexAttribArray(mAmbColorHandle);
-            GLES20.glVertexAttribPointer(mAmbColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.allAmbColorBuffer.get(i));
-
-            GLES20.glEnableVertexAttribArray(mDiffColorHandle);
-            GLES20.glVertexAttribPointer(mDiffColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.allDiffColorBuffer.get(i));
-
-            GLES20.glEnableVertexAttribArray(mSpecColorHandle);
-            GLES20.glVertexAttribPointer(mSpecColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.allSpecColorBuffer.get(i));
-
-            GLES20.glEnableVertexAttribArray(mNormalHandle);
-            GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.allNormalsBuffer.get(i));
-
-            GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
-
-            GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-
-            GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
-
-            GLES20.glUniform3fv(mCameraPosHandle, 1, mCameraPosition, 0);
-
-            GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
-
-            GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
-
-            GLES20.glUniform1f(mSpecShininessHandle, this.allSpecShininess.get(i));
-
-            for(int j = 0; j < this.allCoords.get(i).length / 9; j++) {
-                GLES20.glDrawArrays(GLES20.GL_TRIANGLES, j * 3, j * 3 + 2);
-            }
 
             GLES20.glDisableVertexAttribArray(mPositionHandle);
         }

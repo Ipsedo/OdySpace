@@ -36,4 +36,8 @@ public class Icosahedron extends BaseItem {
         }
         return false;
     }
+
+    public float[] getPosition(){
+        return super.mPosition;
+    }
 }

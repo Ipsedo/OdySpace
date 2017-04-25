@@ -22,7 +22,7 @@ public interface Level {
 
     void update(Joystick joystick, Controls controls);
 
-    void collision();
+    void removeObjects();
 
     boolean isDead();
 

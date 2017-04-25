@@ -87,6 +87,12 @@ public class BaseItem extends ObjModelMtl {
         return false;
     }
 
+    public void decrementsBothLife(BaseItem other){
+        int otherLife = other.life;
+        other.life -= this.life;
+        this.life -= otherLife;
+    }
+
     public boolean isOutOfBound(float limitDown){
         return this.mPosition[1] < limitDown;
     }

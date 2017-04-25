@@ -50,8 +50,8 @@ public class Controls {
     float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
     public Controls (Context context) {
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.joystick_vs));
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.joystick_fs));
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program

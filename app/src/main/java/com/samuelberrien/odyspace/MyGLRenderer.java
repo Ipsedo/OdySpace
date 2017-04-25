@@ -266,7 +266,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         }
 
-        this.currentLevel.collision();
+        this.currentLevel.removeObjects();
     }
 
     @Override
