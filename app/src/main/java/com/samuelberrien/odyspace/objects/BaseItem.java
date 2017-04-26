@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.LevelLimits;
 import com.samuelberrien.odyspace.utils.Triangle;
 
 import java.nio.FloatBuffer;
@@ -93,8 +94,8 @@ public class BaseItem extends ObjModelMtl {
         this.life -= otherLife;
     }
 
-    public boolean isOutOfBound(float limitDown){
-        return this.mPosition[1] < limitDown;
+    public boolean isOutOfBound(LevelLimits levelLimits){
+        return !levelLimits.isInside(this.mPosition);
     }
 
     public void move(){

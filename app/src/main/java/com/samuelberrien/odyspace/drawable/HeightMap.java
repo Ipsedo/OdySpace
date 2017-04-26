@@ -21,8 +21,8 @@ import java.nio.FloatBuffer;
 
 public class HeightMap {
 
-    private final int NBSLICES = 300;
-    private final int NBSTRIPS = 300;
+    private final int NBSLICES = 30;
+    private final int NBSTRIPS = 30;
     private int nbFaces;
     private float[] points;
 

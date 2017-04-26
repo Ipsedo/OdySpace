@@ -20,6 +20,7 @@ import com.samuelberrien.odyspace.drawable.Joystick;
 import com.samuelberrien.odyspace.levels.Test;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.Level;
+import com.samuelberrien.odyspace.utils.LevelLimits;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -58,6 +59,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Ship ship;
 
+    private long currTime = System.currentTimeMillis();
+
     /**
      * @param context
      */
@@ -81,7 +84,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
         this.currentLevel = new Test();
-        this.currentLevel.init(this.context, this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 1000f, -100f));
+        this.currentLevel.init(this.context, this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 1000f, -100f), new LevelLimits(500f, -500f, 500f, -100f, 500f, -500f));
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
@@ -267,6 +270,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
 
         this.currentLevel.removeObjects();
+
+        System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));
+        this.currTime = System.currentTimeMillis();
     }
 
     @Override
