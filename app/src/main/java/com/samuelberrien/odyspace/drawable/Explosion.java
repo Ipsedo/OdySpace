@@ -25,11 +25,12 @@ public class Explosion {
 
     private ArrayList<Particule> particules;
 
-    public Explosion(Context context, float[] mPosition){
+    public Explosion(Context context, float[] mPosition, ArrayList<FloatBuffer> mDiffColor){
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         for(int i = 0; i < 10; i++){
             Particule tmp = new Particule(context, rand, mPosition);
+            tmp.setColors(mDiffColor, mDiffColor, mDiffColor);
             this.particules.add(tmp);
         }
     }

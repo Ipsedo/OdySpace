@@ -413,6 +413,10 @@ public class ObjModelMtl {
         this.allSpecColorBuffer = mSpecColors;
     }
 
+    public ArrayList<FloatBuffer> getAllDiffColorBuffer(){
+        return this.allDiffColorBuffer;
+    }
+
     /**
      * @param mvpMatrix           The Model View Project matrix in which to draw this shape.
      * @param mvMatrix            The Model View matrix

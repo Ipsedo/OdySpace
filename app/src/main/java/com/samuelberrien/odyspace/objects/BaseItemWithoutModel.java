@@ -20,6 +20,8 @@ import java.util.Random;
 
 public class BaseItemWithoutModel {
 
+    protected float radius;
+
     protected int life;
 
     protected float[] mPosition;
@@ -39,6 +41,7 @@ public class BaseItemWithoutModel {
         Matrix.setIdentityM(this.mRotationMatrix, 0);
         this.mModelMatrix = new float[16];
         Matrix.setIdentityM(this.mModelMatrix, 0);
+        this.radius = 1f;
     }
 
     public boolean isAlive(){

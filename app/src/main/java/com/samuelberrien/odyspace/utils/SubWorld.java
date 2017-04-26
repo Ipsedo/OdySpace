@@ -44,20 +44,28 @@ public class SubWorld {
         }
 
         for(int i = 0; i < this.amis.size(); i++){
+            boolean toDelete = false;
             for(int j = 0; j < 8; j++){
                 if(!this.amis.get(i).isOutOfBound(levelLimitsSons[j])){
                     futurAmis[j].add(this.amis.get(i));
-                    //this.amis.remove(i);
+                    toDelete = true;
                 }
+            }
+            if(toDelete){
+                //this.amis.remove(i);
             }
         }
 
         for(int i = 0; i < this.ennemis.size(); i++){
+            boolean toDelete = false;
             for(int j = 0; j < 8; j++){
                 if(!this.ennemis.get(i).isOutOfBound(levelLimitsSons[j])){
                     futurEnnemis[j].add(this.ennemis.get(i));
-                    //this.ennemis.remove(i);
+                    toDelete = true;
                 }
+            }
+            if(toDelete){
+                //this.ennemis.remove(i);
             }
         }
 

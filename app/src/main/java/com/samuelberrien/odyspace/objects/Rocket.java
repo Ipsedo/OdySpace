@@ -13,12 +13,14 @@ import com.samuelberrien.odyspace.utils.ShaderLoader;
  */
 
 public class Rocket extends BaseItem {
+
     private float maxSpeed;
 
     public Rocket(Context context, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed) {
         super(context, "rocket.obj", "rocket.mtl", 1f, 0f, 1, mPosition, mSpeed, mAcceleration);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
+        super.radius = 0.3f;
     }
 
     public void move(){
