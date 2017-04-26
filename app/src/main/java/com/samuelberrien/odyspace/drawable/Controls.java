@@ -201,7 +201,6 @@ public class Controls {
 
         float[] mMMatrix = new float[16];
         if(this.isBoostVisible) {
-
             Matrix.setIdentityM(mMMatrix, 0);
             Matrix.translateM(mMMatrix, 0, this.mBoostPosition[0], this.mBoostPosition[1], this.mBoostPosition[2]);
             Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
