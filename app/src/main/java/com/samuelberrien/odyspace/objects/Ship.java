@@ -3,8 +3,6 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.utils.Vector;
-
 import java.util.ArrayList;
 
 /**

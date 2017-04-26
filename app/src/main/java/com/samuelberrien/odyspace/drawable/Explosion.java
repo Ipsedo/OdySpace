@@ -5,11 +5,9 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.ShaderLoader;
-import com.samuelberrien.odyspace.utils.Vector;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,7 +53,7 @@ public class Explosion {
         return res;
     }
 
-    private class Particule extends ObjModelMtl{
+    private class Particule extends ObjModelMtl {
 
         private final float maxSpeed = 1.5f;
 

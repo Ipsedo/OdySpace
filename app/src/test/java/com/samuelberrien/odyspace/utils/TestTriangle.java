@@ -1,6 +1,6 @@
 package com.samuelberrien.odyspace.utils;
 
-import com.samuelberrien.odyspace.utils.Triangle;
+import com.samuelberrien.odyspace.utils.collision.Triangle;
 
 import org.junit.Test;
 

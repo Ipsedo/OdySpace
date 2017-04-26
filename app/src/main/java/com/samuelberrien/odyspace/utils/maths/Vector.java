@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils;
+package com.samuelberrien.odyspace.utils.maths;
 
 /**
  * Created by samuel on 19/04/17.

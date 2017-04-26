@@ -5,8 +5,8 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.ShaderLoader;
-import com.samuelberrien.odyspace.utils.TextureHelper;
+import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
+import com.samuelberrien.odyspace.utils.graphics.TextureHelper;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

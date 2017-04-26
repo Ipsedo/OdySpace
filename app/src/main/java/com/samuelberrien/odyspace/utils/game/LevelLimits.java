@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils;
+package com.samuelberrien.odyspace.utils.game;
 
 import java.util.Random;
 

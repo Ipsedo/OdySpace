@@ -1,12 +1,9 @@
 package com.samuelberrien.odyspace.objects;
 
 import android.content.Context;
-import android.opengl.GLES20;
-import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.utils.Vector;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**

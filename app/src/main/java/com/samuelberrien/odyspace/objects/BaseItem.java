@@ -3,9 +3,9 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.ObjModelMtl;
-import com.samuelberrien.odyspace.utils.LevelLimits;
-import com.samuelberrien.odyspace.utils.Triangle;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.game.LevelLimits;
+import com.samuelberrien.odyspace.utils.collision.Triangle;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

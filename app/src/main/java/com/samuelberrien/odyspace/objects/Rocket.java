@@ -3,8 +3,6 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.utils.ShaderLoader;
-
 /**
  * Created by samuel on 20/04/17.
  * Copyright samuel, 2016 - 2017.

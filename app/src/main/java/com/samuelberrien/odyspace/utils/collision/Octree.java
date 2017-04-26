@@ -1,11 +1,10 @@
-package com.samuelberrien.odyspace.utils;
+package com.samuelberrien.odyspace.utils.collision;
 
-import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Rocket;
+import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by samuel on 26/04/17.

@@ -1,11 +1,11 @@
-package com.samuelberrien.odyspace.drawable;
+package com.samuelberrien.odyspace.drawable.controls;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.ShaderLoader;
+import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

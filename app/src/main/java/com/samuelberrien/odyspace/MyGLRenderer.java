@@ -13,14 +13,14 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
 
-import com.samuelberrien.odyspace.drawable.Controls;
+import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.GameOver;
 import com.samuelberrien.odyspace.drawable.HeightMap;
-import com.samuelberrien.odyspace.drawable.Joystick;
+import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.Test;
 import com.samuelberrien.odyspace.objects.Ship;
-import com.samuelberrien.odyspace.utils.Level;
-import com.samuelberrien.odyspace.utils.LevelLimits;
+import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

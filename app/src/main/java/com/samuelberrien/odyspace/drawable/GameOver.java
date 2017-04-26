@@ -3,6 +3,8 @@ package com.samuelberrien.odyspace.drawable;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+
 /**
  * Created by samuel on 23/04/17.
  * Copyright samuel, 2016 - 2017.

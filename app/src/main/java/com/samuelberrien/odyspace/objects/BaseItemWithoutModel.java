@@ -1,15 +1,9 @@
 package com.samuelberrien.odyspace.objects;
 
-import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.ObjModelMtl;
-import com.samuelberrien.odyspace.utils.LevelLimits;
-import com.samuelberrien.odyspace.utils.Triangle;
-
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Random;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 /**
  * Created by samuel on 26/04/17.

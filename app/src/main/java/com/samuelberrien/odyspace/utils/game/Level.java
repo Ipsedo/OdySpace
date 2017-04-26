@@ -1,10 +1,10 @@
-package com.samuelberrien.odyspace.utils;
+package com.samuelberrien.odyspace.utils.game;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.drawable.Controls;
+import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.HeightMap;
-import com.samuelberrien.odyspace.drawable.Joystick;
+import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.objects.Ship;
 
 /**

@@ -2,19 +2,17 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.drawable.Controls;
+import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.HeightMap;
-import com.samuelberrien.odyspace.drawable.Joystick;
-import com.samuelberrien.odyspace.drawable.ObjModelMtl;
+import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Rocket;
 import com.samuelberrien.odyspace.objects.Ship;
-import com.samuelberrien.odyspace.utils.Level;
-import com.samuelberrien.odyspace.utils.LevelLimits;
-import com.samuelberrien.odyspace.utils.Octree;
+import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.game.LevelLimits;
+import com.samuelberrien.odyspace.utils.collision.Octree;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Random;
 

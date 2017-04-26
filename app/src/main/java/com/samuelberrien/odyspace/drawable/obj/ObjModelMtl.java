@@ -1,10 +1,10 @@
-package com.samuelberrien.odyspace.drawable;
+package com.samuelberrien.odyspace.drawable.obj;
 
 import android.content.Context;
 import android.opengl.GLES20;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.ShaderLoader;
+import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
