@@ -7,6 +7,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.utils.Vector;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by samuel on 24/04/17.
@@ -15,10 +16,11 @@ import java.util.ArrayList;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Icosahedron extends BaseItemWithoutModel {
+public class Icosahedron extends BaseItem {
 
-    public Icosahedron(float[] mPosition) {
-        super(1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f});
+    public Icosahedron(Context context, float[] mPosition, Random rand) {
+        super(context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f});
+        super.changeColor(rand);
     }
 
     public boolean isCollided(BaseItem other){

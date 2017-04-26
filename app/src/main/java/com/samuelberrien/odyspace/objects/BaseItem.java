@@ -30,6 +30,8 @@ public class BaseItem extends ObjModelMtl {
 
     protected float[] mModelMatrix;
 
+    protected float radius;
+
     public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration){
         super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef);
         this.life = life;
@@ -40,6 +42,7 @@ public class BaseItem extends ObjModelMtl {
         Matrix.setIdentityM(this.mRotationMatrix, 0);
         this.mModelMatrix = new float[16];
         Matrix.setIdentityM(this.mModelMatrix, 0);
+        this.radius = 1f;
     }
 
     public void changeColor(Random rand){

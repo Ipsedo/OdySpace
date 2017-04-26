@@ -20,6 +20,7 @@ public class LevelLimits {
 
     public LevelLimits(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin){
         if(xMax < xMin || yMax < yMin || zMax < zMin){
+            System.out.println("ERROR");
             throw new RuntimeException("Invalid(s) value(s) Max < Min");
         }
         this.xMax = xMax;
@@ -36,5 +37,23 @@ public class LevelLimits {
 
     public float[] generateRandomPos(Random rand) {
         return new float[]{rand.nextFloat() * (this.xMax - this.xMin) + this.xMin, rand.nextFloat() * (this.yMax - this.yMin) + this.yMin, rand.nextFloat() * (this.zMax - this.zMin) + this.zMin};
+    }
+
+    public LevelLimits[] makeOctSons(){
+        LevelLimits[] sons = new LevelLimits[8];
+        sons[0] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
+        sons[1] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
+        sons[2] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
+        sons[3] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
+
+        sons[4] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
+        sons[5] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
+        sons[6] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
+        sons[7] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
+        return sons;
+    }
+
+    public float getSizeLength(){
+        return this.xMax - this.xMin;
     }
 }
