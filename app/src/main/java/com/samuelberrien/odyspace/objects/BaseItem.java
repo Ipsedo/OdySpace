@@ -187,7 +187,6 @@ public class BaseItem extends ObjModelMtl {
 
         @Override
         public void run(){
-            //this.areCollided = Triangle.tr_tri_intersect3D(this.u0.clone(), this.u1.clone(), this.u2.clone(), this.v0.clone(), this.v1.clone(), this.v2.clone()) > 0 && Triangle.tr_tri_intersect3D(this.v0.clone(), this.v1.clone(), this.v2.clone(), this.u0.clone(), this.u1.clone(), this.u2.clone()) > 0;
             for(float[] otherCurrMtl : other){
                 int limit = otherCurrMtl.length / 9;
                 for(int j = 0; j < limit; j++){
