@@ -17,39 +17,35 @@ public class TestTriangle {
 
     @Test
     public void test() {
-        double[] u0 = new double[]{-1.2d, -1.9, -1.3};
-        double[] u1 = new double[]{-0.9d, -3, -0.8};
-        double[] u2 = new double[]{-3, -2, -1.5};
+        float[] u0 = new float[]{-1.2f, -1.9f, -1.3f};
+        float[] u1 = new float[]{-0.9f, -3, -0.8f};
+        float[] u2 = new float[]{-3, -2, -1.5f};
 
-        double[] v0 = new double[]{1.2d, 1.9, 1.3};
-        double[] v1 = new double[]{0.9d, 3, 0.8};
-        double[] v2 = new double[]{3, 2, 1.5};
+        float[] v0 = new float[]{1.2f, 1.9f, 1.3f};
+        float[] v1 = new float[]{0.9f, 3, 0.8f};
+        float[] v2 = new float[]{3, 2, 1.5f};
 
         assertTrue(Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), v0.clone(), v1.clone(), v2.clone()) == 0);
         assertTrue(Triangle.tr_tri_intersect3D(v0.clone(), v1.clone(), v2.clone(), u0.clone(), u1.clone(), u2.clone()) == 0);
 
-        assertTrue(Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), u0.clone(), u1.clone(), u2.clone()) > 0);
+        u0 = new float[]{0f, 0f, 0f};
+        u1 = new float[]{0f, 1f, 0f};
+        u2 = new float[]{1f, 0f, 0f};
 
-        u0 = new double[]{0d, 0d, 0d};
-        u1 = new double[]{0d, 1d, 0d};
-        u2 = new double[]{1d, 0d, 0d};
+        v0 = new float[]{0.1f, 0.1f, 0f};
+        v1 = new float[]{0.1f, 1.1f, 0f};
+        v2 = new float[]{1.1f, 0.1f, 0f};
 
-        v0 = new double[]{0.1d, 0.1d, 0d};
-        v1 = new double[]{0.1d, 1.1d, 0d};
-        v2 = new double[]{1.1d, 0.1d, 0d};
+        assertTrue(Triangle.tr_tri_intersect3D(v0.clone(), v1.clone(), v2.clone(), u0.clone(), u1.clone(), u2.clone()) > 0 && Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), v0.clone(), v1.clone(), v2.clone()) > 0);
 
-        assertTrue(Triangle.tr_tri_intersect3D(v0.clone(), v1.clone(), v2.clone(), u0.clone(), u1.clone(), u2.clone()) > 0);
-        assertTrue(Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), v0.clone(), v1.clone(), v2.clone()) > 0);
+        u0 = new float[]{0f, 0f, 1f};
+        u1 = new float[]{4f, -1f, 0f};
+        u2 = new float[]{-1f, 5f, 0f};
 
-        u0 = new double[]{0d, 0d, 1d};
-        u1 = new double[]{4d, -1d, 0d};
-        u2 = new double[]{-1d, 5d, 0d};
+        v0 = new float[]{0f, 0f, -2f};
+        v1 = new float[]{0f, 0f, 2f};
+        v2 = new float[]{3f, 4f, 0f};
 
-        v0 = new double[]{0d, 0d, -2d};
-        v1 = new double[]{0d, 0d, 2d};
-        v2 = new double[]{3d, 4d, 0d};
-
-        assertTrue(Triangle.tr_tri_intersect3D(v0.clone(), v1.clone(), v2.clone(), u0.clone(), u1.clone(), u2.clone()) > 0);
-        assertTrue(Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), v0.clone(), v1.clone(), v2.clone()) > 0);
+        assertTrue(Triangle.tr_tri_intersect3D(v0.clone(), v1.clone(), v2.clone(), u0.clone(), u1.clone(), u2.clone()) > 0 && Triangle.tr_tri_intersect3D(u0.clone(), u1.clone(), u2.clone(), v0.clone(), v1.clone(), v2.clone()) > 0);
     }
 }

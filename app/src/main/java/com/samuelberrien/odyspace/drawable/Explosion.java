@@ -74,7 +74,6 @@ public class Explosion {
             this.mSpeed[0] = (float) (Math.cos(phi) * Math.sin(theta));
             this.mSpeed[1] = (float) Math.sin(phi);
             this.mSpeed[2] = (float) (Math.cos(phi) * Math.cos(theta));
-            System.out.println("Speed : " + this.mSpeed[0] + ", " + this.mSpeed[1] + ", " + this.mSpeed[2]);
             this.mModelMatrix = new float[16];
             this.mAngle = rand.nextFloat() * 360f;
             this.mRotAxis = new float[3];

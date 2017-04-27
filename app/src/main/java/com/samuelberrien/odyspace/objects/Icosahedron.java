@@ -21,14 +21,14 @@ public class Icosahedron extends BaseItem {
         super.radius = 1f;
     }
 
-    public boolean isCollided(BaseItem other){
+    /*public boolean isCollided(BaseItem other){
         float[] dist = new float[]{this.mPosition[0] - other.mPosition[0], this.mPosition[1] - other.mPosition[1], this.mPosition[2] - other.mPosition[2]};
 
         if(Vector.length3f(dist) - other.radius < super.radius){
             return true;
         }
         return false;
-    }
+    }*/
 
     public float[] getPosition(){
         return super.mPosition;

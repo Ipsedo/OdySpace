@@ -9,35 +9,35 @@ package com.samuelberrien.odyspace.utils.collision;
 
 public class Triangle {
 
-    private static void cross(double[] dest, double[] v1, double[] v2) {
+    private static void cross(float[] dest, float[] v1, float[] v2) {
         dest[0] = v1[1] * v2[2] - v1[2] * v2[1];
         dest[1] = v1[2] * v2[0] - v1[0] * v2[2];
         dest[2] = v1[0] * v2[1] - v1[1] * v2[0];
     }
 
-    private static void myVpV(double[] g, double[] v2, double[] v1) {
+    private static void myVpV(float[] g, float[] v2, float[] v1) {
         g[0] = v2[0] + v1[0];
         g[1] = v2[1] + v1[1];
         g[2] = v2[2] + v1[2];
     }
 
-    private static void myVmV(double[] g, double[] v2, double[] v1) {
+    private static void myVmV(float[] g, float[] v2, float[] v1) {
         g[0] = v2[0] - v1[0];
         g[1] = v2[1] - v1[1];
         g[2] = v2[2] - v1[2];
     }
 
-    private static void sVpsV_2(double[] vr, double s1, double[] v1, double s2, double[] v2) {
+    private static void sVpsV_2(float[] vr, float s1, float[] v1, float s2, float[] v2) {
         vr[0] = s1 * v1[0] + s2 * v2[0];
         vr[1] = s1 * v1[1] + s2 * v2[1];
     }
 
-    private static int seg_collide3(double[] q, double[] r, double SF, double[] P1, double[] P2) {
-        double p1[] = new double[3];
-        double p2[] = new double[3];
-        double gama1, gama2, gama3;
-        double det1, det2, det3;
-        double alpha1, alpha2;
+    private static int seg_collide3(float[] q, float[] r, float SF, float[] P1, float[] P2) {
+        float p1[] = new float[3];
+        float p2[] = new float[3];
+        float gama1, gama2, gama3;
+        float det1, det2, det3;
+        float alpha1, alpha2;
         boolean alpha1_legal, alpha2_legal;
         p1[0] = SF * P1[0];
         p1[1] = SF * P1[1];
@@ -68,15 +68,15 @@ public class Triangle {
         return 0;
     }
 
-    private static boolean EDGE_EDGE_TEST(double[] V0, double[] U0, double[] U1, int i0, int i1, double Ax, double Ay) {
-        double Bx = U0[i0] - U1[i0];
-        double By = U0[i1] - U1[i1];
-        double Cx = V0[i0] - U0[i0];
-        double Cy = V0[i1] - U0[i1];
-        double f = Ay * Bx - Ax * By;
-        double d = By * Cx - Bx * Cy;
+    private static boolean EDGE_EDGE_TEST(float[] V0, float[] U0, float[] U1, int i0, int i1, float Ax, float Ay) {
+        float Bx = U0[i0] - U1[i0];
+        float By = U0[i1] - U1[i1];
+        float Cx = V0[i0] - U0[i0];
+        float Cy = V0[i1] - U0[i1];
+        float f = Ay * Bx - Ax * By;
+        float d = By * Cx - Bx * Cy;
         if ((f > 0 && d >= 0 && d <= f) || (f < 0 && d <= 0 && d >= f)) {
-            double e = Ax * Cy - Ay * Cx;
+            float e = Ax * Cy - Ay * Cx;
             if (f > 0) {
                 if (e >= 0 && e <= f) return true;
             } else {
@@ -86,8 +86,8 @@ public class Triangle {
         return false;
     }
 
-    private static boolean EDGE_AGAINST_TRI_EDGES(double[] V0, double[] V1, double[] U0, double[] U1, double[] U2, int i0, int i1) {
-        double Ax, Ay;
+    private static boolean EDGE_AGAINST_TRI_EDGES(float[] V0, float[] V1, float[] U0, float[] U1, float[] U2, int i0, int i1) {
+        float Ax, Ay;
         Ax = V1[i0] - V0[i0];
         Ay = V1[i1] - V0[i1];
         if (EDGE_EDGE_TEST(V0, U0, U1, i0, i1, Ax, Ay)) {
@@ -100,8 +100,8 @@ public class Triangle {
         return false;
     }
 
-    private static boolean POINT_IN_TRI(double[] V0, double[] U0, double[] U1, double[] U2, int i0, int i1) {
-        double a, b, c, d0, d1, d2;
+    private static boolean POINT_IN_TRI(float[] V0, float[] U0, float[] U1, float[] U2, int i0, int i1) {
+        float a, b, c, d0, d1, d2;
   /* is T1 completly inside T2? */
   /* check if V0 is inside tri(U0,U1,U2) */
         a = U1[i1] - U0[i1];
@@ -126,8 +126,8 @@ public class Triangle {
         return false;
     }
 
-    private static int coplanar_tri_tri(double N[], double V0[], double V1[], double V2[], double U0[], double U1[], double U2[]) {
-        double A[] = new double[3];
+    private static int coplanar_tri_tri(float N[], float V0[], float V1[], float V2[], float U0[], float U1[], float U2[]) {
+        float A[] = new float[3];
         short i0, i1;
    /* first project onto an axis-aligned plane, that maximizes the area */
    /* of the triangles, compute indices: i0,i1. */
@@ -171,16 +171,16 @@ public class Triangle {
         return 0;
     }
 
-    public static int tr_tri_intersect3D(double[] C1, double[] P1, double[] P2,
-                                         double[] D1, double[] Q1, double[] Q2) {
-        double t[] = new double[3];
+    public static int tr_tri_intersect3D(float[] C1, float[] P1, float[] P2,
+                                         float[] D1, float[] Q1, float[] Q2) {
+        float t[] = new float[3];
 
-        double r[] = new double[3];
-        double r4[] = new double[3];
-        double beta1, beta2, beta3;
-        double dp0, dp1, dp2;
-        double dq1, dq2, dq3, dr, dr3;
-        double SF = 0f;
+        float r[] = new float[3];
+        float r4[] = new float[3];
+        float beta1, beta2, beta3;
+        float dp0, dp1, dp2;
+        float dq1, dq2, dq3, dr, dr3;
+        float SF = 0f;
         boolean beta1_legal, beta2_legal;
 
         myVmV(r, D1, C1);
@@ -206,11 +206,11 @@ public class Triangle {
             if (dr != 0) {
                 return 0;  // triangles are on parallel planes
             } else {                        // triangles are on the same plane
-                double C2[] = new double[3];
-                double C3[] = new double[3];
-                double D2[] = new double[3];
-                double D3[] = new double[3];
-                double N1[] = new double[3];
+                float C2[] = new float[3];
+                float C3[] = new float[3];
+                float D2[] = new float[3];
+                float D3[] = new float[3];
+                float N1[] = new float[3];
                 // We use the coplanar test of Moller which takes the 6 vertices and 2 normals
                 //as input.
                 myVpV(C2, C1, P1);

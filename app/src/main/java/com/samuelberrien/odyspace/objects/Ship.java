@@ -16,13 +16,13 @@ public class Ship extends BaseItem {
 
     private Context context;
 
-    private final float originalMaxSpeed = 0.05f;
+    private final float originalMaxSpeed = 0.025f;
     private float maxSpeed = this.originalMaxSpeed;
     private final float rollCoeff = 2f;
     private final float pitchCoeff = 1f;
 
-    private final float[] originalSpeedVec = new float[]{0f, 0f, 1f, 1f};
-    private final float[] originalUpVec = new float[]{0f, 1f, 0f, 1f};
+    private final float[] originalSpeedVec = new float[]{0f, 0f, 1f, 0f};
+    private final float[] originalUpVec = new float[]{0f, 1f, 0f, 0f};
 
     public Ship(Context context){
         super(context, "ship.obj", "ship.mtl", 1f, 0f, 100, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f});

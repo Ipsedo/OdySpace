@@ -57,36 +57,79 @@ public class BaseItem extends ObjModelMtl {
     }
 
     public boolean isCollided(BaseItem other){
+        ArrayList<float[]> otherVertClone = new ArrayList<>();
+        for(float[] mtl : other.allCoords) {
+            int limit = mtl.length / 9;
+            for (int j = 0; j < limit; j++) {
+                int currJ = j * 9;
+                float[] v0 = new float[]{mtl[currJ + 0], mtl[currJ + 1], mtl[currJ + 2], 1f};
+                float[] v1 = new float[]{mtl[currJ + 3], mtl[currJ + 4], mtl[currJ + 5], 1f};
+                float[] v2 = new float[]{mtl[currJ + 6], mtl[currJ + 7], mtl[currJ + 8], 1f};
+                Matrix.multiplyMV(v0, 0, other.mModelMatrix, 0, v0.clone(), 0);
+                Matrix.multiplyMV(v1, 0, other.mModelMatrix, 0, v1.clone(), 0);
+                Matrix.multiplyMV(v2, 0, other.mModelMatrix, 0, v2.clone(), 0);
+
+                mtl[currJ + 0] = v0[0];
+                mtl[currJ + 1] = v0[1];
+                mtl[currJ + 2] = v0[2];
+
+                mtl[currJ + 3] = v1[0];
+                mtl[currJ + 4] = v1[1];
+                mtl[currJ + 5] = v1[2];
+
+                mtl[currJ + 6] = v2[0];
+                mtl[currJ + 7] = v2[1];
+                mtl[currJ + 8] = v2[2];
+            }
+            otherVertClone.add(mtl);
+        }
+
+        ArrayList<ArrayList<CollisionThread>> threadsList = new ArrayList<>();
+
         for(float[] currMtl : super.allCoords){
-            for(int i = 0; i < currMtl.length / 9 ; i++){
-                float[] u0 = new float[]{currMtl[i * 9 + 0], currMtl[i * 9 + 1], currMtl[i * 9 + 2], 1f};
-                float[] u1 = new float[]{currMtl[i * 9 + 3], currMtl[i * 9 + 4], currMtl[i * 9 + 5], 1f};
-                float[] u2 = new float[]{currMtl[i * 9 + 6], currMtl[i * 9 + 7], currMtl[i * 9 + 8], 1f};
+            ArrayList<CollisionThread> tmp = new ArrayList<>();
+            int limit = currMtl.length / 9;
+            for(int i = 0; i < limit; i++){
+                int currI = i * 9;
+                float[] u0 = new float[]{currMtl[currI + 0], currMtl[currI + 1], currMtl[currI + 2], 1f};
+                float[] u1 = new float[]{currMtl[currI + 3], currMtl[currI + 4], currMtl[currI + 5], 1f};
+                float[] u2 = new float[]{currMtl[currI + 6], currMtl[currI + 7], currMtl[currI + 8], 1f};
                 Matrix.multiplyMV(u0, 0, this.mModelMatrix, 0, u0.clone(), 0);
                 Matrix.multiplyMV(u1, 0, this.mModelMatrix, 0, u1.clone(), 0);
                 Matrix.multiplyMV(u2, 0, this.mModelMatrix, 0, u2.clone(), 0);
 
-                double[] U0 = new double[]{u0[0], u0[1], u0[2]};
-                double[] U1 = new double[]{u1[0], u1[1], u1[2]};
-                double[] U2 = new double[]{u2[0], u2[1], u2[2]};
-                for(float[] otherCurrMtl : other.allCoords){
-                    for(int j = 0; j < otherCurrMtl.length / 9; j++){
-                        float[] v0 = new float[]{otherCurrMtl[j * 9 + 0], otherCurrMtl[j * 9 + 1], otherCurrMtl[j * 9 + 2], 1f};
-                        float[] v1 = new float[]{otherCurrMtl[j * 9 + 3], otherCurrMtl[j * 9 + 4], otherCurrMtl[j * 9 + 5], 1f};
-                        float[] v2 = new float[]{otherCurrMtl[j * 9 + 6], otherCurrMtl[j * 9 + 7], otherCurrMtl[j * 9 + 8], 1f};
-                        Matrix.multiplyMV(v0, 0, other.mModelMatrix, 0, v0.clone(), 0);
-                        Matrix.multiplyMV(v1, 0, other.mModelMatrix, 0, v1.clone(), 0);
-                        Matrix.multiplyMV(v2, 0, other.mModelMatrix, 0, v2.clone(), 0);
+                CollisionThread tmpThreads = new CollisionThread(u0, u1, u2, otherVertClone);
+                tmpThreads.start();
+                tmp.add(tmpThreads);
+                /*for(float[] otherCurrMtl : otherVertClone){
+                    int limit2 = otherCurrMtl.length / 9;
+                    for(int j = 0; j < limit2; j++){
+                        int currJ = j * 9;
+                        float[] v0 = new float[]{otherCurrMtl[currJ + 0], otherCurrMtl[currJ + 1], otherCurrMtl[currJ + 2]};
+                        float[] v1 = new float[]{otherCurrMtl[currJ + 3], otherCurrMtl[currJ + 4], otherCurrMtl[currJ + 5]};
+                        float[] v2 = new float[]{otherCurrMtl[currJ + 6], otherCurrMtl[currJ + 7], otherCurrMtl[currJ + 8]};
 
-                        double[] V0 = new double[]{v0[0], v0[1], v0[2]};
-                        double[] V1 = new double[]{v1[0], v1[1], v1[2]};
-                        double[] V2 = new double[]{v2[0], v2[1], v2[2]};
-                        if(Triangle.tr_tri_intersect3D(U0.clone(), U1.clone(), U2.clone(), V0.clone(), V1.clone(), V2.clone()) > 0 && Triangle.tr_tri_intersect3D(V0.clone(), V1.clone(), V2.clone(), U0.clone(), U1.clone(), U2.clone()) > 0){
+                        if(Triangle.tr_tri_intersect3D(u0, u1, u2, v0, v1, v2) > 0 && Triangle.tr_tri_intersect3D(v0, v1, v2, u0, u1, u2) > 0){
+                            System.out.println("COLISIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
                             return true;
                         }
                     }
+                }*/
+            }
+            threadsList.add(tmp);
+        }
+
+        try {
+            for(ArrayList<CollisionThread> i : threadsList) {
+                for(CollisionThread j : i) {
+                    j.join();
+                    if(j.areCollided()){
+                        return true;
+                    }
                 }
             }
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
         return false;
     }
@@ -122,5 +165,47 @@ public class BaseItem extends ObjModelMtl {
         float[] mvpMatrix = new float[16];
         Matrix.multiplyMM(mvpMatrix, 0, pMatrix, 0, mvMatrix, 0);
         super.draw(mvpMatrix, mvMatrix, mLightPosInEyeSpace, mCameraPosition);
+    }
+
+    private class CollisionThread extends Thread {
+
+        private float[] u0;
+        private float[] u1;
+        private float[] u2;
+
+        private ArrayList<float[]> other;
+
+        private boolean areCollided;
+
+        public CollisionThread(float[] u0, float[] u1, float[] u2, ArrayList<float[]> other) {
+            this.u0 = u0;
+            this.u1 = u1;
+            this.u2 = u2;
+            this.other = other;
+            this.areCollided = false;
+        }
+
+        @Override
+        public void run(){
+            //this.areCollided = Triangle.tr_tri_intersect3D(this.u0.clone(), this.u1.clone(), this.u2.clone(), this.v0.clone(), this.v1.clone(), this.v2.clone()) > 0 && Triangle.tr_tri_intersect3D(this.v0.clone(), this.v1.clone(), this.v2.clone(), this.u0.clone(), this.u1.clone(), this.u2.clone()) > 0;
+            for(float[] otherCurrMtl : other){
+                int limit = otherCurrMtl.length / 9;
+                for(int j = 0; j < limit; j++){
+                    int currJ = j * 9;
+                    float[] v0 = new float[]{otherCurrMtl[currJ + 0], otherCurrMtl[currJ + 1], otherCurrMtl[currJ + 2]};
+                    float[] v1 = new float[]{otherCurrMtl[currJ + 3], otherCurrMtl[currJ + 4], otherCurrMtl[currJ + 5]};
+                    float[] v2 = new float[]{otherCurrMtl[currJ + 6], otherCurrMtl[currJ + 7], otherCurrMtl[currJ + 8]};
+
+                    if(Triangle.tr_tri_intersect3D(this.u0, this.u1, this.u2, v0, v1, v2) > 0 && Triangle.tr_tri_intersect3D(v0, v1, v2, this.u0, this.u1, this.u2) > 0){
+                        this.areCollided = true;
+                        return;
+                    }
+                }
+            }
+        }
+
+        public boolean areCollided(){
+            return this.areCollided;
+        }
     }
 }
