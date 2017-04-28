@@ -9,9 +9,9 @@ import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Rocket;
 import com.samuelberrien.odyspace.objects.Ship;
+import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
-import com.samuelberrien.odyspace.utils.collision.Octree;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -93,7 +93,9 @@ public class Test implements Level {
                }
            }
        }*/
-       Octree.computeOctree(this.levelLimits, this.rockets, this.icosahedrons, 4f);
+       Octree octree = new Octree(this.levelLimits, null, this.rockets, this.icosahedrons, 4f);
+       octree.computeOctree();
+
        for(int i = 0; i < this.explosions.size(); i++){
            if(!this.explosions.get(i).isAlive()){
                this.explosions.remove(i);

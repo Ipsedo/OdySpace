@@ -8,6 +8,8 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Random;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -30,13 +32,13 @@ public class BaseItemTest {
         Rocket r = new Rocket(appContext, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, tmpRot, 2f);
         r.move();
 
-        Icosahedron i = new Icosahedron(appContext, new float[]{0f, 0f, 0.2f});
+        Icosahedron i = new Icosahedron(appContext, new float[]{0f, 0f, 0.2f}, new Random());
         i.move();
 
         assertTrue(i.isCollided(r));
         assertTrue(r.isCollided(i));
 
-        i = new Icosahedron(appContext, new float[]{0f, 0f, 20f});
+        i = new Icosahedron(appContext, new float[]{0f, 0f, 20f}, new Random());
         i.move();
 
         assertFalse(i.isCollided(r));

@@ -3,6 +3,8 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.utils.maths.Vector;
+
 /**
  * Created by samuel on 20/04/17.
  * Copyright samuel, 2016 - 2017.
@@ -19,6 +21,16 @@ public class Rocket extends BaseItem {
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
         super.radius = 0.3f;
+    }
+
+    @Override
+    public boolean isCollided(BaseItem other){
+        float[] dist = new float[]{this.mPosition[0] - other.mPosition[0], this.mPosition[1] - other.mPosition[1], this.mPosition[2] - other.mPosition[2]};
+
+        if(Vector.length3f(dist) - other.radius < super.radius){
+            return true;
+        }
+        return false;
     }
 
     public void move(){

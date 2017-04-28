@@ -11,6 +11,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 /**
  * Created by samuel on 18/04/17.
  * Copyright samuel, 2016 - 2017.
@@ -19,6 +20,12 @@ import java.util.Random;
  */
 
 public class BaseItem extends ObjModelMtl {
+
+    private native boolean triangleIntersection(float[] p0, float[] p1, float[] p2, float[] q0, float[] q1, float[] q2);
+
+    static {
+        System.loadLibrary("triangle");
+    }
 
     protected int life;
 
@@ -84,10 +91,8 @@ public class BaseItem extends ObjModelMtl {
             otherVertClone.add(mtl);
         }
 
-        ArrayList<ArrayList<CollisionThread>> threadsList = new ArrayList<>();
 
         for(float[] currMtl : super.allCoords){
-            ArrayList<CollisionThread> tmp = new ArrayList<>();
             int limit = currMtl.length / 9;
             for(int i = 0; i < limit; i++){
                 int currI = i * 9;
@@ -98,11 +103,11 @@ public class BaseItem extends ObjModelMtl {
                 Matrix.multiplyMV(u1, 0, this.mModelMatrix, 0, u1.clone(), 0);
                 Matrix.multiplyMV(u2, 0, this.mModelMatrix, 0, u2.clone(), 0);
 
-                CollisionThread tmpThreads = new CollisionThread(u0, u1, u2, otherVertClone);
-                tmpThreads.start();
-                tmp.add(tmpThreads);
+                u0 = new float[]{u0[0], u0[1], u0[2]};
+                u1 = new float[]{u1[0], u1[1], u1[2]};
+                u2 = new float[]{u2[0], u2[1], u2[2]};
 
-                /*for(float[] otherCurrMtl : otherVertClone){
+                for(float[] otherCurrMtl : otherVertClone){
                     int limit2 = otherCurrMtl.length / 9;
                     for(int j = 0; j < limit2; j++){
                         int currJ = j * 9;
@@ -110,28 +115,15 @@ public class BaseItem extends ObjModelMtl {
                         float[] v1 = new float[]{otherCurrMtl[currJ + 3], otherCurrMtl[currJ + 4], otherCurrMtl[currJ + 5]};
                         float[] v2 = new float[]{otherCurrMtl[currJ + 6], otherCurrMtl[currJ + 7], otherCurrMtl[currJ + 8]};
 
-                        if(Triangle.tr_tri_intersect3D(u0, u1, u2, v0, v1, v2) > 0 && Triangle.tr_tri_intersect3D(v0, v1, v2, u0, u1, u2) > 0){
+                        if(this.triangleIntersection(u0, u1, u2, v0, v1, v2)){
                             System.out.println("COLISIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
                             return true;
                         }
                     }
-                }*/
-            }
-            threadsList.add(tmp);
-        }
-
-        try {
-            for(ArrayList<CollisionThread> i : threadsList) {
-                for(CollisionThread j : i) {
-                    j.join();
-                    if(j.areCollided()){
-                        return true;
-                    }
                 }
             }
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
         }
+
 
         return false;
     }
@@ -198,7 +190,8 @@ public class BaseItem extends ObjModelMtl {
                     float[] v1 = new float[]{otherCurrMtl[currJ + 3], otherCurrMtl[currJ + 4], otherCurrMtl[currJ + 5]};
                     float[] v2 = new float[]{otherCurrMtl[currJ + 6], otherCurrMtl[currJ + 7], otherCurrMtl[currJ + 8]};
 
-                    if(Triangle.tr_tri_intersect3D(this.u0, this.u1, this.u2, v0, v1, v2) > 0 && Triangle.tr_tri_intersect3D(v0, v1, v2, this.u0, this.u1, this.u2) > 0){
+                    //if(Triangle.tr_tri_intersect3D(this.u0, this.u1, this.u2, v0, v1, v2) > 0 && Triangle.tr_tri_intersect3D(v0, v1, v2, this.u0, this.u1, this.u2) > 0){
+                    if(BaseItem.this.triangleIntersection(this.u0, this.u1, this.u2, v0, v1, v2)) {
                         this.areCollided = true;
                         return;
                     }
