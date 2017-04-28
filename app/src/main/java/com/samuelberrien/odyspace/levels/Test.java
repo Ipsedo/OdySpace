@@ -103,7 +103,7 @@ public class Test implements Level {
        }
        for(int i = 0; i < this.icosahedrons.size(); i++){
            if(!this.icosahedrons.get(i).isAlive()){
-               this.explosions.add(new Explosion(this.context, this.icosahedrons.get(i).getPosition().clone(), this.icosahedrons.get(i).getAllDiffColorBuffer()));
+               this.explosions.add(this.icosahedrons.get(i).makeExplosion(this.context));
                this.icosahedrons.remove(i);
            } else if(this.icosahedrons.get(i).isOutOfBound(this.levelLimits)){
                this.icosahedrons.remove(i);

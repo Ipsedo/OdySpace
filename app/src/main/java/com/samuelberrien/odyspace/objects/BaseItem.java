@@ -116,7 +116,6 @@ public class BaseItem extends ObjModelMtl {
                         float[] v2 = new float[]{otherCurrMtl[currJ + 6], otherCurrMtl[currJ + 7], otherCurrMtl[currJ + 8]};
 
                         if(this.triangleIntersection(u0, u1, u2, v0, v1, v2)){
-                            System.out.println("COLISIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
                             return true;
                         }
                     }

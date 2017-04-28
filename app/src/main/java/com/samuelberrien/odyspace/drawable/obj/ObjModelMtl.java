@@ -31,7 +31,7 @@ public class ObjModelMtl {
     private ArrayList<FloatBuffer> allVertexBuffer = new ArrayList<>();
     private ArrayList<FloatBuffer> allNormalsBuffer = new ArrayList<>();
     private ArrayList<FloatBuffer> allAmbColorBuffer = new ArrayList<>();
-    private ArrayList<FloatBuffer> allDiffColorBuffer = new ArrayList<>();
+    protected ArrayList<FloatBuffer> allDiffColorBuffer = new ArrayList<>();
     private ArrayList<FloatBuffer> allSpecColorBuffer = new ArrayList<>();
     private ArrayList<Float> allSpecShininess = new ArrayList<>();
 
@@ -411,10 +411,6 @@ public class ObjModelMtl {
         this.allAmbColorBuffer = mAmbColors;
         this.allDiffColorBuffer = mDiffColors;
         this.allSpecColorBuffer = mSpecColors;
-    }
-
-    public ArrayList<FloatBuffer> getAllDiffColorBuffer(){
-        return this.allDiffColorBuffer;
     }
 
     /**
