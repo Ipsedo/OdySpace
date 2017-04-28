@@ -86,13 +86,6 @@ public class Test implements Level {
 
     @Override
     public void removeObjects() {
-       /*for(int i = 0; i < this.icosahedrons.size(); i++){
-           for(int j = 0; j < this.rockets.size(); j++){
-               if(this.icosahedrons.get(i).isCollided(this.rockets.get(j))){
-                   this.icosahedrons.get(i).decrementsBothLife(this.rockets.get(j));
-               }
-           }
-       }*/
        Octree octree = new Octree(this.levelLimits, null, this.rockets, this.icosahedrons, 4f);
        octree.computeOctree();
 
