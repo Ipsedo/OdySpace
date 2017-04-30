@@ -41,15 +41,18 @@ public class LevelLimits {
 
     public LevelLimits[] makeOctSons(){
         LevelLimits[] sons = new LevelLimits[8];
-        sons[0] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
-        sons[1] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
-        sons[2] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
-        sons[3] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, this.yMax, (this.yMax - this.yMin) / 2f + this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
+        float a = (this.xMax - this.xMin) / 2f + this.xMin;
+        float b = (this.yMax - this.yMin) / 2f + this.yMin;
+        float c = (this.zMax - this.zMin) / 2f + this.zMin;
+        sons[0] = new LevelLimits(a, this.xMin, this.yMax, b, this.zMax, c);
+        sons[1] = new LevelLimits(this.xMax, a, this.yMax, b, this.zMax, c);
+        sons[2] = new LevelLimits(a, this.xMin, this.yMax, b, c, this.zMin);
+        sons[3] = new LevelLimits(this.xMax, a, this.yMax, b, c, this.zMin);
 
-        sons[4] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
-        sons[5] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, this.zMax, (this.zMax - this.zMin) / 2f + this.zMin);
-        sons[6] = new LevelLimits((this.xMax - this.xMin) / 2f + this.xMin, this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
-        sons[7] = new LevelLimits(this.xMax, (this.xMax - this.xMin) / 2f + this.xMin, (this.yMax - this.yMin) / 2f + this.yMin, this.yMin, (this.zMax - this.zMin) / 2f + this.zMin, this.zMin);
+        sons[4] = new LevelLimits(a, this.xMin, b, this.yMin, this.zMax, c);
+        sons[5] = new LevelLimits(this.xMax, a, b, this.yMin, this.zMax, c);
+        sons[6] = new LevelLimits(a, this.xMin, b, this.yMin, c, this.zMin);
+        sons[7] = new LevelLimits(this.xMax, a, b, this.yMin, c, this.zMin);
         return sons;
     }
 

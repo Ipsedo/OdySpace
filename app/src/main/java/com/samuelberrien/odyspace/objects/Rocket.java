@@ -23,11 +23,11 @@ public class Rocket extends BaseItem {
         super.radius = 0.3f;
     }
 
-    @Override
+    /*@Override
     public boolean isCollided(BaseItem other){
         float[] dist = new float[]{super.mPosition[0] - other.mPosition[0], super.mPosition[1] - other.mPosition[1], super.mPosition[2] - other.mPosition[2]};
         return Vector.length3f(dist) - other.radius < super.radius;
-    }
+    }*/
 
     public void move(){
         float[] realSpeed = new float[]{super.mSpeed[0], super.mSpeed[1], super.mSpeed[2], 1f};

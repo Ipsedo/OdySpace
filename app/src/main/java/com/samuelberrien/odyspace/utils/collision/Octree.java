@@ -41,25 +41,16 @@ public class Octree {
         for(int i = 0; i < 8; i++){
             futurAmis[i] = new ArrayList<>();
             futurEnnemis[i] = new ArrayList<>();
-        }
-
-        for(int i = 0; i < this.amis.size(); i++){
-            for(int j = 0; j < 8; j++){
-                if(!this.amis.get(i).isOutOfBound(levelLimitsSons[j])){
-                    futurAmis[j].add(this.amis.get(i));
+            for(int j = 0; j < this.amis.size(); j++){
+                if(!this.amis.get(j).isOutOfBound(levelLimitsSons[i])){
+                    futurAmis[i].add(this.amis.get(j));
                 }
             }
-        }
-
-        for(int i = 0; i < this.ennemis.size(); i++){
-            for(int j = 0; j < 8; j++){
-                if(!this.ennemis.get(i).isOutOfBound(levelLimitsSons[j])){
-                    futurEnnemis[j].add(this.ennemis.get(i));
+            for(int j = 0; j < this.ennemis.size(); j++){
+                if(!this.ennemis.get(j).isOutOfBound(levelLimitsSons[i])){
+                    futurEnnemis[i].add(this.ennemis.get(j));
                 }
             }
-        }
-
-        for(int i = 0; i < 8; i++){
             sons[i] = new Octree(levelLimitsSons[i], this, futurAmis[i], futurEnnemis[i], this.limitSize);
         }
 

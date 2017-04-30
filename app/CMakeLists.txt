@@ -18,3 +18,10 @@ add_library( # Specifies the name of the library.
 
              # Provides a relative path to your source file(s).
              src/main/cpp/triangle.cpp )
+
+add_library(
+            collision
+            SHARED
+            src/main/cpp/collision.cpp )
+
+find_library(glm glm)

@@ -22,11 +22,11 @@ public class Icosahedron extends BaseItem {
         super.radius = 1f;
     }
 
-    @Override
+    /*@Override
     public boolean isCollided(BaseItem other){
         float[] dist = new float[]{super.mPosition[0] - other.mPosition[0], super.mPosition[1] - other.mPosition[1], super.mPosition[2] - other.mPosition[2]};
         return Vector.length3f(dist) - other.radius < super.radius;
-    }
+    }*/
 
     public float[] getPosition(){
         return super.mPosition;

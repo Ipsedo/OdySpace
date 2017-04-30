@@ -55,6 +55,7 @@ public class ObjModelMtl {
     // number of coordinates per vertex in this array
     private final int COORDS_PER_VERTEX = 3;
     protected ArrayList<float[]> allCoords = new ArrayList<>();
+    protected float[] allCoordsFloatArray;
     private ArrayList<float[]> allNormals = new ArrayList<>();
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
@@ -76,6 +77,8 @@ public class ObjModelMtl {
         if (this.allCoords.size() < 1) {
             throw new RuntimeException("Need one material at minimum");
         }
+
+        this.makeAllCoordsFloatArray();
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
@@ -119,6 +122,8 @@ public class ObjModelMtl {
         if (this.allCoords.size() < 1) {
             throw new RuntimeException("Need one material at minimum");
         }
+
+        this.makeAllCoordsFloatArray();
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
@@ -343,6 +348,20 @@ public class ObjModelMtl {
             this.allSpecColorBuffer.add(tmpSC);
 
             this.allSpecShininess.add(this.mtlSpecShininess.get(mtlToUse.get(i)));
+        }
+    }
+
+    private void makeAllCoordsFloatArray(){
+        ArrayList<Float> tmp = new ArrayList<>();
+        for(float[] fa : this.allCoords){
+            for(int i = 0; i < fa.length; i++){
+                tmp.add(fa[i]);
+            }
+        }
+
+        this.allCoordsFloatArray = new float[tmp.size()];
+        for(int i = 0; i < tmp.size(); i++){
+            this.allCoordsFloatArray[i] = tmp.get(i);
         }
     }
 

@@ -27,6 +27,12 @@ public class BaseItem extends ObjModelMtl {
         System.loadLibrary("triangle");
     }
 
+    private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
+
+    static {
+        System.loadLibrary("collision");
+    }
+
     protected int life;
 
     protected float[] mPosition;
@@ -64,7 +70,7 @@ public class BaseItem extends ObjModelMtl {
     }
 
     public boolean isCollided(BaseItem other){
-        ArrayList<float[]> otherVertClone = new ArrayList<>();
+        /*ArrayList<float[]> otherVertClone = new ArrayList<>();
         for(float[] mtl : other.allCoords) {
             int limit = mtl.length / 9;
             for (int j = 0; j < limit; j++) {
@@ -124,7 +130,8 @@ public class BaseItem extends ObjModelMtl {
         }
 
 
-        return false;
+        return false;*/
+        return this.areCollided(this.allCoordsFloatArray, this.mModelMatrix, other.allCoordsFloatArray, other.mModelMatrix);
     }
 
     public void decrementsBothLife(BaseItem other){

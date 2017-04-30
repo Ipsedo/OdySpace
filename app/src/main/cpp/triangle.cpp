@@ -290,8 +290,8 @@ computeEdges(float v0[3], float v1[3], const float p0[3], const float p1[3], con
     v1[2] = p2[2] - p0[2];
 }
 
-bool triangle_intersection(float p0[3], float p1[3], float p2[3], float q0[3], float q1[3],
-                           float q2[3]) {
+bool triangle_intersection(float* p0, float* p1, float* p2, float* q0, float* q1,
+                           float* q2) {
     float v0[3], v1[3], w0[3], w1[3];
     computeEdges(v0, v1, p0, p1, p2);
     computeEdges(w0, w1, q0, q1, q2);
