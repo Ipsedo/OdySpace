@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
+import android.widget.ProgressBar;
 
 /**
  * Created by samuel on 16/04/17.
@@ -22,6 +23,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
         super(context);
         // Create an OpenGL ES 2.0 context.
         this.setEGLContextClientVersion(2);
+
+
         this.renderer = new MyGLRenderer(context, this);
         this.setRenderer(this.renderer);
     }

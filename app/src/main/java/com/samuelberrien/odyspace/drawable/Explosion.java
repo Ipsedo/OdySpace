@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -22,38 +23,40 @@ import java.util.Random;
 public class Explosion {
 
     private ArrayList<Particule> particules;
+    private ObjModel particule;
 
-    public Explosion(Context context, float[] mPosition, ArrayList<FloatBuffer> mDiffColor){
+    public Explosion(Context context, float[] mPosition, ArrayList<FloatBuffer> mDiffColor) {
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
-        for(int i = 0; i < 10; i++){
-            Particule tmp = new Particule(context, rand, mPosition);
-            tmp.setColors(mDiffColor, mDiffColor, mDiffColor);
+        this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
+        this.particule.setColor(mDiffColor.get(0));
+        for (int i = 0; i < 10; i++) {
+            Particule tmp = new Particule(rand, mPosition);
             this.particules.add(tmp);
         }
     }
 
-    public void move(){
-        for(Particule p : this.particules){
+    public void move() {
+        for (Particule p : this.particules) {
             p.move();
         }
     }
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
-        for(Particule p : this.particules){
-            p.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+        for (Particule p : this.particules) {
+            p.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, this.particule);
         }
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         boolean res = false;
-        for(Particule p : this.particules){
+        for (Particule p : this.particules) {
             res |= p.isAlive();
         }
         return res;
     }
 
-    private class Particule extends ObjModelMtl {
+    private class Particule {
 
         private final float maxSpeed = 1.5f;
 
@@ -64,8 +67,7 @@ public class Explosion {
         private float mAngle;
         private float[] mRotAxis;
 
-        public Particule(Context context, Random rand, float[] mPosition){
-            super(context, "triangle.obj", "triangle.mtl", 1f, 0f);
+        public Particule(Random rand, float[] mPosition) {
 
             this.mPosition = mPosition.clone();
             this.mSpeed = new float[3];
@@ -80,11 +82,10 @@ public class Explosion {
             this.mRotAxis[0] = rand.nextFloat() * 2f - 1f;
             this.mRotAxis[1] = rand.nextFloat() * 2f - 1f;
             this.mRotAxis[2] = rand.nextFloat() * 2f - 1f;
-            super.makeProgram(context, R.raw.particule_vs, R.raw.particule_fs);
         }
 
 
-        public void move(){
+        public void move() {
             this.mPosition[0] += this.maxSpeed * this.mSpeed[0];
             this.mPosition[1] += this.maxSpeed * this.mSpeed[1];
             this.mPosition[2] += this.maxSpeed * this.mSpeed[2];
@@ -107,18 +108,18 @@ public class Explosion {
             this.mModelMatrix = mModelMatrix.clone();
         }
 
-        public boolean isAlive(){
+        public boolean isAlive() {
             return Vector.length3f(this.mSpeed) > 0.05;
         }
 
-        public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
+        public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, ObjModel object) {
             GLES20.glDisable(GLES20.GL_CULL_FACE);
             float[] mPVMatrix = new float[16];
             Matrix.multiplyMM(mPVMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
             float[] mPVMMatrix = new float[16];
             Matrix.multiplyMM(mPVMMatrix, 0, mPVMatrix, 0, this.mModelMatrix, 0);
 
-            super.draw(mPVMMatrix, mPVMatrix, mLightPosInEyeSpace, mCameraPosition);
+            object.draw(mPVMMatrix, mPVMatrix, mLightPosInEyeSpace);
         }
     }
 }

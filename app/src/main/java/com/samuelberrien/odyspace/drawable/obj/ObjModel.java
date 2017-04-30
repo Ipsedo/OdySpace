@@ -34,9 +34,11 @@ public class ObjModel {
     private int mMVMatrixHandle;
     private int mDistanceCoefHandle;
     private int mLightCoefHandle;
+    private int mAmbColorCoefHandle;
 
     private float lightCoef;
     private float distanceCoef;
+    private float ambColorCoef;
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
@@ -54,10 +56,11 @@ public class ObjModel {
      * @param blue              the blue color of the object
      * @param lightAugmentation the light augmentation of the object
      */
-    public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef) {
+    public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
+        this.ambColorCoef = ambColorCoef;
 
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
@@ -81,10 +84,11 @@ public class ObjModel {
         this.bind();
     }
 
-    public ObjModel(Context context, String fileName, float red, float green, float blue, float lightAugmentation, float distanceCoef) {
+    public ObjModel(Context context, String fileName, float red, float green, float blue, float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
+        this.ambColorCoef = ambColorCoef;
 
         try {
             InputStream inputStream = context.getAssets().open(fileName);
@@ -117,6 +121,7 @@ public class ObjModel {
         mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
         mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
         mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
+        mAmbColorCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_amb_Color_coef");
     }
 
     /**
@@ -254,6 +259,8 @@ public class ObjModel {
         GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
 
         GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
+
+        GLES20.glUniform1f(mAmbColorCoefHandle, this.ambColorCoef);
 
         // Draw the polygon
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.coords.length / 3);

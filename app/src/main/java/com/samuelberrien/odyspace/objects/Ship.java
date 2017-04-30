@@ -60,7 +60,7 @@ public class Ship extends BaseItem {
         super.mModelMatrix = mModelMatrix;
     }
 
-    public void fire(ArrayList<Rocket> rockets){
+    public void fire(ArrayList<BaseItem> rockets){
         Rocket tmp = new Rocket(this.context, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
         tmp.move();
         rockets.add(tmp);

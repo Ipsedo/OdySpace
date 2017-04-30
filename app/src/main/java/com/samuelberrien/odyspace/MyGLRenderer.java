@@ -12,6 +12,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
+import android.widget.ProgressBar;
 
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.GameOver;
@@ -72,19 +73,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
+
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthMask(true);
         GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
+
         this.joystick = new Joystick(this.context);
         this.controls = new Controls(this.context);
         this.joystickFst = true;
+
         this.ship = new Ship(this.context);
+
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
         this.currentLevel = new Test();
-        this.currentLevel.init(this.context, this.ship, new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, 1000f, -100f), new LevelLimits(500f, -500f, 500f, -100f, 500f, -500f));
+
+        this.currentLevel.init(this.context, this.ship, 1000f);
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());

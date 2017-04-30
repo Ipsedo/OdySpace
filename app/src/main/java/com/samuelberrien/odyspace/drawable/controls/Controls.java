@@ -66,7 +66,7 @@ public class Controls {
         this.makeBoost();
         this.makeFireButton();
         this.makeBoostStick();
-        this.fireText = new ObjModel(context, "fire.obj", color[0], color[1], color[2], 1f, 0f);
+        this.fireText = new ObjModel(context, "fire.obj", color[0], color[1], color[2], 1f, 0f, 0f);
 
     }
 

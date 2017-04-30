@@ -140,7 +140,7 @@ public class ObjModelMtl {
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
     }
 
-    protected void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId){
+    public void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId){
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, vertexShaderResId));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, fragmentShaderResId));
 

@@ -1,9 +1,11 @@
 package com.samuelberrien.odyspace.utils.collision;
 
+import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Rocket;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -19,12 +21,12 @@ public class Octree {
 
     private Octree father;
 
-    private ArrayList<Rocket> amis;
-    private ArrayList<Icosahedron> ennemis;
+    private ArrayList<BaseItem> amis;
+    private ArrayList<BaseItem> ennemis;
 
     private float limitSize;
 
-    public Octree(LevelLimits levelLimits, Octree father, ArrayList<Rocket> amis, ArrayList<Icosahedron> ennemis, float limitSize){
+    public Octree(LevelLimits levelLimits, Octree father, ArrayList<BaseItem> amis, ArrayList<BaseItem> ennemis, float limitSize){
         this.levelLimits = levelLimits;
         this.father = father;
         this.amis = amis;
@@ -35,8 +37,8 @@ public class Octree {
     private Octree[] makeSons(){
         Octree[] sons = new Octree[8];
         LevelLimits[] levelLimitsSons = this.levelLimits.makeOctSons();
-        ArrayList<Rocket>[] futurAmis = new ArrayList[8];
-        ArrayList<Icosahedron>[] futurEnnemis = new ArrayList[8];
+        ArrayList<BaseItem>[] futurAmis = new ArrayList[8];
+        ArrayList<BaseItem>[] futurEnnemis = new ArrayList[8];
 
         for(int i = 0; i < 8; i++){
             futurAmis[i] = new ArrayList<>();

@@ -14,7 +14,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 
 public class GameOver extends ObjModel {
     public GameOver(Context context) {
-        super(context, "game_over.obj", 1f, 0f, 0f, 1f, 0f);
+        super(context, "game_over.obj", 1f, 0f, 0f, 1f, 0f, 0f);
     }
 
     public void draw(float ratio){

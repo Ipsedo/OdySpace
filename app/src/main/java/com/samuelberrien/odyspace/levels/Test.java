@@ -2,10 +2,12 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Rocket;
 import com.samuelberrien.odyspace.objects.Ship;
@@ -31,29 +33,31 @@ public class Test implements Level {
 
     private Ship ship;
     private HeightMap heightMap;
-    private ArrayList<Rocket> rockets;
+    private ArrayList<BaseItem> rockets;
 
-    private ArrayList<Icosahedron> icosahedrons;
+    private ArrayList<BaseItem> icosahedrons;
     private int nbIcosahedron = 100;
 
     private ArrayList<Explosion> explosions;
 
     @Override
-    public void init(Context context, Ship ship, HeightMap heightMap, LevelLimits levelLimits) {
+    public void init(Context context, Ship ship, float levelLimitSize) {
         this.context = context;
         this.ship = ship;
-        this.heightMap = heightMap;
-        this.levelLimits = levelLimits;
+
+        this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, -100f, levelLimitSize / 2f, -levelLimitSize / 2f);
 
         this.rockets = new ArrayList<>();
         this.icosahedrons = new ArrayList<>();
         this.explosions = new ArrayList<>();
 
         Random rand = new Random(System.currentTimeMillis());
-        for(int i = 0; i < this.nbIcosahedron; i++){
-            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * 250f - 125f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * 250f - 125f}, rand);
+        for (int i = 0; i < this.nbIcosahedron; i++) {
+            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand);
+            ico.move();
+            ico.makeExplosion(this.context);
             this.icosahedrons.add(ico);
-            this.icosahedrons.get(i).move();
         }
     }
 
@@ -61,11 +65,11 @@ public class Test implements Level {
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
-        for(Rocket r : this.rockets)
+        for (BaseItem r : this.rockets)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for(int i = 0; i < this.icosahedrons.size(); i++)
+        for (int i = 0; i < this.icosahedrons.size(); i++)
             this.icosahedrons.get(i).draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for(Explosion e : this.explosions)
+        for (Explosion e : this.explosions)
             e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
     }
 
@@ -74,37 +78,38 @@ public class Test implements Level {
         float[] tmp = joystick.getStickPosition();
         this.ship.updateMaxSpeed(controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
-        if(controls.isFire()){
+        if (controls.isFire()) {
             this.ship.fire(this.rockets);
             controls.turnOffFire();
         }
-        for(Rocket r : this.rockets)
+        for (BaseItem r : this.rockets)
             r.move();
-        for(Explosion e : this.explosions)
+        for (Explosion e : this.explosions)
             e.move();
     }
 
     @Override
     public void removeObjects() {
-       Octree octree = new Octree(this.levelLimits, null, this.rockets, this.icosahedrons, 8f);
-       octree.computeOctree();
+        Octree octree = new Octree(this.levelLimits, null, this.rockets, this.icosahedrons, 8f);
+        octree.computeOctree();
 
-       for(int i = 0; i < this.explosions.size(); i++){
-           if(!this.explosions.get(i).isAlive()){
-               this.explosions.remove(i);
-           }
-       }
-       for(int i = 0; i < this.icosahedrons.size(); i++){
-           if(!this.icosahedrons.get(i).isAlive()){
-               this.explosions.add(this.icosahedrons.get(i).makeExplosion(this.context));
-               this.icosahedrons.remove(i);
-           } else if(this.icosahedrons.get(i).isOutOfBound(this.levelLimits)){
-               this.icosahedrons.remove(i);
-           }
-       }
-       for(int i = 0; i < this.rockets.size(); i++)
-           if(!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
-               this.rockets.remove(i);
+        for (int i = 0; i < this.explosions.size(); i++) {
+            if (!this.explosions.get(i).isAlive()) {
+                this.explosions.remove(i);
+            }
+        }
+        for (int i = 0; i < this.icosahedrons.size(); i++) {
+            if (!this.icosahedrons.get(i).isAlive()) {
+                Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
+                ico.addExplosion(this.explosions);
+                this.icosahedrons.remove(i);
+            } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
+                this.icosahedrons.remove(i);
+            }
+        }
+        for (int i = 0; i < this.rockets.size(); i++)
+            if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
+                this.rockets.remove(i);
     }
 
     @Override
