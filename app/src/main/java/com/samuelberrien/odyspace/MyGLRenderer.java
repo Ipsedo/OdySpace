@@ -89,7 +89,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
-        this.currentLevel = new TestBoss();
+        this.currentLevel = new Test();
 
         this.currentLevel.init(this.context, this.ship, 1000f);
 
