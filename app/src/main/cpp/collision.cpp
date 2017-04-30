@@ -3,7 +3,7 @@
 //
 
 #include <jni.h>
-#include "../jni/glm/vec4.hpp"
+#include "../jni/glm/glm.hpp"
 #include "../jni/glm/ext.hpp"
 
 

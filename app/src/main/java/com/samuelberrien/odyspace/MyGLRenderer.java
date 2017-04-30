@@ -19,6 +19,7 @@ import com.samuelberrien.odyspace.drawable.GameOver;
 import com.samuelberrien.odyspace.drawable.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.Test;
+import com.samuelberrien.odyspace.levels.TestBoss;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
@@ -88,7 +89,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
-        this.currentLevel = new Test();
+        this.currentLevel = new TestBoss();
 
         this.currentLevel.init(this.context, this.ship, 1000f);
 
