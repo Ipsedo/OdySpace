@@ -1,11 +1,8 @@
 package com.samuelberrien.odyspace.utils.collision;
 
 import com.samuelberrien.odyspace.objects.BaseItem;
-import com.samuelberrien.odyspace.objects.Icosahedron;
-import com.samuelberrien.odyspace.objects.Rocket;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +23,7 @@ public class Octree {
 
     private float limitSize;
 
-    public Octree(LevelLimits levelLimits, Octree father, ArrayList<BaseItem> amis, ArrayList<BaseItem> ennemis, float limitSize){
+    public Octree(LevelLimits levelLimits, Octree father, ArrayList<BaseItem> amis, ArrayList<BaseItem> ennemis, float limitSize) {
         this.levelLimits = levelLimits;
         this.father = father;
         this.amis = amis;
@@ -34,59 +31,53 @@ public class Octree {
         this.limitSize = limitSize;
     }
 
-    private Octree[] makeSons(){
+    private Octree[] makeSons() {
         Octree[] sons = new Octree[8];
         LevelLimits[] levelLimitsSons = this.levelLimits.makeOctSons();
         ArrayList<BaseItem>[] futurAmis = new ArrayList[8];
         ArrayList<BaseItem>[] futurEnnemis = new ArrayList[8];
 
-        for(int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             futurAmis[i] = new ArrayList<>();
             futurEnnemis[i] = new ArrayList<>();
-            for(int j = 0; j < this.amis.size(); j++){
-                if(!this.amis.get(j).isOutOfBound(levelLimitsSons[i])){
-                    futurAmis[i].add(this.amis.get(j));
-                }
-            }
-            for(int j = 0; j < this.ennemis.size(); j++){
-                if(!this.ennemis.get(j).isOutOfBound(levelLimitsSons[i])){
-                    futurEnnemis[i].add(this.ennemis.get(j));
-                }
-            }
+
+            for (BaseItem j : this.amis)
+                if (!j.isOutOfBound(levelLimitsSons[i]))
+                    futurAmis[i].add(j);
+            for (BaseItem j : this.ennemis)
+                if (!j.isOutOfBound(levelLimitsSons[i]))
+                    futurEnnemis[i].add(j);
+
             sons[i] = new Octree(levelLimitsSons[i], this, futurAmis[i], futurEnnemis[i], this.limitSize);
         }
 
         return sons;
     }
 
-    private void computeCollision(){
-        for(int i = 0; i < this.ennemis.size(); i++){
-            for(int j = 0; j < this.amis.size(); j++){
-                if(this.ennemis.get(i).isCollided(this.amis.get(j))){
-                    this.ennemis.get(i).decrementsBothLife(this.amis.get(j));
-                }
-            }
-        }
+    private void computeCollision() {
+        for (BaseItem i : this.ennemis)
+            for (BaseItem j : this.amis)
+                if (i.isCollided(j))
+                    i.decrementsBothLife(j);
     }
 
-
-    public void computeOctree(){
-        if(this.isLeaf()){
+    public void computeOctree() {
+        if (this.isLeaf()) {
             this.computeCollision();
         } else {
-            for(Octree sb : this.makeSons()){
-                if(!sb.containsNoCollision()) {
+            for (Octree sb : this.makeSons()) {
+                if (!sb.containsNoCollision()) {
                     sb.computeOctree();
                 }
             }
         }
     }
 
-    private boolean isLeaf(){
+    private boolean isLeaf() {
         return this.levelLimits.getSizeLength() <= this.limitSize;
     }
 
-    private boolean containsNoCollision(){
+    private boolean containsNoCollision() {
         return this.amis.isEmpty() || this.ennemis.isEmpty();
     }
 }

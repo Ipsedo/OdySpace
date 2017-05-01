@@ -30,7 +30,8 @@ public class TestBoss implements Level {
     private LevelLimits levelLimits;
     private HeightMap heightMap;
     private Boss boss;
-    private ArrayList<BaseItem> rockets;
+    private ArrayList<BaseItem> rocketsShip;
+    private ArrayList<BaseItem> rocketsBoss;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize) {
@@ -38,14 +39,17 @@ public class TestBoss implements Level {
         this.ship = ship;
         this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, -100f, levelLimitSize / 2f, -levelLimitSize / 2f);
-        this.boss = new Boss(this.context, "trump.obj", "trump.mtl", 50, new float[]{0f, 0f, 50f});
-        this.rockets = new ArrayList<>();
+        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 25, new float[]{0f, 0f, 50f});
+        this.rocketsShip = new ArrayList<>();
+        this.rocketsBoss = new ArrayList<>();
     }
 
     @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for (BaseItem r : this.rockets)
+        for (BaseItem r : this.rocketsShip)
+            r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+        for(BaseItem r : this.rocketsBoss)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
@@ -57,25 +61,35 @@ public class TestBoss implements Level {
         this.ship.updateMaxSpeed(controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
         if (controls.isFire()) {
-            this.ship.fire(this.rockets);
+            this.ship.fire(this.rocketsShip);
             controls.turnOffFire();
         }
-        for (BaseItem r : this.rockets)
+        for (BaseItem r : this.rocketsShip)
+            r.move();
+        for(BaseItem r : this.rocketsBoss)
             r.move();
         this.boss.move(this.ship);
+        this.boss.fire(this.rocketsBoss, this.ship);
     }
 
     @Override
     public void removeObjects() {
         ArrayList<BaseItem> ennemi = new ArrayList<>();
         ennemi.add(this.boss);
-
-        Octree octree = new Octree(this.levelLimits, null, this.rockets, ennemi, 8f);
+        Octree octree = new Octree(this.levelLimits, null, ennemi, this.rocketsShip, 8f);
         octree.computeOctree();
 
-        for (int i = 0; i < this.rockets.size(); i++)
-            if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
-                this.rockets.remove(i);
+        ArrayList<BaseItem> ami = new ArrayList<>();
+        ami.add(this.ship);
+        octree = new Octree(this.levelLimits, null, ami, this.rocketsBoss, 8f);
+        octree.computeOctree();
+
+        for (int i = 0; i < this.rocketsShip.size(); i++)
+            if (!this.rocketsShip.get(i).isAlive() || this.rocketsShip.get(i).isOutOfBound(this.levelLimits))
+                this.rocketsShip.remove(i);
+        for(int i = 0; i < this.rocketsBoss.size(); i++)
+            if(!this.rocketsBoss.get(i).isAlive() || this.rocketsBoss.get(i).isOutOfBound(this.levelLimits))
+                this.rocketsBoss.remove(i);
     }
 
     @Override

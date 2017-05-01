@@ -12,17 +12,15 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
-import android.widget.ProgressBar;
 
 import com.samuelberrien.odyspace.drawable.controls.Controls;
-import com.samuelberrien.odyspace.drawable.GameOver;
-import com.samuelberrien.odyspace.drawable.HeightMap;
+import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.text.LevelDone;
 import com.samuelberrien.odyspace.levels.Test;
 import com.samuelberrien.odyspace.levels.TestBoss;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -89,7 +87,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
-        this.currentLevel = new Test();
+        this.currentLevel = new TestBoss();
 
         this.currentLevel.init(this.context, this.ship, 1000f);
 
@@ -260,6 +258,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
         this.currentLevel.update(this.joystick, this.controls);
+        this.currentLevel.removeObjects();
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
@@ -271,12 +270,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
         this.controls.draw();
+
         if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);
             this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         }
 
-        this.currentLevel.removeObjects();
+        if(this.currentLevel.isWinner()){
+            new LevelDone(this.context).draw(this.ratio);
+            this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        }
 
         System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));
         this.currTime = System.currentTimeMillis();

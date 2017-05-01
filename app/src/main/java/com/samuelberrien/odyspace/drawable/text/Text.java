@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable;
+package com.samuelberrien.odyspace.drawable.text;
 
 import android.content.Context;
 import android.opengl.Matrix;
@@ -6,15 +6,16 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 
 /**
- * Created by samuel on 23/04/17.
+ * Created by samuel on 01/05/17.
  * Copyright samuel, 2016 - 2017.
  * Toute reproduction ou utilisation sans l'autorisation
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class GameOver extends ObjModel {
-    public GameOver(Context context) {
-        super(context, "game_over.obj", 1f, 0f, 0f, 1f, 0f, 0f);
+public class Text extends ObjModel {
+
+    public Text(Context context, String objFileName) {
+        super(context, objFileName, 1f, 0f, 0f, 1f, 0f, 0f);
     }
 
     public void draw(float ratio){

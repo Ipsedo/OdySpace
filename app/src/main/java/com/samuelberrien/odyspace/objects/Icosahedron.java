@@ -25,10 +25,6 @@ public class Icosahedron extends BaseItem {
         super.radius = 1f;
     }
 
-    public float[] getPosition(){
-        return super.mPosition;
-    }
-
     public void makeExplosion(Context context){
         this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer);
     }

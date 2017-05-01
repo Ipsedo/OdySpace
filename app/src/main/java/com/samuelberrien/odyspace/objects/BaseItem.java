@@ -131,7 +131,7 @@ public class BaseItem extends ObjModelMtl {
 
 
         return false;*/
-        return this.areCollided(this.allCoordsFloatArray, this.mModelMatrix, other.allCoordsFloatArray, other.mModelMatrix);
+        return this.areCollided(this.allCoordsFloatArray.clone(), this.mModelMatrix.clone(), other.allCoordsFloatArray.clone(), other.mModelMatrix.clone());
     }
 
     public void decrementsBothLife(BaseItem other){

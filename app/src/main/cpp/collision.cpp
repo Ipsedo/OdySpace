@@ -2,9 +2,14 @@
 // Created by samuel on 29/04/17.
 //
 
+//#define GLM_FORCE_ALIGNED
+//#define GLM_FORCE_SSE2
+
 #include <jni.h>
 #include <glm.hpp>
 #include <gtc/type_ptr.hpp>
+//#include <gtx/simd_vec4.hpp>
+//#include <gtx/simd_mat4.hpp>
 
 int coplanar_tri_tri(float N[3], float V0[3], float V1[3], float V2[3],
                      float U0[3], float U1[3], float U2[3]);
@@ -273,8 +278,72 @@ bool triangle_intersection(float p0[3], float p1[3], float p2[3], float q0[3], f
     return res;
 }
 
+/*bool areCollided(float* items1Points, int nbEl1, float* item1Model, float* items2Points, int nbEl2, float* item2Model) {
+    for(int i = 0; i < nbEl1 / 9; i++){
+        int currI = i * 9;
+        glm::simdVec4 u0 = glm::simdVec4(items1Points[currI + 0], items1Points[currI + 1], items1Points[currI + 2], 1.0);
+        glm::simdVec4 u1 = glm::simdVec4(items1Points[currI + 3], items1Points[currI + 4], items1Points[currI + 5], 1.0);
+        glm::simdVec4 u2 = glm::simdVec4(items1Points[currI + 6], items1Points[currI + 7], items1Points[currI + 8], 1.0);
+
+        glm::mat4 mModelMatrix = glm::make_mat4(item1Model);
+        glm::simdMat4 mModelMatrixS = glm::simdMat4(mModelMatrix);
+
+        u0 = mModelMatrixS * u0;
+        u1 = mModelMatrixS * u1;
+        u2 = mModelMatrixS * u2;
+
+        glm::vec4 tmp0 = glm::vec4_cast(u0);
+        glm::vec4 tmp1 = glm::vec4_cast(u1);
+        glm::vec4 tmp2 = glm::vec4_cast(u2);
+
+        items1Points[currI + 0] = tmp0[0];
+        items1Points[currI + 1] = tmp0[1];
+        items1Points[currI + 2] = tmp0[2];
+
+        items1Points[currI + 3] = tmp1[0];
+        items1Points[currI + 4] = tmp1[1];
+        items1Points[currI + 5] = tmp1[2];
+
+        items1Points[currI + 6] = tmp2[0];
+        items1Points[currI + 7] = tmp2[1];
+        items1Points[currI + 8] = tmp2[2];
+    }
+
+    for(int i = 0; i < nbEl2 / 9; i++){
+        int currI = i * 9;
+        glm::simdVec4 vvec0 = glm::simdVec4(items2Points[currI + 0], items2Points[currI + 1], items2Points[currI + 2], 1.0);
+        glm::simdVec4 vvec1 = glm::simdVec4(items2Points[currI + 3], items2Points[currI + 4], items2Points[currI + 5], 1.0);
+        glm::simdVec4 vvec2 = glm::simdVec4(items2Points[currI + 6], items2Points[currI + 7], items2Points[currI + 8], 1.0);
+
+        glm::mat4 mModelMatrix = glm::make_mat4(item2Model);
+        glm::simdMat4 mModelMatrixS = glm::simdMat4(mModelMatrix);
+
+        vvec0 = mModelMatrixS * vvec0;
+        vvec1 = mModelMatrixS * vvec1;
+        vvec2 = mModelMatrixS * vvec2;
+
+        glm::vec4 tmp0 = glm::vec4_cast(vvec0);
+        glm::vec4 tmp1 = glm::vec4_cast(vvec1);
+        glm::vec4 tmp2 = glm::vec4_cast(vvec2);
+        float v0[3] = {tmp0[0], tmp0[1], tmp0[2]};
+        float v1[3] = {tmp1[0], tmp1[1], tmp1[2]};
+        float v2[3] = {tmp2[0], tmp2[1], tmp2[2]};
+
+        for(int j = 0; j < nbEl1 / 9; j++){
+            float u0[3] = {items1Points[currI + 0], items1Points[currI + 1], items1Points[currI + 2]};
+            float u1[3] = {items1Points[currI + 3], items1Points[currI + 4], items1Points[currI + 5]};
+            float u2[3] = {items1Points[currI + 6], items1Points[currI + 7], items1Points[currI + 8]};
+
+            if(triangle_intersection(v0, v1, v2, u0, u1, u2)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}*/
 
 bool areCollided(float* items1Points, int nbEl1, float* item1Model, float* items2Points, int nbEl2, float* item2Model) {
+
     for(int i = 0; i < nbEl1 / 9; i++){
         int currI = i * 9;
         glm::vec4 u0 = glm::vec4(items1Points[currI + 0], items1Points[currI + 1], items1Points[currI + 2], 1.0);
@@ -311,15 +380,15 @@ bool areCollided(float* items1Points, int nbEl1, float* item1Model, float* items
         vvec0 = mModelMatrix * vvec0;
         vvec1 = mModelMatrix * vvec1;
         vvec2 = mModelMatrix * vvec2;
-
         float v0[3] = {vvec0[0], vvec0[1], vvec0[2]};
         float v1[3] = {vvec1[0], vvec1[1], vvec1[2]};
         float v2[3] = {vvec2[0], vvec2[1], vvec2[2]};
 
         for(int j = 0; j < nbEl1 / 9; j++){
-            float u0[3] = {items1Points[currI + 0], items1Points[currI + 1], items1Points[currI + 2]};
-            float u1[3] = {items1Points[currI + 3], items1Points[currI + 4], items1Points[currI + 5]};
-            float u2[3] = {items1Points[currI + 6], items1Points[currI + 7], items1Points[currI + 8]};
+            int currJ = j * 9;
+            float u0[3] = {items1Points[currJ + 0], items1Points[currJ + 1], items1Points[currJ + 2]};
+            float u1[3] = {items1Points[currJ + 3], items1Points[currJ + 4], items1Points[currJ + 5]};
+            float u2[3] = {items1Points[currJ + 6], items1Points[currJ + 7], items1Points[currJ + 8]};
 
             if(triangle_intersection(v0, v1, v2, u0, u1, u2)) {
                 return true;
@@ -328,11 +397,6 @@ bool areCollided(float* items1Points, int nbEl1, float* item1Model, float* items
     }
     return false;
 }
-
-#if GLM_ARCH & GLM_ARCH_SSE2_BIT
-
-
-#endif
 
 extern "C" {
 JNIEXPORT jboolean JNICALL

@@ -119,6 +119,6 @@ public class Test implements Level {
 
     @Override
     public boolean isWinner() {
-        return false;
+        return this.nbIcosahedron - this.icosahedrons.size() > 19;
     }
 }

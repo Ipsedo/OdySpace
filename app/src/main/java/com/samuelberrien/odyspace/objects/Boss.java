@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -16,22 +17,30 @@ import java.util.Random;
 
 public class Boss extends BaseItem {
 
-    private final int MAX_COUNT = 10;
+    private Context context;
+
+    private final int MAX_COUNT = 100;
     private int counter;
 
     private Random rand;
 
     private float maxSpeed;
 
+    private double phi;
+    private double theta;
+
     public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition) {
-        super(context, objFileName, mtlFileName, 1f, 0f, life, mPosition, new float[3], new float[3]);
+        super(context, objFileName, mtlFileName, 1f, 0f, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f});
+        this.context = context;
         this.counter = 0;
         this.rand = new Random(System.currentTimeMillis());
-        this.maxSpeed = 0.01f;
+        this.maxSpeed = 0.1f;
+        this.phi = 0f;
+        this.theta = 0f;
     }
 
     public void move(Ship ship){
-        if(this.counter == this.MAX_COUNT){
+        if(this.counter >= this.MAX_COUNT){
             float[] shipBossVec = new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0]};
             float length = Vector.length3f(shipBossVec);
             super.mSpeed[0] = this.maxSpeed * shipBossVec[0] / length;
@@ -39,8 +48,8 @@ public class Boss extends BaseItem {
             super.mSpeed[2] = this.maxSpeed * shipBossVec[2] / length;
             this.counter = 0;
         } else {
-            double phi = Math.PI * 2d;
-            double theta = Math.PI * 2d;
+            this.phi += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
+            this.theta += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
             super.mSpeed[0] = this.maxSpeed * (float) (Math.cos(phi) * Math.sin(theta));
             super.mSpeed[1] = this.maxSpeed * (float) Math.sin(phi);
             super.mSpeed[2] = this.maxSpeed * (float) (Math.cos(phi) * Math.cos(theta));
@@ -56,6 +65,16 @@ public class Boss extends BaseItem {
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
 
         super.mModelMatrix = mModelMatrix.clone();
+    }
+
+    public void fire(ArrayList<BaseItem> r, Ship ship){
+        if(this.counter % 30 == 0) {
+            float[] originalVec = new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]};
+            float length = Vector.length3f(originalVec);
+            float[] tmpMat = new float[16];
+            Matrix.setIdentityM(tmpMat, 0);
+            r.add(new Rocket(this.context, super.mPosition.clone(), new float[]{originalVec[0] / length, originalVec[1] / length, originalVec[2] / length}, new float[]{0f, 0f, 0f}, tmpMat, 0.005f));
+        }
     }
 
     @Override
