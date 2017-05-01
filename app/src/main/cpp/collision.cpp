@@ -3,9 +3,8 @@
 //
 
 #include <jni.h>
-#include "../jni/glm/glm.hpp"
-#include "../jni/glm/ext.hpp"
-
+#include <glm.hpp>
+#include <gtc/type_ptr.hpp>
 
 int coplanar_tri_tri(float N[3], float V0[3], float V1[3], float V2[3],
                      float U0[3], float U1[3], float U2[3]);
@@ -329,6 +328,11 @@ bool areCollided(float* items1Points, int nbEl1, float* item1Model, float* items
     }
     return false;
 }
+
+#if GLM_ARCH & GLM_ARCH_SSE2_BIT
+
+
+#endif
 
 extern "C" {
 JNIEXPORT jboolean JNICALL
