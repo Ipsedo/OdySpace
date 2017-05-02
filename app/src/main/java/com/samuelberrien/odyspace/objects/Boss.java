@@ -39,20 +39,25 @@ public class Boss extends BaseItem {
         this.theta = 0f;
     }
 
+    private void count(){
+        this.counter++;
+        if(this.counter > this.MAX_COUNT) {
+            this.counter = 0;
+        }
+    }
+
     public void move(Ship ship){
-        if(this.counter >= this.MAX_COUNT){
+        if(this.counter == this.MAX_COUNT / 2){
             float[] shipBossVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0]});
             super.mSpeed[0] = this.maxSpeed * shipBossVec[0];
             super.mSpeed[1] = this.maxSpeed * shipBossVec[1];
             super.mSpeed[2] = this.maxSpeed * shipBossVec[2];
-            this.counter = 0;
         } else {
             this.phi += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
             this.theta += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
             super.mSpeed[0] = this.maxSpeed * (float) (Math.cos(phi) * Math.sin(theta));
             super.mSpeed[1] = this.maxSpeed * (float) Math.sin(phi);
             super.mSpeed[2] = this.maxSpeed * (float) (Math.cos(phi) * Math.cos(theta));
-            this.counter++;
         }
 
         super.mPosition[0] += super.mSpeed[0];
@@ -64,6 +69,8 @@ public class Boss extends BaseItem {
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
 
         super.mModelMatrix = mModelMatrix.clone();
+
+        this.count();
     }
 
     public void fire(ArrayList<BaseItem> r, Ship ship){

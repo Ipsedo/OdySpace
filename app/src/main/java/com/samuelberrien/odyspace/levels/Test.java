@@ -130,7 +130,7 @@ public class Test implements Level {
     @Override
     public boolean isWinner() {
         if(this.isInit) {
-            return this.nbIcosahedron - this.icosahedrons.size() > 19;
+            return this.nbIcosahedron - this.icosahedrons.size() > 0;
         }
         return false;
     }

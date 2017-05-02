@@ -58,11 +58,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private int currLevelId;
     private Level currentLevel;
     private boolean goNextLevel;
+    private boolean isWinner;
 
     private Ship ship;
 
     private long currTime = System.currentTimeMillis();
-
 
     /**
      * @param context
@@ -72,6 +72,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.myGLSurfaceView = myGLSurfaceView;
         this.currLevelId = currLevelId;
         this.goNextLevel = false;
+        this.isWinner = false;
     }
 
     @Override
@@ -256,6 +257,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+    public boolean isWinner(){
+        return this.isWinner;
+    }
+
     @Override
     public void onDrawFrame(GL10 unused) {
         if(this.goNextLevel){
@@ -265,6 +270,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 ie.printStackTrace();
             }
             this.levelUp();
+            this.isWinner = true;
             this.goNextLevel = false;
         }
 
@@ -273,7 +279,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
-        this.updateLight(0f, 0f, 0f);
+        this.updateLight(0f, 250f, 0f);
 
         this.currentLevel.update(this.joystick, this.controls);
         this.currentLevel.removeObjects();

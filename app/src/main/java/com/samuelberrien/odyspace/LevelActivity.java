@@ -26,4 +26,16 @@ public class LevelActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(this.mSurfaceView);
     }
+
+    @Override
+    protected void onPause(){
+        this.mSurfaceView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.mSurfaceView.onResume();
+    }
 }
