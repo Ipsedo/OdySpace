@@ -57,8 +57,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public static final int LEVEL_MAX = 2;
     private int currLevelId;
     private Level currentLevel;
-    private boolean goNextLevel;
+    private boolean willQuit;
     private boolean isWinner;
+    private boolean isDead;
 
     private Ship ship;
 
@@ -71,8 +72,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.context = context;
         this.myGLSurfaceView = myGLSurfaceView;
         this.currLevelId = currLevelId;
-        this.goNextLevel = false;
+        this.willQuit = false;
         this.isWinner = false;
+        this.isDead = false;
     }
 
     @Override
@@ -261,17 +263,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return this.isWinner;
     }
 
+    public boolean isDead(){
+        return this.isDead;
+    }
+
     @Override
     public void onDrawFrame(GL10 unused) {
-        if(this.goNextLevel){
+        if(this.willQuit){
             try {
                 Thread.sleep(2000L);
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
             }
-            this.levelUp();
-            this.isWinner = true;
-            this.goNextLevel = false;
+            if(this.currentLevel.isWinner()){
+                this.isWinner = true;
+            } else if(this.currentLevel.isDead()){
+                this.isDead = true;
+            }
+            this.willQuit = false;
         }
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -298,12 +307,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);
-            this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+            this.willQuit = true;
         }
 
         if(this.currentLevel.isWinner()){
             new LevelDone(this.context).draw(this.ratio);
-            this.goNextLevel = true;
+            this.willQuit = true;
         }
 
         System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));

@@ -1,16 +1,11 @@
 package com.samuelberrien.odyspace;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.MotionEvent;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-
-import com.samuelberrien.odyspace.utils.game.Level;
 
 /**
  * Created by samuel on 16/04/17.
@@ -31,15 +26,14 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /**
      * @param context
      */
-    public MyGLSurfaceView(Context context, LevelActivity levelActivity) {
+    public MyGLSurfaceView(Context context, LevelActivity levelActivity, int levelID) {
         super(context);
         this.context = context;
         this.levelActivity = levelActivity;
-        // Create an OpenGL ES 2.0 context.
         this.setEGLContextClientVersion(2);
 
 
-        this.renderer = new MyGLRenderer(context, this, 0);
+        this.renderer = new MyGLRenderer(context, this, levelID);
         this.setRenderer(this.renderer);
         this.checkAppResult = new CheckAppResult();
         this.checkAppResult.execute();
@@ -72,7 +66,16 @@ public class MyGLSurfaceView extends GLSurfaceView {
         @Override
         protected Void doInBackground(Void... voids) {
             while(!this.isCancelled()) {
+                if(MyGLSurfaceView.this.renderer.isDead()) {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(LevelActivity.RESULT, Integer.toString(0));
+                    MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
+                    MyGLSurfaceView.this.levelActivity.finish();
+                }
                 if(MyGLSurfaceView.this.renderer.isWinner()) {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(LevelActivity.RESULT, Integer.toString(1));
+                    MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
                     MyGLSurfaceView.this.levelActivity.finish();
                 }
                 try {
