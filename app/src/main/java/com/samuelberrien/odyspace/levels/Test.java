@@ -1,7 +1,6 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
-import android.opengl.GLES20;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
@@ -68,9 +67,6 @@ public class Test implements Level {
 
     @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-        GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-        this.ship.drawLife();
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         for (BaseItem r : this.rockets)

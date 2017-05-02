@@ -41,11 +41,10 @@ public class Boss extends BaseItem {
 
     public void move(Ship ship){
         if(this.counter >= this.MAX_COUNT){
-            float[] shipBossVec = new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0]};
-            float length = Vector.length3f(shipBossVec);
-            super.mSpeed[0] = this.maxSpeed * shipBossVec[0] / length;
-            super.mSpeed[1] = this.maxSpeed * shipBossVec[1] / length;
-            super.mSpeed[2] = this.maxSpeed * shipBossVec[2] / length;
+            float[] shipBossVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0]});
+            super.mSpeed[0] = this.maxSpeed * shipBossVec[0];
+            super.mSpeed[1] = this.maxSpeed * shipBossVec[1];
+            super.mSpeed[2] = this.maxSpeed * shipBossVec[2];
             this.counter = 0;
         } else {
             this.phi += (this.rand.nextDouble() * 2d - 1d) / Math.PI;

@@ -282,11 +282,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.updateCamLookVec(this.ship.getCamLookAtVec());
         this.updateCamUpVec(this.ship.getCamUpVec());
 
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         this.currentLevel.draw(this.mProjectionMatrix.clone(), this.mViewMatrix.clone(), this.mLightPosInEyeSpace.clone(), this.mCameraPosition.clone());
 
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
         this.controls.draw();
+        this.ship.drawLife();
 
         if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);

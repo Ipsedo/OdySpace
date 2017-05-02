@@ -73,7 +73,7 @@ public class Ship extends BaseItem {
     }
 
     public void fire(ArrayList<BaseItem> rockets){
-        Rocket tmp = new Rocket(this.context, 1f, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+        Rocket tmp = new Rocket(this.context, 2f, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
         tmp.move();
         rockets.add(tmp);
     }
@@ -227,10 +227,11 @@ public class Ship extends BaseItem {
             Matrix.orthoM(mPMatrix, 0, -1f * this.ratio, 1f * this.ratio, -1f, 1f, -1f, 1f);
             Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
             float[] mMVPMatrix = new float[16];
+
             float[] mMMatrix = new float[16];
             Matrix.setIdentityM(mMMatrix, 0);
             Matrix.translateM(mMMatrix, 0, 0.9f, 0.9f, 0f);
-            Matrix.scaleM(mMMatrix, 0, 0.501f, 0.101f, 0.101f);
+            Matrix.scaleM(mMMatrix, 0, 0.501f, 0.051f, 0.051f);
             Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
             GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -241,7 +242,7 @@ public class Ship extends BaseItem {
 
             Matrix.setIdentityM(mMMatrix, 0);
             Matrix.translateM(mMMatrix, 0, 0.9f + 0.45f * (Ship.this.MAXLIFE - Ship.this.life) / Ship.this.MAXLIFE, 0.9f, 0f);
-            Matrix.scaleM(mMMatrix, 0, 0.5f * Ship.this.life / Ship.this.MAXLIFE, 0.1f, 0.1f);
+            Matrix.scaleM(mMMatrix, 0, 0.5f * Ship.this.life / Ship.this.MAXLIFE, 0.050f, 0.05f);
             Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
             GLES20.glEnableVertexAttribArray(mPositionHandle);
