@@ -54,7 +54,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Joystick joystick;
     private Controls controls;
 
-    public static final int LEVEL_MAX = 2;
     private int currLevelId;
     private Level currentLevel;
     private boolean willQuit;

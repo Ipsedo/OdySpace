@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.samuelberrien.odyspace.utils.game.Level;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int RESULT_VALUE = 1;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     int result = Integer.parseInt(data.getStringExtra(LevelActivity.RESULT));
                     if(result == 1) {
                         this.currLevel++;
-                        if(this.currLevel > MyGLRenderer.LEVEL_MAX) {
+                        if(this.currLevel > Level.MAX_LEVEL) {
                             this.currLevel--;
                         }
                     }

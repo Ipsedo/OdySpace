@@ -16,6 +16,8 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
+    int MAX_LEVEL = 2;
+
     void init(Context context, Ship ship, float levelLimitSize);
 
     void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
