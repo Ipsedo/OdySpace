@@ -2,8 +2,15 @@ package com.samuelberrien.odyspace;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import com.samuelberrien.odyspace.utils.game.Level;
 
 /**
  * Created by samuel on 16/04/17.
@@ -14,18 +21,23 @@ import android.widget.ProgressBar;
 
 public class MyGLSurfaceView extends GLSurfaceView {
 
+    private Context context;
+    private LevelActivity levelActivity;
+
     private MyGLRenderer renderer;
 
     /**
      * @param context
      */
-    public MyGLSurfaceView(Context context) {
+    public MyGLSurfaceView(Context context, LevelActivity levelActivity) {
         super(context);
+        this.context = context;
+        this.levelActivity = levelActivity;
         // Create an OpenGL ES 2.0 context.
         this.setEGLContextClientVersion(2);
 
 
-        this.renderer = new MyGLRenderer(context, this);
+        this.renderer = new MyGLRenderer(context, this, 0);
         this.setRenderer(this.renderer);
     }
 
@@ -42,6 +54,4 @@ public class MyGLSurfaceView extends GLSurfaceView {
     public void onResume() {
         super.onResume();
     }
-
-
 }

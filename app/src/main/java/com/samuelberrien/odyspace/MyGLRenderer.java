@@ -53,20 +53,25 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Joystick joystick;
     private Controls controls;
-    private boolean joystickFst;
 
+    public static final int LEVEL_MAX = 2;
+    private int currLevelId;
     private Level currentLevel;
+    private boolean goNextLevel;
 
     private Ship ship;
 
     private long currTime = System.currentTimeMillis();
 
+
     /**
      * @param context
      */
-    public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView) {
+    public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView, int currLevelId) {
         this.context = context;
         this.myGLSurfaceView = myGLSurfaceView;
+        this.currLevelId = currLevelId;
+        this.goNextLevel = false;
     }
 
     @Override
@@ -81,19 +86,32 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.joystick = new Joystick(this.context);
         this.controls = new Controls(this.context);
-        this.joystickFst = true;
 
         this.ship = new Ship(this.context);
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
-        this.currentLevel = new TestBoss();
+        this.currentLevel = this.getCurrentLevel(this.currLevelId);
 
         this.currentLevel.init(this.context, this.ship, 1000f);
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
         this.updateCamUpVec(this.ship.getCamUpVec());
+    }
+
+    private Level getCurrentLevel(int currLevelId){
+        if(currLevelId == 0){
+            return new Test();
+        } else {
+            return new TestBoss();
+        }
+    }
+
+    private void levelUp(){
+        this.currLevelId++;
+        this.currentLevel = this.getCurrentLevel(this.currLevelId);
+        this.currentLevel.init(this.context, this.ship, 1000f);
     }
 
     /**
@@ -174,18 +192,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      */
     public void updateMotion(MotionEvent e){
         int pointerIndex = e.getActionIndex();
+        float x = -(2f * e.getX(pointerIndex) / this.width - 1f);
+        float y = -(2f * e.getY(pointerIndex) / this.height - 1f);
         switch (e.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 if(e.getX(pointerIndex) / this.height > 1f){
-                    if(!this.controls.isTouchFireButton(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f))) {
-                        this.joystickFst = false;
+                    if(!this.controls.isTouchFireButton(x, y)) {
                         this.controls.setBoostVisible(true);
-                        this.controls.updateBoostPosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                        this.controls.updateBoostPosition(x, y);
                     }
                 } else {
-                    this.joystickFst = true;
                     this.joystick.setVisible(true);
-                    this.joystick.updatePosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                    this.joystick.updatePosition(x, y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -196,48 +214,36 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(e.getPointerCount() == 2) {
-                    if(this.joystickFst && (e.getX(0) / this.height) < 0.5f) {
-                        this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
-                    }
-                    if(this.joystickFst && (e.getX(1) / this.height) > 0.5f) {
+                if(e.getPointerCount() > 1) {
+                    if(e.getX(1) / this.height > 1) {
                         if(!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f))) {
                             this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.height - 1f));
                         } else {
                             this.controls.turnOffFire();
                         }
-                    }
-                    if(!this.joystickFst && (e.getX(1) / this.height) < 0.5f) {
+                    } else {
                         this.joystick.updateStickPosition(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f));
                     }
-                    if(!this.joystickFst && (e.getX(0) / this.height) > 0.5f) {
-                        if(!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f))) {
-                            this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.height - 1f));
-                        } else {
-                            this.controls.turnOffFire();
-                        }
+                }
+                if(e.getX(0) / this.height > 1) {
+                    if(!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f))) {
+                        this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.height - 1f));
+                    } else {
+                        this.controls.turnOffFire();
                     }
                 } else {
-                    if(e.getX() / this.height < 1f) {
-                        this.joystick.updateStickPosition(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f));
-                    } else {
-                        if(!this.controls.isTouchFireButton(-(2f * e.getX() / this.width - 1f), -(2f * e.getY() / this.height - 1f))) {
-                            this.controls.updateBoostStickPosition(-(2f * e.getY() / this.height - 1f));
-                        } else {
-                            this.controls.turnOffFire();
-                        }
-                    }
+                    this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
                 }
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 if(e.getX(pointerIndex) / this.height > 1f){
-                    if(!this.controls.isTouchFireButton(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f))) {
+                    if(!this.controls.isTouchFireButton(x, y)) {
                         this.controls.setBoostVisible(true);
-                        this.controls.updateBoostPosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                        this.controls.updateBoostPosition(x, y);
                     }
                 } else {
                     this.joystick.setVisible(true);
-                    this.joystick.updatePosition(-(2f * e.getX(pointerIndex) / this.width - 1f), -(2f * e.getY(pointerIndex) / this.height - 1f));
+                    this.joystick.updatePosition(x, y);
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -252,6 +258,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 unused) {
+        if(this.goNextLevel){
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+            this.levelUp();
+            this.goNextLevel = false;
+        }
+
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
@@ -270,6 +286,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
         this.controls.draw();
+        this.ship.drawLife();
 
         if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);
@@ -278,7 +295,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         if(this.currentLevel.isWinner()){
             new LevelDone(this.context).draw(this.ratio);
-            this.myGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+            this.goNextLevel = true;
         }
 
         System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));
@@ -296,6 +313,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.joystick.setRatio(this.ratio);
         this.controls.setRatio(this.ratio);
+        this.ship.setRatio(this.ratio);
 
         //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, this.maxProjDist);

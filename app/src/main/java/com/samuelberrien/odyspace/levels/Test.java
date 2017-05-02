@@ -40,6 +40,8 @@ public class Test implements Level {
 
     private ArrayList<Explosion> explosions;
 
+    private boolean isInit = false;
+
     @Override
     public void init(Context context, Ship ship, float levelLimitSize) {
         this.context = context;
@@ -59,6 +61,8 @@ public class Test implements Level {
             ico.makeExplosion(this.context);
             this.icosahedrons.add(ico);
         }
+
+        this.isInit = true;
     }
 
     @Override
@@ -90,7 +94,10 @@ public class Test implements Level {
 
     @Override
     public void removeObjects() {
-        Octree octree = new Octree(this.levelLimits, null, this.rockets, this.icosahedrons, 8f);
+        ArrayList<BaseItem> ami = new ArrayList<>(this.rockets);
+        ami.add(this.ship);
+        ArrayList<BaseItem> ennemi = new ArrayList<>(this.icosahedrons);
+        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
         octree.computeOctree();
 
         for (int i = 0; i < this.explosions.size(); i++) {
@@ -114,11 +121,17 @@ public class Test implements Level {
 
     @Override
     public boolean isDead() {
-        return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
+        if(this.isInit) {
+            return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
+        }
+        return false;
     }
 
     @Override
     public boolean isWinner() {
-        return this.nbIcosahedron - this.icosahedrons.size() > 19;
+        if(this.isInit) {
+            return this.nbIcosahedron - this.icosahedrons.size() > 19;
+        }
+        return false;
     }
 }

@@ -69,11 +69,13 @@ public class Boss extends BaseItem {
 
     public void fire(ArrayList<BaseItem> r, Ship ship){
         if(this.counter % 30 == 0) {
-            float[] originalVec = new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]};
-            float length = Vector.length3f(originalVec);
+            float[] speedVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
+            float[] originaleVec = new float[]{0f, 0f, 1f};
+            float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
+            float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
-            Matrix.setIdentityM(tmpMat, 0);
-            r.add(new Rocket(this.context, super.mPosition.clone(), new float[]{originalVec[0] / length, originalVec[1] / length, originalVec[2] / length}, new float[]{0f, 0f, 0f}, tmpMat, 0.005f));
+            Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
+            r.add(new Rocket(this.context, 2f, super.mPosition.clone(), originaleVec, new float[]{0f, 0f, 0f}, tmpMat, 0.005f));
         }
     }
 
