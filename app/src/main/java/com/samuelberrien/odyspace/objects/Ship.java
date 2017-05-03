@@ -38,6 +38,8 @@ public class Ship extends BaseItem {
 
     private ObjModelMtl rocket;
 
+    private Fire.Type fireType = Fire.Type.SECOND;
+
     public Ship(Context context){
         super(context, "ship.obj", "ship.mtl", 1f, 0f, 1, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f});
         this.life = this.MAXLIFE;
@@ -78,7 +80,7 @@ public class Ship extends BaseItem {
     }
 
     public void fire(ArrayList<BaseItem> rockets){
-        Fire.fire(this.rocket, rockets, Fire.Type.SECOND, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+        Fire.fire(this.rocket, rockets, this.fireType, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
     }
 
     public float[] getCamPosition(){
@@ -146,8 +148,6 @@ public class Ship extends BaseItem {
         private int mColorHandle;
         private int mMVPMatrixHandle;
         private int mProgram;
-
-        private float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
         private float ratio;
 

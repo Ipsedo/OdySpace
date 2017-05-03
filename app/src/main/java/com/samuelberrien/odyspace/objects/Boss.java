@@ -95,6 +95,12 @@ public class Boss extends BaseItem {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
+        float[] vecToShip = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
+        float[] originaleVec = new float[]{0f, 0f, 1f};
+        float angle = (float) (Math.acos(Vector.dot3f(vecToShip, originaleVec)) * 360d / (Math.PI * 2d));
+        Matrix.setRotateM(super.mRotationMatrix, 0, angle, 0f, 1f, 0f);
+        float[] tmpMat = mModelMatrix.clone();
+        Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
 
         super.mModelMatrix = mModelMatrix.clone();
 
