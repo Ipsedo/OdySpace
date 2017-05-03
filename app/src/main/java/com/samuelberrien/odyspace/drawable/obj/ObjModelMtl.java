@@ -82,16 +82,7 @@ public class ObjModelMtl {
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
-
-        /*int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_vs));
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.specular_fs));
-
-        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(this.mProgram);
-
-        this.bind();*/
+        
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
     }
 
@@ -128,15 +119,6 @@ public class ObjModelMtl {
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
 
-        /*int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_vs));
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.specular_fs));
-
-        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(this.mProgram);
-
-        this.bind();*/
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
     }
 
