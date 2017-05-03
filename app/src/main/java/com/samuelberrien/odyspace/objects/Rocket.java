@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 /**
@@ -23,6 +24,14 @@ public class Rocket extends BaseItem {
         super.radius = 0.3f;
     }
 
+    public Rocket(ObjModelMtl objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed) {
+        super(objModelMtl, 1, mPosition, mSpeed, mAcceleration);
+        super.mRotationMatrix = mRotationMatrix;
+        this.maxSpeed = maxSpeed * 3f;
+        super.radius = 0.3f;
+    }
+
+    @Override
     public void move(){
         float[] realSpeed = new float[]{super.mSpeed[0], super.mSpeed[1], super.mSpeed[2], 1f};
 
@@ -39,9 +48,5 @@ public class Rocket extends BaseItem {
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
 
         super.mModelMatrix = mModelMatrix;
-    }
-
-    public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
-        super.draw(pMatrix, vMatrix, mLightPosInEyeSpace, mCameraPosition);
     }
 }

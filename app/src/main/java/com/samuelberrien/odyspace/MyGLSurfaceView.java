@@ -68,13 +68,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
             while(!this.isCancelled()) {
                 if(MyGLSurfaceView.this.renderer.isDead()) {
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra(LevelActivity.RESULT, Integer.toString(0));
+                    resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(0));
                     MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
                     MyGLSurfaceView.this.levelActivity.finish();
                 }
                 if(MyGLSurfaceView.this.renderer.isWinner()) {
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra(LevelActivity.RESULT, Integer.toString(1));
+                    resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(1));
                     MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
                     MyGLSurfaceView.this.levelActivity.finish();
                 }

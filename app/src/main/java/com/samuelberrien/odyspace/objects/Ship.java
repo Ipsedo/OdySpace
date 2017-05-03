@@ -5,6 +5,8 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.nio.ByteBuffer;
@@ -34,11 +36,14 @@ public class Ship extends BaseItem {
     private final int MAXLIFE = 25;
     private Life lifeDraw;
 
+    private ObjModelMtl rocket;
+
     public Ship(Context context){
         super(context, "ship.obj", "ship.mtl", 1f, 0f, 1, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f});
         this.life = this.MAXLIFE;
         this.context = context;
         this.lifeDraw = new Life(this.context);
+        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f);
     }
 
     public void move(float phi, float theta){
@@ -73,9 +78,7 @@ public class Ship extends BaseItem {
     }
 
     public void fire(ArrayList<BaseItem> rockets){
-        Rocket tmp = new Rocket(this.context, 2f, super.mPosition.clone(), super.mSpeed.clone(), super.mAcceleration.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
-        tmp.move();
-        rockets.add(tmp);
+        Fire.fire(this.rocket, rockets, Fire.Type.SECOND, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
     }
 
     public float[] getCamPosition(){

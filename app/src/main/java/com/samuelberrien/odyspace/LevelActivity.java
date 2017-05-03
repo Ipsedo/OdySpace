@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class LevelActivity extends AppCompatActivity {
 
-    public static final String RESULT = "RESULT";
+    public static final String LEVEL_RESULT = "LEVEL_RESULT";
 
     private MyGLSurfaceView mSurfaceView;
 

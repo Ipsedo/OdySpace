@@ -3,6 +3,8 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
@@ -19,15 +21,20 @@ public class Boss extends BaseItem {
 
     private Context context;
 
-    private final int MAX_COUNT = 100;
+    private final int MAX_COUNT = 200;
     private int counter;
 
     private Random rand;
 
     private float maxSpeed;
 
+    private ObjModelMtl rocket;
+
     private double phi;
     private double theta;
+
+    private int colorCounter;
+    private boolean changingColor;
 
     public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition) {
         super(context, objFileName, mtlFileName, 1f, 0f, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f});
@@ -35,15 +42,36 @@ public class Boss extends BaseItem {
         this.counter = 0;
         this.rand = new Random(System.currentTimeMillis());
         this.maxSpeed = 0.1f;
+        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f);
         this.phi = 0f;
         this.theta = 0f;
+        this.colorCounter = 0;
+        this.changingColor = false;
     }
 
     private void count(){
-        this.counter++;
-        if(this.counter > this.MAX_COUNT) {
-            this.counter = 0;
+        this.counter = (this.counter >= this.MAX_COUNT ? 0 : this.counter + 1);
+        if(this.changingColor && this.colorCounter > 75) {
+            super.setColors(super.allAmbColorBuffer, super.allSpecColorBuffer, super.allDiffColorBuffer);
+            this.changingColor = false;
+            this.colorCounter = 0;
+        } else if(this.changingColor) {
+            this.colorCounter++;
         }
+    }
+
+    @Override
+    public boolean isCollided(BaseItem other) {
+        boolean res = super.isCollided(other);
+        if(res) {
+            if(!this.changingColor) {
+                super.setColors(super.allAmbColorBuffer, super.allSpecColorBuffer, super.allDiffColorBuffer);
+            }
+            this.colorCounter = 0;
+            this.changingColor = true;
+
+        }
+        return res;
     }
 
     public void move(Ship ship){
@@ -73,15 +101,15 @@ public class Boss extends BaseItem {
         this.count();
     }
 
-    public void fire(ArrayList<BaseItem> r, Ship ship){
-        if(this.counter % 30 == 0) {
+    public void fire(ArrayList<BaseItem> rockets, Ship ship){
+        if(this.counter % 101 == 0) {
             float[] speedVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
             float[] originaleVec = new float[]{0f, 0f, 1f};
             float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
             float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
             Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            r.add(new Rocket(this.context, 2f, super.mPosition.clone(), originaleVec, new float[]{0f, 0f, 0f}, tmpMat, 0.005f));
+            Fire.fire(this.rocket, rockets, Fire.Type.FIRST, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
         }
     }
 

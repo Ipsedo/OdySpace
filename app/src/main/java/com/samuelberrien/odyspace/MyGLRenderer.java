@@ -307,9 +307,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);
             this.willQuit = true;
-        }
-
-        if(this.currentLevel.isWinner()){
+        }else if(this.currentLevel.isWinner()){
             new LevelDone(this.context).draw(this.ratio);
             this.willQuit = true;
         }

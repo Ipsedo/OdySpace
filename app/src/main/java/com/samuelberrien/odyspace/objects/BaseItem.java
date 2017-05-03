@@ -58,6 +58,19 @@ public class BaseItem extends ObjModelMtl {
         this.radius = 1f;
     }
 
+    public BaseItem(ObjModelMtl objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration){
+        super(objModelMtl);
+        this.life = life;
+        this.mPosition = mPosition;
+        this.mSpeed = mSpeed;
+        this.mAcceleration = mAcceleration;
+        this.mRotationMatrix = new float[16];
+        Matrix.setIdentityM(this.mRotationMatrix, 0);
+        this.mModelMatrix = new float[16];
+        Matrix.setIdentityM(this.mModelMatrix, 0);
+        this.radius = 1f;
+    }
+
     public void changeColor(Random rand){
         ArrayList<FloatBuffer> tmpA = super.makeColor(rand);
         ArrayList<FloatBuffer> tmpD = super.makeColor(rand);

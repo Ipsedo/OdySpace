@@ -30,9 +30,9 @@ public class ObjModelMtl {
 
     private ArrayList<FloatBuffer> allVertexBuffer = new ArrayList<>();
     private ArrayList<FloatBuffer> allNormalsBuffer = new ArrayList<>();
-    private ArrayList<FloatBuffer> allAmbColorBuffer = new ArrayList<>();
+    protected ArrayList<FloatBuffer> allAmbColorBuffer = new ArrayList<>();
     protected ArrayList<FloatBuffer> allDiffColorBuffer = new ArrayList<>();
-    private ArrayList<FloatBuffer> allSpecColorBuffer = new ArrayList<>();
+    protected ArrayList<FloatBuffer> allSpecColorBuffer = new ArrayList<>();
     private ArrayList<Float> allSpecShininess = new ArrayList<>();
 
     private int mProgram;
@@ -138,6 +138,40 @@ public class ObjModelMtl {
 
         this.bind();*/
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+    }
+
+    public ObjModelMtl(ObjModelMtl objModelMtl) {
+        this.mtlAmbColor = objModelMtl.mtlAmbColor;
+        this.mtlDiffColor = objModelMtl.mtlDiffColor;
+        this.mtlSpecColor = objModelMtl.mtlSpecColor;
+
+        this.allVertexBuffer = objModelMtl.allVertexBuffer;
+        this.allNormalsBuffer = objModelMtl.allNormalsBuffer;
+        this.allAmbColorBuffer = objModelMtl.allAmbColorBuffer;
+        this.allDiffColorBuffer = objModelMtl.allDiffColorBuffer;
+        this.allSpecColorBuffer = objModelMtl.allSpecColorBuffer;
+        this.allSpecShininess = objModelMtl.allSpecShininess;
+
+        this.mProgram = objModelMtl.mProgram;
+        this.mPositionHandle = objModelMtl.mPositionHandle;
+        this.mNormalHandle = objModelMtl.mNormalHandle;
+        this.mAmbColorHandle = objModelMtl.mAmbColorHandle;
+        this.mDiffColorHandle = objModelMtl.mDiffColorHandle;
+        this.mSpecColorHandle = objModelMtl.mSpecColorHandle;
+        this.mSpecShininessHandle = objModelMtl.mSpecShininessHandle;
+        this.mCameraPosHandle = objModelMtl.mCameraPosHandle;
+        this.mMVPMatrixHandle = objModelMtl.mMVPMatrixHandle;
+        this.mLightPosHandle = objModelMtl.mLightPosHandle;
+        this.mMVMatrixHandle = objModelMtl.mMVMatrixHandle;
+        this.mDistanceCoefHandle = objModelMtl.mDistanceCoefHandle;
+        this.mLightCoefHandle = objModelMtl.mLightCoefHandle;
+
+        this.lightCoef = objModelMtl.lightCoef;
+        this.distanceCoef = objModelMtl.distanceCoef;
+
+        this.allCoords = objModelMtl.allCoords;
+        this.allCoordsFloatArray = objModelMtl.allCoordsFloatArray;
+        this.allNormals = objModelMtl.allNormals;
     }
 
     public void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId){

@@ -14,6 +14,7 @@ public class Bonus extends BaseItem {
         super(context, objFileName, mtlFileName, 1f, 0f, 1, mPosition, mSpeed, mAcceleration);
     }
 
+    @Override
     public void decrementsBothLife(BaseItem other){
         this.life -= other.life;
     }
