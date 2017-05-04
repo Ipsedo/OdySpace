@@ -30,4 +30,17 @@
         android:text="Continue"
         android:onClick="next"/>
 
+    <Button
+        android:id="@+id/shop_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/continue_button"
+        android:layout_alignLeft="@+id/continue_button"
+        android:layout_alignRight="@+id/continue_button"
+        android:layout_alignStart="@+id/continue_button"
+        android:layout_below="@+id/continue_button"
+        android:layout_marginTop="24dp"
+        android:text="Shop"
+        android:onClick="shop"/>
+
 </RelativeLayout>

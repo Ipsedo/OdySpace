@@ -7,8 +7,8 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
+import com.samuelberrien.odyspace.shop.ShopActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         long maxLevel = sharedPref.getInt(getString(R.string.saved_max_level), defaultValue);
         intent.putExtra(MainActivity.LEVEL_ID, Integer.toString((int) maxLevel));
         startActivityForResult(intent, MainActivity.RESULT_VALUE);
+    }
+
+    public void shop(View v) {
+        Intent intent = new Intent(this, ShopActivity.class);
+        startActivity(intent);
     }
 
     @Override
