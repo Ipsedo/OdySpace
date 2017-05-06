@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.currLevel = 0;
         setContentView(R.layout.activity_main);
-        
+
         this.resetSharedPref();
     }
 
