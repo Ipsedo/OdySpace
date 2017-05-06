@@ -62,6 +62,9 @@ public class Test implements Level {
             this.icosahedrons.add(ico);
         }
 
+        /*CollisionThread tmp = new CollisionThread();
+        tmp.start();*/
+
         this.isInit = true;
     }
 
@@ -133,5 +136,33 @@ public class Test implements Level {
             return this.nbIcosahedron - this.icosahedrons.size() > 49;
         }
         return false;
+    }
+
+    private class CollisionThread extends Thread {
+
+        public CollisionThread(){
+            super("collsionThread");
+        }
+
+        public void run(){
+            while(true) {
+                synchronized (Test.this.ship) {
+                    synchronized (Test.this.rockets) {
+                        synchronized (Test.this.icosahedrons) {
+                            ArrayList<BaseItem> ami = new ArrayList<>(Test.this.rockets);
+                            ami.add(Test.this.ship);
+                            ArrayList<BaseItem> ennemi = new ArrayList<>(Test.this.icosahedrons);
+                            Octree octree = new Octree(Test.this.levelLimits, null, ami, ennemi, 8f);
+                            octree.computeOctree();
+                        }
+                    }
+                }
+                try {
+                    Thread.sleep(10L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
