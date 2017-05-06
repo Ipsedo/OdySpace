@@ -26,6 +26,8 @@ public interface Level {
 
     void removeObjects();
 
+    int getScore();
+
     boolean isDead();
 
     boolean isWinner();

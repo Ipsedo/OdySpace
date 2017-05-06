@@ -92,6 +92,11 @@ public class TestBoss implements Level {
     }
 
     @Override
+    public int getScore() {
+        return 0;
+    }
+
+    @Override
     public boolean isDead() {
         if(this.isInit) {
             return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();

@@ -9,6 +9,7 @@ import com.samuelberrien.odyspace.MainActivity;
 public class LevelActivity extends AppCompatActivity {
 
     public static final String LEVEL_RESULT = "LEVEL_RESULT";
+    public static final String LEVEL_SCORE = "LEVEL_SCORE";
 
     private MyGLSurfaceView mSurfaceView;
 

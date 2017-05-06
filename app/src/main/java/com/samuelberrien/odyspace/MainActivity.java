@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         this.currLevel = 0;
         setContentView(R.layout.activity_main);
 
-        this.resetSharedPref();
+        //this.resetSharedPref();
     }
 
     public void resetSharedPref() {
@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear().commit();
         sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.clear().commit();
+        sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         editor.clear().commit();
     }
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.commit();
                         }
                     }
+                    int score = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_SCORE));
                 }
                 break;
             }

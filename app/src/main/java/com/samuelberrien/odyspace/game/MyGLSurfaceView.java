@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 
 /**
  * Created by samuel on 16/04/17.
@@ -66,22 +67,24 @@ public class MyGLSurfaceView extends GLSurfaceView {
         @Override
         protected Void doInBackground(Void... voids) {
             while(!this.isCancelled()) {
+                try {
+                    Thread.sleep(1000L / 120L);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
                 if(MyGLSurfaceView.this.renderer.isDead()) {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(0));
+                    resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(MyGLSurfaceView.this.renderer.getLevelScore()));
                     MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
                     MyGLSurfaceView.this.levelActivity.finish();
                 }
                 if(MyGLSurfaceView.this.renderer.isWinner()) {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(1));
+                    resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(MyGLSurfaceView.this.renderer.getLevelScore()));
                     MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
                     MyGLSurfaceView.this.levelActivity.finish();
-                }
-                try {
-                    Thread.sleep(1000L / 120L);
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
                 }
             }
             return null;

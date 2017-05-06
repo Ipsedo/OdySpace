@@ -116,6 +116,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.currentLevel.init(this.context, this.ship, 1000f);
     }
 
+    public int getLevelScore() {
+        return this.currentLevel.getScore();
+    }
+
     /**
      * update the camera look point with orientation angles
      *

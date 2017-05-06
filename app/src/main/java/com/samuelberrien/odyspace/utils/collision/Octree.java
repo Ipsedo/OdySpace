@@ -56,9 +56,13 @@ public class Octree {
 
     private void computeCollision() {
         for (BaseItem i : this.ennemis)
-            for (BaseItem j : this.amis)
-                if (i.isCollided(j))
-                    i.decrementsBothLife(j);
+            synchronized (i) {
+                for (BaseItem j : this.amis)
+                    synchronized (j) {
+                        if (i.isCollided(j))
+                            i.decrementsBothLife(j);
+                    }
+            }
     }
 
     public void computeOctree() {

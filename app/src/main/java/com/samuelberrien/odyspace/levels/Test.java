@@ -11,6 +11,7 @@ import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Rocket;
 import com.samuelberrien.odyspace.objects.Ship;
+import com.samuelberrien.odyspace.shop.ShopActivity;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
@@ -42,6 +43,8 @@ public class Test implements Level {
 
     private boolean isInit = false;
 
+    private int score;
+
     @Override
     public void init(Context context, Ship ship, float levelLimitSize) {
         this.context = context;
@@ -62,10 +65,9 @@ public class Test implements Level {
             this.icosahedrons.add(ico);
         }
 
-        /*CollisionThread tmp = new CollisionThread();
-        tmp.start();*/
-
         this.isInit = true;
+
+        this.score = 0;
     }
 
     @Override
@@ -78,6 +80,8 @@ public class Test implements Level {
             i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         for (Explosion e : this.explosions)
             e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+
+
     }
 
     @Override
@@ -113,6 +117,7 @@ public class Test implements Level {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
                 ico.addExplosion(this.explosions);
                 this.icosahedrons.remove(i);
+                this.score++;
             } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
                 this.icosahedrons.remove(i);
             }
@@ -120,6 +125,11 @@ public class Test implements Level {
         for (int i = 0; i < this.rockets.size(); i++)
             if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
                 this.rockets.remove(i);
+    }
+
+    @Override
+    public int getScore() {
+        return this.score;
     }
 
     @Override
@@ -136,33 +146,5 @@ public class Test implements Level {
             return this.nbIcosahedron - this.icosahedrons.size() > 49;
         }
         return false;
-    }
-
-    private class CollisionThread extends Thread {
-
-        public CollisionThread(){
-            super("collsionThread");
-        }
-
-        public void run(){
-            while(true) {
-                synchronized (Test.this.ship) {
-                    synchronized (Test.this.rockets) {
-                        synchronized (Test.this.icosahedrons) {
-                            ArrayList<BaseItem> ami = new ArrayList<>(Test.this.rockets);
-                            ami.add(Test.this.ship);
-                            ArrayList<BaseItem> ennemi = new ArrayList<>(Test.this.icosahedrons);
-                            Octree octree = new Octree(Test.this.levelLimits, null, ami, ennemi, 8f);
-                            octree.computeOctree();
-                        }
-                    }
-                }
-                try {
-                    Thread.sleep(10L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 }
