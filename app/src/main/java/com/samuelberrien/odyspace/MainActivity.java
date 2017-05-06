@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.currLevel = 0;
         setContentView(R.layout.activity_main);
+        
+        this.resetSharedPref();
+    }
+
+    public void resetSharedPref() {
+        SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear().commit();
+        sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.clear().commit();
     }
 
     public void start(View v){
@@ -31,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, MainActivity.RESULT_VALUE);
     }
 
-    public void next(View v){
+    public void continueStory(View v){
         Intent intent = new Intent(this, LevelActivity.class);
         SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);

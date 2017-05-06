@@ -28,7 +28,7 @@
         android:layout_below="@+id/start_button"
         android:layout_marginTop="24dp"
         android:text="Continue"
-        android:onClick="next"/>
+        android:onClick="continueStory"/>
 
     <Button
         android:id="@+id/shop_button"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="saved_simple_fire_bought_default">true</bool>
+    <bool name="saved_quint_fire_bought_default">false</bool>
+    <bool name="saved_simple_bomb_bought_default">false</bool>
+</resources>
