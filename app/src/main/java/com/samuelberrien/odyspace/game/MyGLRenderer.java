@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace;
+package com.samuelberrien.odyspace.game;
 
 /**
  * Created by samuel on 16/04/17.

@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LevelActivity"
+            android:name=".game.LevelActivity"
             android:label="@string/title_activity_level"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".shop.ShopActivity"></activity>

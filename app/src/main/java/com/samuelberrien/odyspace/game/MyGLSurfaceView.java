@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace;
+package com.samuelberrien.odyspace.game;
 
 import android.app.Activity;
 import android.content.Context;

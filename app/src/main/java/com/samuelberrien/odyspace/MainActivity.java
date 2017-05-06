@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.shop.ShopActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
 

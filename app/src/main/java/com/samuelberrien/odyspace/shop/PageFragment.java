@@ -50,7 +50,7 @@ public class PageFragment extends Fragment {
         } else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
 
         } else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.BONUS_TAB) == 0) {
-            
+
         }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
