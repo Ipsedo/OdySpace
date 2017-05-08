@@ -76,23 +76,21 @@ public class TestBoss implements Level {
 
     @Override
     public void collide() {
-
-    }
-
-    @Override
-    public boolean isInit() {
-        return false;
-    }
-
-    @Override
-    public void removeObjects() {
         ArrayList<BaseItem> ami = new ArrayList<>(this.rocketsShip);
         ami.add(this.ship);
         ArrayList<BaseItem> ennemi = new ArrayList<>(this.rocketsBoss);
         ennemi.add(this.boss);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
         octree.computeOctree();
+    }
 
+    @Override
+    public boolean isInit() {
+        return this.isInit;
+    }
+
+    @Override
+    public void removeObjects() {
         for (int i = 0; i < this.rocketsShip.size(); i++)
             if (!this.rocketsShip.get(i).isAlive() || this.rocketsShip.get(i).isOutOfBound(this.levelLimits))
                 this.rocketsShip.remove(i);
