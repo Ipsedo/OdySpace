@@ -37,7 +37,7 @@ public class Boss extends BaseItem {
     private boolean changingColor;
 
     public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition) {
-        super(context, objFileName, mtlFileName, 1f, 0f, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f});
+        super(context, objFileName, mtlFileName, 1f, 0f, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.counter = 0;
         this.rand = new Random(System.currentTimeMillis());
@@ -115,7 +115,7 @@ public class Boss extends BaseItem {
             float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
             Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            Fire.fire(this.rocket, rockets, Fire.Type.FIRST, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
+            Fire.fire(this.rocket, rockets, Fire.Type.SIMPLE_FIRE, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
         }
     }
 

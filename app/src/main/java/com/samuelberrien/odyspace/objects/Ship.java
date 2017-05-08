@@ -1,6 +1,7 @@
 package com.samuelberrien.odyspace.objects;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
@@ -13,6 +14,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by samuel on 18/04/17.
@@ -38,14 +40,28 @@ public class Ship extends BaseItem {
 
     private ObjModelMtl rocket;
 
-    private Fire.Type fireType = Fire.Type.SECOND;
+    private Fire.Type fireType;
 
     public Ship(Context context){
-        super(context, "ship.obj", "ship.mtl", 1f, 0f, 1, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f});
+        super(context, "ship.obj", "ship.mtl", 1f, 0f, 1, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.life = this.MAXLIFE;
         this.context = context;
         this.lifeDraw = new Life(this.context);
         this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f);
+        this.setFireType();
+    }
+
+    private void setFireType() {
+        SharedPreferences sharedPref = this.context.getSharedPreferences(this.context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
+        String defaultValue = this.context.getString(R.string.saved_fire_type_default);
+        String fireType = sharedPref.getString(this.context.getString(R.string.current_fire_type), defaultValue);
+        if(fireType.equals(this.context.getString(R.string.fire_bonus_1))) {
+            this.fireType = Fire.Type.SIMPLE_FIRE;
+        } else if(fireType.equals(this.context.getString(R.string.fire_bonus_2))) {
+            this.fireType = Fire.Type.QUINT_FIRE;
+        } else if(fireType.equals(this.context.getString(R.string.fire_bonus_3))) {
+            this.fireType = Fire.Type.SIMPLE_BOMB;
+        }
     }
 
     public void move(float phi, float theta){
@@ -79,7 +95,7 @@ public class Ship extends BaseItem {
         super.mModelMatrix = mModelMatrix;
     }
 
-    public void fire(ArrayList<BaseItem> rockets){
+    public void fire(List<BaseItem> rockets){
         Fire.fire(this.rocket, rockets, this.fireType, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
     }
 

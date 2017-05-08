@@ -17,6 +17,8 @@ import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -34,12 +36,12 @@ public class Test implements Level {
 
     private Ship ship;
     private HeightMap heightMap;
-    private ArrayList<BaseItem> rockets;
+    private List<BaseItem> rockets;
 
-    private ArrayList<BaseItem> icosahedrons;
+    private List<BaseItem> icosahedrons;
     private int nbIcosahedron = 100;
 
-    private ArrayList<Explosion> explosions;
+    private List<Explosion> explosions;
 
     private boolean isInit = false;
 
@@ -53,13 +55,13 @@ public class Test implements Level {
         this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, -100f, levelLimitSize / 2f, -levelLimitSize / 2f);
 
-        this.rockets = new ArrayList<>();
-        this.icosahedrons = new ArrayList<>();
-        this.explosions = new ArrayList<>();
+        this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
+        this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
+        this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbIcosahedron; i++) {
-            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand);
+            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand, rand.nextFloat() * 2 + 1);
             ico.move();
             ico.makeExplosion(this.context);
             this.icosahedrons.add(ico);
@@ -100,19 +102,28 @@ public class Test implements Level {
     }
 
     @Override
-    public void removeObjects() {
+    public void collide() {
         ArrayList<BaseItem> ami = new ArrayList<>(this.rockets);
         ami.add(this.ship);
         ArrayList<BaseItem> ennemi = new ArrayList<>(this.icosahedrons);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
         octree.computeOctree();
+    }
 
-        for (int i = 0; i < this.explosions.size(); i++) {
+    @Override
+    public boolean isInit() {
+        return this.isInit;
+    }
+
+    @Override
+    public void removeObjects() {
+        for (int i = this.explosions.size() - 1; i >= 0; i--) {
             if (!this.explosions.get(i).isAlive()) {
                 this.explosions.remove(i);
             }
+
         }
-        for (int i = 0; i < this.icosahedrons.size(); i++) {
+        for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
                 ico.addExplosion(this.explosions);
@@ -122,9 +133,11 @@ public class Test implements Level {
                 this.icosahedrons.remove(i);
             }
         }
-        for (int i = 0; i < this.rockets.size(); i++)
+
+        for (int i = this.rockets.size() - 1; i >= 0; i--)
             if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
                 this.rockets.remove(i);
+
     }
 
     @Override
@@ -134,7 +147,7 @@ public class Test implements Level {
 
     @Override
     public boolean isDead() {
-        if(this.isInit) {
+        if (this.isInit) {
             return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
         }
         return false;
@@ -142,7 +155,7 @@ public class Test implements Level {
 
     @Override
     public boolean isWinner() {
-        if(this.isInit) {
+        if (this.isInit) {
             return this.nbIcosahedron - this.icosahedrons.size() > 49;
         }
         return false;

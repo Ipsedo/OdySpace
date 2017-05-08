@@ -6,6 +6,7 @@ import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,17 +20,17 @@ public class Icosahedron extends BaseItem {
 
     private Explosion mExplosion;
 
-    public Icosahedron(Context context, float[] mPosition, Random rand) {
-        super(context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f});
+    public Icosahedron(Context context, float[] mPosition, Random rand, float scale) {
+        super(context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
         super.changeColor(rand);
-        super.radius = 1f;
+        super.radius = scale;
     }
 
     public void makeExplosion(Context context){
         this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer);
     }
 
-    public void addExplosion(ArrayList<Explosion> explosions) {
+    public void addExplosion(List<Explosion> explosions) {
         explosions.add(this.mExplosion);
     }
 }

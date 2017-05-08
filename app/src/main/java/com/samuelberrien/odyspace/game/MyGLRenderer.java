@@ -54,7 +54,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Joystick joystick;
     private Controls controls;
 
-    private int currLevelId;
+    //private int currLevelId;
     private Level currentLevel;
     private boolean willQuit;
     private boolean isWinner;
@@ -67,10 +67,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     /**
      * @param context
      */
-    public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView, int currLevelId) {
+    public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView, int currLevelId, Level currentLevel, Joystick joystick, Controls controls) {
         this.context = context;
         this.myGLSurfaceView = myGLSurfaceView;
-        this.currLevelId = currLevelId;
+        this.joystick = joystick;
+        this.controls = controls;
+        this.currentLevel = currentLevel;
         this.willQuit = false;
         this.isWinner = false;
         this.isDead = false;
@@ -86,14 +88,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthMask(true);
         GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
 
-        this.joystick = new Joystick(this.context);
-        this.controls = new Controls(this.context);
+        this.joystick.initGraphics(this.context);
+        this.controls.initGraphics(this.context);
 
         this.ship = new Ship(this.context);
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
-        this.currentLevel = this.getCurrentLevel(this.currLevelId);
+        //this.currentLevel = this.getCurrentLevel(this.currLevelId);
 
         this.currentLevel.init(this.context, this.ship, 1000f);
 
@@ -110,11 +112,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
-    private void levelUp(){
+    /*private void levelUp(){
         this.currLevelId++;
         this.currentLevel = this.getCurrentLevel(this.currLevelId);
         this.currentLevel.init(this.context, this.ship, 1000f);
-    }
+    }*/
 
     public int getLevelScore() {
         return this.currentLevel.getScore();
@@ -197,69 +199,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * @param e
      */
     public void updateMotion(MotionEvent e){
-        int pointerIndex = e.getActionIndex();
-        float x = -(2f * e.getX(pointerIndex) / this.width - 1f);
-        float y = -(2f * e.getY(pointerIndex) / this.height - 1f);
-        switch (e.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                if(e.getX(pointerIndex) / this.height > 1f){
-                    if(!this.controls.isTouchFireButton(x, y)) {
-                        this.controls.setBoostVisible(true);
-                        this.controls.updateBoostPosition(x, y);
-                    }
-                } else {
-                    this.joystick.setVisible(true);
-                    this.joystick.updatePosition(x, y);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if(e.getX(pointerIndex) / this.height > 1f){
-                    this.controls.setBoostVisible(false);
-                } else {
-                    this.joystick.setVisible(false);
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if(e.getPointerCount() > 1) {
-                    if(e.getX(1) / this.height > 1) {
-                        if(!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f))) {
-                            this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.height - 1f));
-                        } else {
-                            this.controls.turnOffFire();
-                        }
-                    } else {
-                        this.joystick.updateStickPosition(-(2f * e.getX(1) / this.width - 1f), -(2f * e.getY(1) / this.height - 1f));
-                    }
-                }
-                if(e.getX(0) / this.height > 1) {
-                    if(!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f))) {
-                        this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.height - 1f));
-                    } else {
-                        this.controls.turnOffFire();
-                    }
-                } else {
-                    this.joystick.updateStickPosition(-(2f * e.getX(0) / this.width - 1f), -(2f * e.getY(0) / this.height - 1f));
-                }
-                break;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                if(e.getX(pointerIndex) / this.height > 1f){
-                    if(!this.controls.isTouchFireButton(x, y)) {
-                        this.controls.setBoostVisible(true);
-                        this.controls.updateBoostPosition(x, y);
-                    }
-                } else {
-                    this.joystick.setVisible(true);
-                    this.joystick.updatePosition(x, y);
-                }
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                if(e.getX(pointerIndex) / this.height > 1f){
-                    this.controls.setBoostVisible(false);
-                } else {
-                    this.joystick.setVisible(false);
-                }
-                break;
-        }
+
     }
 
     public boolean isWinner(){
@@ -294,6 +234,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.updateLight(0f, 250f, 0f);
 
         this.currentLevel.update(this.joystick, this.controls);
+        this.currentLevel.collide();
         this.currentLevel.removeObjects();
 
         this.updateCameraPosition(this.ship.getCamPosition());

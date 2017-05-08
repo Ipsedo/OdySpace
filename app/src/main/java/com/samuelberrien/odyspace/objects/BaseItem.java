@@ -39,7 +39,9 @@ public class BaseItem extends ObjModelMtl {
 
     protected float radius;
 
-    public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration){
+    protected float scale;
+
+    public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale){
         super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef);
         this.life = life;
         this.mPosition = mPosition;
@@ -49,10 +51,11 @@ public class BaseItem extends ObjModelMtl {
         Matrix.setIdentityM(this.mRotationMatrix, 0);
         this.mModelMatrix = new float[16];
         Matrix.setIdentityM(this.mModelMatrix, 0);
-        this.radius = 1f;
+        this.scale = scale;
+        this.radius = this.scale;
     }
 
-    public BaseItem(ObjModelMtl objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration){
+    public BaseItem(ObjModelMtl objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale){
         super(objModelMtl);
         this.life = life;
         this.mPosition = mPosition;
@@ -62,7 +65,8 @@ public class BaseItem extends ObjModelMtl {
         Matrix.setIdentityM(this.mRotationMatrix, 0);
         this.mModelMatrix = new float[16];
         Matrix.setIdentityM(this.mModelMatrix, 0);
-        this.radius = 1f;
+        this.scale = scale;
+        this.radius = this.scale;
     }
 
     public void changeColor(Random rand){
@@ -102,6 +106,7 @@ public class BaseItem extends ObjModelMtl {
         float[] tmp = new float[16];
         Matrix.setIdentityM(tmp, 0);
         Matrix.translateM(tmp, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
+        Matrix.scaleM(tmp, 0, this.scale, this.scale, this.scale);
         this.mModelMatrix = tmp.clone();
     }
 

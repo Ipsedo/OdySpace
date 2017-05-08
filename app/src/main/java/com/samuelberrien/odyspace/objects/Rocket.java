@@ -17,15 +17,15 @@ public class Rocket extends BaseItem {
 
     private float maxSpeed;
 
-    public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed) {
-        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, 1, mPosition, mSpeed, mAcceleration);
+    public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale) {
+        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, 1, mPosition, mSpeed, mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
         super.radius = 0.3f;
     }
 
-    public Rocket(ObjModelMtl objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed) {
-        super(objModelMtl, 1, mPosition, mSpeed, mAcceleration);
+    public Rocket(ObjModelMtl objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale) {
+        super(objModelMtl, 1, mPosition, mSpeed, mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
         super.radius = 0.3f;
@@ -46,6 +46,7 @@ public class Rocket extends BaseItem {
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
         float[] tmpMat = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
+        Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
         super.mModelMatrix = mModelMatrix;
     }

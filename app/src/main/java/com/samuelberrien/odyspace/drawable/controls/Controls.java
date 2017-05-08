@@ -51,6 +51,11 @@ public class Controls {
     float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
     public Controls (Context context) {
+        this.isBoostVisible = false;
+        this.isFire = false;
+    }
+
+    public void initGraphics(Context context) {
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
@@ -59,15 +64,11 @@ public class Controls {
         GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(this.mProgram);
 
-        this.isBoostVisible = false;
-        this.isFire = false;
-
         this.bind();
         this.makeBoost();
         this.makeFireButton();
         this.makeBoostStick();
         this.fireText = new ObjModel(context, "fire.obj", color[0], color[1], color[2], 1f, 0f, 0f);
-
     }
 
     private void bind(){

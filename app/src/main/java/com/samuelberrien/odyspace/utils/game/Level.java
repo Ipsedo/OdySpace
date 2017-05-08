@@ -24,6 +24,10 @@ public interface Level {
 
     void update(Joystick joystick, Controls controls);
 
+    void collide();
+
+    boolean isInit();
+
     void removeObjects();
 
     int getScore();

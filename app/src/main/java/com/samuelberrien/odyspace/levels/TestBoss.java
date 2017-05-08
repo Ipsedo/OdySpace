@@ -75,6 +75,16 @@ public class TestBoss implements Level {
     }
 
     @Override
+    public void collide() {
+
+    }
+
+    @Override
+    public boolean isInit() {
+        return false;
+    }
+
+    @Override
     public void removeObjects() {
         ArrayList<BaseItem> ami = new ArrayList<>(this.rocketsShip);
         ami.add(this.ship);
