@@ -106,7 +106,6 @@ public class TestThread implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
-
     }
 
     @Override
@@ -147,7 +146,6 @@ public class TestThread implements Level {
         for (int i = this.rockets.size() - 1; i >= 0; i--)
             if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
                 this.rockets.remove(i);
-
     }
 
     @Override
@@ -157,17 +155,11 @@ public class TestThread implements Level {
 
     @Override
     public boolean isDead() {
-        if (this.isInit) {
-            return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
-        }
-        return false;
+        return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
     }
 
     @Override
     public boolean isWinner() {
-        if (this.isInit) {
-            return this.nbIcosahedron - this.icosahedrons.size() > 49;
-        }
-        return false;
+        return this.nbIcosahedron - this.icosahedrons.size() > 49;
     }
 }
