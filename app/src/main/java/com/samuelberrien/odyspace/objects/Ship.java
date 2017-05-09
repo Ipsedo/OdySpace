@@ -102,10 +102,10 @@ public class Ship extends BaseItem {
     public float[] getCamPosition(){
         float[] res = new float[3];
         float[] u = new float[4];
-        Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
+        Matrix.multiplyMV(u, 0, super.mRotationMatrix.clone(), 0, this.originalSpeedVec.clone(), 0);
 
         float[] v = new float[4];
-        Matrix.multiplyMV(v, 0, super.mRotationMatrix, 0, this.originalUpVec, 0);
+        Matrix.multiplyMV(v, 0, super.mRotationMatrix.clone(), 0, this.originalUpVec.clone(), 0);
 
         res[0] = -10f * u[0] + super.mPosition[0] + 3f * v[0];
         res[1] = -10f * u[1] + super.mPosition[1] + 3f * v[1];
