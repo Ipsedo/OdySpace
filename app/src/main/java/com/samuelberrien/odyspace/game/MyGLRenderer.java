@@ -97,7 +97,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
         //this.currentLevel = this.getCurrentLevel(this.currLevelId);
 
-        this.currentLevel.init(this.context, this.ship, 1000f);
+        this.currentLevel.init(this.context, this.ship, 1000f, this.joystick, this.controls);
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
@@ -233,13 +233,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.updateLight(0f, 250f, 0f);
 
-        this.currentLevel.update(this.joystick, this.controls);
+        /*this.currentLevel.update();
         this.currentLevel.collide();
-        this.currentLevel.removeObjects();
+        this.currentLevel.removeObjects();*/
 
-        this.updateCameraPosition(this.ship.getCamPosition());
-        this.updateCamLookVec(this.ship.getCamLookAtVec());
-        this.updateCamUpVec(this.ship.getCamUpVec());
+        this.updateCameraPosition(this.ship.getCamPosition().clone());
+        this.updateCamLookVec(this.ship.getCamLookAtVec().clone());
+        this.updateCamUpVec(this.ship.getCamUpVec().clone());
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         this.currentLevel.draw(this.mProjectionMatrix.clone(), this.mViewMatrix.clone(), this.mLightPosInEyeSpace.clone(), this.mCameraPosition.clone());

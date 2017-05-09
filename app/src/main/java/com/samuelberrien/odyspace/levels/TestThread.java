@@ -3,15 +3,13 @@ package com.samuelberrien.odyspace.levels;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.HeightMap;
+import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
-import com.samuelberrien.odyspace.objects.Rocket;
 import com.samuelberrien.odyspace.objects.Ship;
-import com.samuelberrien.odyspace.shop.ShopActivity;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
@@ -22,13 +20,13 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by samuel on 20/04/17.
+ * Created by samuel on 09/05/17.
  * Copyright samuel, 2016 - 2017.
  * Toute reproduction ou utilisation sans l'autorisation
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Test implements Level {
+public class TestThread implements Level {
 
     Context context;
 
@@ -70,7 +68,6 @@ public class Test implements Level {
             this.icosahedrons.add(ico);
         }
 
-
         this.score = 0;
 
         this.joystick = joystick;
@@ -83,14 +80,15 @@ public class Test implements Level {
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
-        for (BaseItem r : this.rockets)
+        ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
+        for(BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for (BaseItem i : this.icosahedrons)
+        tmp = new ArrayList<>(this.icosahedrons);
+        for(BaseItem i : tmp)
             i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for (Explosion e : this.explosions)
+        ArrayList<Explosion> tmp2 = new ArrayList<>(this.explosions);
+        for(Explosion e : tmp2)
             e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-
-
     }
 
     @Override
@@ -98,14 +96,19 @@ public class Test implements Level {
         float[] tmp = this.joystick.getStickPosition();
         this.ship.updateMaxSpeed(this.controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
-        if (controls.isFire()) {
-            this.ship.fire(this.rockets);
-            controls.turnOffFire();
+        if (this.controls.isFire()) {
+            synchronized (this.rockets) {
+                this.ship.fire(this.rockets);
+            }
+            this.controls.turnOffFire();
         }
-        for (BaseItem r : this.rockets)
+        ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
+        for(BaseItem r : tmpArr)
             r.move();
-        for (Explosion e : this.explosions)
+        ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
+        for(Explosion e : tmpArr2)
             e.move();
+
     }
 
     @Override
@@ -124,27 +127,32 @@ public class Test implements Level {
 
     @Override
     public void removeObjects() {
-        for (int i = this.explosions.size() - 1; i >= 0; i--) {
-            if (!this.explosions.get(i).isAlive()) {
-                this.explosions.remove(i);
-            }
-
-        }
-        for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
-            if (!this.icosahedrons.get(i).isAlive()) {
-                Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
-                ico.addExplosion(this.explosions);
-                this.icosahedrons.remove(i);
-                this.score++;
-            } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
-                this.icosahedrons.remove(i);
+        synchronized (this.explosions) {
+            for (int i = this.explosions.size() - 1; i >= 0; i--) {
+                if (!this.explosions.get(i).isAlive()) {
+                    this.explosions.remove(i);
+                }
             }
         }
-
-        for (int i = this.rockets.size() - 1; i >= 0; i--)
-            if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
-                this.rockets.remove(i);
-
+        synchronized (this.icosahedrons) {
+            for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
+                if (!this.icosahedrons.get(i).isAlive()) {
+                    Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
+                    synchronized (this.explosions) {
+                        ico.addExplosion(this.explosions);
+                    }
+                    this.icosahedrons.remove(i);
+                    this.score++;
+                } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
+                    this.icosahedrons.remove(i);
+                }
+            }
+        }
+        synchronized (this.rockets) {
+            for (int i = this.rockets.size() - 1; i >= 0; i--)
+                if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
+                    this.rockets.remove(i);
+        }
     }
 
     @Override

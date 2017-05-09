@@ -18,11 +18,11 @@ public interface Level {
 
     int MAX_LEVEL = 2;
 
-    void init(Context context, Ship ship, float levelLimitSize);
+    void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
 
     void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
-    void update(Joystick joystick, Controls controls);
+    void update();
 
     void collide();
 

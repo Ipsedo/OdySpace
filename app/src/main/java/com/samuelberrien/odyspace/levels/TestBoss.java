@@ -33,9 +33,11 @@ public class TestBoss implements Level {
     private ArrayList<BaseItem> rocketsShip;
     private ArrayList<BaseItem> rocketsBoss;
     private boolean isInit = false;
+    private Joystick joystick;
+    private Controls controls;
 
     @Override
-    public void init(Context context, Ship ship, float levelLimitSize) {
+    public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
         this.ship = ship;
         this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
@@ -43,6 +45,8 @@ public class TestBoss implements Level {
         this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 15, new float[]{0f, 0f, 50f});
         this.rocketsShip = new ArrayList<>();
         this.rocketsBoss = new ArrayList<>();
+        this.joystick = joystick;
+        this.controls = controls;
         this.isInit = true;
     }
 
@@ -58,9 +62,9 @@ public class TestBoss implements Level {
     }
 
     @Override
-    public void update(Joystick joystick, Controls controls) {
-        float[] tmp = joystick.getStickPosition();
-        this.ship.updateMaxSpeed(controls.getBoost());
+    public void update() {
+        float[] tmp = this.joystick.getStickPosition();
+        this.ship.updateMaxSpeed(this.controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
         if (controls.isFire()) {
             this.ship.fire(this.rocketsShip);

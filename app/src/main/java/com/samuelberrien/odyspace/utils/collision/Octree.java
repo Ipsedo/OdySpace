@@ -4,6 +4,7 @@ import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by samuel on 26/04/17.
@@ -18,12 +19,12 @@ public class Octree {
 
     private Octree father;
 
-    private ArrayList<BaseItem> amis;
-    private ArrayList<BaseItem> ennemis;
+    private List<BaseItem> amis;
+    private List<BaseItem> ennemis;
 
     private float limitSize;
 
-    public Octree(LevelLimits levelLimits, Octree father, ArrayList<BaseItem> amis, ArrayList<BaseItem> ennemis, float limitSize) {
+    public Octree(LevelLimits levelLimits, Octree father, List<BaseItem> amis, List<BaseItem> ennemis, float limitSize) {
         this.levelLimits = levelLimits;
         this.father = father;
         this.amis = amis;
@@ -41,12 +42,12 @@ public class Octree {
             futurAmis[i] = new ArrayList<>();
             futurEnnemis[i] = new ArrayList<>();
 
-            for (BaseItem j : this.amis)
-                if (!j.isOutOfBound(levelLimitsSons[i]))
-                    futurAmis[i].add(j);
-            for (BaseItem j : this.ennemis)
-                if (!j.isOutOfBound(levelLimitsSons[i]))
-                    futurEnnemis[i].add(j);
+            for (int j = this.amis.size() - 1; j >= 0; j--)
+                if (!this.amis.get(j).isOutOfBound(levelLimitsSons[i]))
+                    futurAmis[i].add(this.amis.get(j));
+            for (int j = this.ennemis.size() - 1; j >= 0; j--)
+                if (!this.ennemis.get(j).isOutOfBound(levelLimitsSons[i]))
+                    futurEnnemis[i].add(this.ennemis.get(j));
 
             sons[i] = new Octree(levelLimitsSons[i], this, futurAmis[i], futurEnnemis[i], this.limitSize);
         }
@@ -55,10 +56,10 @@ public class Octree {
     }
 
     private void computeCollision() {
-        for (BaseItem i : this.ennemis)
-            for (BaseItem j : this.amis)
-                if (i.isCollided(j))
-                    i.decrementsBothLife(j);
+        for (int i = this.ennemis.size() - 1; i >= 0; i--)
+            for (int j = this.amis.size() - 1; j >= 0; j--)
+                if (this.ennemis.get(i).isCollided(this.amis.get(j)))
+                    this.ennemis.get(i).decrementsBothLife(this.amis.get(j));
     }
 
     public void computeOctree() {

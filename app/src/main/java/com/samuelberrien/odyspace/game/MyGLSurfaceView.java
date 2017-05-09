@@ -11,8 +11,12 @@ import android.view.SurfaceHolder;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.Test;
+import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.objects.Ship;
+import com.samuelberrien.odyspace.utils.game.CollisionThread;
 import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.game.RemoveThread;
+import com.samuelberrien.odyspace.utils.game.UpdateThread;
 
 /**
  * Created by samuel on 16/04/17.
@@ -31,7 +35,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private CheckAppResult checkAppResult;
 
     private Level currentLevel;
-    private Ship ship;
     private Joystick joystick;
     private Controls controls;
 
@@ -51,18 +54,48 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.joystick = new Joystick(this.context);
         this.controls = new Controls(this.context);
 
-        this.currentLevel = new Test();
+        this.currentLevel = new TestThread();
 
         this.renderer = new MyGLRenderer(this.context, this, levelID, this.currentLevel, this.joystick, this.controls);
         this.setRenderer(this.renderer);
         this.checkAppResult = new CheckAppResult();
         this.checkAppResult.execute();
-        /*this.collisionThread = new CollisionThread();
-        this.collisionThread.execute();
-        this.updateThread = new UpdateThread();
-        this.updateThread.execute();
-        this.removeThread = new RemoveThread();
-        this.removeThread.execute();*/
+    }
+
+    @Override
+    public void onAttachedToWindow(){
+        super.onAttachedToWindow();
+        this.initThreads();
+    }
+
+    @Override
+    public void onDetachedFromWindow(){
+        this.killThread();
+        super.onDetachedFromWindow();
+    }
+
+    private void initThreads() {
+        this.collisionThread = new CollisionThread(this.currentLevel);
+        this.updateThread = new UpdateThread(this.currentLevel);
+        this.removeThread = new RemoveThread(this.currentLevel);
+        this.collisionThread.start();
+        this.updateThread.start();
+        this.removeThread.start();
+        System.out.println("INIT THREAD SAM");
+    }
+
+    private void killThread() {
+        this.collisionThread.setCanceled(true);
+        this.updateThread.setCanceled(true);
+        this.removeThread.setCanceled(true);
+        try {
+            this.collisionThread.join();
+            this.updateThread.join();
+            this.removeThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("KILL THREAD SAM");
     }
 
     @Override
@@ -138,16 +171,14 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
     public void onPause() {
+        //this.killThread();
         this.checkAppResult.cancel(true);
-        /*this.collisionThread.cancel(true);
-        this.removeThread.cancel(true);
-        this.updateThread.cancel(true);*/
         super.onPause();
     }
 
     public void onResume() {
         super.onResume();
-
+        //this.initThreads();
         if(this.checkAppResult.isCancelled()) {
             this.checkAppResult.cancel(false);
         }
@@ -155,30 +186,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
             this.checkAppResult = new CheckAppResult();
             this.checkAppResult.execute();
         }
-
-        /*if(this.updateThread.isCancelled()) {
-            this.updateThread.cancel(false);
-        }
-        if(this.updateThread.getStatus() == AsyncTask.Status.FINISHED) {
-            this.updateThread = new UpdateThread();
-            this.updateThread.execute();
-        }
-
-        if(this.removeThread.isCancelled()) {
-            this.removeThread.cancel(false);
-        }
-        if(this.removeThread.getStatus() == AsyncTask.Status.FINISHED) {
-            this.removeThread = new RemoveThread();
-            this.removeThread.execute();
-        }
-
-        if(this.collisionThread.isCancelled()) {
-            this.collisionThread.cancel(false);
-        }
-        if(this.collisionThread.getStatus() == AsyncTask.Status.FINISHED) {
-            this.collisionThread = new CollisionThread();
-            this.collisionThread.execute();
-        }*/
     }
 
     private class CheckAppResult extends AsyncTask<Void, Void, Void> {
@@ -205,55 +212,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
                     MyGLSurfaceView.this.levelActivity.finish();
                 }
-            }
-            return null;
-        }
-    }
-
-    private class CollisionThread extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            while(!this.isCancelled()) {
-                try {
-                    Thread.sleep(10L);
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
-                }
-                MyGLSurfaceView.this.currentLevel.collide();
-            }
-            return null;
-        }
-    }
-
-    private class UpdateThread extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            while(!this.isCancelled() && !MyGLSurfaceView.this.currentLevel.isInit()){
-
-            }
-            while(!this.isCancelled()) {
-                System.out.println("GO : running");
-                try {
-                    Thread.sleep(10L);
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
-                }
-                MyGLSurfaceView.this.currentLevel.update(MyGLSurfaceView.this.joystick, MyGLSurfaceView.this.controls);
-            }
-            return null;
-        }
-    }
-
-    private class RemoveThread extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            while(!this.isCancelled()) {
-                try {
-                    Thread.sleep(10L);
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
-                }
-                MyGLSurfaceView.this.currentLevel.removeObjects();
             }
             return null;
         }
