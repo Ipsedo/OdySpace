@@ -74,10 +74,10 @@ public class Ship extends BaseItem {
         Matrix.multiplyMM(currRotMatrix, 0, pitchMatrix, 0, rollMatrix, 0);
 
         float[] currSpeed = new float[4];
-        Matrix.multiplyMV(currSpeed, 0, currRotMatrix, 0, this.originalSpeedVec.clone(), 0);
+        Matrix.multiplyMV(currSpeed, 0, currRotMatrix, 0, this.originalSpeedVec, 0);
 
         float[] realSpeed = new float[4];
-        Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix.clone(), 0, currSpeed, 0);
+        Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, currSpeed, 0);
 
         float[] tmpMat = super.mRotationMatrix.clone();
         Matrix.multiplyMM(super.mRotationMatrix, 0, tmpMat, 0, currRotMatrix, 0);
@@ -90,7 +90,7 @@ public class Ship extends BaseItem {
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
         tmpMat = mModelMatrix.clone();
-        Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix.clone(), 0);
+        Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
 
         super.mModelMatrix = mModelMatrix;
     }
@@ -102,10 +102,10 @@ public class Ship extends BaseItem {
     public float[] getCamPosition(){
         float[] res = new float[3];
         float[] u = new float[4];
-        Matrix.multiplyMV(u, 0, super.mRotationMatrix.clone(), 0, this.originalSpeedVec.clone(), 0);
+        Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
 
         float[] v = new float[4];
-        Matrix.multiplyMV(v, 0, super.mRotationMatrix.clone(), 0, this.originalUpVec.clone(), 0);
+        Matrix.multiplyMV(v, 0, super.mRotationMatrix, 0, this.originalUpVec, 0);
 
         res[0] = -10f * u[0] + super.mPosition[0] + 3f * v[0];
         res[1] = -10f * u[1] + super.mPosition[1] + 3f * v[1];
