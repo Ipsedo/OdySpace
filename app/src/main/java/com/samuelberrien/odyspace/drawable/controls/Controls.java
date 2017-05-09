@@ -140,21 +140,25 @@ public class Controls {
     }
 
     public void updateBoostPosition(float x, float y) {
-        x = x * this.ratio;
-        this.mBoostPosition[0] = x;
-        this.mBoostPosition[1] = y;
-        this.mBoostPosition[2] = 0f;
+        if (this.isBoostVisible) {
+            x = x * this.ratio;
+            this.mBoostPosition[0] = x;
+            this.mBoostPosition[1] = y;
+            this.mBoostPosition[2] = 0f;
 
-        this.mBoostStickPosition = this.mBoostPosition.clone();
+            this.mBoostStickPosition = this.mBoostPosition.clone();
+        }
     }
 
     public void updateBoostStickPosition(float y) {
-        if (y > this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2) {
-            this.mBoostStickPosition[1] = this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2;
-        } else if (y < this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2) {
-            this.mBoostStickPosition[1] = this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2;
-        } else {
-            this.mBoostStickPosition[1] = y;
+        if (this.isBoostVisible) {
+            if (y > this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2) {
+                this.mBoostStickPosition[1] = this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2;
+            } else if (y < this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2) {
+                this.mBoostStickPosition[1] = this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2;
+            } else {
+                this.mBoostStickPosition[1] = y;
+            }
         }
     }
 
