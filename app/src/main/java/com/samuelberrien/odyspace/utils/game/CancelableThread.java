@@ -9,7 +9,7 @@ package com.samuelberrien.odyspace.utils.game;
 
 public abstract class CancelableThread extends Thread {
 
-    public static long TIME_TO_WAIT = 40L;
+    public static long TIME_TO_WAIT = 25L;
 
     private boolean isCanceled;
     protected Level level;

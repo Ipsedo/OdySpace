@@ -97,9 +97,8 @@ public class TestThread implements Level {
         this.ship.updateMaxSpeed(this.controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
         if (this.controls.isFire()) {
-            synchronized (this.rockets) {
                 this.ship.fire(this.rockets);
-            }
+            
             this.controls.turnOffFire();
         }
         ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
@@ -127,14 +126,12 @@ public class TestThread implements Level {
 
     @Override
     public void removeObjects() {
-        synchronized (this.explosions) {
             for (int i = this.explosions.size() - 1; i >= 0; i--) {
                 if (!this.explosions.get(i).isAlive()) {
                     this.explosions.remove(i);
                 }
-            }
+
         }
-        synchronized (this.icosahedrons) {
             for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
                 if (!this.icosahedrons.get(i).isAlive()) {
                     Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
@@ -146,13 +143,12 @@ public class TestThread implements Level {
                 } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
                     this.icosahedrons.remove(i);
                 }
-            }
+
         }
-        synchronized (this.rockets) {
             for (int i = this.rockets.size() - 1; i >= 0; i--)
                 if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
                     this.rockets.remove(i);
-        }
+
     }
 
     @Override

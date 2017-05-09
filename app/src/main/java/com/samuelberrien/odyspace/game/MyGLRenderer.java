@@ -194,52 +194,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(this.mLightPosInEyeSpace, 0, this.mViewMatrix, 0, this.mLightPosInWorldSpace, 0);
     }
 
-    /**
-     *
-     * @param e
-     */
-    public void updateMotion(MotionEvent e){
-
-    }
-
-    public boolean isWinner(){
-        return this.isWinner;
-    }
-
-    public boolean isDead(){
-        return this.isDead;
-    }
-
     @Override
     public void onDrawFrame(GL10 unused) {
-        if(this.willQuit){
-            try {
-                Thread.sleep(2000L);
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
-            }
-            if(this.currentLevel.isWinner()){
-                this.isWinner = true;
-            } else if(this.currentLevel.isDead()){
-                this.isDead = true;
-            }
-            this.willQuit = false;
-        }
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
-        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
-
-        this.updateLight(0f, 250f, 0f);
 
         /*this.currentLevel.update();
         this.currentLevel.collide();
         this.currentLevel.removeObjects();*/
 
-        this.updateCameraPosition(this.ship.getCamPosition().clone());
-        this.updateCamLookVec(this.ship.getCamLookAtVec().clone());
-        this.updateCamUpVec(this.ship.getCamUpVec().clone());
+        this.updateCameraPosition(this.ship.getCamPosition());
+        this.updateCamLookVec(this.ship.getCamLookAtVec());
+        this.updateCamUpVec(this.ship.getCamUpVec());
+
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
+        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
+
+        this.updateLight(0f, 250f, 0f);
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         this.currentLevel.draw(this.mProjectionMatrix.clone(), this.mViewMatrix.clone(), this.mLightPosInEyeSpace.clone(), this.mCameraPosition.clone());
@@ -249,13 +220,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.controls.draw();
         this.ship.drawLife();
 
-        if(this.currentLevel.isDead()){
+        /*if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);
             this.willQuit = true;
         }else if(this.currentLevel.isWinner()){
             new LevelDone(this.context).draw(this.ratio);
             this.willQuit = true;
-        }
+        }*/
 
         System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));
         this.currTime = System.currentTimeMillis();

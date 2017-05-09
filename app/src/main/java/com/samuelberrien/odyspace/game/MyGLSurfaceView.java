@@ -14,6 +14,7 @@ import com.samuelberrien.odyspace.levels.Test;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.game.CollisionThread;
+import com.samuelberrien.odyspace.utils.game.EndGameThread;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.RemoveThread;
 import com.samuelberrien.odyspace.utils.game.UpdateThread;
@@ -32,8 +33,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     private MyGLRenderer renderer;
 
-    private CheckAppResult checkAppResult;
-
     private Level currentLevel;
     private Joystick joystick;
     private Controls controls;
@@ -41,6 +40,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private CollisionThread collisionThread;
     private UpdateThread updateThread;
     private RemoveThread removeThread;
+    private EndGameThread endGameThread;
 
     /**
      * @param context
@@ -58,18 +58,16 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         this.renderer = new MyGLRenderer(this.context, this, levelID, this.currentLevel, this.joystick, this.controls);
         this.setRenderer(this.renderer);
-        this.checkAppResult = new CheckAppResult();
-        this.checkAppResult.execute();
     }
 
     @Override
-    public void onAttachedToWindow(){
+    public void onAttachedToWindow() {
         super.onAttachedToWindow();
         this.initThreads();
     }
 
     @Override
-    public void onDetachedFromWindow(){
+    public void onDetachedFromWindow() {
         this.killThread();
         super.onDetachedFromWindow();
     }
@@ -78,24 +76,26 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.collisionThread = new CollisionThread(this.currentLevel);
         this.updateThread = new UpdateThread(this.currentLevel);
         this.removeThread = new RemoveThread(this.currentLevel);
+        this.endGameThread = new EndGameThread(this.currentLevel, this.levelActivity);
         this.collisionThread.start();
         this.updateThread.start();
         this.removeThread.start();
-        System.out.println("INIT THREAD SAM");
+        this.endGameThread.start();
     }
 
     private void killThread() {
         this.collisionThread.setCanceled(true);
         this.updateThread.setCanceled(true);
         this.removeThread.setCanceled(true);
+        this.endGameThread.setCanceled(true);
         try {
             this.collisionThread.join();
             this.updateThread.join();
             this.removeThread.join();
+            this.endGameThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("KILL THREAD SAM");
     }
 
     @Override
@@ -103,117 +103,68 @@ public class MyGLSurfaceView extends GLSurfaceView {
         int pointerIndex = e.getActionIndex();
         float x = -(2f * e.getX(pointerIndex) / this.getWidth() - 1f);
         float y = -(2f * e.getY(pointerIndex) / this.getHeight() - 1f);
-        synchronized (this.joystick) {
-            synchronized (this.controls) {
-                switch (e.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-                            if (!this.controls.isTouchFireButton(x, y)) {
-                                this.controls.setBoostVisible(true);
-                                this.controls.updateBoostPosition(x, y);
-                            }
-                        } else {
-                            this.joystick.setVisible(true);
-                            this.joystick.updatePosition(x, y);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-                            this.controls.setBoostVisible(false);
-                        } else {
-                            this.joystick.setVisible(false);
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (e.getPointerCount() > 1) {
-                            if (e.getX(1) / this.getHeight() > 1) {
-                                if (!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f))) {
-                                    this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.getHeight() - 1f));
-                                } else {
-                                    this.controls.turnOffFire();
-                                }
-                            } else {
-                                this.joystick.updateStickPosition(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f));
-                            }
-                        }
-                        if (e.getX(0) / this.getHeight() > 1) {
-                            if (!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f))) {
-                                this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.getHeight() - 1f));
-                            } else {
-                                this.controls.turnOffFire();
-                            }
-                        } else {
-                            this.joystick.updateStickPosition(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f));
-                        }
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-                            if (!this.controls.isTouchFireButton(x, y)) {
-                                this.controls.setBoostVisible(true);
-                                this.controls.updateBoostPosition(x, y);
-                            }
-                        } else {
-                            this.joystick.setVisible(true);
-                            this.joystick.updatePosition(x, y);
-                        }
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-                            this.controls.setBoostVisible(false);
-                        } else {
-                            this.joystick.setVisible(false);
-                        }
-                        break;
+        switch (e.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                if (e.getX(pointerIndex) / this.getHeight() > 1f) {
+                    if (!this.controls.isTouchFireButton(x, y)) {
+                        this.controls.setBoostVisible(true);
+                        this.controls.updateBoostPosition(x, y);
+                    }
+                } else {
+                    this.joystick.setVisible(true);
+                    this.joystick.updatePosition(x, y);
                 }
-            }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (e.getX(pointerIndex) / this.getHeight() > 1f) {
+                    this.controls.setBoostVisible(false);
+                } else {
+                    this.joystick.setVisible(false);
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (e.getPointerCount() > 1) {
+                    if (e.getX(1) / this.getHeight() > 1) {
+                        if (!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f))) {
+                            this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.getHeight() - 1f));
+                        } else {
+                            this.controls.turnOffFire();
+                        }
+                    } else {
+                        this.joystick.updateStickPosition(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f));
+                    }
+                }
+                if (e.getX(0) / this.getHeight() > 1) {
+                    if (!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f))) {
+                        this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.getHeight() - 1f));
+                    } else {
+                        this.controls.turnOffFire();
+                    }
+                } else {
+                    this.joystick.updateStickPosition(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f));
+                }
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                if (e.getX(pointerIndex) / this.getHeight() > 1f) {
+                    if (!this.controls.isTouchFireButton(x, y)) {
+                        this.controls.setBoostVisible(true);
+                        this.controls.updateBoostPosition(x, y);
+                    }
+                } else {
+                    this.joystick.setVisible(true);
+                    this.joystick.updatePosition(x, y);
+                }
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                if (e.getX(pointerIndex) / this.getHeight() > 1f) {
+                    this.controls.setBoostVisible(false);
+                } else {
+                    this.joystick.setVisible(false);
+                }
+                break;
         }
+
+
         return true;
-    }
-
-    public void onPause() {
-        //this.killThread();
-        this.checkAppResult.cancel(true);
-        super.onPause();
-    }
-
-    public void onResume() {
-        super.onResume();
-        //this.initThreads();
-        if(this.checkAppResult.isCancelled()) {
-            this.checkAppResult.cancel(false);
-        }
-        if (this.checkAppResult.getStatus() == AsyncTask.Status.FINISHED) {
-            this.checkAppResult = new CheckAppResult();
-            this.checkAppResult.execute();
-        }
-    }
-
-    private class CheckAppResult extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            while(!this.isCancelled()) {
-                try {
-                    Thread.sleep(1000L / 120L);
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
-                }
-                if(MyGLSurfaceView.this.renderer.isDead()) {
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(0));
-                    resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(MyGLSurfaceView.this.renderer.getLevelScore()));
-                    MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-                    MyGLSurfaceView.this.levelActivity.finish();
-                }
-                if(MyGLSurfaceView.this.renderer.isWinner()) {
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(1));
-                    resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(MyGLSurfaceView.this.renderer.getLevelScore()));
-                    MyGLSurfaceView.this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-                    MyGLSurfaceView.this.levelActivity.finish();
-                }
-            }
-            return null;
-        }
     }
 }
