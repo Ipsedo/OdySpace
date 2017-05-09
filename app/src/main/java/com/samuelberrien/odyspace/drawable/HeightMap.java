@@ -56,7 +56,6 @@ public class HeightMap {
     private float[] mModelMatrix;
 
     /**
-     *
      * @param context
      * @param texHMResId
      * @param texResId
@@ -64,7 +63,7 @@ public class HeightMap {
      * @param lightCoeff
      * @param distanceCoeff
      */
-    public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff, float scale, float limitHeight){
+    public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff, float scale, float limitHeight) {
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.height_map_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.height_map_fs));
 
@@ -101,20 +100,20 @@ public class HeightMap {
     /**
      *
      */
-    private void initPlan(){
+    private void initPlan() {
         nbFaces = NBSTRIPS * (NBSLICES + 1) * 2;
-        points = new float[ nbFaces * 3 ];
-        for( int indStrip = 0 ; indStrip < NBSTRIPS ; indStrip++ ) {
-            for( int indFace = 0 ; indFace <= NBSLICES ; indFace++ ) {
+        points = new float[nbFaces * 3];
+        for (int indStrip = 0; indStrip < NBSTRIPS; indStrip++) {
+            for (int indFace = 0; indFace <= NBSLICES; indFace++) {
                 int indPoint = indStrip * (NBSLICES + 1) * 2 + indFace * 2;
-                points[ indPoint * 3 ] = (float) indFace / (float) NBSLICES;
-                points[ indPoint * 3 + 1 ] = 0.0f;
-                points[ indPoint * 3 + 2 ] = (float) indStrip / (float) NBSTRIPS;
+                points[indPoint * 3] = (float) indFace / (float) NBSLICES;
+                points[indPoint * 3 + 1] = 0.0f;
+                points[indPoint * 3 + 2] = (float) indStrip / (float) NBSTRIPS;
 
                 indPoint++;
-                points[ indPoint * 3 ] = (float) indFace / (float) NBSLICES;
-                points[ indPoint * 3 + 1 ] = 0.0f;
-                points[ indPoint * 3 + 2 ] = ((float) indStrip + 1) / (float) NBSTRIPS;
+                points[indPoint * 3] = (float) indFace / (float) NBSLICES;
+                points[indPoint * 3 + 1] = 0.0f;
+                points[indPoint * 3 + 2] = ((float) indStrip + 1) / (float) NBSTRIPS;
             }
         }
         mPositions = ByteBuffer.allocateDirect(points.length * mBytesPerFloat)
@@ -131,12 +130,11 @@ public class HeightMap {
         this.mModelMatrix = mModelMatrix.clone();
     }
 
-    public float getLimitHeight(){
+    public float getLimitHeight() {
         return this.limitHeight;
     }
 
     /**
-     *
      * @param pMatrix
      * @param vMatrix
      * @param mLightPosInEyeSpace
@@ -178,7 +176,7 @@ public class HeightMap {
         GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoeff);
 
         int nbStackTriangles = (NBSLICES + 1) * 2;
-        for(int i = 0 ; i < NBSTRIPS; i++)
+        for (int i = 0; i < NBSTRIPS; i++)
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, i * nbStackTriangles, nbStackTriangles);
     }
 }

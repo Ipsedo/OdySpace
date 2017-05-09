@@ -49,13 +49,13 @@ public class Boss extends BaseItem {
         this.changingColor = false;
     }
 
-    private void count(){
+    private void count() {
         this.counter = (this.counter >= this.MAX_COUNT ? 0 : this.counter + 1);
-        if(this.changingColor && this.colorCounter > 75) {
+        if (this.changingColor && this.colorCounter > 75) {
             super.setColors(super.allAmbColorBuffer, super.allSpecColorBuffer, super.allDiffColorBuffer);
             this.changingColor = false;
             this.colorCounter = 0;
-        } else if(this.changingColor) {
+        } else if (this.changingColor) {
             this.colorCounter++;
         }
     }
@@ -63,8 +63,8 @@ public class Boss extends BaseItem {
     @Override
     public boolean isCollided(BaseItem other) {
         boolean res = super.isCollided(other);
-        if(res) {
-            if(!this.changingColor) {
+        if (res) {
+            if (!this.changingColor) {
                 super.setColors(super.allAmbColorBuffer, super.allSpecColorBuffer, super.allDiffColorBuffer);
             }
             this.colorCounter = 0;
@@ -74,8 +74,8 @@ public class Boss extends BaseItem {
         return res;
     }
 
-    public void move(Ship ship){
-        if(this.counter == this.MAX_COUNT / 2){
+    public void move(Ship ship) {
+        if (this.counter == this.MAX_COUNT / 2) {
             float[] shipBossVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0]});
             super.mSpeed[0] = this.maxSpeed * shipBossVec[0];
             super.mSpeed[1] = this.maxSpeed * shipBossVec[1];
@@ -107,8 +107,8 @@ public class Boss extends BaseItem {
         this.count();
     }
 
-    public void fire(ArrayList<BaseItem> rockets, Ship ship){
-        if(this.counter % 101 == 0) {
+    public void fire(ArrayList<BaseItem> rockets, Ship ship) {
+        if (this.counter % 101 == 0) {
             float[] speedVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
             float[] originaleVec = new float[]{0f, 0f, 1f};
             float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
@@ -120,7 +120,7 @@ public class Boss extends BaseItem {
     }
 
     @Override
-    public void move(){
+    public void move() {
 
     }
 }

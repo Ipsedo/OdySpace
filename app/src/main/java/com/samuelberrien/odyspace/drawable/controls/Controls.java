@@ -50,7 +50,7 @@ public class Controls {
 
     float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
-    public Controls (Context context) {
+    public Controls(Context context) {
         this.isBoostVisible = false;
         this.isFire = false;
     }
@@ -71,13 +71,13 @@ public class Controls {
         this.fireText = new ObjModel(context, "fire.obj", color[0], color[1], color[2], 1f, 0f, 0f);
     }
 
-    private void bind(){
+    private void bind() {
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
     }
 
-    private void makeBoost(){
+    private void makeBoost() {
         this.mBoostPoint[0] = this.boostWidth / 2;
         this.mBoostPoint[1] = this.boostHeight / 2;
         this.mBoostPoint[2] = 0f;
@@ -101,7 +101,7 @@ public class Controls {
         this.boostVertexBuffer.position(0);
     }
 
-    private void makeBoostStick(){
+    private void makeBoostStick() {
         this.mBoostStickPoint[0] = this.boostWidth / 2;
         this.mBoostStickPoint[1] = this.boostWidth / 2;
         this.mBoostPoint[2] = 0f;
@@ -125,8 +125,8 @@ public class Controls {
         this.boostStickVertexBuffer.position(0);
     }
 
-    private void makeFireButton(){
-        for(int i = 0; i < this.nbPoint; i++){
+    private void makeFireButton() {
+        for (int i = 0; i < this.nbPoint; i++) {
             double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
             this.fireButtonPoints[i * 3 + 0] = (float) (this.fireButtonRay * Math.cos(mTmpAngle));
             this.fireButtonPoints[i * 3 + 1] = (float) (this.fireButtonRay * Math.sin(mTmpAngle));
@@ -148,10 +148,10 @@ public class Controls {
         this.mBoostStickPosition = this.mBoostPosition.clone();
     }
 
-    public void updateBoostStickPosition(float y){
-        if(y > this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2){
+    public void updateBoostStickPosition(float y) {
+        if (y > this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2) {
             this.mBoostStickPosition[1] = this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2;
-        } else if(y < this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2) {
+        } else if (y < this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2) {
             this.mBoostStickPosition[1] = this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2;
         } else {
             this.mBoostStickPosition[1] = y;
@@ -161,7 +161,7 @@ public class Controls {
     public boolean isTouchFireButton(float x, float y) {
         float xRef = x * this.ratio - this.mFireButtonPosition[0] * this.ratio;
         float yRef = y - this.mFireButtonPosition[1];
-        if(xRef * xRef + yRef * yRef < this.fireButtonRay * this.fireButtonRay){
+        if (xRef * xRef + yRef * yRef < this.fireButtonRay * this.fireButtonRay) {
             this.isFire = true;
             return true;
         } else {
@@ -170,24 +170,25 @@ public class Controls {
         }
     }
 
-    public boolean isFire(){
+    public boolean isFire() {
         return this.isFire;
     }
 
-    public void turnOffFire(){
+    public void turnOffFire() {
         this.isFire = false;
     }
 
-    public float getBoost(){
+    public float getBoost() {
         return (this.mBoostStickPosition[1] - this.mBoostPosition[1]) / (0.5f * (this.boostHeight - this.boostWidth));
     }
 
-    public void setBoostVisible(boolean isBoostVisible){
+    public void setBoostVisible(boolean isBoostVisible) {
         this.isBoostVisible = isBoostVisible;
     }
 
-    public void setRatio(float ratio){
-        this.ratio = ratio;;
+    public void setRatio(float ratio) {
+        this.ratio = ratio;
+        ;
     }
 
     public void draw() {
@@ -202,7 +203,7 @@ public class Controls {
         float[] mMVPMatrix = new float[16];
 
         float[] mMMatrix = new float[16];
-        if(this.isBoostVisible) {
+        if (this.isBoostVisible) {
             Matrix.setIdentityM(mMMatrix, 0);
             Matrix.translateM(mMMatrix, 0, this.mBoostPosition[0], this.mBoostPosition[1], this.mBoostPosition[2]);
             Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);

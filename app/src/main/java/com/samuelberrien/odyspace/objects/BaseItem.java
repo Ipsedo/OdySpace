@@ -41,7 +41,7 @@ public class BaseItem extends ObjModelMtl {
 
     protected float scale;
 
-    public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale){
+    public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef);
         this.life = life;
         this.mPosition = mPosition;
@@ -55,7 +55,7 @@ public class BaseItem extends ObjModelMtl {
         this.radius = this.scale;
     }
 
-    public BaseItem(ObjModelMtl objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale){
+    public BaseItem(ObjModelMtl objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(objModelMtl);
         this.life = life;
         this.mPosition = mPosition;
@@ -69,32 +69,32 @@ public class BaseItem extends ObjModelMtl {
         this.radius = this.scale;
     }
 
-    public void changeColor(Random rand){
+    public void changeColor(Random rand) {
         ArrayList<FloatBuffer> tmpA = super.makeColor(rand);
         ArrayList<FloatBuffer> tmpD = super.makeColor(rand);
         ArrayList<FloatBuffer> tmpS = super.makeColor(rand);
         super.setColors(tmpA, tmpD, tmpS);
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return this.life > 0;
     }
 
-    public boolean isCollided(BaseItem other){
+    public boolean isCollided(BaseItem other) {
         return this.areCollided(this.allCoordsFloatArray.clone(), this.mModelMatrix.clone(), other.allCoordsFloatArray.clone(), other.mModelMatrix.clone());
     }
 
-    public void decrementsBothLife(BaseItem other){
+    public void decrementsBothLife(BaseItem other) {
         int otherLife = other.life;
         other.life -= this.life;
         this.life -= otherLife;
     }
 
-    public boolean isOutOfBound(LevelLimits levelLimits){
+    public boolean isOutOfBound(LevelLimits levelLimits) {
         return !levelLimits.isInside(this.mPosition);
     }
 
-    public void move(){
+    public void move() {
         this.mSpeed[0] += this.mAcceleration[0];
         this.mSpeed[1] += this.mAcceleration[1];
         this.mSpeed[2] += this.mAcceleration[2];
@@ -110,7 +110,7 @@ public class BaseItem extends ObjModelMtl {
         this.mModelMatrix = tmp.clone();
     }
 
-    public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
+    public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         float[] mvMatrix = new float[16];
         Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);
         float[] mvpMatrix = new float[16];

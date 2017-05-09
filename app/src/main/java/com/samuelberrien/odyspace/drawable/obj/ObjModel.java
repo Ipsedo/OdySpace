@@ -68,7 +68,7 @@ public class ObjModel {
         try {
             inputreader.close();
             inputStream.close();
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
@@ -96,7 +96,7 @@ public class ObjModel {
             this.parseObj(inputreader, red, green, blue);
             inputreader.close();
             inputStream.close();
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
@@ -112,7 +112,7 @@ public class ObjModel {
         this.bind();
     }
 
-    private void bind(){
+    private void bind() {
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
@@ -125,7 +125,6 @@ public class ObjModel {
     }
 
     /**
-     *
      * @param inputreader
      * @param red
      * @param green

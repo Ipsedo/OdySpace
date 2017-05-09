@@ -42,7 +42,7 @@ public class Ship extends BaseItem {
 
     private Fire.Type fireType;
 
-    public Ship(Context context){
+    public Ship(Context context) {
         super(context, "ship.obj", "ship.mtl", 1f, 0f, 1, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.life = this.MAXLIFE;
         this.context = context;
@@ -55,16 +55,16 @@ public class Ship extends BaseItem {
         SharedPreferences sharedPref = this.context.getSharedPreferences(this.context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
         String defaultValue = this.context.getString(R.string.saved_fire_type_default);
         String fireType = sharedPref.getString(this.context.getString(R.string.current_fire_type), defaultValue);
-        if(fireType.equals(this.context.getString(R.string.fire_bonus_1))) {
+        if (fireType.equals(this.context.getString(R.string.fire_bonus_1))) {
             this.fireType = Fire.Type.SIMPLE_FIRE;
-        } else if(fireType.equals(this.context.getString(R.string.fire_bonus_2))) {
+        } else if (fireType.equals(this.context.getString(R.string.fire_bonus_2))) {
             this.fireType = Fire.Type.QUINT_FIRE;
-        } else if(fireType.equals(this.context.getString(R.string.fire_bonus_3))) {
+        } else if (fireType.equals(this.context.getString(R.string.fire_bonus_3))) {
             this.fireType = Fire.Type.SIMPLE_BOMB;
         }
     }
 
-    public void move(float phi, float theta){
+    public void move(float phi, float theta) {
         float[] pitchMatrix = new float[16];
         float[] rollMatrix = new float[16];
         Matrix.setRotateM(rollMatrix, 0, phi * this.rollCoeff, 0f, 0f, 1f);
@@ -95,11 +95,11 @@ public class Ship extends BaseItem {
         super.mModelMatrix = mModelMatrix;
     }
 
-    public void fire(List<BaseItem> rockets){
+    public void fire(List<BaseItem> rockets) {
         Fire.fire(this.rocket, rockets, this.fireType, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
     }
 
-    public float[] getCamPosition(){
+    public float[] getCamPosition() {
         float[] res = new float[3];
         float[] u = new float[4];
         Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
@@ -114,7 +114,7 @@ public class Ship extends BaseItem {
         return res;
     }
 
-    public float[] getCamLookAtVec(){
+    public float[] getCamLookAtVec() {
         float[] res = new float[3];
         float[] u = new float[4];
         Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
@@ -126,7 +126,7 @@ public class Ship extends BaseItem {
         return res;
     }
 
-    public float[] getCamUpVec(){
+    public float[] getCamUpVec() {
         float[] res = new float[3];
         float[] u = new float[4];
         Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalUpVec, 0);
@@ -138,12 +138,12 @@ public class Ship extends BaseItem {
         return res;
     }
 
-    public void updateMaxSpeed(float coeff){
+    public void updateMaxSpeed(float coeff) {
         this.maxSpeed = this.originalMaxSpeed * (float) Math.pow((coeff + 2f) * 2f, 2d);
     }
 
     @Override
-    public void move(){
+    public void move() {
 
     }
 
@@ -151,7 +151,7 @@ public class Ship extends BaseItem {
         this.lifeDraw.draw();
     }
 
-    public void setRatio(float ratio){
+    public void setRatio(float ratio) {
         this.lifeDraw.ratio = ratio;
     }
 
@@ -180,7 +180,7 @@ public class Ship extends BaseItem {
             this.ratio = 1f;
         }
 
-        private void makeLifeContainer(){
+        private void makeLifeContainer() {
             float[] mPoints = new float[3 * 4];
             mPoints[0] = -1f;
             mPoints[1] = -1f;
@@ -205,7 +205,7 @@ public class Ship extends BaseItem {
             this.lifeContainer.position(0);
         }
 
-        private void makeLife(){
+        private void makeLife() {
             float[] mPoints = new float[3 * 4];
             mPoints[0] = -1f;
             mPoints[1] = -1f;
@@ -230,13 +230,13 @@ public class Ship extends BaseItem {
             this.life.position(0);
         }
 
-        private void bind(){
+        private void bind() {
             mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
             mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
             mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
         }
 
-        public void draw(){
+        public void draw() {
             GLES20.glUseProgram(this.mProgram);
 
             float[] mViewMatrix = new float[16];

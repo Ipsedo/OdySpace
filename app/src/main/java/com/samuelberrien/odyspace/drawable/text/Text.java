@@ -18,7 +18,7 @@ public class Text extends ObjModel {
         super(context, objFileName, 1f, 0f, 0f, 1f, 0f, 0f);
     }
 
-    public void draw(float ratio){
+    public void draw(float ratio) {
         float[] mViewMatrix = new float[16];
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         float[] mVPMatrix = new float[16];

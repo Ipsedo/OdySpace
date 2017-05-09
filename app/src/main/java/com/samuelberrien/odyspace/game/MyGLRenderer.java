@@ -104,8 +104,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.updateCamUpVec(this.ship.getCamUpVec());
     }
 
-    private Level getCurrentLevel(int currLevelId){
-        if(currLevelId == 0){
+    private Level getCurrentLevel(int currLevelId) {
+        if (currLevelId == 0) {
             return new Test();
         } else {
             return new TestBoss();
@@ -155,9 +155,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     /**
      * Update the camera look at vector (normalized)
+     *
      * @param xyz The x y z vector
      */
-    private void updateCamLookVec(float[] xyz){
+    private void updateCamLookVec(float[] xyz) {
         this.mCameraDirection[0] = this.maxRange * xyz[0] + this.mCameraPosition[0];
         this.mCameraDirection[1] = this.maxRange * xyz[1] + this.mCameraPosition[1];
         this.mCameraDirection[2] = this.maxRange * xyz[2] + this.mCameraPosition[2];
@@ -165,9 +166,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     /**
      * Update the camera up vector
+     *
      * @param xyz The x y z vector
      */
-    private void updateCamUpVec(float[] xyz){
+    private void updateCamUpVec(float[] xyz) {
         this.mCameraUpVec[0] = xyz[0];
         this.mCameraUpVec[1] = xyz[1];
         this.mCameraUpVec[2] = xyz[2];
@@ -178,7 +180,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      *
      * @param mCameraPosition A 3D vector contening x, y and z new camera position
      */
-    private void updateCameraPosition(float[] mCameraPosition){
+    private void updateCameraPosition(float[] mCameraPosition) {
         this.mCameraPosition = mCameraPosition;
     }
 

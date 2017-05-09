@@ -26,7 +26,7 @@ public class Icosahedron extends BaseItem {
         super.radius = scale;
     }
 
-    public void makeExplosion(Context context){
+    public void makeExplosion(Context context) {
         this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer);
     }
 

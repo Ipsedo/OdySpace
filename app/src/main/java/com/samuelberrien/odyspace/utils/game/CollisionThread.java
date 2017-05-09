@@ -12,6 +12,7 @@ public class CollisionThread extends CancelableThread {
     public CollisionThread(Level level) {
         super("CollisionThread", level);
     }
+
     @Override
     public void work() {
         super.level.collide();

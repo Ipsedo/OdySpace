@@ -26,7 +26,7 @@ public class Joystick {
     private double circleLength = 0.6d;
     private float[] mCirclePoint = new float[nbPoint * 3];
     private double stickLength = 0.2d;
-    private float[] mStickPoint = new float[nbPoint* 3];
+    private float[] mStickPoint = new float[nbPoint * 3];
 
     private FloatBuffer circleVertexBuffer;
     private FloatBuffer stickVertexBuffer;
@@ -43,7 +43,7 @@ public class Joystick {
 
     float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
-    public Joystick(Context context){
+    public Joystick(Context context) {
         this.isVisible = false;
     }
 
@@ -61,8 +61,8 @@ public class Joystick {
         this.bind();
     }
 
-    private void makeCricle(){
-        for(int i = 0; i < this.nbPoint; i++){
+    private void makeCricle() {
+        for (int i = 0; i < this.nbPoint; i++) {
             double mTmpAngle = (double) i * Math.PI * 2d / (double) this.nbPoint;
             this.mCirclePoint[i * 3 + 0] = (float) (this.circleLength * Math.cos(mTmpAngle));
             this.mCirclePoint[i * 3 + 1] = (float) (this.circleLength * Math.sin(mTmpAngle));
@@ -75,8 +75,8 @@ public class Joystick {
         circleVertexBuffer.position(0);
     }
 
-    private void makeStick(){
-        for(int i = 0; i < this.nbPoint; i++){
+    private void makeStick() {
+        for (int i = 0; i < this.nbPoint; i++) {
             double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
             this.mStickPoint[i * 3 + 0] = (float) (this.stickLength * Math.cos(mTmpAngle));
             this.mStickPoint[i * 3 + 1] = (float) (this.stickLength * Math.sin(mTmpAngle));
@@ -89,13 +89,13 @@ public class Joystick {
         stickVertexBuffer.position(0);
     }
 
-    private void bind(){
+    private void bind() {
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
     }
 
-    public void updatePosition(float x, float y){
+    public void updatePosition(float x, float y) {
         x = x * this.ratio;
         this.mPosition[0] = x;
         this.mPosition[1] = y;
@@ -106,10 +106,10 @@ public class Joystick {
         this.mStickPosition[2] = 0f;
     }
 
-    public void updateStickPosition(float x, float y){
+    public void updateStickPosition(float x, float y) {
         x = x * this.ratio;
         double length = Math.sqrt(Math.pow(this.mPosition[0] - x, 2d) + Math.pow(this.mPosition[1] - y, 2d));
-        if(length > this.circleLength - this.stickLength){
+        if (length > this.circleLength - this.stickLength) {
             double xDist = x - this.mPosition[0];
             double yDist = y - this.mPosition[1];
             this.mStickPosition[0] = this.mPosition[0] + (float) ((this.circleLength - this.stickLength) * xDist / length);
@@ -122,24 +122,24 @@ public class Joystick {
         }
     }
 
-    public float[] getStickPosition(){
-        if(this.isVisible) {
+    public float[] getStickPosition() {
+        if (this.isVisible) {
             return new float[]{-(this.mStickPosition[0] - this.mPosition[0]) / (float) (this.circleLength - this.stickLength), (this.mStickPosition[1] - this.mPosition[1]) / (float) (this.circleLength - this.stickLength)};
         } else {
             return new float[]{0f, 0f};
         }
     }
 
-    public void setVisible(boolean isVisible){
+    public void setVisible(boolean isVisible) {
         this.isVisible = isVisible;
     }
 
-    public void setRatio(float ratio){
+    public void setRatio(float ratio) {
         this.ratio = ratio;
     }
 
     public void draw() {
-        if(this.isVisible) {
+        if (this.isVisible) {
             GLES20.glUseProgram(this.mProgram);
 
             float[] mViewMatrix = new float[16];

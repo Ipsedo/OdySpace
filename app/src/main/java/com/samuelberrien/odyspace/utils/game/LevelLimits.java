@@ -18,8 +18,8 @@ public class LevelLimits {
     private float zMax;
     private float zMin;
 
-    public LevelLimits(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin){
-        if(xMax < xMin || yMax < yMin || zMax < zMin){
+    public LevelLimits(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin) {
+        if (xMax < xMin || yMax < yMin || zMax < zMin) {
             System.out.println("ERROR");
             throw new RuntimeException("Invalid(s) value(s) Max < Min");
         }
@@ -31,7 +31,7 @@ public class LevelLimits {
         this.zMin = zMin;
     }
 
-    public boolean isInside(float[] xyz){
+    public boolean isInside(float[] xyz) {
         return this.xMax > xyz[0] && this.xMin < xyz[0] && this.yMax > xyz[1] && this.yMin < xyz[1] && this.zMax > xyz[2] && this.zMin < xyz[2];
     }
 
@@ -39,7 +39,7 @@ public class LevelLimits {
         return new float[]{rand.nextFloat() * (this.xMax - this.xMin) + this.xMin, rand.nextFloat() * (this.yMax - this.yMin) + this.yMin, rand.nextFloat() * (this.zMax - this.zMin) + this.zMin};
     }
 
-    public LevelLimits[] makeOctSons(){
+    public LevelLimits[] makeOctSons() {
         LevelLimits[] sons = new LevelLimits[8];
         float a = (this.xMax - this.xMin) / 2f + this.xMin;
         float b = (this.yMax - this.yMin) / 2f + this.yMin;
@@ -56,7 +56,7 @@ public class LevelLimits {
         return sons;
     }
 
-    public float getSizeLength(){
+    public float getSizeLength() {
         return this.xMax - this.xMin;
     }
 }

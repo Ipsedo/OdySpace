@@ -55,7 +55,7 @@ public class TestBoss implements Level {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         for (BaseItem r : this.rocketsShip)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for(BaseItem r : this.rocketsBoss)
+        for (BaseItem r : this.rocketsBoss)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
@@ -72,7 +72,7 @@ public class TestBoss implements Level {
         }
         for (BaseItem r : this.rocketsShip)
             r.move();
-        for(BaseItem r : this.rocketsBoss)
+        for (BaseItem r : this.rocketsBoss)
             r.move();
         this.boss.move(this.ship);
         this.boss.fire(this.rocketsBoss, this.ship);
@@ -98,8 +98,8 @@ public class TestBoss implements Level {
         for (int i = 0; i < this.rocketsShip.size(); i++)
             if (!this.rocketsShip.get(i).isAlive() || this.rocketsShip.get(i).isOutOfBound(this.levelLimits))
                 this.rocketsShip.remove(i);
-        for(int i = 0; i < this.rocketsBoss.size(); i++)
-            if(!this.rocketsBoss.get(i).isAlive() || this.rocketsBoss.get(i).isOutOfBound(this.levelLimits))
+        for (int i = 0; i < this.rocketsBoss.size(); i++)
+            if (!this.rocketsBoss.get(i).isAlive() || this.rocketsBoss.get(i).isOutOfBound(this.levelLimits))
                 this.rocketsBoss.remove(i);
     }
 
@@ -110,7 +110,7 @@ public class TestBoss implements Level {
 
     @Override
     public boolean isDead() {
-        if(this.isInit) {
+        if (this.isInit) {
             return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
         }
         return false;
@@ -118,7 +118,7 @@ public class TestBoss implements Level {
 
     @Override
     public boolean isWinner() {
-        if(this.isInit) {
+        if (this.isInit) {
             return !this.boss.isAlive();
         }
         return false;

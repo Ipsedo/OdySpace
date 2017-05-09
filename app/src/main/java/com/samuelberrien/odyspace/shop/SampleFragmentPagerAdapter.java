@@ -18,7 +18,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     public static String SHIP_TAB = "Ship";
     public static String FIRE_TAB = "Fire";
     public static String BONUS_TAB = "Bonus";
-    public static String[] TAB_TITLES = new String[] { SHIP_TAB, FIRE_TAB, BONUS_TAB};
+    public static String[] TAB_TITLES = new String[]{SHIP_TAB, FIRE_TAB, BONUS_TAB};
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);

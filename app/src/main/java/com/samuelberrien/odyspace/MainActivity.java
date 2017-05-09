@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
         editor.clear().commit();
     }
 
-    public void start(View v){
+    public void start(View v) {
         Intent intent = new Intent(this, LevelActivity.class);
         intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(0));
         startActivityForResult(intent, MainActivity.RESULT_VALUE);
     }
 
-    public void continueStory(View v){
+    public void continueStory(View v) {
         Intent intent = new Intent(this, LevelActivity.class);
         SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
@@ -63,19 +63,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case MainActivity.RESULT_VALUE : {
+        switch (requestCode) {
+            case MainActivity.RESULT_VALUE: {
                 if (resultCode == Activity.RESULT_OK) {
                     int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
-                    if(result == 1) {
+                    if (result == 1) {
                         this.currLevel++;
-                        if(this.currLevel > Level.MAX_LEVEL) {
+                        if (this.currLevel > Level.MAX_LEVEL) {
                             this.currLevel--;
                         }
                         SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
                         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
                         long maxLevel = sharedPref.getInt(getString(R.string.saved_max_level), defaultValue);
-                        if(this.currLevel > maxLevel){
+                        if (this.currLevel > maxLevel) {
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putInt(getString(R.string.saved_max_level), this.currLevel);
                             editor.commit();

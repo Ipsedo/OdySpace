@@ -22,7 +22,7 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         this.mSurfaceView.onPause();
         super.onPause();
     }

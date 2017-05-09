@@ -45,7 +45,7 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
 
         ListView listView = (ListView) view;
-        if(SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
+        if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
             listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.fire_shop_list_item)));
         } else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
 

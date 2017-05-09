@@ -81,13 +81,13 @@ public class TestThread implements Level {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
-        for(BaseItem r : tmp)
+        for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         tmp = new ArrayList<>(this.icosahedrons);
-        for(BaseItem i : tmp)
+        for (BaseItem i : tmp)
             i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         ArrayList<Explosion> tmp2 = new ArrayList<>(this.explosions);
-        for(Explosion e : tmp2)
+        for (Explosion e : tmp2)
             e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
     }
 
@@ -97,15 +97,14 @@ public class TestThread implements Level {
         this.ship.updateMaxSpeed(this.controls.getBoost());
         this.ship.move(tmp[0], tmp[1]);
         if (this.controls.isFire()) {
-                this.ship.fire(this.rockets);
-            
+            this.ship.fire(this.rockets);
             this.controls.turnOffFire();
         }
         ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
-        for(BaseItem r : tmpArr)
+        for (BaseItem r : tmpArr)
             r.move();
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
-        for(Explosion e : tmpArr2)
+        for (Explosion e : tmpArr2)
             e.move();
 
     }
@@ -126,28 +125,28 @@ public class TestThread implements Level {
 
     @Override
     public void removeObjects() {
-            for (int i = this.explosions.size() - 1; i >= 0; i--) {
-                if (!this.explosions.get(i).isAlive()) {
-                    this.explosions.remove(i);
-                }
+        for (int i = this.explosions.size() - 1; i >= 0; i--) {
+            if (!this.explosions.get(i).isAlive()) {
+                this.explosions.remove(i);
+            }
 
         }
-            for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
-                if (!this.icosahedrons.get(i).isAlive()) {
-                    Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
-                    synchronized (this.explosions) {
-                        ico.addExplosion(this.explosions);
-                    }
-                    this.icosahedrons.remove(i);
-                    this.score++;
-                } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
-                    this.icosahedrons.remove(i);
+        for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
+            if (!this.icosahedrons.get(i).isAlive()) {
+                Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
+                synchronized (this.explosions) {
+                    ico.addExplosion(this.explosions);
                 }
+                this.icosahedrons.remove(i);
+                this.score++;
+            } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
+                this.icosahedrons.remove(i);
+            }
 
         }
-            for (int i = this.rockets.size() - 1; i >= 0; i--)
-                if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
-                    this.rockets.remove(i);
+        for (int i = this.rockets.size() - 1; i >= 0; i--)
+            if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
+                this.rockets.remove(i);
 
     }
 

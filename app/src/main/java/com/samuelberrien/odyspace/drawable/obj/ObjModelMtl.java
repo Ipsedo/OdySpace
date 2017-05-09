@@ -82,7 +82,7 @@ public class ObjModelMtl {
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
-        
+
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
     }
 
@@ -156,7 +156,7 @@ public class ObjModelMtl {
         this.allNormals = objModelMtl.allNormals;
     }
 
-    public void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId){
+    public void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, vertexShaderResId));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, fragmentShaderResId));
 
@@ -171,7 +171,7 @@ public class ObjModelMtl {
     /**
      * Get shaders var location
      */
-    private void bind(){
+    private void bind() {
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
@@ -367,16 +367,16 @@ public class ObjModelMtl {
         }
     }
 
-    private void makeAllCoordsFloatArray(){
+    private void makeAllCoordsFloatArray() {
         ArrayList<Float> tmp = new ArrayList<>();
-        for(float[] fa : this.allCoords){
-            for(int i = 0; i < fa.length; i++){
+        for (float[] fa : this.allCoords) {
+            for (int i = 0; i < fa.length; i++) {
                 tmp.add(fa[i]);
             }
         }
 
         this.allCoordsFloatArray = new float[tmp.size()];
-        for(int i = 0; i < tmp.size(); i++){
+        for (int i = 0; i < tmp.size(); i++) {
             this.allCoordsFloatArray[i] = tmp.get(i);
         }
     }

@@ -223,7 +223,7 @@ public class Triangle {
         } else if (!beta2_legal && !beta1_legal) {
             return 0;// fast reject-all vertices are on
         }
-            // the same side of the triangle plane
+        // the same side of the triangle plane
 
         else if (beta2_legal && beta1_legal)    //beta1, beta2
         {

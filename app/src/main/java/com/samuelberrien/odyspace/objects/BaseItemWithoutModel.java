@@ -26,7 +26,7 @@ public class BaseItemWithoutModel {
 
     protected float[] mModelMatrix;
 
-    public BaseItemWithoutModel(int life, float[] mPosition, float[] mSpeed, float[] mAcceleration){
+    public BaseItemWithoutModel(int life, float[] mPosition, float[] mSpeed, float[] mAcceleration) {
         this.life = life;
         this.mPosition = mPosition;
         this.mSpeed = mSpeed;
@@ -38,25 +38,25 @@ public class BaseItemWithoutModel {
         this.radius = 1f;
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return this.life > 0;
     }
 
-    public boolean isCollided(BaseItem other){
+    public boolean isCollided(BaseItem other) {
         return false;
     }
 
-    public void decrementsBothLife(BaseItem other){
+    public void decrementsBothLife(BaseItem other) {
         int otherLife = other.life;
         other.life -= this.life;
         this.life -= otherLife;
     }
 
-    public boolean isOutOfBound(LevelLimits levelLimits){
+    public boolean isOutOfBound(LevelLimits levelLimits) {
         return !levelLimits.isInside(this.mPosition);
     }
 
-    public void move(){
+    public void move() {
         this.mSpeed[0] += this.mAcceleration[0];
         this.mSpeed[1] += this.mAcceleration[1];
         this.mSpeed[2] += this.mAcceleration[2];
@@ -71,7 +71,7 @@ public class BaseItemWithoutModel {
         this.mModelMatrix = tmp.clone();
     }
 
-    public void draw(ObjModelMtl objModelMtl, float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
+    public void draw(ObjModelMtl objModelMtl, float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         float[] mvMatrix = new float[16];
         Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);
         float[] mvpMatrix = new float[16];
