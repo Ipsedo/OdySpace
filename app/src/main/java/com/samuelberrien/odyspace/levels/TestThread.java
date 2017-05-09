@@ -92,6 +92,11 @@ public class TestThread implements Level {
     }
 
     @Override
+    public void drawLevelInfo(float ratio) {
+
+    }
+
+    @Override
     public void update() {
         float[] tmp = this.joystick.getStickPosition();
         this.ship.updateMaxSpeed(this.controls.getBoost());

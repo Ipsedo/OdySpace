@@ -11,6 +11,8 @@ import android.view.SurfaceHolder;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.Test;
+import com.samuelberrien.odyspace.levels.TestBoss;
+import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.game.CollisionThread;
@@ -54,10 +56,18 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.joystick = new Joystick(this.context);
         this.controls = new Controls(this.context);
 
-        this.currentLevel = new TestThread();
+        this.currentLevel = this.getCurrentLevel(levelID);
 
         this.renderer = new MyGLRenderer(this.context, this, levelID, this.currentLevel, this.joystick, this.controls);
         this.setRenderer(this.renderer);
+    }
+
+    private Level getCurrentLevel(int currLevelId) {
+        if (currLevelId == 0) {
+            return new TestThread();
+        } else {
+            return new TestBossThread();
+        }
     }
 
     @Override

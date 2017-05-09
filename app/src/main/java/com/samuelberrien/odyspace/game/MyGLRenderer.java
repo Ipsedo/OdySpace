@@ -95,31 +95,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
-        //this.currentLevel = this.getCurrentLevel(this.currLevelId);
 
         this.currentLevel.init(this.context, this.ship, 1000f, this.joystick, this.controls);
 
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
         this.updateCamUpVec(this.ship.getCamUpVec());
-    }
-
-    private Level getCurrentLevel(int currLevelId) {
-        if (currLevelId == 0) {
-            return new Test();
-        } else {
-            return new TestBoss();
-        }
-    }
-
-    /*private void levelUp(){
-        this.currLevelId++;
-        this.currentLevel = this.getCurrentLevel(this.currLevelId);
-        this.currentLevel.init(this.context, this.ship, 1000f);
-    }*/
-
-    public int getLevelScore() {
-        return this.currentLevel.getScore();
     }
 
     /**
@@ -201,10 +182,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        /*this.currentLevel.update();
-        this.currentLevel.collide();
-        this.currentLevel.removeObjects();*/
-
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
         this.updateCamUpVec(this.ship.getCamUpVec());
@@ -220,7 +197,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
         this.controls.draw();
-        this.ship.drawLife();
+        this.ship.drawLife(this.ratio);
+        this.currentLevel.drawLevelInfo(this.ratio);
 
         /*if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);
@@ -245,7 +223,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.joystick.setRatio(this.ratio);
         this.controls.setRatio(this.ratio);
-        this.ship.setRatio(this.ratio);
 
         //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, this.maxProjDist);

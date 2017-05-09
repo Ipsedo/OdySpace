@@ -22,6 +22,8 @@ public interface Level {
 
     void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
+    void drawLevelInfo(float ratio);
+
     void update();
 
     void collide();

@@ -16,13 +16,13 @@ import com.samuelberrien.odyspace.utils.game.LevelLimits;
 import java.util.ArrayList;
 
 /**
- * Created by samuel on 30/04/17.
+ * Created by samuel on 09/05/17.
  * Copyright samuel, 2016 - 2017.
  * Toute reproduction ou utilisation sans l'autorisation
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class TestBoss implements Level {
+public class TestBossThread implements Level {
 
     private Context context;
 
@@ -53,9 +53,11 @@ public class TestBoss implements Level {
     @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for (BaseItem r : this.rocketsShip)
+        ArrayList<BaseItem> tmp = new ArrayList<>(this.rocketsShip);
+        for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        for (BaseItem r : this.rocketsBoss)
+        tmp = new ArrayList<>(this.rocketsBoss);
+        for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
@@ -75,9 +77,11 @@ public class TestBoss implements Level {
             this.ship.fire(this.rocketsShip);
             controls.turnOffFire();
         }
-        for (BaseItem r : this.rocketsShip)
+        ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rocketsShip);
+        for (BaseItem r : tmpArr)
             r.move();
-        for (BaseItem r : this.rocketsBoss)
+        tmpArr = new ArrayList<>(this.rocketsBoss);
+        for (BaseItem r : tmpArr)
             r.move();
         this.boss.move(this.ship);
         this.boss.fire(this.rocketsBoss, this.ship);
@@ -100,10 +104,10 @@ public class TestBoss implements Level {
 
     @Override
     public void removeObjects() {
-        for (int i = 0; i < this.rocketsShip.size(); i++)
+        for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
             if (!this.rocketsShip.get(i).isAlive() || this.rocketsShip.get(i).isOutOfBound(this.levelLimits))
                 this.rocketsShip.remove(i);
-        for (int i = 0; i < this.rocketsBoss.size(); i++)
+        for (int i = this.rocketsBoss.size() - 1; i >= 0; i--)
             if (!this.rocketsBoss.get(i).isAlive() || this.rocketsBoss.get(i).isOutOfBound(this.levelLimits))
                 this.rocketsBoss.remove(i);
     }

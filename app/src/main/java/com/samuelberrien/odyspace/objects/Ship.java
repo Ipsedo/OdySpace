@@ -147,12 +147,8 @@ public class Ship extends BaseItem {
 
     }
 
-    public void drawLife() {
-        this.lifeDraw.draw();
-    }
-
-    public void setRatio(float ratio) {
-        this.lifeDraw.ratio = ratio;
+    public void drawLife(float ratio) {
+        this.lifeDraw.draw(ratio);
     }
 
     private class Life {
@@ -165,8 +161,6 @@ public class Ship extends BaseItem {
         private int mMVPMatrixHandle;
         private int mProgram;
 
-        private float ratio;
-
         public Life(Context context) {
             int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
             int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
@@ -177,7 +171,6 @@ public class Ship extends BaseItem {
             this.makeLifeContainer();
             this.makeLife();
             this.bind();
-            this.ratio = 1f;
         }
 
         private void makeLifeContainer() {
@@ -236,14 +229,14 @@ public class Ship extends BaseItem {
             mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
         }
 
-        public void draw() {
+        public void draw(float ratio) {
             GLES20.glUseProgram(this.mProgram);
 
             float[] mViewMatrix = new float[16];
             Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
             float[] mVPMatrix = new float[16];
             float[] mPMatrix = new float[16];
-            Matrix.orthoM(mPMatrix, 0, -1f * this.ratio, 1f * this.ratio, -1f, 1f, -1f, 1f);
+            Matrix.orthoM(mPMatrix, 0, -1f * ratio, 1f * ratio, -1f, 1f, -1f, 1f);
             Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
             float[] mMVPMatrix = new float[16];
 
