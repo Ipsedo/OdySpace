@@ -138,9 +138,7 @@ public class TestThread implements Level {
         for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
-                synchronized (this.explosions) {
-                    ico.addExplosion(this.explosions);
-                }
+                ico.addExplosion(this.explosions);
                 this.icosahedrons.remove(i);
                 this.score++;
             } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
