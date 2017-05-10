@@ -9,5 +9,5 @@
         android:endColor="@color/colorMainLayout"
         android:angle="270" />
     <corners android:radius="3dp" />
-    <stroke android:width="2dp" android:color="@color/black"/>
+    <stroke android:width="2dp" android:color="@color/black" />
 </shape>

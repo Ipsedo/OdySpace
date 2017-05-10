@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         this.levelChooser.removeAllViews();
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 10, 0, 0);
+
         for(int i = 0; i < 40; i++) {
             final int currLvl = i;
             /*TextView textView = new TextView(this);
@@ -78,19 +84,17 @@ public class MainActivity extends AppCompatActivity {
             levelItem.setClickable(true);
             levelItem.setBackgroundResource(R.drawable.button_main);
             //levelItem.setBackgroundResource(R.color.colorFstButton);
-            /*FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(10, 10, 10, 10);*/
+
+            levelItem.setLayoutParams(params);
+            //levelItem.setPadding(0, 10, 0, 10);
             //this.levelChooser.setPadding(0, 20, 0, 20);
             this.levelChooser.addView(levelItem);
 
-            View v = new View(this);
+            /*View v = new View(this);
             v.setClickable(false);
             v.setMinimumHeight(10);
 
-            this.levelChooser.addView(v);
+            this.levelChooser.addView(v);*/
         }
     }
 
