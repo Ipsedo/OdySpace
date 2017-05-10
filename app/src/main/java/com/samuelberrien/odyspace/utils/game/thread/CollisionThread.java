@@ -1,4 +1,6 @@
-package com.samuelberrien.odyspace.utils.game;
+package com.samuelberrien.odyspace.utils.game.thread;
+
+import com.samuelberrien.odyspace.utils.game.Level;
 
 /**
  * Created by samuel on 09/05/17.
@@ -7,15 +9,15 @@ package com.samuelberrien.odyspace.utils.game;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class UpdateThread extends CancelableThread {
+public class CollisionThread extends CancelableThread {
 
-    public UpdateThread(Level level) {
-        super("UpdateThread", level);
+    public CollisionThread(Level level) {
+        super("CollisionThread", level);
     }
 
     @Override
     public void work() {
-        super.level.update();
+        super.level.collide();
         try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {

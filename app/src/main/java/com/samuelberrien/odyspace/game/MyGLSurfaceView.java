@@ -1,25 +1,18 @@
 package com.samuelberrien.odyspace.game;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.opengl.GLSurfaceView;
-import android.os.AsyncTask;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
-import com.samuelberrien.odyspace.levels.Test;
-import com.samuelberrien.odyspace.levels.TestBoss;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestThread;
-import com.samuelberrien.odyspace.objects.Ship;
-import com.samuelberrien.odyspace.utils.game.CollisionThread;
-import com.samuelberrien.odyspace.utils.game.EndGameThread;
+import com.samuelberrien.odyspace.utils.game.thread.CollisionThread;
+import com.samuelberrien.odyspace.utils.game.thread.EndGameThread;
 import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.game.RemoveThread;
-import com.samuelberrien.odyspace.utils.game.UpdateThread;
+import com.samuelberrien.odyspace.utils.game.thread.RemoveThread;
+import com.samuelberrien.odyspace.utils.game.thread.UpdateThread;
 
 /**
  * Created by samuel on 16/04/17.

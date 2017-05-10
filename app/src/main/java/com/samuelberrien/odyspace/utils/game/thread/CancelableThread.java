@@ -1,4 +1,6 @@
-package com.samuelberrien.odyspace.utils.game;
+package com.samuelberrien.odyspace.utils.game.thread;
+
+import com.samuelberrien.odyspace.utils.game.Level;
 
 /**
  * Created by samuel on 09/05/17.
@@ -28,7 +30,11 @@ public abstract class CancelableThread extends Thread {
 
     public void run() {
         while (!this.isCanceled && !this.level.isInit()) {
-
+            try {
+                Thread.sleep(CancelableThread.TIME_TO_WAIT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         while (!this.isCanceled) {
             this.work();
