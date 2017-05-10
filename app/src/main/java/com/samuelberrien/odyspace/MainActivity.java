@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
         long maxLevel = sharedPref.getInt(getString(R.string.saved_max_level), defaultValue);
+        this.currLevel = (int) maxLevel;
         intent.putExtra(MainActivity.LEVEL_ID, Integer.toString((int) maxLevel));
         startActivityForResult(intent, MainActivity.RESULT_VALUE);
     }
