@@ -2,6 +2,7 @@ package com.samuelberrien.odyspace.shop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class ShopActivity extends AppCompatActivity {
         this.currShipItem = "";
         this.currBonusItem = "";
         this.currPrice = 0;
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setContentView(R.layout.activity_shop);
 
@@ -100,6 +103,8 @@ public class ShopActivity extends AppCompatActivity {
 
     private void fireTypeChosen(SharedPreferences sharedPref, int indexFire, int defaultFireResId, int fireResId, int fireCostRedId) {
         this.currFireItem = this.fireItem[indexFire];
+        this.currShipItem = "";
+        this.currBonusItem = "";
         boolean defaultValue = getResources().getBoolean(defaultFireResId);
         boolean currentPurchase = sharedPref.getBoolean(getString(fireResId), defaultValue);
         if (!currentPurchase) {

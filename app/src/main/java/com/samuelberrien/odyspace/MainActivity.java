@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.opengl.Matrix;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int currLevel;
 
+    private Button startButton;
     private TextView gameInfo;
     private LinearLayout levelChooser;
 
@@ -37,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.currLevel = 0;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         //this.resetSharedPref();
+        this.startButton = (Button) findViewById(R.id.start_button);
+        this.startButton.setText("START (" + (this.currLevel + 1) + ")");
         this.initGameInfo();
         this.initLevelChooser();
     }
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     MainActivity.this.currLevel = currLvl;
+                    MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
                 }
             });
             levelItem.setClickable(true);
@@ -145,6 +151,10 @@ public class MainActivity extends AppCompatActivity {
                     int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     if (result == 1) {
+                        final SharedPreferences sharedPrefLevel = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
+                        int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
+                        final long maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
+
                         builder.setTitle("Level Done, Score : " + score);
 
                         builder.setNegativeButton("Restart", new DialogInterface.OnClickListener() {
@@ -160,6 +170,13 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (MainActivity.this.currLevel < Level.MAX_LEVEL)
                                     MainActivity.this.currLevel++;
+                                MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
+                                if (MainActivity.this.currLevel > maxLevel) {
+                                    SharedPreferences.Editor editorLevel = sharedPrefLevel.edit();
+                                    editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
+                                    editorLevel.commit();
+                                }
+                                MainActivity.this.initLevelChooser();
                             }
                         });
                         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
@@ -167,20 +184,19 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (MainActivity.this.currLevel < Level.MAX_LEVEL)
                                     MainActivity.this.currLevel++;
+                                if (MainActivity.this.currLevel > maxLevel) {
+                                    SharedPreferences.Editor editorLevel = sharedPrefLevel.edit();
+                                    editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
+                                    editorLevel.commit();
+                                }
+                                MainActivity.this.initLevelChooser();
+                                MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
                                 Intent intent = new Intent(MainActivity.this, LevelActivity.class);
                                 intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
                                 startActivityForResult(intent, MainActivity.RESULT_VALUE);
+
                             }
                         });
-
-                        SharedPreferences sharedPrefLevel = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
-                        int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
-                        long maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
-                        if (this.currLevel > maxLevel) {
-                            SharedPreferences.Editor editorLevel = sharedPrefLevel.edit();
-                            editorLevel.putInt(getString(R.string.saved_max_level), this.currLevel);
-                            editorLevel.commit();
-                        }
                     } else {
                         builder.setTitle("Game Over, Score : " + score);
 
@@ -200,14 +216,14 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     }
-
                     AlertDialog dialog = builder.create();
+                    dialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
+                    dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
                 }
                 break;
             }
         }
         this.initGameInfo();
-        this.initLevelChooser();
     }
 }
