@@ -66,7 +66,7 @@
         android:id="@+id/level_chooser"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/button_main"
+        android:background="@drawable/drawable_shop"
         android:layout_below="@+id/shop_button"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

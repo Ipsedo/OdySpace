@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
         int maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
 
-        //((ViewGroup)this.levelChooser.getParent()).removeView(this.levelChooser);
-
         this.levelChooser.removeAllViews();
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -61,18 +59,8 @@ public class MainActivity extends AppCompatActivity {
         );
         params.setMargins(0, 10, 0, 0);
 
-        for(int i = 0; i < 40; i++) {
+        for(int i = 0; i < maxLevel; i++) {
             final int currLvl = i;
-            /*TextView textView = new TextView(this);
-            textView.setText("Level " + (i + 1));
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MainActivity.this.currLevel = currLvl;
-                }
-            });
-            textView.setClickable(true);
-            this.levelChooser.addView(textView);*/
             Button levelItem = new Button(this);
             levelItem.setText("Level " + (i + 1));
             levelItem.setOnClickListener(new View.OnClickListener() {
@@ -83,18 +71,8 @@ public class MainActivity extends AppCompatActivity {
             });
             levelItem.setClickable(true);
             levelItem.setBackgroundResource(R.drawable.button_main);
-            //levelItem.setBackgroundResource(R.color.colorFstButton);
-
             levelItem.setLayoutParams(params);
-            //levelItem.setPadding(0, 10, 0, 10);
-            //this.levelChooser.setPadding(0, 20, 0, 20);
             this.levelChooser.addView(levelItem);
-
-            /*View v = new View(this);
-            v.setClickable(false);
-            v.setMinimumHeight(10);
-
-            this.levelChooser.addView(v);*/
         }
     }
 
