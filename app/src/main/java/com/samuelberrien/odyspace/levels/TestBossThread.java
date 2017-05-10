@@ -89,9 +89,11 @@ public class TestBossThread implements Level {
 
     @Override
     public void collide() {
-        ArrayList<BaseItem> ami = new ArrayList<>(this.rocketsShip);
+        ArrayList<BaseItem> ami = new ArrayList<>();
+        ami.addAll(this.rocketsShip);
         ami.add(this.ship);
-        ArrayList<BaseItem> ennemi = new ArrayList<>(this.rocketsBoss);
+        ArrayList<BaseItem> ennemi = new ArrayList<>();
+        ennemi.addAll(this.rocketsBoss);
         ennemi.add(this.boss);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
         octree.computeOctree();

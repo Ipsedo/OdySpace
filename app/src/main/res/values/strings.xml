@@ -8,6 +8,7 @@
     <string name="current_fire_type">CurrentFireType</string>
     <string name="saved_fire_type_default">@string/fire_bonus_1</string>
     <string name="fire_type_shop">Fire Type</string>
+    <string name="saved_money">SavedMoney</string>
     <string name="ship_shop">Ship Shop</string>
     <string name="fire_bonus_1">Simple Fire</string>
     <string name="fire_bonus_2">Quint Fire</string>

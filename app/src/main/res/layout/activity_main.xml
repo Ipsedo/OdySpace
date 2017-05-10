@@ -43,4 +43,18 @@
         android:text="Shop"
         android:onClick="shop"/>
 
+    <TextView
+        android:id="@+id/game_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/start_button"
+        android:layout_alignLeft="@+id/start_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/start_button"
+        android:layout_alignStart="@+id/start_button"
+        android:layout_marginTop="37dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textAllCaps="false" />
+
 </RelativeLayout>
