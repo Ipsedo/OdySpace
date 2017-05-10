@@ -1,12 +1,8 @@
-package com.samuelberrien.odyspace.utils.game.thread;
+package com.samuelberrien.odyspace.utils.game.threads;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Looper;
-import android.support.v7.app.AlertDialog;
 
-import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
 

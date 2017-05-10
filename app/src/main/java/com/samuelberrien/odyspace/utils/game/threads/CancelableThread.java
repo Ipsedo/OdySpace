@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils.game.thread;
+package com.samuelberrien.odyspace.utils.game.threads;
 
 import com.samuelberrien.odyspace.utils.game.Level;
 
@@ -11,7 +11,7 @@ import com.samuelberrien.odyspace.utils.game.Level;
 
 public abstract class CancelableThread extends Thread {
 
-    public static long TIME_TO_WAIT = 25L;
+    public static long TIME_TO_WAIT = 10L;
 
     private boolean isCanceled;
     protected Level level;

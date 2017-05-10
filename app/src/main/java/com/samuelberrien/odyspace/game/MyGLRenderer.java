@@ -60,6 +60,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private long currTime = System.currentTimeMillis();
 
+    private GameOver gameOver;
+    private LevelDone levelDone;
+
     /**
      * @param context
      */
@@ -94,6 +97,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.updateCameraPosition(this.ship.getCamPosition());
         this.updateCamLookVec(this.ship.getCamLookAtVec());
         this.updateCamUpVec(this.ship.getCamUpVec());
+
+        this.gameOver = new GameOver(this.context);
+        this.levelDone = new LevelDone(this.context);
     }
 
     /**
@@ -185,7 +191,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.updateLight(0f, 250f, 0f);
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        this.currentLevel.draw(this.mProjectionMatrix.clone(), this.mViewMatrix.clone(), this.mLightPosInEyeSpace.clone(), this.mCameraPosition.clone());
+        this.currentLevel.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
 
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         this.joystick.draw();
@@ -194,9 +200,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.currentLevel.drawLevelInfo(this.ratio);
 
         if(this.currentLevel.isDead()){
-            new GameOver(this.context).draw(this.ratio);
+            this.gameOver.draw(this.ratio);
         }else if(this.currentLevel.isWinner()){
-            new LevelDone(this.context).draw(this.ratio);
+            this.levelDone.draw(this.ratio);
         }
 
         System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));

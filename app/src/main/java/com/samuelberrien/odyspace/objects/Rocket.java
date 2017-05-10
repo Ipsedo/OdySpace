@@ -15,6 +15,8 @@ import com.samuelberrien.odyspace.utils.maths.Vector;
 
 public class Rocket extends BaseItem {
 
+    private static float MAX_SPEED = 0.5f;
+
     private float maxSpeed;
 
     public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale) {
@@ -37,9 +39,9 @@ public class Rocket extends BaseItem {
 
         Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, realSpeed.clone(), 0);
 
-        super.mPosition[0] += Math.max(this.maxSpeed, 2f) * realSpeed[0];
-        super.mPosition[1] += Math.max(this.maxSpeed, 2f) * realSpeed[1];
-        super.mPosition[2] += Math.max(this.maxSpeed, 2f) * realSpeed[2];
+        super.mPosition[0] += Math.max(this.maxSpeed, Rocket.MAX_SPEED) * realSpeed[0];
+        super.mPosition[1] += Math.max(this.maxSpeed, Rocket.MAX_SPEED) * realSpeed[1];
+        super.mPosition[2] += Math.max(this.maxSpeed, Rocket.MAX_SPEED) * realSpeed[2];
 
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);

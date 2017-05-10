@@ -8,11 +8,11 @@ import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestThread;
-import com.samuelberrien.odyspace.utils.game.thread.CollisionThread;
-import com.samuelberrien.odyspace.utils.game.thread.EndGameThread;
+import com.samuelberrien.odyspace.utils.game.threads.CollisionThread;
+import com.samuelberrien.odyspace.utils.game.threads.EndGameThread;
 import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.game.thread.RemoveThread;
-import com.samuelberrien.odyspace.utils.game.thread.UpdateThread;
+import com.samuelberrien.odyspace.utils.game.threads.RemoveThread;
+import com.samuelberrien.odyspace.utils.game.threads.UpdateThread;
 
 /**
  * Created by samuel on 16/04/17.

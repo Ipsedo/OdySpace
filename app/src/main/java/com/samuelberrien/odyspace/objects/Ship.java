@@ -27,15 +27,15 @@ public class Ship extends BaseItem {
 
     private Context context;
 
-    private final float originalMaxSpeed = 0.025f;
-    private float maxSpeed = this.originalMaxSpeed;
-    private final float rollCoeff = 2f;
-    private final float pitchCoeff = 1f;
+    public static float MAX_SPEED = 0.0125f;
+    private float maxSpeed = Ship.MAX_SPEED;
+    private final float rollCoeff = 1f;
+    private final float pitchCoeff = 0.5f;
 
     private final float[] originalSpeedVec = new float[]{0f, 0f, 1f, 0f};
     private final float[] originalUpVec = new float[]{0f, 1f, 0f, 0f};
 
-    private final int MAXLIFE = 25;
+    public static int MAXLIFE = 25;
     private Life lifeDraw;
 
     private ObjModelMtl rocket;
@@ -43,8 +43,7 @@ public class Ship extends BaseItem {
     private Fire.Type fireType;
 
     public Ship(Context context) {
-        super(context, "ship.obj", "ship.mtl", 1f, 0f, 1, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
-        this.life = this.MAXLIFE;
+        super(context, "ship.obj", "ship.mtl", 1f, 0f, Ship.MAXLIFE, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.lifeDraw = new Life(this.context);
         this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f);
@@ -67,8 +66,8 @@ public class Ship extends BaseItem {
     public void move(float phi, float theta) {
         float[] pitchMatrix = new float[16];
         float[] rollMatrix = new float[16];
-        Matrix.setRotateM(rollMatrix, 0, phi * this.rollCoeff, 0f, 0f, 1f);
-        Matrix.setRotateM(pitchMatrix, 0, theta * this.pitchCoeff, 1f, 0f, 0f);
+        Matrix.setRotateM(rollMatrix, 0, (phi >= 0 ? (float) Math.exp(phi) - 1f : (float) -Math.exp(Math.abs(phi)) + 1f) * this.rollCoeff /*phi * this.rollCoeff*/, 0f, 0f, 1f);
+        Matrix.setRotateM(pitchMatrix, 0, (theta >= 0 ? (float) Math.exp(theta) - 1f : (float) -Math.exp(Math.abs(theta)) + 1f) * this.pitchCoeff /*theta * this.pitchCoeff*/, 1f, 0f, 0f);
 
         float[] currRotMatrix = new float[16];
         Matrix.multiplyMM(currRotMatrix, 0, pitchMatrix, 0, rollMatrix, 0);
@@ -139,7 +138,7 @@ public class Ship extends BaseItem {
     }
 
     public void updateMaxSpeed(float coeff) {
-        this.maxSpeed = this.originalMaxSpeed * (float) Math.pow((coeff + 2f) * 2f, 2d);
+        this.maxSpeed = this.MAX_SPEED * (float) Math.pow((coeff + 2f) * 2f, 2d);
     }
 
     @Override

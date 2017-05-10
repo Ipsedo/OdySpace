@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils.game.thread;
+package com.samuelberrien.odyspace.utils.game.threads;
 
 import com.samuelberrien.odyspace.utils.game.Level;
 
