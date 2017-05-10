@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.currLevel = 0;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         //this.resetSharedPref();
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         this.initLevelChooser();
     }
 
-    private void initLevelChooser(){
+    private void initLevelChooser() {
 
         this.levelChooser = (LinearLayout) findViewById(R.id.level_chooser_layout);
 
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         );
         params.setMargins(0, 10, 0, 0);
 
-        for(int i = 0; i < maxLevel; i++) {
+        for (int i = 0; i < maxLevel; i++) {
             final int currLvl = i;
             Button levelItem = new Button(this);
             levelItem.setText("Level " + (i + 1));
@@ -128,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         this.initGameInfo();
         this.initLevelChooser();

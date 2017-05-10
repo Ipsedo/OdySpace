@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import com.samuelberrien.odyspace.R;
@@ -35,6 +36,7 @@ public class ShopActivity extends AppCompatActivity {
         this.currBonusItem = "";
         this.currPrice = 0;
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setContentView(R.layout.activity_shop);

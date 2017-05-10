@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.game;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.samuelberrien.odyspace.MainActivity;
 
@@ -18,6 +19,8 @@ public class LevelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.mSurfaceView = new MyGLSurfaceView(this.getApplicationContext(), this, Integer.parseInt(super.getIntent().getStringExtra(MainActivity.LEVEL_ID)));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(this.mSurfaceView);
     }
 
