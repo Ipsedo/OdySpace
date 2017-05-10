@@ -6,11 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.opengl.Matrix;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.game.LevelActivity;
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private int currLevel;
 
     private TextView gameInfo;
+    private LinearLayout levelChooser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +40,61 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //this.resetSharedPref();
         this.initGameInfo();
+        this.initLevelChooser();
     }
 
-    public void initGameInfo() {
+    private void initLevelChooser(){
+
+        this.levelChooser = (LinearLayout) findViewById(R.id.level_chooser_layout);
+
+        SharedPreferences sharedPrefLevel = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
+        int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
+        int maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
+
+        //((ViewGroup)this.levelChooser.getParent()).removeView(this.levelChooser);
+
+        this.levelChooser.removeAllViews();
+
+        for(int i = 0; i < 40; i++) {
+            final int currLvl = i;
+            /*TextView textView = new TextView(this);
+            textView.setText("Level " + (i + 1));
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity.this.currLevel = currLvl;
+                }
+            });
+            textView.setClickable(true);
+            this.levelChooser.addView(textView);*/
+            Button levelItem = new Button(this);
+            levelItem.setText("Level " + (i + 1));
+            levelItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity.this.currLevel = currLvl;
+                }
+            });
+            levelItem.setClickable(true);
+            levelItem.setBackgroundResource(R.drawable.button_main);
+            //levelItem.setBackgroundResource(R.color.colorFstButton);
+            /*FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(10, 10, 10, 10);*/
+            //this.levelChooser.setPadding(0, 20, 0, 20);
+            this.levelChooser.addView(levelItem);
+
+            View v = new View(this);
+            v.setClickable(false);
+            v.setMinimumHeight(10);
+
+            this.levelChooser.addView(v);
+        }
+    }
+
+    private void initGameInfo() {
         this.gameInfo = (TextView) findViewById(R.id.game_info);
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
         String defaultValue = getString(R.string.saved_fire_type_default);
@@ -62,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View v) {
         Intent intent = new Intent(this, LevelActivity.class);
-        this.currLevel = 0;
         intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(this.currLevel));
         startActivityForResult(intent, MainActivity.RESULT_VALUE);
     }
@@ -85,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         this.initGameInfo();
+        this.initLevelChooser();
     }
 
     @Override
@@ -104,24 +163,10 @@ public class MainActivity extends AppCompatActivity {
                     int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     if (result == 1) {
-                        if (this.currLevel < Level.MAX_LEVEL)
-                            this.currLevel++;
-
-                        SharedPreferences sharedPrefLevel = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
-                        int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
-                        long maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
-                        if (this.currLevel > maxLevel) {
-                            SharedPreferences.Editor editorLevel = sharedPrefLevel.edit();
-                            editorLevel.putInt(getString(R.string.saved_max_level), this.currLevel);
-                            editorLevel.commit();
-                        }
-
                         builder.setTitle("Level Done, Score : " + score);
 
                         builder.setNegativeButton("Restart", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                if (MainActivity.this.currLevel > 0 && MainActivity.this.currLevel != Level.MAX_LEVEL - 1)
-                                    MainActivity.this.currLevel--;
                                 Intent intent = new Intent(MainActivity.this, LevelActivity.class);
                                 intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
                                 startActivityForResult(intent, MainActivity.RESULT_VALUE);
@@ -131,17 +176,29 @@ public class MainActivity extends AppCompatActivity {
                         builder.setTitle("Level Done, Score : " + score);
                         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
+                                if (MainActivity.this.currLevel < Level.MAX_LEVEL)
+                                    MainActivity.this.currLevel++;
                             }
                         });
                         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                if (MainActivity.this.currLevel < Level.MAX_LEVEL)
+                                    MainActivity.this.currLevel++;
                                 Intent intent = new Intent(MainActivity.this, LevelActivity.class);
                                 intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
                                 startActivityForResult(intent, MainActivity.RESULT_VALUE);
                             }
                         });
+
+                        SharedPreferences sharedPrefLevel = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
+                        int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
+                        long maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
+                        if (this.currLevel > maxLevel) {
+                            SharedPreferences.Editor editorLevel = sharedPrefLevel.edit();
+                            editorLevel.putInt(getString(R.string.saved_max_level), this.currLevel);
+                            editorLevel.commit();
+                        }
                     } else {
                         builder.setTitle("Game Over, Score : " + score);
 
@@ -169,5 +226,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         this.initGameInfo();
+        this.initLevelChooser();
     }
 }

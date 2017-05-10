@@ -4,17 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.samuelberrien.odyspace.MainActivity">
+    tools:context="com.samuelberrien.odyspace.MainActivity"
+    android:background="@color/colorMainLayout">
 
     <Button
         android:id="@+id/start_button"
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:text="Start"
         android:onClick="start"
+        android:text="Start"
         tools:layout_editor_absoluteX="92dp"
         tools:layout_editor_absoluteY="233dp"
-        android:layout_centerVertical="true"
+        android:background="@drawable/button_main"
+        android:layout_marginTop="36dp"
+        android:layout_below="@+id/game_info"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -27,8 +30,9 @@
         android:layout_alignStart="@+id/start_button"
         android:layout_below="@+id/start_button"
         android:layout_marginTop="24dp"
-        android:text="Continue"
-        android:onClick="continueStory"/>
+        android:onClick="continueStory"
+        android:text="Continue Story"
+        android:background="@drawable/button_main"/>
 
     <Button
         android:id="@+id/shop_button"
@@ -40,8 +44,9 @@
         android:layout_alignStart="@+id/continue_button"
         android:layout_below="@+id/continue_button"
         android:layout_marginTop="24dp"
+        android:onClick="shop"
         android:text="Shop"
-        android:onClick="shop"/>
+        android:background="@drawable/button_main"/>
 
     <TextView
         android:id="@+id/game_info"
@@ -56,5 +61,24 @@
         android:text="TextView"
         android:textAlignment="center"
         android:textAllCaps="false" />
+
+    <ScrollView
+        android:id="@+id/level_chooser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_main"
+        android:layout_below="@+id/shop_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:padding="2dp">
+
+        <LinearLayout
+            android:id="@+id/level_chooser_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="4dp"></LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
