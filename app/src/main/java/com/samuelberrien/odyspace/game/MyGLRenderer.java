@@ -54,11 +54,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Joystick joystick;
     private Controls controls;
 
-    //private int currLevelId;
     private Level currentLevel;
-    private boolean willQuit;
-    private boolean isWinner;
-    private boolean isDead;
 
     private Ship ship;
 
@@ -67,15 +63,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     /**
      * @param context
      */
-    public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView, int currLevelId, Level currentLevel, Joystick joystick, Controls controls) {
+    public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView, Level currentLevel, Joystick joystick, Controls controls) {
         this.context = context;
         this.myGLSurfaceView = myGLSurfaceView;
         this.joystick = joystick;
         this.controls = controls;
         this.currentLevel = currentLevel;
-        this.willQuit = false;
-        this.isWinner = false;
-        this.isDead = false;
     }
 
     @Override
@@ -200,13 +193,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.ship.drawLife(this.ratio);
         this.currentLevel.drawLevelInfo(this.ratio);
 
-        /*if(this.currentLevel.isDead()){
+        if(this.currentLevel.isDead()){
             new GameOver(this.context).draw(this.ratio);
-            this.willQuit = true;
         }else if(this.currentLevel.isWinner()){
             new LevelDone(this.context).draw(this.ratio);
-            this.willQuit = true;
-        }*/
+        }
 
         System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));
         this.currTime = System.currentTimeMillis();

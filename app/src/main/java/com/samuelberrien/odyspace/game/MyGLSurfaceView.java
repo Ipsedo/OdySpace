@@ -51,7 +51,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         this.currentLevel = this.getCurrentLevel(levelID);
 
-        this.renderer = new MyGLRenderer(this.context, this, levelID, this.currentLevel, this.joystick, this.controls);
+        this.renderer = new MyGLRenderer(this.context, this, this.currentLevel, this.joystick, this.controls);
         this.setRenderer(this.renderer);
     }
 

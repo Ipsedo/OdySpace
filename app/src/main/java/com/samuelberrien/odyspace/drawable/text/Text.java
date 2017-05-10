@@ -14,8 +14,11 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 
 public class Text extends ObjModel {
 
-    public Text(Context context, String objFileName) {
+    private float scale;
+
+    public Text(Context context, String objFileName, float scale) {
         super(context, objFileName, 1f, 0f, 0f, 1f, 0f, 0f);
+        this.scale = scale;
     }
 
     public void draw(float ratio) {
@@ -29,6 +32,7 @@ public class Text extends ObjModel {
         float[] mMMatrix = new float[16];
         Matrix.setIdentityM(mMMatrix, 0);
         Matrix.translateM(mMMatrix, 0, 0f, 0f, 0f);
+        Matrix.scaleM(mMMatrix, 0, this.scale, this.scale, this.scale);
         Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
         super.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f});
