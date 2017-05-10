@@ -19,15 +19,15 @@ public class Rocket extends BaseItem {
 
     private float maxSpeed;
 
-    public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale) {
-        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, 1, mPosition, mSpeed, mAcceleration, scale);
+    public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
+        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, life, mPosition, mSpeed, mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
         super.radius = 0.3f;
     }
 
-    public Rocket(ObjModelMtl objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale) {
-        super(objModelMtl, 1, mPosition, mSpeed, mAcceleration, scale);
+    public Rocket(ObjModelMtl objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
+        super(objModelMtl, life, mPosition, mSpeed, mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
         super.radius = 0.3f;

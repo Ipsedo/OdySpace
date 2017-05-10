@@ -39,6 +39,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     /**
      * @param context
+     * @param levelActivity
+     * @param levelID
      */
     public MyGLSurfaceView(Context context, LevelActivity levelActivity, int levelID) {
         super(context);
@@ -55,6 +57,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.setRenderer(this.renderer);
     }
 
+    /**
+     * @param currLevelId
+     * @return
+     */
     private Level getCurrentLevel(int currLevelId) {
         if (currLevelId == 0) {
             return new TestThread();
@@ -166,8 +172,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 }
                 break;
         }
-
-
         return true;
     }
 }
