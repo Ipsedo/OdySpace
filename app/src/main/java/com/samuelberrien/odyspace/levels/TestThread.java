@@ -163,6 +163,6 @@ public class TestThread implements Level {
 
     @Override
     public boolean isWinner() {
-        return this.nbIcosahedron - this.icosahedrons.size() > 9;
+        return this.nbIcosahedron - this.icosahedrons.size() > 0;
     }
 }

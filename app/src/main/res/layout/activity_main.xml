@@ -4,21 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.samuelberrien.odyspace.MainActivity"
-    android:background="@color/colorMainLayout">
+    android:background="@color/colorMainLayout"
+    tools:context="com.samuelberrien.odyspace.MainActivity">
 
     <Button
         android:id="@+id/start_button"
         android:layout_width="200dp"
         android:layout_height="45dp"
+        android:layout_below="@+id/game_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/button_main"
         android:onClick="start"
         android:text="Start"
         tools:layout_editor_absoluteX="92dp"
-        tools:layout_editor_absoluteY="233dp"
-        android:background="@drawable/button_main"
-        android:layout_marginTop="36dp"
-        android:layout_below="@+id/game_info"
-        android:layout_centerHorizontal="true" />
+        tools:layout_editor_absoluteY="233dp" />
 
     <Button
         android:id="@+id/continue_button"
@@ -30,9 +30,9 @@
         android:layout_alignStart="@+id/start_button"
         android:layout_below="@+id/start_button"
         android:layout_marginTop="24dp"
+        android:background="@drawable/button_main"
         android:onClick="continueStory"
-        android:text="Continue Story"
-        android:background="@drawable/button_main"/>
+        android:text="Continue Story" />
 
     <Button
         android:id="@+id/shop_button"
@@ -44,9 +44,9 @@
         android:layout_alignStart="@+id/continue_button"
         android:layout_below="@+id/continue_button"
         android:layout_marginTop="24dp"
+        android:background="@drawable/button_main"
         android:onClick="shop"
-        android:text="Shop"
-        android:background="@drawable/button_main"/>
+        android:text="Shop" />
 
     <TextView
         android:id="@+id/game_info"
@@ -66,11 +66,11 @@
         android:id="@+id/level_chooser"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/drawable_shop"
-        android:layout_below="@+id/shop_button"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="35dp">
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/shop_button"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/drawable_shop">
 
         <LinearLayout
             android:id="@+id/level_chooser_layout"

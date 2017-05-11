@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -34,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
     private int currLevel;
 
     private Button startButton;
+    private Button continueButton;
+    private Button shopButton;
     private TextView gameInfo;
     private LinearLayout levelChooser;
+
+    private Animation myAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +50,12 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-        //this.resetSharedPref();
+        this.resetSharedPref();
         this.startButton = (Button) findViewById(R.id.start_button);
         this.startButton.setText("START (" + (this.currLevel + 1) + ")");
+        this.continueButton = (Button) findViewById(R.id.continue_button);
+        this.shopButton = (Button) findViewById(R.id.shop_button);
+        this.myAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
         this.initGameInfo();
         this.initLevelChooser();
     }
@@ -111,12 +120,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void start(View v) {
+        this.startButton.startAnimation(this.myAnim);
         Intent intent = new Intent(this, LevelActivity.class);
         intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(this.currLevel));
         startActivityForResult(intent, MainActivity.RESULT_VALUE);
     }
 
     public void continueStory(View v) {
+        this.continueButton.startAnimation(this.myAnim);
         Intent intent = new Intent(this, LevelActivity.class);
         SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
@@ -127,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void shop(View v) {
+        this.shopButton.startAnimation(this.myAnim);
         Intent intent = new Intent(this, ShopActivity.class);
         startActivity(intent);
     }
@@ -168,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                        builder.setTitle("Level Done, Score : " + score);
                         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (MainActivity.this.currLevel < Level.MAX_LEVEL)
@@ -182,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                                 MainActivity.this.initLevelChooser();
                             }
                         });
+
                         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

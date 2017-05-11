@@ -5,7 +5,7 @@
     <color name="colorAccent">@color/black</color>
     <color name="colorButtonListLevel">#2980b9</color>
     <color name="colorMainLayout">#2576a9</color>
-    <color name="colorFstButton">#9b59b6</color>
+    <color name="colorFstButton">#bdc3c7</color>
     <color name="black">#000000</color>
     <color name="pumpkin">#d35400</color>
 </resources>
