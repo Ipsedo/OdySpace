@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-        this.resetSharedPref();
+        //this.resetSharedPref();
         this.startButton = (Button) findViewById(R.id.start_button);
         this.startButton.setText("START (" + (this.currLevel + 1) + ")");
         this.continueButton = (Button) findViewById(R.id.continue_button);

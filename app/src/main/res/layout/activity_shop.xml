@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,35 +11,29 @@
         android:id="@+id/use_item_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="4dp"
         android:background="@drawable/drawable_shop"
         android:onClick="use"
-        android:text="Use It"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Use It" />
 
     <Button
         android:id="@+id/buy_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/use_item_button"
         android:layout_marginTop="4dp"
         android:background="@drawable/drawable_shop"
         android:onClick="buy"
-        android:text="Buy It"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/use_item_button" />
+        android:text="Buy It" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/buy_button"
         android:layout_marginTop="4dp"
         android:background="@drawable/drawable_shop"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buy_button"
         app:tabIndicatorColor="@color/pumpkin">
 
     </android.support.design.widget.TabLayout>
@@ -48,14 +42,22 @@
         android:id="@+id/view_pager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/shop_curr_money_text_view"
+        android:layout_below="@id/tab_layout"
         android:layout_marginTop="4dp"
         android:background="@drawable/drawable_shop"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout">
+        android:orientation="vertical">
 
     </android.support.v4.view.ViewPager>
 
-
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/shop_curr_money_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/drawable_shop"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+</RelativeLayout>

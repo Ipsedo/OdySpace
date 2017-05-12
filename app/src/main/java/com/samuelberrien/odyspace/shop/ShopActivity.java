@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.game.LevelActivity;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -24,6 +26,8 @@ public class ShopActivity extends AppCompatActivity {
 
     private Button buyButton;
     private Button useButton;
+
+    private TextView currMoneyTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,12 @@ public class ShopActivity extends AppCompatActivity {
         this.useButton = (Button) findViewById(R.id.use_item_button);
         this.useButton.setVisibility(View.GONE);
 
+        this.currMoneyTextView = (TextView) findViewById(R.id.shop_curr_money_text_view);
+        SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
+        int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+        int currMoney = sharedPref.getInt(getString(R.string.saved_money), defaultMoney);
+        this.currMoneyTextView.setText(Integer.toString(currMoney) + "$");
+
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -57,17 +67,25 @@ public class ShopActivity extends AppCompatActivity {
     public void buy(View v) {
         SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        if (!this.currFireItem.equals("")) {
+
+        int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+        int currMoney = sharedPref.getInt(getString(R.string.saved_money), defaultMoney);
+
+        if (!this.currFireItem.equals("") && currMoney > this.currPrice) {
             editor.putBoolean(this.currFireItem, true);
+            editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
             editor.commit();
             this.buyButton.setVisibility(View.GONE);
             this.useButton.setText("Use It (" + this.currFireItem + ")");
             this.useButton.setVisibility(View.VISIBLE);
-        } else if (!this.currShipItem.equals("")) {
+        } else if (!this.currShipItem.equals("") && currMoney > this.currPrice) {
 
-        } else if (!this.currBonusItem.equals("")) {
+        } else if (!this.currBonusItem.equals("") && currMoney > this.currPrice) {
 
         }
+
+        currMoney = sharedPref.getInt(getString(R.string.saved_money), defaultMoney);
+        this.currMoneyTextView.setText(Integer.toString(currMoney) + "$");
     }
 
     public void use(View v) {

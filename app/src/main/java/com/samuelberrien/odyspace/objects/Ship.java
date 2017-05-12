@@ -83,8 +83,8 @@ public class Ship extends BaseItem {
     public void move(float phi, float theta) {
         float[] pitchMatrix = new float[16];
         float[] rollMatrix = new float[16];
-        Matrix.setRotateM(rollMatrix, 0, (phi >= 0 ? (float) Math.exp(phi) - 1f : (float) -Math.exp(Math.abs(phi)) + 1f) * this.rollCoeff /*phi * this.rollCoeff*/, 0f, 0f, 1f);
-        Matrix.setRotateM(pitchMatrix, 0, (theta >= 0 ? (float) Math.exp(theta) - 1f : (float) -Math.exp(Math.abs(theta)) + 1f) * this.pitchCoeff /*theta * this.pitchCoeff*/, 1f, 0f, 0f);
+        Matrix.setRotateM(rollMatrix, 0, (phi >= 0 ? (float) Math.exp(phi) - 1f : (float) -Math.exp(Math.abs(phi)) + 1f) * this.rollCoeff, 0f, 0f, 1f);
+        Matrix.setRotateM(pitchMatrix, 0, (theta >= 0 ? (float) Math.exp(theta) - 1f : (float) -Math.exp(Math.abs(theta)) + 1f) * this.pitchCoeff, 1f, 0f, 0f);
 
         float[] currRotMatrix = new float[16];
         Matrix.multiplyMM(currRotMatrix, 0, pitchMatrix, 0, rollMatrix, 0);
