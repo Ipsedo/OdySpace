@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.utils.game.threads.CollisionThread;
@@ -47,6 +48,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.context = context;
         this.levelActivity = levelActivity;
         this.setEGLContextClientVersion(2);
+
+        new NoiseMap(context, 1f, 0f, 1f, 0f);
 
         this.joystick = new Joystick(this.context);
         this.controls = new Controls(this.context);

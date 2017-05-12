@@ -7,6 +7,7 @@ import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Ship;
@@ -33,7 +34,8 @@ public class TestThread implements Level {
     private LevelLimits levelLimits;
 
     private Ship ship;
-    private HeightMap heightMap;
+    //private HeightMap heightMap;
+    private NoiseMap noiseMap;
     private List<BaseItem> rockets;
 
     private List<BaseItem> icosahedrons;
@@ -53,8 +55,10 @@ public class TestThread implements Level {
         this.context = context;
         this.ship = ship;
 
-        this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
-        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, -100f, levelLimitSize / 2f, -levelLimitSize / 2f);
+        float limitDown = -100f;
+        //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -79,7 +83,8 @@ public class TestThread implements Level {
     @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
+        //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
+        this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
         for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
