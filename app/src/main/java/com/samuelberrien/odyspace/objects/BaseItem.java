@@ -96,7 +96,7 @@ public class BaseItem extends ObjModelMtl {
     }
 
     public void mapCollision(NoiseMap map) {
-        if(this.areCollided(this.allCoordsFloatArray.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition).clone(), map.getModelMatrix().clone())) {
+        if(this.areCollided(this.allCoordsFloatArray.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
             this.life = 0;
         }
     }

@@ -24,8 +24,12 @@ public class Explosion {
 
     private ArrayList<Particule> particules;
     private ObjModel particule;
+    private final float maxSpeed;
+    private final float limitSpeed;
 
-    public Explosion(Context context, float[] mPosition, ArrayList<FloatBuffer> mDiffColor) {
+    public Explosion(Context context, float[] mPosition, ArrayList<FloatBuffer> mDiffColor, float initSpeed, float limitSpeed) {
+        this.maxSpeed = initSpeed;
+        this.limitSpeed = limitSpeed;
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
@@ -39,6 +43,12 @@ public class Explosion {
     public void move() {
         for (Particule p : this.particules) {
             p.move();
+        }
+    }
+
+    public void setPosition(float[] mPosition) {
+        for (Particule p : this.particules) {
+            p.mPosition = mPosition.clone();
         }
     }
 
@@ -58,7 +68,7 @@ public class Explosion {
 
     private class Particule {
 
-        private final float maxSpeed = 1.5f;
+
 
         private float[] mPosition;
         private float[] mSpeed;
@@ -86,9 +96,9 @@ public class Explosion {
 
 
         public void move() {
-            this.mPosition[0] += this.maxSpeed * this.mSpeed[0];
-            this.mPosition[1] += this.maxSpeed * this.mSpeed[1];
-            this.mPosition[2] += this.maxSpeed * this.mSpeed[2];
+            this.mPosition[0] += Explosion.this.maxSpeed * this.mSpeed[0];
+            this.mPosition[1] += Explosion.this.maxSpeed * this.mSpeed[1];
+            this.mPosition[2] += Explosion.this.maxSpeed * this.mSpeed[2];
 
             this.mSpeed[0] /= 1.1;
             this.mSpeed[1] /= 1.1;
@@ -109,7 +119,7 @@ public class Explosion {
         }
 
         public boolean isAlive() {
-            return Vector.length3f(this.mSpeed) > 0.05;
+            return Vector.length3f(this.mSpeed) > Explosion.this.limitSpeed;
         }
 
         public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, ObjModel object) {

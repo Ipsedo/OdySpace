@@ -6,6 +6,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
@@ -38,6 +39,9 @@ public class Ship extends BaseItem {
     public static int MAXLIFE = 25;
     private Life lifeDraw;
 
+    private Explosion mExplosion;
+    private boolean exploded;
+
     private ObjModelMtl rocket;
 
     private Fire.Type fireType;
@@ -48,6 +52,19 @@ public class Ship extends BaseItem {
         this.lifeDraw = new Life(this.context);
         this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f);
         this.setFireType();
+        this.exploded = false;
+    }
+
+    public void addExplosion(List<Explosion> explosions) {
+        if(!this.exploded) {
+            this.mExplosion.setPosition(this.mPosition.clone());
+            explosions.add(this.mExplosion);
+            this.exploded = true;
+        }
+    }
+
+    public void makeExplosion() {
+        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer, 0.5f, 0.16f);
     }
 
     private void setFireType() {

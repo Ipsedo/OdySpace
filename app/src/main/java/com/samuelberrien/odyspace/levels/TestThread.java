@@ -72,6 +72,8 @@ public class TestThread implements Level {
             this.icosahedrons.add(ico);
         }
 
+        this.ship.makeExplosion();
+
         this.score = 0;
 
         this.joystick = joystick;
@@ -103,12 +105,14 @@ public class TestThread implements Level {
 
     @Override
     public void update() {
-        float[] tmp = this.joystick.getStickPosition();
-        this.ship.updateMaxSpeed(this.controls.getBoost());
-        this.ship.move(tmp[0], tmp[1]);
-        if (this.controls.isFire()) {
-            this.ship.fire(this.rockets);
-            this.controls.turnOffFire();
+        if (this.ship.isAlive()) {
+            float[] tmp = this.joystick.getStickPosition();
+            this.ship.updateMaxSpeed(this.controls.getBoost());
+            this.ship.move(tmp[0], tmp[1]);
+            if (this.controls.isFire()) {
+                this.ship.fire(this.rockets);
+                this.controls.turnOffFire();
+            }
         }
         ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
         for (BaseItem r : tmpArr)
@@ -116,6 +120,8 @@ public class TestThread implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
+        if (!this.ship.isAlive())
+            this.ship.addExplosion(this.explosions);
     }
 
     @Override

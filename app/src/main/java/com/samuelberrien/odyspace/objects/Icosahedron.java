@@ -27,7 +27,7 @@ public class Icosahedron extends BaseItem {
     }
 
     public void makeExplosion(Context context) {
-        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer);
+        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer, 1.5f, 0.05f);
     }
 
     public void addExplosion(List<Explosion> explosions) {

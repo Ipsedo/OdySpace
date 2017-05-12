@@ -53,7 +53,7 @@ public class NoiseMap {
     static final int COORDS_PER_VERTEX = 3;
     private final int vertexStride = COORDS_PER_VERTEX * 4;
 
-    private float[] color = new float[]{1f, 0f, 0f, 1f};
+    private float[] color = new float[]{0f, 177f / 255f, 106f / 255f, 1f};
 
     public NoiseMap(Context context, float lightCoeff, float distanceCoeff, float scale, float limitHeight) {
         this.context = context;
@@ -184,43 +184,30 @@ public class NoiseMap {
         int i = (int) (xNorm / pas);
         int j = (int) (zNorm / pas);
 
-        // Jusqu'à la OK
+        float[] res = new float[18];
+        int indRes = 0;
+        for (int a = j * 2 * SIZE; a <= j * 2 * SIZE; a++) {
+            for (int b = i * 2; b <= i * 2 + 1; b++) {
+                res[indRes + 0] = (this.points[(a + b) * 3 * 3 + 0]);
+                res[indRes + 1] = (this.points[(a + b) * 3 * 3 + 1]);
+                res[indRes + 2] = (this.points[(a + b) * 3 * 3 + 2]);
 
-        int startI = Math.max(0, i);
-        int endI = Math.min(SIZE, i);
+                res[indRes + 3] = (this.points[(a + b) * 3 * 3 + 3]);
+                res[indRes + 4] = (this.points[(a + b) * 3 * 3 + 4]);
+                res[indRes + 5] = (this.points[(a + b) * 3 * 3 + 5]);
 
-        int startJ = Math.max(0, j);
-        int endJ = Math.min(SIZE, j);
-
-        ArrayList<Float> tmp = new ArrayList<>();
-        for (int a = startJ * 2 * SIZE; a <= endJ * 2 * SIZE; a++) {
-            for (int b = startI * 2; b <= endI * 2; b++) {
-                tmp.add(this.points[(a + b) * 3 * 3 + 0]);
-                tmp.add(this.points[(a + b) * 3 * 3 + 1]);
-                tmp.add(this.points[(a + b) * 3 * 3 + 2]);
-
-                tmp.add(this.points[(a + b) * 3 * 3 + 3]);
-                tmp.add(this.points[(a + b) * 3 * 3 + 4]);
-                tmp.add(this.points[(a + b) * 3 * 3 + 5]);
-
-                tmp.add(this.points[(a + b) * 3 * 3 + 6]);
-                tmp.add(this.points[(a + b) * 3 * 3 + 7]);
-                tmp.add(this.points[(a + b) * 3 * 3 + 8]);
+                res[indRes + 6] = (this.points[(a + b) * 3 * 3 + 6]);
+                res[indRes + 7] = (this.points[(a + b) * 3 * 3 + 7]);
+                res[indRes + 8] = (this.points[(a + b) * 3 * 3 + 8]);
+                indRes += 9;
             }
         }
-
-        float[] res = new float[tmp.size()];
-        for (int k = 0; k < res.length; k++) {
-            res[k] = tmp.get(k);
-        }
-
-        System.out.println("ENDDD : " + res.length + " / " + this.points.length);
 
         return res;
     }
 
     public float[] getModelMatrix() {
-        return this.mModelMatrix;
+        return this.mModelMatrix.clone();
     }
 
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
