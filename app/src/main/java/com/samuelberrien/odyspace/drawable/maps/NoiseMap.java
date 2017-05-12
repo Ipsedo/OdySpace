@@ -186,18 +186,26 @@ public class NoiseMap {
 
         // Jusqu'à la OK
 
-        int startI = Math.max(0, (i) * 2 * 3);
-        int endI = Math.min(SIZE * 2 * 3, (i) * 2 * 3);
+        int startI = Math.max(0, i);
+        int endI = Math.min(SIZE, i);
 
-        int startJ = Math.max(0, (j) * 2);
-        int endJ = Math.min(SIZE * 2 * 3, (j) * 2 * 3);
+        int startJ = Math.max(0, j);
+        int endJ = Math.min(SIZE, j);
 
         ArrayList<Float> tmp = new ArrayList<>();
-        for (int a = startJ; a <= endJ; a++) {
-            for (int b = startI; b <= endI; b++) {
-                tmp.add(this.points[(a * SIZE + b) * 3 + 0]);
-                tmp.add(this.points[(a * SIZE + b) * 3 + 1]);
-                tmp.add(this.points[(a * SIZE + b) * 3 + 2]);
+        for (int a = startJ * 2 * SIZE; a <= endJ * 2 * SIZE; a++) {
+            for (int b = startI * 2; b <= endI * 2; b++) {
+                tmp.add(this.points[(a + b) * 3 * 3 + 0]);
+                tmp.add(this.points[(a + b) * 3 * 3 + 1]);
+                tmp.add(this.points[(a + b) * 3 * 3 + 2]);
+
+                tmp.add(this.points[(a + b) * 3 * 3 + 3]);
+                tmp.add(this.points[(a + b) * 3 * 3 + 4]);
+                tmp.add(this.points[(a + b) * 3 * 3 + 5]);
+
+                tmp.add(this.points[(a + b) * 3 * 3 + 6]);
+                tmp.add(this.points[(a + b) * 3 * 3 + 7]);
+                tmp.add(this.points[(a + b) * 3 * 3 + 8]);
             }
         }
 
