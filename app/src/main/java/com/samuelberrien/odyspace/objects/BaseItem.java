@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 import com.samuelberrien.odyspace.utils.collision.Triangle;
@@ -92,6 +93,12 @@ public class BaseItem extends ObjModelMtl {
 
     public boolean isOutOfBound(LevelLimits levelLimits) {
         return !levelLimits.isInside(this.mPosition);
+    }
+
+    public void mapCollision(NoiseMap map) {
+        if(this.areCollided(this.allCoordsFloatArray.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition).clone(), map.getModelMatrix().clone())) {
+            this.life = 0;
+        }
     }
 
     public void move() {

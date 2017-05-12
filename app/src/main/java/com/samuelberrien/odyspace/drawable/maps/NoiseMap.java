@@ -38,6 +38,8 @@ public class NoiseMap {
     private FloatBuffer mPositions;
     private FloatBuffer mNormals;
 
+    private float[] mModelMatrix;
+
     private final int mProgram;
     private int mPositionHandle;
     private int mNormalHandle;
@@ -59,6 +61,8 @@ public class NoiseMap {
         this.distanceCoeff = distanceCoeff;
         this.scale = scale;
         this.limitHeight = limitHeight;
+
+        this.mModelMatrix = new float[16];
 
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.noise_map_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.noise_map_fs));
@@ -171,6 +175,46 @@ public class NoiseMap {
         mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
     }
 
+    public float[] getRestreintArea(float[] position) {
+        float xNorm = position[0] / this.scale + 0.5f;
+        float zNorm = position[2] / this.scale + 0.5f;
+
+        float pas = 1f / (float) SIZE;
+
+        int i = (int) (xNorm / pas);
+        int j = (int) (zNorm / pas);
+
+        // Jusqu'à la OK
+
+        int startI = Math.max(0, (i - 1) * 2 * 3);
+        int endI = Math.min(SIZE * 2 * 3, (i + 1) * 2 * 3);
+
+        int startJ = Math.max(0, (j - 1) * 2);
+        int endJ = Math.min(SIZE * 2 * 3, (j + 1) * 2 * 3);
+
+        ArrayList<Float> tmp = new ArrayList<>();
+        for (int a = startJ; a < endJ; a++) {
+            for (int b = startI; b < endI; b++) {
+                tmp.add(this.points[(a * SIZE + b) * 3 + 0]);
+                tmp.add(this.points[(a * SIZE + b) * 3 + 1]);
+                tmp.add(this.points[(a * SIZE + b) * 3 + 2]);
+            }
+        }
+
+        float[] res = new float[tmp.size()];
+        for (int k = 0; k < res.length; k++) {
+            res[k] = tmp.get(k);
+        }
+
+        System.out.println("ENDDD : " + res.length + " / " + this.points.length);
+
+        return res;
+    }
+
+    public float[] getModelMatrix() {
+        return this.mModelMatrix;
+    }
+
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
 
         float[] mModelMatrix = new float[16];
@@ -178,8 +222,10 @@ public class NoiseMap {
         Matrix.translateM(mModelMatrix, 0, -0.5f * this.scale, this.limitHeight, -0.5f * this.scale);
         Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
 
-        float[] mvMatrix = new float[16];
+        this.mModelMatrix = mModelMatrix;
+
         float[] mvpMatrix = new float[16];
+        float[] mvMatrix = new float[16];
         Matrix.multiplyMM(mvMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
         Matrix.multiplyMM(mvpMatrix, 0, mProjectionMatrix, 0, mvMatrix, 0);
 
