@@ -186,15 +186,15 @@ public class NoiseMap {
 
         // Jusqu'à la OK
 
-        int startI = Math.max(0, (i - 1) * 2 * 3);
-        int endI = Math.min(SIZE * 2 * 3, (i + 1) * 2 * 3);
+        int startI = Math.max(0, (i) * 2 * 3);
+        int endI = Math.min(SIZE * 2 * 3, (i) * 2 * 3);
 
-        int startJ = Math.max(0, (j - 1) * 2);
-        int endJ = Math.min(SIZE * 2 * 3, (j + 1) * 2 * 3);
+        int startJ = Math.max(0, (j) * 2);
+        int endJ = Math.min(SIZE * 2 * 3, (j) * 2 * 3);
 
         ArrayList<Float> tmp = new ArrayList<>();
-        for (int a = startJ; a < endJ; a++) {
-            for (int b = startI; b < endI; b++) {
+        for (int a = startJ; a <= endJ; a++) {
+            for (int b = startI; b <= endI; b++) {
                 tmp.add(this.points[(a * SIZE + b) * 3 + 0]);
                 tmp.add(this.points[(a * SIZE + b) * 3 + 1]);
                 tmp.add(this.points[(a * SIZE + b) * 3 + 2]);
