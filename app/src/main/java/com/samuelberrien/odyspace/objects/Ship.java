@@ -121,6 +121,20 @@ public class Ship extends BaseItem {
         return new float[]{to.mPosition[0] - camPos[0], to.mPosition[1] - camPos[1], to.mPosition[2] - camPos[2]};
     }
 
+    public float[] getCamFrontVec() {
+        float[] lookAtPos = new float[3];
+        float[] u = new float[4];
+        Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
+
+        lookAtPos[0] = u[0] + this.mPosition[0];
+        lookAtPos[1] = u[1] + this.mPosition[1];
+        lookAtPos[2] = u[2] + this.mPosition[2];
+
+        float[] camPos = this.getCamPosition();
+
+        return new float[] {lookAtPos[0] - camPos[0], lookAtPos[1] - camPos[1], lookAtPos[2] - camPos[2]};
+    }
+
     public float[] getCamPosition() {
         float[] res = new float[3];
         float[] u = new float[4];

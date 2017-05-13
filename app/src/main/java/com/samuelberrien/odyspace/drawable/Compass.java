@@ -84,8 +84,15 @@ public class Compass {
 
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
-        float x = vecDansRepereShip[0] >= 1f ? 0.9f : vecDansRepereShip[0] <= -1f ? -0.9f : vecDansRepereShip[0];
-        float y = vecDansRepereShip[1] >= 1f ? 0.9f : vecDansRepereShip[1] <= -1f ? -0.9f : vecDansRepereShip[1];
+        float x;
+        float y;
+        /*if(this.angleWithFrontVec > 2d * Math.PI / 3d && this.angleWithFrontVec < 4d * Math.PI / 3d) {
+
+        } else {
+
+        }*/
+        x = vecDansRepereShip[0] >= 1f ? 0.9f : vecDansRepereShip[0] <= -1f ? -0.9f : vecDansRepereShip[0];
+        y = vecDansRepereShip[1] >= 1f ? 0.9f : vecDansRepereShip[1] <= -1f ? -0.9f : vecDansRepereShip[1];
         Matrix.translateM(mModelMatrix, 0, x, y, 0f);
         float[] rotMat = new float[16];
         Matrix.setRotateM(rotMat, 0, (float) Math.toDegrees(angle), 0f, 0f, 1f);
