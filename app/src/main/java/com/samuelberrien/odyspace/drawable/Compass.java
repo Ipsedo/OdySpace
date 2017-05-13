@@ -96,7 +96,7 @@ public class Compass {
     }
 
     public void draw(float ratio) {
-        if(this.angleWithFrontVec > Math.toRadians(40d)) {
+        if (this.angleWithFrontVec > Math.toRadians(30d)) {
             float[] mViewMatrix = new float[16];
             Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
             float[] mVPMatrix = new float[16];
