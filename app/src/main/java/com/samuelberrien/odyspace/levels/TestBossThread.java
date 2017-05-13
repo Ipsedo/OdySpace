@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.levels;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
@@ -35,6 +36,7 @@ public class TestBossThread implements Level {
     private boolean isInit = false;
     private Joystick joystick;
     private Controls controls;
+    private Compass compass;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -47,6 +49,7 @@ public class TestBossThread implements Level {
         this.rocketsBoss = new ArrayList<>();
         this.joystick = joystick;
         this.controls = controls;
+        this.compass = new Compass(this.context);
         this.isInit = true;
     }
 
@@ -67,7 +70,7 @@ public class TestBossThread implements Level {
 
     @Override
     public void drawLevelInfo(float ratio) {
-
+        this.compass.draw(ratio);
     }
 
     @Override
@@ -89,6 +92,7 @@ public class TestBossThread implements Level {
             r.move();
         this.boss.move(this.ship);
         this.boss.fire(this.rocketsBoss, this.ship);
+        this.compass.update(this.ship, this.boss);
     }
 
     @Override

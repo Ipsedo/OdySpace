@@ -67,13 +67,27 @@ public class Compass {
     }
 
     public void update(Ship from, BaseItem to) {
-        float[] vecShipToOther = from.vector3fTo(to);
+        float[] vecShipToOther = from.fromCamTo(to); //from.vector3fTo(to);
         float[] vecUpShip = from.getCamUpVec();
-        float[] vecFrontShip = from.getCamLookAtVec();
+        float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
 
         float[] vecProjeté = Vector.cross3f(vecFrontShip, Vector.cross3f(vecShipToOther, vecFrontShip));
 
+        double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
 
+        float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithModel(vecProjeté));
+
+        float[] mModelMatrix = new float[16];
+        Matrix.setIdentityM(mModelMatrix, 0);
+        float x = vecDansRepereShip[0] >= 1f ? 0.9f : vecDansRepereShip[0] <= -1f ? -0.9f : vecDansRepereShip[0];
+        float y = vecDansRepereShip[1] >= 1f ? 0.9f : vecDansRepereShip[1] <= -1f ? -0.9f : vecDansRepereShip[1];
+        Matrix.translateM(mModelMatrix, 0, x, y, 0f);
+        float[] rotMat = new float[16];
+        Matrix.setRotateM(rotMat, 0, (float) Math.toDegrees(angle), 0f, 0f, 1f);
+        Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, rotMat, 0);
+        Matrix.scaleM(mModelMatrix, 0, 0.1f, 0.1f, 0.1f);
+
+        this.mModelMatrix = mModelMatrix.clone();
     }
 
     public void draw(float ratio) {
@@ -90,6 +104,6 @@ public class Compass {
         GLES20.glVertexAttribPointer(this.mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.triangleBuffer);
         GLES20.glUniform4fv(this.mColorHandle, 1, this.color, 0);
         GLES20.glUniformMatrix4fv(this.mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-        GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.triangle.length / 3);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.triangle.length / 3);
     }
 }

@@ -116,6 +116,11 @@ public class Ship extends BaseItem {
         Fire.fire(this.rocket, rockets, this.fireType, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
     }
 
+    public float[] fromCamTo(BaseItem to) {
+        float[] camPos = this.getCamPosition();
+        return new float[]{to.mPosition[0] - camPos[0], to.mPosition[1] - camPos[1], to.mPosition[2] - camPos[2]};
+    }
+
     public float[] getCamPosition() {
         float[] res = new float[3];
         float[] u = new float[4];
@@ -153,6 +158,17 @@ public class Ship extends BaseItem {
         res[2] = u[2];
 
         return res;
+    }
+
+    public float[] invVecWithModel(float[] vec) {
+        float[] tmp = new float[] {vec[0], vec[1], vec[2], 0f};
+        float[] invModel = new float[16];
+        Matrix.invertM(invModel, 0, this.mModelMatrix, 0);
+
+        float[] tmpRes = new float[4];
+        Matrix.multiplyMV(tmpRes, 0, invModel, 0, tmp, 0);
+
+        return new float[] {tmpRes[0], tmpRes[1], tmpRes[2]};
     }
 
     public void updateMaxSpeed(float coeff) {
