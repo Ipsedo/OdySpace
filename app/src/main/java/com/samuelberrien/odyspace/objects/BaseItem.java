@@ -101,6 +101,10 @@ public class BaseItem extends ObjModelMtl {
         }
     }
 
+    public float[] vector3fTo(BaseItem to) {
+        return new float[]{to.mPosition[0] - this.mPosition[0], to.mPosition[1] - this.mPosition[1], to.mPosition[2] - this.mPosition[2]};
+    }
+
     public void move() {
         this.mSpeed[0] += this.mAcceleration[0];
         this.mSpeed[1] += this.mAcceleration[1];

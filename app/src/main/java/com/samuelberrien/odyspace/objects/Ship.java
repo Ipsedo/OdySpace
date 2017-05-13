@@ -10,6 +10,7 @@ import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
