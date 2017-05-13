@@ -33,6 +33,8 @@ public class Compass {
 
     private float[] mModelMatrix;
 
+    private double angleWithFrontVec;
+
     private int mPositionHandle;
     private int mColorHandle;
     private int mMVPMatrixHandle;
@@ -50,6 +52,7 @@ public class Compass {
         this.makeTriangle();
 
         this.mModelMatrix = new float[16];
+        this.angleWithFrontVec = 0f;
     }
 
     private void makeTriangle() {
@@ -73,9 +76,11 @@ public class Compass {
 
         float[] vecProjeté = Vector.cross3f(vecFrontShip, Vector.cross3f(vecShipToOther, vecFrontShip));
 
+        this.angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
+
         double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
 
-        float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithModel(vecProjeté));
+        float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
 
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -91,19 +96,21 @@ public class Compass {
     }
 
     public void draw(float ratio) {
-        float[] mViewMatrix = new float[16];
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-        float[] mVPMatrix = new float[16];
-        float[] mPMatrix = new float[16];
-        Matrix.orthoM(mPMatrix, 0, -1f * ratio, 1f * ratio, -1f, 1f, -1f, 1f);
-        Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
-        float[] mMVPMatrix = new float[16];
-        Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, this.mModelMatrix, 0);
+        if(this.angleWithFrontVec > Math.toRadians(40d)) {
+            float[] mViewMatrix = new float[16];
+            Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+            float[] mVPMatrix = new float[16];
+            float[] mPMatrix = new float[16];
+            Matrix.orthoM(mPMatrix, 0, -1f * ratio, 1f * ratio, -1f, 1f, -1f, 1f);
+            Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
+            float[] mMVPMatrix = new float[16];
+            Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, this.mModelMatrix, 0);
 
-        GLES20.glEnableVertexAttribArray(this.mPositionHandle);
-        GLES20.glVertexAttribPointer(this.mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.triangleBuffer);
-        GLES20.glUniform4fv(this.mColorHandle, 1, this.color, 0);
-        GLES20.glUniformMatrix4fv(this.mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.triangle.length / 3);
+            GLES20.glEnableVertexAttribArray(this.mPositionHandle);
+            GLES20.glVertexAttribPointer(this.mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.triangleBuffer);
+            GLES20.glUniform4fv(this.mColorHandle, 1, this.color, 0);
+            GLES20.glUniformMatrix4fv(this.mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.triangle.length / 3);
+        }
     }
 }

@@ -48,8 +48,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float projectionAngle = 40f;
     private float maxProjDist = 300f;
     private float ratio = 1f;
-    private int width;
-    private int height;
 
     private Joystick joystick;
     private Controls controls;
@@ -212,9 +210,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
-
-        this.width = width;
-        this.height = height;
 
         this.ratio = (float) width / height;
 

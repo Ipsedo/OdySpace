@@ -160,10 +160,10 @@ public class Ship extends BaseItem {
         return res;
     }
 
-    public float[] invVecWithModel(float[] vec) {
+    public float[] invVecWithRotMatrix(float[] vec) {
         float[] tmp = new float[] {vec[0], vec[1], vec[2], 0f};
         float[] invModel = new float[16];
-        Matrix.invertM(invModel, 0, this.mModelMatrix, 0);
+        Matrix.invertM(invModel, 0, this.mRotationMatrix, 0);
 
         float[] tmpRes = new float[4];
         Matrix.multiplyMV(tmpRes, 0, invModel, 0, tmp, 0);
