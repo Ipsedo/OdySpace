@@ -4,18 +4,22 @@
     <string name="level_info">LevelInfo</string>
     <string name="saved_max_level">SavedMaxLevel</string>
     <string name="saved_shop">SavedShop</string>
-    <string name="saved_ship_info">SavedShip</string>
-    <string name="current_fire_type">CurrentFireType</string>
-    <string name="saved_fire_type_default">@string/fire_bonus_1</string>
-    <string name="fire_type_shop">Fire Type</string>
-    <string name="saved_money">SavedMoney</string>
-    <string name="ship_shop">Ship Shop</string>
     <string name="fire_bonus_1">Simple Fire</string>
     <string name="fire_bonus_2">Quint Fire</string>
     <string name="fire_bonus_3">Simple Bomb</string>
+    <string name="bought_life">Life</string>
+    <string name="saved_ship_info">SavedShip</string>
+    <string name="current_fire_type">CurrentFireType</string>
+    <string name="current_life_number">CurrentLifeNumberShip</string>
+    <string name="saved_fire_type_default">@string/fire_bonus_1</string>
+    <string name="fire_type_shop">Fire Type</string>
+    <string name="saved_money">SavedMoney</string>
     <string-array name="fire_shop_list_item">
         <item>@string/fire_bonus_1</item>
         <item>@string/fire_bonus_2</item>
         <item>@string/fire_bonus_3</item>
+    </string-array>
+    <string-array name="ship_shop_list_item">
+        <item>@string/bought_life</item>
     </string-array>
 </resources>

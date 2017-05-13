@@ -100,11 +100,14 @@ public class MainActivity extends AppCompatActivity {
         String defaultValue = getString(R.string.saved_fire_type_default);
         String currFireType = sharedPref.getString(getString(R.string.current_fire_type), defaultValue);
 
+        int defaultLife = getResources().getInteger(R.integer.saved_ship_life_default);
+        int currLife = sharedPref.getInt(getString(R.string.current_life_number), defaultLife);
+
         sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
         int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
         int currMoney = sharedPref.getInt(getString(R.string.saved_money), defaultMoney);
 
-        this.gameInfo.setText("FireType : " + currFireType + System.getProperty("line.separator") + "Money : " + currMoney);
+        this.gameInfo.setText("Life : " + currLife + System.getProperty("line.separator") + "FireType : " + currFireType + System.getProperty("line.separator") + "Money : " + currMoney);
     }
 
     public void resetSharedPref() {

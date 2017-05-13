@@ -68,13 +68,8 @@ public class TestBoss implements Level {
 
     @Override
     public void update() {
-        float[] tmp = this.joystick.getStickPosition();
-        this.ship.updateMaxSpeed(this.controls.getBoost());
-        this.ship.move(tmp[0], tmp[1]);
-        if (controls.isFire()) {
-            this.ship.fire(this.rocketsShip);
-            controls.turnOffFire();
-        }
+        this.ship.move(this.joystick, this.controls);
+        this.ship.fire(this.controls, this.rocketsShip);
         for (BaseItem r : this.rocketsShip)
             r.move();
         for (BaseItem r : this.rocketsBoss)

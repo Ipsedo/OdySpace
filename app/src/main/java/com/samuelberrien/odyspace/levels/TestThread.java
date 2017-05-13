@@ -58,7 +58,7 @@ public class TestThread implements Level {
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
-        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -106,13 +106,8 @@ public class TestThread implements Level {
     @Override
     public void update() {
         if (this.ship.isAlive()) {
-            float[] tmp = this.joystick.getStickPosition();
-            this.ship.updateMaxSpeed(this.controls.getBoost());
-            this.ship.move(tmp[0], tmp[1]);
-            if (this.controls.isFire()) {
-                this.ship.fire(this.rockets);
-                this.controls.turnOffFire();
-            }
+            this.ship.move(this.joystick, this.controls);
+            this.ship.fire(this.controls, this.rockets);
         }
         ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
         for (BaseItem r : tmpArr)

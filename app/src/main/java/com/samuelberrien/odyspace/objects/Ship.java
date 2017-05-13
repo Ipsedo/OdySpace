@@ -7,6 +7,8 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.controls.Controls;
+import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
@@ -81,7 +83,14 @@ public class Ship extends BaseItem {
         }
     }
 
-    public void move(float phi, float theta) {
+    public void move(Joystick joystick, Controls controls) {
+        this.maxSpeed = this.MAX_SPEED * (float) Math.pow((controls.getBoost() + 2f) * 2f, 2d);
+
+        float[] tmp = joystick.getStickPosition();
+
+        float phi = tmp[0];
+        float theta = tmp[1];
+
         float[] pitchMatrix = new float[16];
         float[] rollMatrix = new float[16];
         Matrix.setRotateM(rollMatrix, 0, (phi >= 0 ? (float) Math.exp(phi) - 1f : (float) -Math.exp(Math.abs(phi)) + 1f) * this.rollCoeff, 0f, 0f, 1f);
@@ -112,8 +121,11 @@ public class Ship extends BaseItem {
         super.mModelMatrix = mModelMatrix;
     }
 
-    public void fire(List<BaseItem> rockets) {
-        Fire.fire(this.rocket, rockets, this.fireType, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+    public void fire(Controls controls, List<BaseItem> rockets) {
+        if (controls.isFire()) {
+            Fire.fire(this.rocket, rockets, this.fireType, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+            controls.turnOffFire();
+        }
     }
 
     public float[] fromCamTo(BaseItem to) {
@@ -186,7 +198,7 @@ public class Ship extends BaseItem {
     }
 
     public void updateMaxSpeed(float coeff) {
-        this.maxSpeed = this.MAX_SPEED * (float) Math.pow((coeff + 2f) * 2f, 2d);
+
     }
 
     @Override

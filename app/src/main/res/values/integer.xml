@@ -4,5 +4,8 @@
     <integer name="simple_fire_cost">0</integer>
     <integer name="quint_fire_cost">500</integer>
     <integer name="simple_bomb_cost">200</integer>
-    <integer name="saved_init_money">0</integer>
+    <integer name="saved_init_money">20000</integer>
+    <integer name="saved_ship_life_default">20</integer>
+    <integer name="saved_ship_life_shop_default">0</integer>
+    <integer name="life_coeff_cost">1</integer>
 </resources>
