@@ -287,7 +287,7 @@ public class ObjModelMtl {
                 normals.add(currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 2));
             }
             float ambRed, ambGreen, ambBlue, diffRed, diffGreen, diffBlue, specRed, specGreen, specBlue;
-            if(randomColor) {
+            if (randomColor) {
                 ambRed = random.nextFloat();
                 ambGreen = random.nextFloat();
                 ambBlue = random.nextFloat();
@@ -388,7 +388,7 @@ public class ObjModelMtl {
                 .position(0);
 
         float[] allSpecShin = new float[specShin.size()];
-        for(int i = 0; i < allSpecShin.length; i++) {
+        for (int i = 0; i < allSpecShin.length; i++) {
             allSpecShin[i] = specShin.get(i);
         }
         this.specShininess = ByteBuffer.allocateDirect(allSpecShin.length * 4)

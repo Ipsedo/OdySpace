@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Compass;
+import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
@@ -39,6 +40,7 @@ public class TestBossThread implements Level {
     private Joystick joystick;
     private Controls controls;
     private Compass compass;
+    private Forest forest;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -47,6 +49,8 @@ public class TestBossThread implements Level {
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
+        this.noiseMap.update();
+        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 4f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.boss = new Boss(this.context, "trump.obj", "trump.mtl", 15, new float[]{0f, 0f, 50f});
         this.rocketsShip = new ArrayList<>();
@@ -70,6 +74,7 @@ public class TestBossThread implements Level {
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
+        this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
     }
 
