@@ -112,6 +112,8 @@ public class TestBossThread implements Level {
         ennemi.add(this.boss);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
         octree.computeOctree();
+
+        this.ship.mapCollision(this.noiseMap);
     }
 
     @Override
@@ -136,7 +138,7 @@ public class TestBossThread implements Level {
 
     @Override
     public boolean isDead() {
-        return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
+        return !this.ship.isAlive();
     }
 
     @Override

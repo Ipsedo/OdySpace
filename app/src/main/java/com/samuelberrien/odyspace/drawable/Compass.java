@@ -70,7 +70,7 @@ public class Compass {
     }
 
     public void update(Ship from, BaseItem to) {
-        float[] vecShipToOther = from.fromCamTo(to); //from.vector3fTo(to);
+        float[] vecShipToOther = from.vector3fTo(to);
         float[] vecUpShip = from.getCamUpVec();
         float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
 
@@ -79,18 +79,16 @@ public class Compass {
         this.angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
 
         double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
-
         float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
+        System.out.println("ANGLE : " + Math.toDegrees(angle));
+
+        if(vecDansRepereShip[0] > 0)
+            angle = -angle;
 
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
-        float x;
-        float y;
-        
-        x = vecDansRepereShip[0] >= 1f ? 0.9f : vecDansRepereShip[0] <= -1f ? -0.9f : vecDansRepereShip[0];
-        y = vecDansRepereShip[1] >= 1f ? 0.9f : vecDansRepereShip[1] <= -1f ? -0.9f : vecDansRepereShip[1];
 
-        Matrix.translateM(mModelMatrix, 0, 0f, 1f, 0f);
+        Matrix.translateM(mModelMatrix, 0, 0f, 0.9f, 0f);
         float[] rotMat = new float[16];
         Matrix.setRotateM(rotMat, 0, (float) Math.toDegrees(angle), 0f, 0f, 1f);
         Matrix.multiplyMM(mModelMatrix, 0, rotMat, 0, mModelMatrix.clone(), 0);
