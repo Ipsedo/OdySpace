@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 /**
@@ -20,7 +21,7 @@ public class Rocket extends BaseItem {
     private float maxSpeed;
 
     public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, life, mPosition, mSpeed, mAcceleration, scale);
+        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, false, life, mPosition, mSpeed, mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
         super.radius = 0.3f;

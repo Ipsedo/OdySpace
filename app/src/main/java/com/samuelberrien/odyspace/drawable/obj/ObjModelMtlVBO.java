@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.io.BufferedReader;
@@ -18,10 +19,28 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by samuel on 17/01/17.
+ * Created by samuel on 14/05/17.
+ * Copyright samuel, 2016 - 2017.
+ * Toute reproduction ou utilisation sans l'autorisation
+ * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class ObjModelMtl {
+public class ObjModelMtlVBO {
+
+    /**
+     * Size of the position data in elements.
+     */
+    private static final int POSITION_DATA_SIZE = 3;
+
+    /**
+     * Size of the normal data in elements.
+     */
+    private static final int NORMAL_DATA_SIZE = 3;
+
+    /**
+     * How many bytes per float.
+     */
+    private static final int BYTES_PER_FLOAT = 4;
 
     private HashMap<String, float[]> mtlAmbColor = new HashMap<>();
     private HashMap<String, float[]> mtlDiffColor = new HashMap<>();
@@ -65,7 +84,7 @@ public class ObjModelMtl {
      * @param lightAugmentation The light augmentation
      * @param distanceCoef      The distance attenuation coefficient
      */
-    public ObjModelMtl(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef, boolean randomColor) {
+    public ObjModelMtlVBO(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef, boolean randomColor) {
 
         InputStream inputStream;
         inputStream = context.getResources().openRawResource(mtlResId);
@@ -86,7 +105,7 @@ public class ObjModelMtl {
      * @param lightAugmentation The light augmentation
      * @param distanceCoef      The distance attenuation coefficient
      */
-    public ObjModelMtl(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor) {
+    public ObjModelMtlVBO(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor) {
 
         InputStream inputStream;
         try {
@@ -109,7 +128,7 @@ public class ObjModelMtl {
         this.makeProgram(context, R.raw.specular_test_vs, R.raw.specular_test_fs);
     }
 
-    public ObjModelMtl(ObjModelMtl objModelMtl) {
+    public ObjModelMtlVBO(ObjModelMtlVBO objModelMtl) {
         this.mtlAmbColor = objModelMtl.mtlAmbColor;
         this.mtlDiffColor = objModelMtl.mtlDiffColor;
         this.mtlSpecColor = objModelMtl.mtlSpecColor;
@@ -450,4 +469,5 @@ public class ObjModelMtl {
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
+
 }

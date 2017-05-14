@@ -10,6 +10,7 @@ import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -50,10 +51,10 @@ public class Ship extends BaseItem {
     private Fire.Type fireType;
 
     public Ship(Context context) {
-        super(context, "ship.obj", "ship.mtl", 1f, 0f, Ship.MAXLIFE, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
+        super(context, "ship.obj", "ship.mtl", 1f, 0f, false, Ship.MAXLIFE, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.lifeDraw = new Life(this.context);
-        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f);
+        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.setFireType();
         this.exploded = false;
     }
@@ -67,7 +68,7 @@ public class Ship extends BaseItem {
     }
 
     public void makeExplosion() {
-        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer, 0.5f, 0.16f);
+        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 0.5f, 0.16f);
     }
 
     private void setFireType() {

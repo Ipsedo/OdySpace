@@ -27,13 +27,13 @@ public class Explosion {
     private final float maxSpeed;
     private final float limitSpeed;
 
-    public Explosion(Context context, float[] mPosition, ArrayList<FloatBuffer> mDiffColor, float initSpeed, float limitSpeed) {
+    public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, float initSpeed, float limitSpeed) {
         this.maxSpeed = initSpeed;
         this.limitSpeed = limitSpeed;
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
-        this.particule.setColor(mDiffColor.get(0));
+        this.particule.setColor(mDiffColor);
         for (int i = 0; i < 10; i++) {
             Particule tmp = new Particule(rand, mPosition);
             this.particules.add(tmp);

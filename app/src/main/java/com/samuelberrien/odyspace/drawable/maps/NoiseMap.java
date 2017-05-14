@@ -164,6 +164,19 @@ public class NoiseMap {
         this.mNormals.put(this.normals).position(0);
     }
 
+    public float[] passToModelMatrix(float[] triangles) {
+        float[] tmp;
+        float[] res = new float[triangles.length];
+        for (int i = 0; i < triangles.length; i += 3) {
+            tmp = new float[]{triangles[i], triangles[i + 1], triangles[i + 2], 1f};
+            Matrix.multiplyMV(tmp, 0, this.mModelMatrix, 0, tmp.clone(), 0);
+            res[i] = tmp[0];
+            res[i + 1] = tmp[1];
+            res[i + 2] = tmp[2];
+        }
+        return res;
+    }
+
     private void bind() {
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
@@ -210,18 +223,19 @@ public class NoiseMap {
         return this.mModelMatrix.clone();
     }
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
-
+    public void update() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, -0.5f * this.scale, this.limitHeight, -0.5f * this.scale);
         Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
 
         this.mModelMatrix = mModelMatrix;
+    }
 
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
         float[] mvpMatrix = new float[16];
         float[] mvMatrix = new float[16];
-        Matrix.multiplyMM(mvMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
+        Matrix.multiplyMM(mvMatrix, 0, mViewMatrix, 0, this.mModelMatrix, 0);
         Matrix.multiplyMM(mvpMatrix, 0, mProjectionMatrix, 0, mvMatrix, 0);
 
 

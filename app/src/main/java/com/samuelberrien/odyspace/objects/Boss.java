@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -37,12 +38,12 @@ public class Boss extends BaseItem {
     private boolean changingColor;
 
     public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition) {
-        super(context, objFileName, mtlFileName, 1f, 0f, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, 1f);
+        super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.counter = 0;
         this.rand = new Random(System.currentTimeMillis());
         this.maxSpeed = 0.1f;
-        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f);
+        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.phi = 0f;
         this.theta = 0f;
         this.colorCounter = 0;
@@ -52,7 +53,7 @@ public class Boss extends BaseItem {
     private void count() {
         this.counter = (this.counter >= this.MAX_COUNT ? 0 : this.counter + 1);
         if (this.changingColor && this.colorCounter > 75) {
-            super.setColors(super.allAmbColorBuffer, super.allSpecColorBuffer, super.allDiffColorBuffer);
+            super.setColors(super.ambColorBuffer, super.specColorBuffer, super.diffColorBuffer);
             this.changingColor = false;
             this.colorCounter = 0;
         } else if (this.changingColor) {
@@ -65,7 +66,7 @@ public class Boss extends BaseItem {
         boolean res = super.isCollided(other);
         if (res) {
             if (!this.changingColor) {
-                super.setColors(super.allAmbColorBuffer, super.allSpecColorBuffer, super.allDiffColorBuffer);
+                super.setColors(super.ambColorBuffer, super.specColorBuffer, super.diffColorBuffer);
             }
             this.colorCounter = 0;
             this.changingColor = true;

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
@@ -43,6 +44,8 @@ public class TestThread implements Level {
 
     private List<Explosion> explosions;
 
+    private Forest forest;
+
     private boolean isInit = false;
 
     private int score;
@@ -58,8 +61,10 @@ public class TestThread implements Level {
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
+        this.noiseMap.update();
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
 
+        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 50, this.noiseMap, levelLimitSize / 4f);
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
@@ -87,6 +92,7 @@ public class TestThread implements Level {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
+        this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
         for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);

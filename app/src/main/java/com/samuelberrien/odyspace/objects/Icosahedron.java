@@ -21,13 +21,12 @@ public class Icosahedron extends BaseItem {
     private Explosion mExplosion;
 
     public Icosahedron(Context context, float[] mPosition, Random rand, float scale) {
-        super(context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
-        super.changeColor(rand);
+        super(context, "icosahedron.obj", "icosahedron.mtl", 0.7f, 0f, true, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
         super.radius = scale;
     }
 
     public void makeExplosion(Context context) {
-        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.allDiffColorBuffer, 1.5f, 0.05f);
+        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 1.5f, 0.05f);
     }
 
     public void addExplosion(List<Explosion> explosions) {

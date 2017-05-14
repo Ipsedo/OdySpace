@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 import com.samuelberrien.odyspace.utils.collision.Triangle;
 
@@ -42,8 +43,8 @@ public class BaseItem extends ObjModelMtl {
 
     protected float scale;
 
-    public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
-        super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef);
+    public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+        super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
         this.life = life;
         this.mPosition = mPosition;
         this.mSpeed = mSpeed;
@@ -70,19 +71,19 @@ public class BaseItem extends ObjModelMtl {
         this.radius = this.scale;
     }
 
-    public void changeColor(Random rand) {
+    /*public void changeColor(Random rand) {
         ArrayList<FloatBuffer> tmpA = super.makeColor(rand);
         ArrayList<FloatBuffer> tmpD = super.makeColor(rand);
         ArrayList<FloatBuffer> tmpS = super.makeColor(rand);
         super.setColors(tmpA, tmpD, tmpS);
-    }
+    }*/
 
     public boolean isAlive() {
         return this.life > 0;
     }
 
     public boolean isCollided(BaseItem other) {
-        return this.areCollided(this.allCoordsFloatArray.clone(), this.mModelMatrix.clone(), other.allCoordsFloatArray.clone(), other.mModelMatrix.clone());
+        return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), other.allCoords.clone(), other.mModelMatrix.clone());
     }
 
     public void decrementsBothLife(BaseItem other) {
@@ -96,7 +97,7 @@ public class BaseItem extends ObjModelMtl {
     }
 
     public void mapCollision(NoiseMap map) {
-        if(this.areCollided(this.allCoordsFloatArray.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
+        if(this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
             this.life = 0;
         }
     }

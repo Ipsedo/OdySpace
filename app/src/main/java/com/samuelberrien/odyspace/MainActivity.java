@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView gameInfo;
     private LinearLayout levelChooser;
 
+    private SharedPreferences savedShop;
+    private SharedPreferences savedLevelInfo;
+    private SharedPreferences savedShip;
+
     private Animation myAnim;
 
     @Override
@@ -51,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         //this.resetSharedPref();
+        this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
+        this.savedLevelInfo = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
+        this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
         this.startButton = (Button) findViewById(R.id.start_button);
         this.startButton.setText("START (" + (this.currLevel + 1) + ")");
         this.continueButton = (Button) findViewById(R.id.continue_button);
@@ -61,12 +68,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLevelChooser() {
-
         this.levelChooser = (LinearLayout) findViewById(R.id.level_chooser_layout);
 
-        SharedPreferences sharedPrefLevel = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
-        int maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
+        int maxLevel = this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
 
         this.levelChooser.removeAllViews();
 
@@ -96,29 +101,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void initGameInfo() {
         this.gameInfo = (TextView) findViewById(R.id.game_info);
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
         String defaultValue = getString(R.string.saved_fire_type_default);
-        String currFireType = sharedPref.getString(getString(R.string.current_fire_type), defaultValue);
+        String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), defaultValue);
 
         int defaultLife = getResources().getInteger(R.integer.saved_ship_life_default);
-        int currLife = sharedPref.getInt(getString(R.string.current_life_number), defaultLife);
+        int currLife = this.savedShip.getInt(getString(R.string.current_life_number), defaultLife);
 
-        sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
         int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-        int currMoney = sharedPref.getInt(getString(R.string.saved_money), defaultMoney);
+        int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
 
         this.gameInfo.setText("Life : " + currLife + System.getProperty("line.separator") + "FireType : " + currFireType + System.getProperty("line.separator") + "Money : " + currMoney);
     }
 
     public void resetSharedPref() {
-        SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences.Editor editor = this.savedShop.edit();
         editor.clear().commit();
-        sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
+        editor = this.savedShip.edit();
         editor.clear().commit();
-        sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
+        editor = this.savedLevelInfo.edit();
         editor.clear().commit();
     }
 
@@ -132,9 +132,8 @@ public class MainActivity extends AppCompatActivity {
     public void continueStory(View v) {
         this.continueButton.startAnimation(this.myAnim);
         Intent intent = new Intent(this, LevelActivity.class);
-        SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
-        long maxLevel = sharedPref.getInt(getString(R.string.saved_max_level), defaultValue);
+        long maxLevel = this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
         this.currLevel = (int) maxLevel;
         intent.putExtra(MainActivity.LEVEL_ID, Integer.toString((int) maxLevel));
         startActivityForResult(intent, MainActivity.RESULT_VALUE);
@@ -158,20 +157,18 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case MainActivity.RESULT_VALUE: {
                 if (resultCode == Activity.RESULT_OK) {
-                    SharedPreferences sharedPref = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
                     int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-                    int currMoney = sharedPref.getInt(getString(R.string.saved_money), defaultMoney);
+                    int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
                     int score = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_SCORE));
-                    SharedPreferences.Editor editor = sharedPref.edit();
+                    SharedPreferences.Editor editor = this.savedShop.edit();
                     editor.putInt(getString(R.string.saved_money), currMoney + score);
                     editor.commit();
 
                     int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     if (result == 1) {
-                        final SharedPreferences sharedPrefLevel = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
                         int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
-                        final long maxLevel = sharedPrefLevel.getInt(getString(R.string.saved_max_level), defaultValue);
+                        final long maxLevel = MainActivity.this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
 
                         builder.setTitle("Level Done, Score : " + score);
 
@@ -189,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                     MainActivity.this.currLevel++;
                                 MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
                                 if (MainActivity.this.currLevel > maxLevel) {
-                                    SharedPreferences.Editor editorLevel = sharedPrefLevel.edit();
+                                    SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
                                     editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
                                     editorLevel.commit();
                                 }
@@ -203,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (MainActivity.this.currLevel < Level.MAX_LEVEL)
                                     MainActivity.this.currLevel++;
                                 if (MainActivity.this.currLevel > maxLevel) {
-                                    SharedPreferences.Editor editorLevel = sharedPrefLevel.edit();
+                                    SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
                                     editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
                                     editorLevel.commit();
                                 }
