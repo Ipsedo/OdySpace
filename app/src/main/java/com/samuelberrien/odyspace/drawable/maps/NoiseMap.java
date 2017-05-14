@@ -38,6 +38,9 @@ public class NoiseMap {
     private FloatBuffer mPositions;
     private FloatBuffer mNormals;
 
+    private int mPositionsBufferId;
+    private int mNormalsBufferId;
+
     private float[] mModelMatrix;
 
     private final int mProgram;
@@ -75,6 +78,8 @@ public class NoiseMap {
         this.bind();
 
         this.initPlan();
+
+        this.bindBuffer();
     }
 
     private void initPlan() {
@@ -146,7 +151,6 @@ public class NoiseMap {
                 normales.add(normal[2]);
             }
         }
-        System.out.println("ENDD : " + triangles.size());
 
         this.points = new float[triangles.size()];
         this.normals = new float[normales.size()];
@@ -162,6 +166,28 @@ public class NoiseMap {
         this.mNormals = ByteBuffer.allocateDirect(this.normals.length * 4)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         this.mNormals.put(this.normals).position(0);
+    }
+
+    private void bindBuffer() {
+        int[] buffers = new int[2];
+
+        GLES20.glGenBuffers(2, buffers, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mPositions.capacity() * 4, this.mPositions, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mNormals.capacity() * 4, this.mNormals, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+        this.mPositionsBufferId = buffers[0];
+        this.mNormalsBufferId = buffers[1];
+
+        this.mPositions.limit(0);
+        this.mPositions = null;
+        this.mNormals.limit(0);
+        this.mNormals = null;
     }
 
     public float[] passToModelMatrix(float[] triangles) {
@@ -241,18 +267,28 @@ public class NoiseMap {
 
         GLES20.glUseProgram(mProgram);
 
-        this.mPositions.position(0);
-        this.mNormals.position(0);
+        /*this.mPositions.position(0);
+        this.mNormals.position(0);*/
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.mPositionsBufferId);
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.mNormalsBufferId);
+        GLES20.glEnableVertexAttribArray(mNormalHandle);
+        GLES20.glVertexAttribPointer(mNormalHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
         // Enable a handle to the triangle vertices
-        GLES20.glEnableVertexAttribArray(this.mPositionHandle);
+        /*GLES20.glEnableVertexAttribArray(this.mPositionHandle);
         // Prepare the triangle coordinate data
         GLES20.glVertexAttribPointer(this.mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.mPositions);
 
-        GLES20.glUniform4fv(this.mColorHandle, 1, this.color, 0);
-
         GLES20.glEnableVertexAttribArray(mNormalHandle);
-        GLES20.glVertexAttribPointer(this.mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.mNormals);
+        GLES20.glVertexAttribPointer(this.mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.mNormals);*/
+
+        GLES20.glUniform4fv(this.mColorHandle, 1, this.color, 0);
 
         // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(this.mMVMatrixHandle, 1, false, mvMatrix, 0);

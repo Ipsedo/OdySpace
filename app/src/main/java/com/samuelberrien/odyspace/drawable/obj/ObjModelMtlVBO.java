@@ -108,8 +108,6 @@ public class ObjModelMtlVBO {
 
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
         this.bindBuffer();
-
-        ShaderLoader.checkGlError("BIND");
     }
 
     /**
@@ -141,8 +139,6 @@ public class ObjModelMtlVBO {
 
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
         this.bindBuffer();
-
-        ShaderLoader.checkGlError("BIND");
     }
 
     public ObjModelMtlVBO(ObjModelMtlVBO objModelMtl) {
@@ -252,7 +248,7 @@ public class ObjModelMtlVBO {
         this.normalsBuffer = null;
         this.ambColorBuffer.limit(0);
         this.ambColorBuffer = null;
-        // Need to keeps diffColorBufferForExplosion
+        // Need to keeps diffColorBuffer for Explosion
 
         this.specColorBuffer.limit(0);
         this.specColorBuffer = null;
@@ -494,24 +490,6 @@ public class ObjModelMtlVBO {
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         GLES20.glUseProgram(mProgram);
 
-        /*GLES20.glEnableVertexAttribArray(mPositionHandle);
-        GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.vertexBuffer);
-
-        GLES20.glEnableVertexAttribArray(mAmbColorHandle);
-        GLES20.glVertexAttribPointer(mAmbColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.ambColorBuffer);
-
-        GLES20.glEnableVertexAttribArray(mDiffColorHandle);
-        GLES20.glVertexAttribPointer(mDiffColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.diffColorBuffer);
-
-        GLES20.glEnableVertexAttribArray(mSpecColorHandle);
-        GLES20.glVertexAttribPointer(mSpecColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.specColorBuffer);
-
-        GLES20.glEnableVertexAttribArray(mNormalHandle);
-        GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.normalsBuffer);
-
-        GLES20.glEnableVertexAttribArray(mSpecShininessHandle);
-        GLES20.glVertexAttribPointer(mSpecShininessHandle, 1, GLES20.GL_FLOAT, false, 1 * 4, this.specShininess);*/
-
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.vertexBufferId);
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
@@ -538,9 +516,6 @@ public class ObjModelMtlVBO {
         GLES20.glEnableVertexAttribArray(this.mSpecShininessHandle);
         GLES20.glVertexAttribPointer(this.mSpecShininessHandle, SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-
-        // Clear the currently bound buffer (so future OpenGL calls do not use this buffer).
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);

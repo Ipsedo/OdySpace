@@ -6,6 +6,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.MainActivity;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.Fire;
 
 import java.util.Random;
@@ -21,14 +22,14 @@ public class Forest {
 
     private Context context;
 
-    private ObjModelMtl tree;
+    private ObjModelMtlVBO tree;
 
     private int nbTree;
     private float[][] mModelsMatrix;
 
     public Forest(Context context, String treeObjFileName, String treeMtlFileName, int nbTree, NoiseMap noiseMap, float areaSize) {
         this.context = context;
-        this.tree = new ObjModelMtl(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
+        this.tree = new ObjModelMtlVBO(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
         this.nbTree = nbTree;
         this.mModelsMatrix = new float[this.nbTree][16];
         this.initTrees(noiseMap, areaSize);

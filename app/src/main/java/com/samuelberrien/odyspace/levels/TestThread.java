@@ -37,6 +37,7 @@ public class TestThread implements Level {
     private Ship ship;
     //private HeightMap heightMap;
     private NoiseMap noiseMap;
+    private Forest forest;
     private List<BaseItem> rockets;
 
     private List<BaseItem> icosahedrons;
@@ -60,6 +61,7 @@ public class TestThread implements Level {
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
+        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 4f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
 
 
@@ -90,6 +92,7 @@ public class TestThread implements Level {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
+        this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
         for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
