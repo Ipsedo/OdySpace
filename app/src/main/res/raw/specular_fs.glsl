@@ -3,12 +3,12 @@ uniform vec3 u_CameraPosition;
 uniform vec3 u_LightPos;
 uniform float u_distance_coef;
 uniform float u_light_coef;
-uniform float u_materialShininess;
 varying vec3 v_Position;
 varying vec4 v_material_ambient_Color;
 varying vec4 v_material_diffuse_Color;
 varying vec4 v_material_specular_Color;
 varying vec3 v_Normal;
+varying float v_material_shininess;
 void main(){
     float distance = length(u_LightPos - v_Position);
     vec3 lightVector = normalize(u_LightPos - v_Position);
@@ -23,7 +23,7 @@ void main(){
         vec3 reflectionVector = reflect(incidenceVector, v_Normal);
         vec3 surfaceToCamera = normalize(u_CameraPosition - v_Position);
         float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
-        specularCoefficient = pow(cosAngle, u_materialShininess) * u_light_coef;
+        specularCoefficient = pow(cosAngle, v_material_shininess) * u_light_coef;
     }
     vec4 specular = specularCoefficient * v_material_specular_Color;
 

@@ -76,7 +76,7 @@ public class ObjModelMtl {
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
 
-        this.makeProgram(context, R.raw.specular_test_vs, R.raw.specular_test_fs);
+        this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
     }
 
     /**
@@ -106,7 +106,7 @@ public class ObjModelMtl {
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
 
-        this.makeProgram(context, R.raw.specular_test_vs, R.raw.specular_test_fs);
+        this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
     }
 
     public ObjModelMtl(ObjModelMtl objModelMtl) {
@@ -170,10 +170,6 @@ public class ObjModelMtl {
         mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
         mCameraPosHandle = GLES20.glGetUniformLocation(mProgram, "u_CameraPosition");
         mSpecShininessHandle = GLES20.glGetAttribLocation(mProgram, "a_material_shininess");
-    }
-
-    private void bindBuffer() {
-
     }
 
     /**
