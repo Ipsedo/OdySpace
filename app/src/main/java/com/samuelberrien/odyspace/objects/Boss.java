@@ -29,7 +29,7 @@ public class Boss extends BaseItem {
 
     private float maxSpeed;
 
-    private ObjModelMtl rocket;
+    private ObjModelMtlVBO rocket;
 
     private double phi;
     private double theta;
@@ -43,7 +43,7 @@ public class Boss extends BaseItem {
         this.counter = 0;
         this.rand = new Random(System.currentTimeMillis());
         this.maxSpeed = 0.1f;
-        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
+        this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.phi = 0f;
         this.theta = 0f;
         this.colorCounter = 0;

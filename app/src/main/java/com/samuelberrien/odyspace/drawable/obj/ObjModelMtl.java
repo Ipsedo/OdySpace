@@ -273,14 +273,12 @@ public class ObjModelMtl {
         ArrayList<Float> specShin = new ArrayList<>();
         Random random = new Random(System.currentTimeMillis());
         for (int i = 0; i < allVertexDrawOrderList.size(); i++) {
-            //float[] coords = new float[3 * allVertexDrawOrderList.get(i).size()];
             for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
                 coords.add(currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3));
                 coords.add(currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 1));
                 coords.add(currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 2));
             }
 
-            //float[] normal = new float[3 * allVertexDrawOrderList.get(i).size()];
             for (int j = 0; j < allNormalDrawOrderList.get(i).size(); j++) {
                 normals.add(currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3));
                 normals.add(currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 1));
@@ -313,10 +311,6 @@ public class ObjModelMtl {
                 specBlue = this.mtlSpecColor.get(mtlToUse.get(i))[2];
             }
 
-
-            //float[] ambColor = new float[coords.length * 4 / 3];
-            //float[] diffColor = new float[coords.length * 4 / 3];
-            //float[] specColor = new float[coords.length * 4 / 3];
             for (int j = 0; j < allVertexDrawOrderList.get(i).size() * 4; j += 4) {
                 ambColor.add(ambRed);
                 ambColor.add(ambGreen);

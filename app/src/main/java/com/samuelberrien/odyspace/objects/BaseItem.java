@@ -21,7 +21,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class BaseItem extends ObjModelMtl {
+public class BaseItem extends ObjModelMtlVBO {
 
     private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
@@ -57,7 +57,7 @@ public class BaseItem extends ObjModelMtl {
         this.radius = this.scale;
     }
 
-    public BaseItem(ObjModelMtl objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+    public BaseItem(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(objModelMtl);
         this.life = life;
         this.mPosition = mPosition;

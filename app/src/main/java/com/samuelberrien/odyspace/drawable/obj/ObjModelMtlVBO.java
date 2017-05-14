@@ -37,6 +37,10 @@ public class ObjModelMtlVBO {
      */
     private static final int NORMAL_DATA_SIZE = 3;
 
+    private static final int COLOR_DATA_SIZE = 4;
+
+    private static final int SHININESS_DATA_SIZE = 1;
+
     /**
      * How many bytes per float.
      */
@@ -53,6 +57,13 @@ public class ObjModelMtlVBO {
     protected FloatBuffer diffColorBuffer;
     protected FloatBuffer specColorBuffer;
     private FloatBuffer specShininess;
+
+    private int vertexBufferId;
+    private int normalsBufferId;
+    private int ambBufferId;
+    private int diffBufferId;
+    private int specBufferId;
+    private int shinBufferId;
 
     private int mProgram;
     private int mPositionHandle;
@@ -96,6 +107,9 @@ public class ObjModelMtlVBO {
         this.distanceCoef = distanceCoef;
 
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+        this.bindBuffer();
+
+        ShaderLoader.checkGlError("BIND");
     }
 
     /**
@@ -126,6 +140,9 @@ public class ObjModelMtlVBO {
         this.distanceCoef = distanceCoef;
 
         this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+        this.bindBuffer();
+
+        ShaderLoader.checkGlError("BIND");
     }
 
     public ObjModelMtlVBO(ObjModelMtlVBO objModelMtl) {
@@ -139,6 +156,13 @@ public class ObjModelMtlVBO {
         this.diffColorBuffer = objModelMtl.diffColorBuffer;
         this.specColorBuffer = objModelMtl.specColorBuffer;
         this.specShininess = objModelMtl.specShininess;
+
+        this.vertexBufferId = objModelMtl.vertexBufferId;
+        this.normalsBufferId = objModelMtl.normalsBufferId;
+        this.ambBufferId = objModelMtl.ambBufferId;
+        this.diffBufferId = objModelMtl.diffBufferId;
+        this.specBufferId = objModelMtl.specBufferId;
+        this.shinBufferId = objModelMtl.shinBufferId;
 
         this.mProgram = objModelMtl.mProgram;
         this.mPositionHandle = objModelMtl.mPositionHandle;
@@ -192,7 +216,48 @@ public class ObjModelMtlVBO {
     }
 
     private void bindBuffer() {
+        final int buffers[] = new int[6];
+        GLES20.glGenBuffers(6, buffers, 0);
 
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.vertexBuffer.capacity() * BYTES_PER_FLOAT, this.vertexBuffer, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.normalsBuffer.capacity() * BYTES_PER_FLOAT, this.normalsBuffer, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[2]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.ambColorBuffer.capacity() * BYTES_PER_FLOAT, this.ambColorBuffer, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[3]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.diffColorBuffer.capacity() * BYTES_PER_FLOAT, this.diffColorBuffer, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[4]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.specColorBuffer.capacity() * BYTES_PER_FLOAT, this.specColorBuffer, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[5]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.specShininess.capacity() * BYTES_PER_FLOAT, this.specShininess, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+        this.vertexBufferId = buffers[0];
+        this.normalsBufferId = buffers[1];
+        this.ambBufferId = buffers[2];
+        this.diffBufferId = buffers[3];
+        this.specBufferId = buffers[4];
+        this.shinBufferId = buffers[5];
+
+        this.vertexBuffer.limit(0);
+        this.vertexBuffer = null;
+        this.normalsBuffer.limit(0);
+        this.normalsBuffer = null;
+        this.ambColorBuffer.limit(0);
+        this.ambColorBuffer = null;
+        // Need to keeps diffColorBufferForExplosion
+
+        this.specColorBuffer.limit(0);
+        this.specColorBuffer = null;
+        this.specShininess.limit(0);
+        this.specShininess = null;
     }
 
     /**
@@ -308,7 +373,7 @@ public class ObjModelMtlVBO {
                 normals.add(currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 2));
             }
             float ambRed, ambGreen, ambBlue, diffRed, diffGreen, diffBlue, specRed, specGreen, specBlue;
-            if(randomColor) {
+            if (randomColor) {
                 ambRed = random.nextFloat();
                 ambGreen = random.nextFloat();
                 ambBlue = random.nextFloat();
@@ -405,7 +470,7 @@ public class ObjModelMtlVBO {
                 .position(0);
 
         float[] allSpecShin = new float[specShin.size()];
-        for(int i = 0; i < allSpecShin.length; i++) {
+        for (int i = 0; i < allSpecShin.length; i++) {
             allSpecShin[i] = specShin.get(i);
         }
         this.specShininess = ByteBuffer.allocateDirect(allSpecShin.length * 4)
@@ -429,7 +494,7 @@ public class ObjModelMtlVBO {
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         GLES20.glUseProgram(mProgram);
 
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        /*GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.vertexBuffer);
 
         GLES20.glEnableVertexAttribArray(mAmbColorHandle);
@@ -445,7 +510,38 @@ public class ObjModelMtlVBO {
         GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.normalsBuffer);
 
         GLES20.glEnableVertexAttribArray(mSpecShininessHandle);
-        GLES20.glVertexAttribPointer(mSpecShininessHandle, 1, GLES20.GL_FLOAT, false, 1 * 4, this.specShininess);
+        GLES20.glVertexAttribPointer(mSpecShininessHandle, 1, GLES20.GL_FLOAT, false, 1 * 4, this.specShininess);*/
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.vertexBufferId);
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+
+        // Pass in the normal information
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.normalsBufferId);
+        GLES20.glEnableVertexAttribArray(mNormalHandle);
+        GLES20.glVertexAttribPointer(mNormalHandle, NORMAL_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+
+        // Pass in the texture information
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.ambBufferId);
+        GLES20.glEnableVertexAttribArray(this.mAmbColorHandle);
+        GLES20.glVertexAttribPointer(this.mAmbColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.diffBufferId);
+        GLES20.glEnableVertexAttribArray(this.mDiffColorHandle);
+        GLES20.glVertexAttribPointer(this.mDiffColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.specBufferId);
+        GLES20.glEnableVertexAttribArray(this.mSpecColorHandle);
+        GLES20.glVertexAttribPointer(this.mSpecColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.shinBufferId);
+        GLES20.glEnableVertexAttribArray(this.mSpecShininessHandle);
+        GLES20.glVertexAttribPointer(this.mSpecShininessHandle, SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+        // Clear the currently bound buffer (so future OpenGL calls do not use this buffer).
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 

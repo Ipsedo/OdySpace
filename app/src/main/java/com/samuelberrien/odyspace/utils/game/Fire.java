@@ -23,7 +23,7 @@ public class Fire {
         SIMPLE_FIRE, QUINT_FIRE, SIMPLE_BOMB
     }
 
-    public static void fire(ObjModelMtl rocketModel, List<BaseItem> rockets, Fire.Type type, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed) {
+    public static void fire(ObjModelMtlVBO rocketModel, List<BaseItem> rockets, Fire.Type type, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed) {
         switch (type) {
             case SIMPLE_FIRE:
                 rockets.add(new Rocket(rocketModel, position, originalSpeedVec, new float[]{0f, 0f, 0f}, rotationMatrix, maxSpeed, 1f, 1));

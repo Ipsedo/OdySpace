@@ -46,7 +46,7 @@ public class Ship extends BaseItem {
     private Explosion mExplosion;
     private boolean exploded;
 
-    private ObjModelMtl rocket;
+    private ObjModelMtlVBO rocket;
 
     private Fire.Type fireType;
 
@@ -54,7 +54,7 @@ public class Ship extends BaseItem {
         super(context, "ship.obj", "ship.mtl", 1f, 0f, false, Ship.MAXLIFE, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.lifeDraw = new Life(this.context);
-        this.rocket = new ObjModelMtl(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
+        this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.setFireType();
         this.exploded = false;
     }
