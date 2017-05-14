@@ -476,10 +476,10 @@ public class ObjModelMtlVBO {
                 .position(0);
     }
 
-    public void setColors(FloatBuffer mAmbColors, FloatBuffer mDiffColors, FloatBuffer mSpecColors) {
-        this.ambColorBuffer = mAmbColors;
-        this.diffColorBuffer = mDiffColors;
-        this.specColorBuffer = mSpecColors;
+    public void changeColor() {
+        int tmpSpecColor = this.specBufferId;
+        this.specBufferId = this.diffBufferId;
+        this.diffBufferId = tmpSpecColor;
     }
 
     /**

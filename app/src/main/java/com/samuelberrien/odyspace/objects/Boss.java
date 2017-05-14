@@ -53,7 +53,7 @@ public class Boss extends BaseItem {
     private void count() {
         this.counter = (this.counter >= this.MAX_COUNT ? 0 : this.counter + 1);
         if (this.changingColor && this.colorCounter > 75) {
-            super.setColors(super.ambColorBuffer, super.specColorBuffer, super.diffColorBuffer);
+            super.changeColor();
             this.changingColor = false;
             this.colorCounter = 0;
         } else if (this.changingColor) {
@@ -63,16 +63,15 @@ public class Boss extends BaseItem {
 
     @Override
     public boolean isCollided(BaseItem other) {
-        boolean res = super.isCollided(other);
-        if (res) {
+        if (super.isCollided(other)) {
             if (!this.changingColor) {
-                super.setColors(super.ambColorBuffer, super.specColorBuffer, super.diffColorBuffer);
+                super.changeColor();
             }
             this.colorCounter = 0;
             this.changingColor = true;
-
+            return true;
         }
-        return res;
+        return false;
     }
 
     public void move(Ship ship) {
