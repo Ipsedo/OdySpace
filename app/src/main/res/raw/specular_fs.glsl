@@ -20,6 +20,7 @@ void main(){
     float specularCoefficient = 0.0;
     if(diffuse_coeff > 0.0){
         specularCoefficient = pow(max(0.0, dot(normalize(u_CameraPosition - v_Position), reflect(-lightVector, v_Normal))), v_material_shininess) * u_light_coef;
+        specularCoefficient = specularCoefficient * (1.0 / (1.0 + (distance * distance)));
     }
     vec4 specular = specularCoefficient * v_material_specular_Color;
 
