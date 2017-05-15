@@ -46,7 +46,6 @@ public class ShopActivity extends AppCompatActivity {
         this.currPrice = 0;
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setContentView(R.layout.activity_shop);
 

@@ -9,6 +9,7 @@ import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -107,7 +108,7 @@ public class Boss extends BaseItem {
         this.count();
     }
 
-    public void fire(ArrayList<BaseItem> rockets, Ship ship) {
+    public void fire(List<BaseItem> rockets, Ship ship) {
         if (this.counter % 101 == 0) {
             float[] speedVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
             float[] originaleVec = new float[]{0f, 0f, 1f};

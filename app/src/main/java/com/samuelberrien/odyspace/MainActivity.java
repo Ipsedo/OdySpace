@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.currLevel = 0;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         //this.resetSharedPref();
         this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);

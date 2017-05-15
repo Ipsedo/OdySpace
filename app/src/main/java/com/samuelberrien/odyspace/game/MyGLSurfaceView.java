@@ -9,6 +9,7 @@ import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestThread;
+import com.samuelberrien.odyspace.levels.TestTurrets;
 import com.samuelberrien.odyspace.utils.game.threads.CollisionThread;
 import com.samuelberrien.odyspace.utils.game.threads.EndGameThread;
 import com.samuelberrien.odyspace.utils.game.Level;
@@ -67,8 +68,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private Level getCurrentLevel(int currLevelId) {
         if (currLevelId == 0) {
             return new TestThread();
-        } else {
+        } else if(currLevelId == 1){
             return new TestBossThread();
+        } else {
+            return new TestTurrets();
         }
     }
 

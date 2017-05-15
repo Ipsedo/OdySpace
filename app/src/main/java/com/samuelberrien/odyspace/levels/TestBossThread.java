@@ -17,6 +17,8 @@ import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by samuel on 09/05/17.
@@ -34,8 +36,8 @@ public class TestBossThread implements Level {
     //private HeightMap heightMap;
     private NoiseMap noiseMap;
     private Boss boss;
-    private ArrayList<BaseItem> rocketsShip;
-    private ArrayList<BaseItem> rocketsBoss;
+    private List<BaseItem> rocketsShip;
+    private List<BaseItem> rocketsBoss;
     private boolean isInit = false;
     private Joystick joystick;
     private Controls controls;
@@ -53,8 +55,8 @@ public class TestBossThread implements Level {
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 2f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 50, new float[]{0f, 0f, 50f});
-        this.rocketsShip = new ArrayList<>();
-        this.rocketsBoss = new ArrayList<>();
+        this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
+        this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.joystick = joystick;
         this.controls = controls;
         this.compass = new Compass(this.context);

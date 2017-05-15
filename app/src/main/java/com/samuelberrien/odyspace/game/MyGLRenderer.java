@@ -164,9 +164,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.ship.drawLife(this.ratio);
         this.currentLevel.drawLevelInfo(this.ratio);
 
-        if(this.currentLevel.isDead()){
+        if (this.currentLevel.isDead()) {
             this.gameOver.draw(this.ratio);
-        }else if(this.currentLevel.isWinner()){
+        } else if (this.currentLevel.isWinner()) {
             this.levelDone.draw(this.ratio);
         }
 
