@@ -101,37 +101,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     /**
-     * update the camera look point with orientation angles
-     *
-     * @param phi   angle phi
-     * @param theta angle theta
-     */
-    protected void updateCameraOrientation(float phi, float theta) {
-        this.phi += phi;
-        this.theta += theta;
-
-        if (this.phi > Math.PI * 2) {
-            this.phi -= Math.PI * 2;
-        }
-        if (this.phi < 0) {
-            this.phi += Math.PI * 2;
-        }
-        if (this.theta > Math.PI * 2) {
-            this.theta -= Math.PI * 2;
-        }
-        if (this.theta < 0) {
-            this.theta += Math.PI * 2;
-        }
-        if ((this.phi > Math.toRadians(80) && this.phi < Math.toRadians(100)) || (this.phi > Math.toRadians(260) && this.phi < Math.toRadians(280))) {
-            this.phi -= phi * 2;
-        }
-
-        this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraPosition[0];
-        this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraPosition[1];
-        this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraPosition[2];
-    }
-
-    /**
      * Update the camera look at vector (normalized)
      *
      * @param xyz The x y z vector

@@ -61,7 +61,7 @@ public class TestThread implements Level {
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
-        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 4f);
+        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 2f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
 
 
