@@ -54,7 +54,7 @@ public class TestBossThread implements Level {
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 2f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
-        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 50, new float[]{0f, 0f, 50f});
+        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f});
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.joystick = joystick;

@@ -2,7 +2,6 @@ package com.samuelberrien.odyspace.shop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.game.LevelActivity;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -76,18 +74,25 @@ public class ShopActivity extends AppCompatActivity {
         int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
         int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
 
-        if (!this.currFireItem.equals("") && currMoney > this.currPrice) {
+        if (!this.currFireItem.equals("") && currMoney >= this.currPrice) {
             editor.putBoolean(this.currFireItem, true);
             editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
             editor.commit();
             this.buyButton.setVisibility(View.GONE);
             this.useButton.setText("Use It (" + this.currFireItem + ")");
             this.useButton.setVisibility(View.VISIBLE);
-        } else if (!this.currShipItem.equals("") && currMoney > this.currPrice) {
+        } else if (!this.currShipItem.equals("") && currMoney >= this.currPrice) {
             if (this.currShipItem.equals(getString(R.string.bought_life))) {
                 this.buyLife(editor, currMoney);
+            } else {
+                editor.putBoolean(this.currShipItem, true);
+                editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
+                editor.commit();
+                this.buyButton.setVisibility(View.GONE);
+                this.useButton.setText("Use It (" + this.currShipItem + ")");
+                this.useButton.setVisibility(View.VISIBLE);
             }
-        } else if (!this.currBonusItem.equals("") && currMoney > this.currPrice) {
+        } else if (!this.currBonusItem.equals("") && currMoney >= this.currPrice) {
 
         }
 
@@ -102,13 +107,6 @@ public class ShopActivity extends AppCompatActivity {
         editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
         editor.commit();
 
-        SharedPreferences sharedPrefShip = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
-        int defaultSavedShipLife = getResources().getInteger(R.integer.saved_ship_life_default);
-        int currShipLife = sharedPrefShip.getInt(getString(R.string.current_life_number), defaultSavedShipLife);
-        SharedPreferences.Editor editorShip = sharedPrefShip.edit();
-        editorShip.putInt(getString(R.string.current_life_number), currShipLife + 1);
-        editorShip.commit();
-
         this.updateLifePrice();
     }
 
@@ -118,7 +116,15 @@ public class ShopActivity extends AppCompatActivity {
             editor.putString(getString(R.string.current_fire_type), this.currFireItem);
             editor.commit();
         } else if (!this.currShipItem.equals("")) {
-
+            editor.putString(getString(R.string.current_ship_used), this.currShipItem);
+            if (this.currShipItem.equals(getString(R.string.ship_bird))) {
+                editor.putInt(getString(R.string.current_life_number), 50);
+            } else if (this.currShipItem.equals(getString(R.string.ship_supreme))) {
+                editor.putInt(getString(R.string.current_life_number), 200);
+            } else {
+                editor.putInt(getString(R.string.current_life_number), 20);
+            }
+            editor.commit();
         } else if (!this.currBonusItem.equals("")) {
 
         }
@@ -187,6 +193,41 @@ public class ShopActivity extends AppCompatActivity {
             this.useButton.setVisibility(View.GONE);
             this.buyButton.setVisibility(View.VISIBLE);
             this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
+        } else {
+            this.currShipItem = this.shipItem[id];
+            this.currBonusItem = "";
+            this.currFireItem = "";
+
+            int defaultItemResId;
+            int itemResId;
+            int itemCostRedId;
+            if (this.shipItem[id].equals(getString(R.string.ship_bird))) {
+                defaultItemResId = R.bool.saved_ship_bird_bought_default;
+                itemResId = R.string.ship_bird;
+                itemCostRedId = R.integer.ship_bird_cost;
+            } else if (this.shipItem[id].equals(getString(R.string.ship_supreme))) {
+                defaultItemResId = R.bool.saved_ship_supreme_bought_default;
+                itemResId = R.string.ship_supreme;
+                itemCostRedId = R.integer.ship_supreme_cost;
+            } else {
+                defaultItemResId = R.bool.saved_ship_simple_bought_default;
+                itemResId = R.string.ship_simple;
+                itemCostRedId = R.integer.ship_simple_cost;
+            }
+
+            boolean defaultValue = getResources().getBoolean(defaultItemResId);
+            boolean currentPurchase = this.savedShop.getBoolean(getString(itemResId), defaultValue);
+
+            if (!currentPurchase) {
+                this.useButton.setVisibility(View.GONE);
+                this.buyButton.setVisibility(View.VISIBLE);
+                this.currPrice = getResources().getInteger(itemCostRedId);
+                this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
+            } else {
+                this.buyButton.setVisibility(View.GONE);
+                this.useButton.setVisibility(View.VISIBLE);
+                this.useButton.setText("Use It (" + this.shipItem[id] + ")");
+            }
         }
     }
 }

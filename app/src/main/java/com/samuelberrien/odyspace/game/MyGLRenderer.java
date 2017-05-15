@@ -8,11 +8,13 @@ package com.samuelberrien.odyspace.game;
  */
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
@@ -59,6 +61,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private GameOver gameOver;
     private LevelDone levelDone;
 
+    private SharedPreferences savedShop;
+    private SharedPreferences savedShip;
+
     /**
      * @param context
      */
@@ -68,6 +73,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.joystick = joystick;
         this.controls = controls;
         this.currentLevel = currentLevel;
+        this.savedShop = this.context.getSharedPreferences(this.context.getString(R.string.saved_shop), Context.MODE_PRIVATE);
+        this.savedShip = this.context.getSharedPreferences(this.context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
     }
 
     @Override
@@ -83,7 +90,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.joystick.initGraphics(this.context);
         this.controls.initGraphics(this.context);
 
-        this.ship = new Ship(this.context);
+        this.initShip();
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
@@ -96,6 +103,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.gameOver = new GameOver(this.context);
         this.levelDone = new LevelDone(this.context);
+    }
+
+    private void initShip() {
+        int currBoughtLife = this.savedShop.getInt(this.context.getString(R.string.bought_life), this.context.getResources().getInteger(R.integer.saved_ship_life_shop_default));
+        int currShipLife = this.savedShip.getInt(this.context.getString(R.string.current_life_number), this.context.getResources().getInteger(R.integer.saved_ship_life_default));
+
+        Ship.MAXLIFE = currBoughtLife + currShipLife;
+
+        String shipUsed = this.savedShip.getString(this.context.getString(R.string.current_ship_used), this.context.getString(R.string.saved_ship_used_default));
+
+        if (shipUsed.equals(this.context.getString(R.string.ship_bird))) {
+            this.ship = new Ship(this.context, "ship_bird");
+        } else if (shipUsed.equals(this.context.getString(R.string.ship_supreme))) {
+            this.ship = new Ship(this.context, "ship_supreme");
+        } else {
+            this.ship = new Ship(this.context, "ship_3");
+        }
     }
 
     /**

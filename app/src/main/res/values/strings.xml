@@ -7,11 +7,16 @@
     <string name="fire_bonus_1">Simple Fire</string>
     <string name="fire_bonus_2">Quint Fire</string>
     <string name="fire_bonus_3">Simple Bomb</string>
+    <string name="ship_bird">Bird Ship</string>
+    <string name="ship_simple">Simple Ship</string>
+    <string name="ship_supreme">Supreme Ship</string>
     <string name="bought_life">Life</string>
     <string name="saved_ship_info">SavedShip</string>
     <string name="current_fire_type">CurrentFireType</string>
     <string name="current_life_number">CurrentLifeNumberShip</string>
+    <string name="current_ship_used">CurrentShipUsed</string>
     <string name="saved_fire_type_default">@string/fire_bonus_1</string>
+    <string name="saved_ship_used_default">@string/ship_simple</string>
     <string name="fire_type_shop">Fire Type</string>
     <string name="saved_money">SavedMoney</string>
     <string-array name="fire_shop_list_item">
@@ -21,5 +26,8 @@
     </string-array>
     <string-array name="ship_shop_list_item">
         <item>@string/bought_life</item>
+        <item>@string/ship_simple</item>
+        <item>@string/ship_bird</item>
+        <item>@string/ship_supreme</item>
     </string-array>
 </resources>

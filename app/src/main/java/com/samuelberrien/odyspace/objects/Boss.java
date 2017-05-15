@@ -1,8 +1,10 @@
 package com.samuelberrien.odyspace.objects;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.Fire;
@@ -49,6 +51,7 @@ public class Boss extends BaseItem {
         this.theta = 0f;
         this.colorCounter = 0;
         this.changingColor = false;
+        this.mediaPlayer = MediaPlayer.create(this.context, R.raw.big_boom);
     }
 
     private void count() {

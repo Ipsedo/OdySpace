@@ -1,8 +1,10 @@
 package com.samuelberrien.odyspace.objects;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
@@ -43,6 +45,8 @@ public class BaseItem extends ObjModelMtlVBO {
 
     protected float scale;
 
+    protected MediaPlayer mediaPlayer;
+
     public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
         this.life = life;
@@ -55,6 +59,8 @@ public class BaseItem extends ObjModelMtlVBO {
         Matrix.setIdentityM(this.mModelMatrix, 0);
         this.scale = scale;
         this.radius = this.scale;
+
+        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
     }
 
     public BaseItem(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
@@ -71,19 +77,16 @@ public class BaseItem extends ObjModelMtlVBO {
         this.radius = this.scale;
     }
 
-    /*public void changeColor(Random rand) {
-        ArrayList<FloatBuffer> tmpA = super.makeColor(rand);
-        ArrayList<FloatBuffer> tmpD = super.makeColor(rand);
-        ArrayList<FloatBuffer> tmpS = super.makeColor(rand);
-        super.setColors(tmpA, tmpD, tmpS);
-    }*/
-
     public boolean isAlive() {
         return this.life > 0;
     }
 
     public boolean isCollided(BaseItem other) {
         return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), other.allCoords.clone(), other.mModelMatrix.clone());
+    }
+
+    public void playExplosion() {
+        this.mediaPlayer.start();
     }
 
     public void decrementsBothLife(BaseItem other) {

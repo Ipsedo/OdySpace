@@ -50,8 +50,8 @@ public class Ship extends BaseItem {
 
     private Fire.Type fireType;
 
-    public Ship(Context context) {
-        super(context, "ship_3.obj", "ship_3.mtl", 1f, 0f, false, Ship.MAXLIFE, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
+    public Ship(Context context, String shipName) {
+        super(context, shipName + ".obj", shipName + ".mtl", 1f, 0f, false, Ship.MAXLIFE, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.lifeDraw = new Life(this.context);
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);

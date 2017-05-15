@@ -1,6 +1,7 @@
 package com.samuelberrien.odyspace.game;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 

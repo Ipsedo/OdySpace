@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         this.currLevel = 0;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        //this.resetSharedPref();
         this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
         this.savedLevelInfo = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
+        //this.resetSharedPref();
         this.startButton = (Button) findViewById(R.id.start_button);
         this.startButton.setText("START (" + (this.currLevel + 1) + ")");
         this.continueButton = (Button) findViewById(R.id.continue_button);
@@ -104,12 +104,15 @@ public class MainActivity extends AppCompatActivity {
         String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), defaultValue);
 
         int defaultLife = getResources().getInteger(R.integer.saved_ship_life_default);
-        int currLife = this.savedShip.getInt(getString(R.string.current_life_number), defaultLife);
+        int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), defaultLife);
+
+        int defaultBoughtLife = getResources().getInteger(R.integer.saved_ship_life_shop_default);
+        int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), defaultBoughtLife);
 
         int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
         int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
 
-        this.gameInfo.setText("Life : " + currLife + System.getProperty("line.separator") + "FireType : " + currFireType + System.getProperty("line.separator") + "Money : " + currMoney);
+        this.gameInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + System.getProperty("line.separator") + "FireType : " + currFireType + System.getProperty("line.separator") + "Money : " + currMoney);
     }
 
     public void resetSharedPref() {
