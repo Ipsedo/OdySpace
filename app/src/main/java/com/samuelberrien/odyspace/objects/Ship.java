@@ -198,10 +198,6 @@ public class Ship extends BaseItem {
         return new float[] {tmpRes[0], tmpRes[1], tmpRes[2]};
     }
 
-    public void updateMaxSpeed(float coeff) {
-
-    }
-
     @Override
     public void move() {
 
