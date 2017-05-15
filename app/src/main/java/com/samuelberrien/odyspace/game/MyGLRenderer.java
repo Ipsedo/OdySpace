@@ -42,8 +42,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float[] mCameraPosition = new float[3];
     private float[] mCameraDirection = new float[3];
     private float[] mCameraUpVec = new float[3];
-    private float phi = 0f;
-    private float theta = 0f;
     private float maxRange = 1f;
     private float projectionAngle = 40f;
     private float maxProjDist = 300f;
