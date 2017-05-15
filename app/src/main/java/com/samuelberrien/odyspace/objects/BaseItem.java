@@ -87,9 +87,11 @@ public class BaseItem extends ObjModelMtlVBO {
     }
 
     public void decrementsBothLife(BaseItem other) {
-        int otherLife = other.life;
-        other.life -= this.life;
-        this.life -= otherLife;
+        if (this.life >= 0 && other.life >= 0) {
+            int otherLife = other.life;
+            other.life -= this.life;
+            this.life -= otherLife;
+        }
     }
 
     public boolean isOutOfBound(LevelLimits levelLimits) {
@@ -97,7 +99,7 @@ public class BaseItem extends ObjModelMtlVBO {
     }
 
     public void mapCollision(NoiseMap map) {
-        if(this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
+        if (this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
             this.life = 0;
         }
     }
