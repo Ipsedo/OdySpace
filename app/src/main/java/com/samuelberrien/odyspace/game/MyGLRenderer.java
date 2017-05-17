@@ -46,7 +46,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float[] mCameraUpVec = new float[3];
     private float maxRange = 1f;
     private float projectionAngle = 40f;
-    private float maxProjDist = 300f;
+    private float maxProjDist = 1200f;
     private float ratio = 1f;
 
     private Joystick joystick;

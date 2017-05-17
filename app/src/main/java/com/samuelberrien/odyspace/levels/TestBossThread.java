@@ -5,6 +5,7 @@ import android.content.Context;
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Forest;
+import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
@@ -34,6 +35,7 @@ public class TestBossThread implements Level {
     private Ship ship;
     private LevelLimits levelLimits;
     //private HeightMap heightMap;
+    private CubeMap cubeMap;
     private NoiseMap noiseMap;
     private Boss boss;
     private List<BaseItem> rocketsShip;
@@ -52,8 +54,9 @@ public class TestBossThread implements Level {
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
-        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 2f);
+        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.cubeMap = new CubeMap(this.context, levelLimitSize);
         this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f});
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -77,6 +80,7 @@ public class TestBossThread implements Level {
         this.boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+        this.cubeMap.draw(mProjectionMatrix, mViewMatrix);
         //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
     }
 

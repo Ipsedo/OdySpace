@@ -5,6 +5,7 @@ import android.content.Context;
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
+import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
@@ -39,6 +40,7 @@ public class TestThread implements Level {
     private NoiseMap noiseMap;
     private Forest forest;
     private List<BaseItem> rockets;
+    private CubeMap cubeMap;
 
     private List<BaseItem> icosahedrons;
     private int nbIcosahedron = 100;
@@ -61,9 +63,9 @@ public class TestThread implements Level {
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
-        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize / 2f);
+        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
-
+        this.cubeMap = new CubeMap(this.context, levelLimitSize);
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -93,6 +95,7 @@ public class TestThread implements Level {
         //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+        this.cubeMap.draw(mProjectionMatrix, mViewMatrix);
         ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
         for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Ship;
@@ -35,6 +36,7 @@ public class TestTurrets implements Level {
 
     private LevelLimits levelLimits;
     private NoiseMap noiseMap;
+    private CubeMap cubeMap;
     private List<BaseItem> rocketsShip;
     private int nbTurret = 40;
     private List<BaseItem> turrets;
@@ -57,6 +59,7 @@ public class TestTurrets implements Level {
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.cubeMap = new CubeMap(this.context, levelLimitSize);
 
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsTurret = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -65,8 +68,8 @@ public class TestTurrets implements Level {
 
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbTurret; i++) {
-            float x = rand.nextFloat() * levelLimitSize / 2f - levelLimitSize / 4f;
-            float z = rand.nextFloat() * levelLimitSize / 2f - levelLimitSize / 4f;
+            float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
+            float z = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
 
             float[] triangles = this.noiseMap.passToModelMatrix(this.noiseMap.getRestreintArea(new float[]{x, 0f, z}));
             float moy = 0;
@@ -90,6 +93,7 @@ public class TestTurrets implements Level {
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+        this.cubeMap.draw(mProjectionMatrix, mViewMatrix);
         ArrayList<BaseItem> tmp = new ArrayList<>();
         tmp.addAll(this.rocketsShip);
         for (BaseItem r : tmp)
