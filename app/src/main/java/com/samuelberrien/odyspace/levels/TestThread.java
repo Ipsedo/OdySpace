@@ -2,11 +2,9 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
-import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
@@ -65,7 +63,7 @@ public class TestThread implements Level {
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
-        this.cubeMap = new CubeMap(this.context, levelLimitSize);
+        this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());

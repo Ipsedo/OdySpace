@@ -8,6 +8,7 @@ import android.opengl.GLUtils;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.BitmapLoader;
 import com.samuelberrien.odyspace.utils.game.threads.CancelableThread;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
@@ -82,13 +83,13 @@ public class CubeMap {
 
     private FloatBuffer vertexBuffer;
 
-    public CubeMap(Context context, float levelLimits) {
+    public CubeMap(Context context, float levelLimits, String assetsPathName) {
         this.context = context;
         this.levelLimits = levelLimits;
 
         this.makeProgram();
         this.bind();
-        this.loadCubeMaptexture();
+        this.loadCubeMaptexture(assetsPathName);
         this.makeCube();
     }
 
@@ -108,15 +109,7 @@ public class CubeMap {
         GLES20.glLinkProgram(this.mProgram);
     }
 
-    private void loadCubeMaptexture() {
-
-        int[] res = new int[6];
-        res[0] = R.drawable.cb_posx;
-        res[1] = R.drawable.cb_negx;
-        res[2] = R.drawable.cb_posy;
-        res[3] = R.drawable.cb_negy;
-        res[4] = R.drawable.cb_posz;
-        res[5] = R.drawable.cb_negz;
+    private void loadCubeMaptexture(String assetsPathName) {
 
         GLES20.glGenTextures(1, textureCubeID, 0);
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -125,42 +118,42 @@ public class CubeMap {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
 
-        Bitmap bitmap = BitmapFactory.decodeResource(this.context.getResources(), res[0]);
+        Bitmap bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "posx.jpg");
         ByteBuffer b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
         bitmap.copyPixelsToBuffer(b);
         b.position(0);
         GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
         ShaderLoader.checkGlError("Après Draw Cube Map");
 
-        bitmap = BitmapFactory.decodeResource(this.context.getResources(), res[1]);
+        bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "negx.jpg");
         b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
         bitmap.copyPixelsToBuffer(b);
         b.position(0);
         GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
         ShaderLoader.checkGlError("Après Draw Cube Map");
 
-        bitmap = BitmapFactory.decodeResource(this.context.getResources(), res[2]);
+        bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "posy.jpg");
         b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
         bitmap.copyPixelsToBuffer(b);
         b.position(0);
         GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
         ShaderLoader.checkGlError("Après Draw Cube Map");
 
-        bitmap = BitmapFactory.decodeResource(this.context.getResources(), res[3]);
+        bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "negy.jpg");
         b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
         bitmap.copyPixelsToBuffer(b);
         b.position(0);
         GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
         ShaderLoader.checkGlError("Après Draw Cube Map");
 
-        bitmap = BitmapFactory.decodeResource(this.context.getResources(), res[4]);
+        bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "posz.jpg");
         b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
         bitmap.copyPixelsToBuffer(b);
         b.position(0);
         GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
         ShaderLoader.checkGlError("Après Draw Cube Map");
 
-        bitmap = BitmapFactory.decodeResource(this.context.getResources(), res[5]);
+        bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "negz.jpg");
         b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
         bitmap.copyPixelsToBuffer(b);
         b.position(0);

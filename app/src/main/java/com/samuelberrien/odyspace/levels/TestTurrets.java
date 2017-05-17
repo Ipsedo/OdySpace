@@ -59,7 +59,7 @@ public class TestTurrets implements Level {
         this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
-        this.cubeMap = new CubeMap(this.context, levelLimitSize);
+        this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
 
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsTurret = Collections.synchronizedList(new ArrayList<BaseItem>());
