@@ -131,6 +131,8 @@ public class ShopActivity extends AppCompatActivity {
     }
 
     public void setItemChosen(int page, int id) {
+        this.useButton.setVisibility(View.GONE);
+        this.buyButton.setVisibility(View.GONE);
         if (SampleFragmentPagerAdapter.TAB_TITLES[page].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
             this.fireTypeChosen(id);
         } else if (SampleFragmentPagerAdapter.TAB_TITLES[page].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
@@ -147,32 +149,32 @@ public class ShopActivity extends AppCompatActivity {
 
         int defaultFireResId;
         int fireResId;
-        int fireCostRedId;
+        int fireCostResId;
         if (this.fireItem[indexFire].equals(getString(R.string.fire_bonus_1))) {
             defaultFireResId = R.bool.saved_simple_fire_bought_default;
             fireResId = R.string.fire_bonus_1;
-            fireCostRedId = R.integer.simple_fire_cost;
+            fireCostResId = R.integer.simple_fire_cost;
         } else if (this.fireItem[indexFire].equals(getString(R.string.fire_bonus_2))) {
             defaultFireResId = R.bool.saved_quint_fire_bought_default;
             fireResId = R.string.fire_bonus_2;
-            fireCostRedId = R.integer.quint_fire_cost;
+            fireCostResId = R.integer.quint_fire_cost;
         } else {
             defaultFireResId = R.bool.saved_quint_fire_bought_default;
             fireResId = R.string.fire_bonus_3;
-            fireCostRedId = R.integer.simple_bomb_cost;
+            fireCostResId = R.integer.simple_bomb_cost;
         }
 
         boolean defaultValue = getResources().getBoolean(defaultFireResId);
         boolean currentPurchase = this.savedShop.getBoolean(getString(fireResId), defaultValue);
         if (!currentPurchase) {
-            this.useButton.setVisibility(View.GONE);
-            this.buyButton.setVisibility(View.VISIBLE);
-            this.currPrice = getResources().getInteger(fireCostRedId);
+            //this.useButton.setVisibility(View.GONE);
+            this.currPrice = getResources().getInteger(fireCostResId);
             this.buyButton.setText("Buy It (" + this.fireItem[indexFire] + " " + this.currPrice + "$)");
+            this.buyButton.setVisibility(View.VISIBLE);
         } else {
-            this.buyButton.setVisibility(View.GONE);
-            this.useButton.setVisibility(View.VISIBLE);
+            //this.buyButton.setVisibility(View.GONE);
             this.useButton.setText("Use It (" + this.fireItem[indexFire] + ")");
+            this.useButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -190,9 +192,9 @@ public class ShopActivity extends AppCompatActivity {
             this.currFireItem = "";
 
             this.updateLifePrice();
-            this.useButton.setVisibility(View.GONE);
-            this.buyButton.setVisibility(View.VISIBLE);
+            //this.useButton.setVisibility(View.GONE);
             this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
+            this.buyButton.setVisibility(View.VISIBLE);
         } else {
             this.currShipItem = this.shipItem[id];
             this.currBonusItem = "";
@@ -200,33 +202,33 @@ public class ShopActivity extends AppCompatActivity {
 
             int defaultItemResId;
             int itemResId;
-            int itemCostRedId;
+            int itemCostResId;
             if (this.shipItem[id].equals(getString(R.string.ship_bird))) {
                 defaultItemResId = R.bool.saved_ship_bird_bought_default;
                 itemResId = R.string.ship_bird;
-                itemCostRedId = R.integer.ship_bird_cost;
+                itemCostResId = R.integer.ship_bird_cost;
             } else if (this.shipItem[id].equals(getString(R.string.ship_supreme))) {
                 defaultItemResId = R.bool.saved_ship_supreme_bought_default;
                 itemResId = R.string.ship_supreme;
-                itemCostRedId = R.integer.ship_supreme_cost;
+                itemCostResId = R.integer.ship_supreme_cost;
             } else {
                 defaultItemResId = R.bool.saved_ship_simple_bought_default;
                 itemResId = R.string.ship_simple;
-                itemCostRedId = R.integer.ship_simple_cost;
+                itemCostResId = R.integer.ship_simple_cost;
             }
 
             boolean defaultValue = getResources().getBoolean(defaultItemResId);
             boolean currentPurchase = this.savedShop.getBoolean(getString(itemResId), defaultValue);
 
             if (!currentPurchase) {
-                this.useButton.setVisibility(View.GONE);
-                this.buyButton.setVisibility(View.VISIBLE);
-                this.currPrice = getResources().getInteger(itemCostRedId);
+                //this.useButton.setVisibility(View.GONE);
+                this.currPrice = getResources().getInteger(itemCostResId);
                 this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
+                this.buyButton.setVisibility(View.VISIBLE);
             } else {
-                this.buyButton.setVisibility(View.GONE);
-                this.useButton.setVisibility(View.VISIBLE);
+                //this.buyButton.setVisibility(View.GONE);
                 this.useButton.setText("Use It (" + this.shipItem[id] + ")");
+                this.useButton.setVisibility(View.VISIBLE);
             }
         }
     }

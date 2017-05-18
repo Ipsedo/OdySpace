@@ -56,15 +56,15 @@ public class NoiseMap {
     static final int COORDS_PER_VERTEX = 3;
     private final int vertexStride = COORDS_PER_VERTEX * 4;
 
-    private float[] color = new float[]{0f, 177f / 255f, 106f / 255f, 1f};
+    private float[] color;
 
-    public NoiseMap(Context context, float lightCoeff, float distanceCoeff, float scale, float limitHeight) {
+    public NoiseMap(Context context, float[] color, float lightCoeff, float distanceCoeff, float scale, float limitHeight) {
         this.context = context;
         this.lightCoeff = lightCoeff;
         this.distanceCoeff = distanceCoeff;
         this.scale = scale;
         this.limitHeight = limitHeight;
-
+        this.color = color;
         this.mModelMatrix = new float[16];
 
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.noise_map_vs));
@@ -267,9 +267,6 @@ public class NoiseMap {
 
         GLES20.glUseProgram(mProgram);
 
-        /*this.mPositions.position(0);
-        this.mNormals.position(0);*/
-
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.mPositionsBufferId);
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
@@ -280,20 +277,10 @@ public class NoiseMap {
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-        // Enable a handle to the triangle vertices
-        /*GLES20.glEnableVertexAttribArray(this.mPositionHandle);
-        // Prepare the triangle coordinate data
-        GLES20.glVertexAttribPointer(this.mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.mPositions);
-
-        GLES20.glEnableVertexAttribArray(mNormalHandle);
-        GLES20.glVertexAttribPointer(this.mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.mNormals);*/
-
         GLES20.glUniform4fv(this.mColorHandle, 1, this.color, 0);
 
-        // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(this.mMVMatrixHandle, 1, false, mvMatrix, 0);
 
-        // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
 
         GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
@@ -302,10 +289,8 @@ public class NoiseMap {
 
         GLES20.glUniform1f(mLightCoefHandle, this.lightCoeff);
 
-        // Draw the polygon
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.points.length / 3);
 
-        // Disable vertex array
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
 }

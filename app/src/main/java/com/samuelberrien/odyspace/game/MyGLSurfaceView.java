@@ -51,8 +51,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.levelActivity = levelActivity;
         this.setEGLContextClientVersion(2);
 
-        new NoiseMap(context, 1f, 0f, 1f, 0f);
-
         this.joystick = new Joystick(this.context);
         this.controls = new Controls(this.context);
 

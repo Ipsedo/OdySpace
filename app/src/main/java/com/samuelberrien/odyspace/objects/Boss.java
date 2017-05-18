@@ -54,6 +54,19 @@ public class Boss extends BaseItem {
         this.mediaPlayer = MediaPlayer.create(this.context, R.raw.big_boom);
     }
 
+    /**
+     * Besoin de trouver autre solution ....
+     * @param other
+     */
+    @Override
+    public void decrementsBothLife(BaseItem other) {
+        if(!(other instanceof  Ship)) {
+            super.decrementsBothLife(other);
+        } else {
+            other.life = 0;
+        }
+    }
+
     private void count() {
         this.counter = (this.counter >= this.MAX_COUNT ? 0 : this.counter + 1);
         if (this.changingColor && this.colorCounter > 75) {

@@ -56,10 +56,10 @@ public class TestTurrets implements Level {
         this.controls = controls;
 
         float limitDown = -100f;
-        this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
-        this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
+        this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_2/");
 
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsTurret = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -151,7 +151,7 @@ public class TestTurrets implements Level {
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
         octree.computeOctree();
 
-        this.ship.mapCollision(this.noiseMap);
+        this.ship.mapCollision(this.noiseMap, this.levelLimits);
     }
 
     @Override

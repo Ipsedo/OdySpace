@@ -90,7 +90,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.joystick.initGraphics(this.context);
         this.controls.initGraphics(this.context);
 
-        this.initShip();
+        this.ship = Ship.makeShip(this.context);
 
         this.mCameraPosition = new float[]{0f, 0f, -10f};
         this.mCameraUpVec = new float[]{0f, 1f, 0f};
@@ -103,23 +103,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         this.gameOver = new GameOver(this.context);
         this.levelDone = new LevelDone(this.context);
-    }
-
-    private void initShip() {
-        int currBoughtLife = this.savedShop.getInt(this.context.getString(R.string.bought_life), this.context.getResources().getInteger(R.integer.saved_ship_life_shop_default));
-        int currShipLife = this.savedShip.getInt(this.context.getString(R.string.current_life_number), this.context.getResources().getInteger(R.integer.saved_ship_life_default));
-
-        Ship.MAXLIFE = currBoughtLife + currShipLife;
-
-        String shipUsed = this.savedShip.getString(this.context.getString(R.string.current_ship_used), this.context.getString(R.string.saved_ship_used_default));
-
-        if (shipUsed.equals(this.context.getString(R.string.ship_bird))) {
-            this.ship = new Ship(this.context, "ship_bird");
-        } else if (shipUsed.equals(this.context.getString(R.string.ship_supreme))) {
-            this.ship = new Ship(this.context, "ship_supreme");
-        } else {
-            this.ship = new Ship(this.context, "ship_3");
-        }
     }
 
     /**

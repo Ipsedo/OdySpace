@@ -59,7 +59,7 @@ public class TestThread implements Level {
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
-        this.noiseMap = new NoiseMap(context, 0.45f, 0f, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
@@ -134,7 +134,7 @@ public class TestThread implements Level {
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
         octree.computeOctree();
 
-        this.ship.mapCollision(this.noiseMap);
+        this.ship.mapCollision(this.noiseMap, this.levelLimits);
     }
 
     @Override

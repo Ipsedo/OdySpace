@@ -27,8 +27,7 @@ public class Turret extends BaseItem {
     private Explosion explosion;
 
     public Turret(Context context, float[] mPosition) {
-        super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 2f);
-
+        super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
         this.rand = new Random(System.currentTimeMillis());
         this.rocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
     }

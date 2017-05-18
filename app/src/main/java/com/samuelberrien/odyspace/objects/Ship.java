@@ -9,16 +9,13 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.Fire;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
-import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +37,7 @@ public class Ship extends BaseItem {
     private final float[] originalSpeedVec = new float[]{0f, 0f, 1f, 0f};
     private final float[] originalUpVec = new float[]{0f, 1f, 0f, 0f};
 
-    public static int MAXLIFE = 25;
+    private int maxLife;
     private Life lifeDraw;
 
     private Explosion mExplosion;
@@ -50,12 +47,43 @@ public class Ship extends BaseItem {
 
     private Fire.Type fireType;
 
-    public Ship(Context context, String shipName) {
-        super(context, shipName + ".obj", shipName + ".mtl", 1f, 0f, false, Ship.MAXLIFE, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
+    public static Ship makeShip(Context context) {
+        SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
+        SharedPreferences savedShop = context.getSharedPreferences(context.getString(R.string.saved_shop), Context.MODE_PRIVATE);
+        int currBoughtLife = savedShop.getInt(context.getString(R.string.bought_life), context.getResources().getInteger(R.integer.saved_ship_life_shop_default));
+        int currShipLife = savedShip.getInt(context.getString(R.string.current_life_number), context.getResources().getInteger(R.integer.saved_ship_life_default));
+
+        int life = currBoughtLife + currShipLife;
+
+        String defaultValue = context.getString(R.string.saved_fire_type_default);
+        String fireType = savedShip.getString(context.getString(R.string.current_fire_type), defaultValue);
+        Fire.Type shipFireType;
+        if (fireType.equals(context.getString(R.string.fire_bonus_1))) {
+            shipFireType = Fire.Type.SIMPLE_FIRE;
+        } else if (fireType.equals(context.getString(R.string.fire_bonus_2))) {
+            shipFireType = Fire.Type.QUINT_FIRE;
+        } else /*if (fireType.equals(context.getString(R.string.fire_bonus_3)))*/ {
+            shipFireType = Fire.Type.SIMPLE_BOMB;
+        }
+
+        String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
+
+        if (shipUsed.equals(context.getString(R.string.ship_bird))) {
+            return new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType);
+        } else if (shipUsed.equals(context.getString(R.string.ship_supreme))) {
+            return new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType);
+        } else {
+            return new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType);
+        }
+    }
+
+    private Ship(Context context, String objFileName, String mtlFileName, int life, Fire.Type fireType) {
+        super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
+        this.maxLife = life;
         this.context = context;
         this.lifeDraw = new Life(this.context);
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
-        this.setFireType();
+        this.fireType = fireType;
         this.exploded = false;
     }
 
@@ -69,19 +97,6 @@ public class Ship extends BaseItem {
 
     public void makeExplosion() {
         this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 0.5f, 0.16f);
-    }
-
-    private void setFireType() {
-        SharedPreferences sharedPref = this.context.getSharedPreferences(this.context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
-        String defaultValue = this.context.getString(R.string.saved_fire_type_default);
-        String fireType = sharedPref.getString(this.context.getString(R.string.current_fire_type), defaultValue);
-        if (fireType.equals(this.context.getString(R.string.fire_bonus_1))) {
-            this.fireType = Fire.Type.SIMPLE_FIRE;
-        } else if (fireType.equals(this.context.getString(R.string.fire_bonus_2))) {
-            this.fireType = Fire.Type.QUINT_FIRE;
-        } else if (fireType.equals(this.context.getString(R.string.fire_bonus_3))) {
-            this.fireType = Fire.Type.SIMPLE_BOMB;
-        }
     }
 
     public void move(Joystick joystick, Controls controls) {
@@ -309,8 +324,8 @@ public class Ship extends BaseItem {
             GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, 4);
 
             Matrix.setIdentityM(mMMatrix, 0);
-            Matrix.translateM(mMMatrix, 0, 0.9f + 0.45f * (Ship.this.MAXLIFE - Ship.this.life) / Ship.this.MAXLIFE, 0.9f, 0f);
-            Matrix.scaleM(mMMatrix, 0, 0.5f * Ship.this.life / Ship.this.MAXLIFE, 0.050f, 0.05f);
+            Matrix.translateM(mMMatrix, 0, 0.9f + 0.45f * (Ship.this.maxLife - Ship.this.life) / Ship.this.maxLife, 0.9f, 0f);
+            Matrix.scaleM(mMMatrix, 0, 0.5f * Ship.this.life / Ship.this.maxLife, 0.050f, 0.05f);
             Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
             GLES20.glEnableVertexAttribArray(mPositionHandle);

@@ -101,8 +101,8 @@ public class BaseItem extends ObjModelMtlVBO {
         return !levelLimits.isInside(this.mPosition);
     }
 
-    public void mapCollision(NoiseMap map) {
-        if (this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
+    public void mapCollision(NoiseMap map, LevelLimits levelLimits) {
+        if (!this.isOutOfBound(levelLimits) && this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
             this.life = 0;
         }
     }
