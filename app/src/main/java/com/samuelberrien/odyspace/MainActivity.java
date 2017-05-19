@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
         this.savedLevelInfo = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info), Context.MODE_PRIVATE);
         this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
-        this.resetSharedPref();
+        //this.resetSharedPref();
         this.startButton = (Button) findViewById(R.id.start_button);
         this.startButton.setText("START (" + (this.currLevel + 1) + ")");
         this.continueButton = (Button) findViewById(R.id.continue_button);

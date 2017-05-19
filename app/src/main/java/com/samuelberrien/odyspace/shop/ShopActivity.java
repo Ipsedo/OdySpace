@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class ShopActivity extends AppCompatActivity {
 
     private String[] fireItem;
@@ -133,6 +135,13 @@ public class ShopActivity extends AppCompatActivity {
     public void setItemChosen(int page, int id) {
         this.useButton.setVisibility(View.GONE);
         this.buyButton.setVisibility(View.GONE);
+
+        try {
+            Thread.sleep(20L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         if (SampleFragmentPagerAdapter.TAB_TITLES[page].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
             this.fireTypeChosen(id);
         } else if (SampleFragmentPagerAdapter.TAB_TITLES[page].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
