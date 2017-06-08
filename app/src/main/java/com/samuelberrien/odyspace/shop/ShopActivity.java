@@ -50,7 +50,7 @@ public class ShopActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shop);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), ShopActivity.this));
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager()));
 
         this.buyButton = (Button) findViewById(R.id.buy_button);
         this.buyButton.setVisibility(View.GONE);
@@ -136,12 +136,6 @@ public class ShopActivity extends AppCompatActivity {
         this.useButton.setVisibility(View.GONE);
         this.buyButton.setVisibility(View.GONE);
 
-        try {
-            Thread.sleep(20L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         if (SampleFragmentPagerAdapter.TAB_TITLES[page].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
             this.fireTypeChosen(id);
         } else if (SampleFragmentPagerAdapter.TAB_TITLES[page].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
@@ -152,10 +146,6 @@ public class ShopActivity extends AppCompatActivity {
     }
 
     private void fireTypeChosen(int indexFire) {
-        this.currFireItem = this.fireItem[indexFire];
-        this.currShipItem = "";
-        this.currBonusItem = "";
-
         int defaultFireResId;
         int fireResId;
         int fireCostResId;
@@ -185,6 +175,10 @@ public class ShopActivity extends AppCompatActivity {
             this.useButton.setText("Use It (" + this.fireItem[indexFire] + ")");
             this.useButton.setVisibility(View.VISIBLE);
         }
+
+        this.currFireItem = this.fireItem[indexFire];
+        this.currShipItem = "";
+        this.currBonusItem = "";
     }
 
     private void updateLifePrice() {
@@ -196,19 +190,15 @@ public class ShopActivity extends AppCompatActivity {
 
     private void shipItemChosen(int id) {
         if (this.shipItem[id].equals(getString(R.string.bought_life))) {
-            this.currShipItem = this.shipItem[id];
-            this.currBonusItem = "";
-            this.currFireItem = "";
-
             this.updateLifePrice();
             //this.useButton.setVisibility(View.GONE);
             this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
             this.buyButton.setVisibility(View.VISIBLE);
-        } else {
+
             this.currShipItem = this.shipItem[id];
             this.currBonusItem = "";
             this.currFireItem = "";
-
+        } else {
             int defaultItemResId;
             int itemResId;
             int itemCostResId;
@@ -239,6 +229,10 @@ public class ShopActivity extends AppCompatActivity {
                 this.useButton.setText("Use It (" + this.shipItem[id] + ")");
                 this.useButton.setVisibility(View.VISIBLE);
             }
+
+            this.currShipItem = this.shipItem[id];
+            this.currBonusItem = "";
+            this.currFireItem = "";
         }
     }
 }
