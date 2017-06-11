@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
+import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
@@ -53,10 +54,14 @@ public class TestThread implements Level {
     private Joystick joystick;
     private Controls controls;
 
+    private ProgressBar currLevelProgression;
+
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
         this.ship = ship;
+
+        this.currLevelProgression = new ProgressBar(this.context, 49, -0.9f + 0.3f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
@@ -108,7 +113,7 @@ public class TestThread implements Level {
 
     @Override
     public void drawLevelInfo(float ratio) {
-
+        this.currLevelProgression.draw(ratio);
     }
 
     @Override
@@ -125,6 +130,7 @@ public class TestThread implements Level {
             e.move();
         if (!this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits))
             this.ship.addExplosion(this.explosions);
+        this.currLevelProgression.updateProgress(this.nbIcosahedron - this.icosahedrons.size());
     }
 
     @Override
