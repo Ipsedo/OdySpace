@@ -7,7 +7,7 @@
     <integer name="ship_bird_cost">1000</integer>
     <integer name="ship_simple_cost">0</integer>
     <integer name="ship_supreme_cost">10000</integer>
-    <integer name="saved_init_money">200000</integer>
+    <integer name="saved_init_money">9999999</integer>
     <integer name="saved_ship_life_default">20</integer>
     <integer name="saved_ship_life_shop_default">0</integer>
     <integer name="life_coeff_cost">1</integer>

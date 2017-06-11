@@ -54,8 +54,33 @@ public class ShopActivity extends AppCompatActivity {
 
         this.buyButton = (Button) findViewById(R.id.buy_button);
         this.buyButton.setVisibility(View.GONE);
+        this.buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShopActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShopActivity.this.buy();
+                    }
+                });
+            }
+        });
+        //this.turnOffBuyButton();
+
         this.useButton = (Button) findViewById(R.id.use_item_button);
         this.useButton.setVisibility(View.GONE);
+        //this.turnOffUseButton();
+        this.useButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShopActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShopActivity.this.use();
+                    }
+                });
+            }
+        });
 
         this.currMoneyTextView = (TextView) findViewById(R.id.shop_curr_money_text_view);
         this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
@@ -70,7 +95,7 @@ public class ShopActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    public void buy(View v) {
+    public void buy() {
         SharedPreferences.Editor editor = this.savedShop.edit();
 
         int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
@@ -81,8 +106,10 @@ public class ShopActivity extends AppCompatActivity {
             editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
             editor.commit();
             this.buyButton.setVisibility(View.GONE);
+            //this.turnOffBuyButton();
             this.useButton.setText("Use It (" + this.currFireItem + ")");
             this.useButton.setVisibility(View.VISIBLE);
+            //this.turnOnUseButton();
         } else if (!this.currShipItem.equals("") && currMoney >= this.currPrice) {
             if (this.currShipItem.equals(getString(R.string.bought_life))) {
                 this.buyLife(editor, currMoney);
@@ -91,8 +118,10 @@ public class ShopActivity extends AppCompatActivity {
                 editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
                 editor.commit();
                 this.buyButton.setVisibility(View.GONE);
+                //this.turnOffBuyButton();
                 this.useButton.setText("Use It (" + this.currShipItem + ")");
                 this.useButton.setVisibility(View.VISIBLE);
+                //this.turnOnUseButton();
             }
         } else if (!this.currBonusItem.equals("") && currMoney >= this.currPrice) {
 
@@ -112,7 +141,7 @@ public class ShopActivity extends AppCompatActivity {
         this.updateLifePrice();
     }
 
-    public void use(View v) {
+    public void use() {
         SharedPreferences.Editor editor = this.savedShip.edit();
         if (!this.currFireItem.equals("")) {
             editor.putString(getString(R.string.current_fire_type), this.currFireItem);
@@ -132,9 +161,47 @@ public class ShopActivity extends AppCompatActivity {
         }
     }
 
+    /*private void turnOffBuyButton() {
+        this.buyButton.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                buyButton.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void turnOnBuyButton() {
+        this.buyButton.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                buyButton.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void turnOffUseButton() {
+        this.useButton.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                useButton.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void turnOnUseButton() {
+        this.useButton.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                useButton.setVisibility(View.VISIBLE);
+            }
+        });
+    }*/
+
     public void setItemChosen(int page, int id) {
         this.useButton.setVisibility(View.GONE);
+        //this.turnOffUseButton();
         this.buyButton.setVisibility(View.GONE);
+        //this.turnOffBuyButton();
 
         if (SampleFragmentPagerAdapter.TAB_TITLES[page].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
             this.fireTypeChosen(id);
@@ -170,10 +237,12 @@ public class ShopActivity extends AppCompatActivity {
             this.currPrice = getResources().getInteger(fireCostResId);
             this.buyButton.setText("Buy It (" + this.fireItem[indexFire] + " " + this.currPrice + "$)");
             this.buyButton.setVisibility(View.VISIBLE);
+            //this.turnOnBuyButton();
         } else {
             //this.buyButton.setVisibility(View.GONE);
             this.useButton.setText("Use It (" + this.fireItem[indexFire] + ")");
             this.useButton.setVisibility(View.VISIBLE);
+            //this.turnOnUseButton();
         }
 
         this.currFireItem = this.fireItem[indexFire];
@@ -194,6 +263,7 @@ public class ShopActivity extends AppCompatActivity {
             //this.useButton.setVisibility(View.GONE);
             this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
             this.buyButton.setVisibility(View.VISIBLE);
+            //this.turnOnBuyButton();
 
             this.currShipItem = this.shipItem[id];
             this.currBonusItem = "";
@@ -224,10 +294,12 @@ public class ShopActivity extends AppCompatActivity {
                 this.currPrice = getResources().getInteger(itemCostResId);
                 this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
                 this.buyButton.setVisibility(View.VISIBLE);
+                //this.turnOnBuyButton();
             } else {
                 //this.buyButton.setVisibility(View.GONE);
                 this.useButton.setText("Use It (" + this.shipItem[id] + ")");
                 this.useButton.setVisibility(View.VISIBLE);
+                //this.turnOnUseButton();
             }
 
             this.currShipItem = this.shipItem[id];

@@ -179,7 +179,7 @@ public class TestTurrets implements Level {
 
     @Override
     public int getScore() {
-        return this.nbTurret - this.turrets.size();
+        return (this.nbTurret - this.turrets.size()) * 10;
     }
 
     @Override
