@@ -136,14 +136,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraPosition = mCameraPosition;
     }
 
-    /**
-     * @param x
-     * @param y
-     * @param z
-     */
-    private void updateLight(float x, float y, float z) {
+
+    private void updateLight(float[] pos) {
         Matrix.setIdentityM(this.mLightModelMatrix, 0);
-        Matrix.translateM(this.mLightModelMatrix, 0, x, y, z);
+        Matrix.translateM(this.mLightModelMatrix, 0, pos[0], pos[1], pos[2]);
         Matrix.multiplyMV(this.mLightPosInWorldSpace, 0, this.mLightModelMatrix, 0, this.mLightPosInModelSpace, 0);
         Matrix.multiplyMV(this.mLightPosInEyeSpace, 0, this.mViewMatrix, 0, this.mLightPosInWorldSpace, 0);
     }
@@ -160,7 +156,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
 
-        this.updateLight(0f, 250f, 0f);
+        this.updateLight(this.currentLevel.getLightPos());
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         this.currentLevel.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);

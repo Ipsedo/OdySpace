@@ -89,6 +89,11 @@ public class TestTurrets implements Level {
     }
 
     @Override
+    public float[] getLightPos() {
+        return new float[]{0f, 250f, 0f};
+    }
+
+    @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);

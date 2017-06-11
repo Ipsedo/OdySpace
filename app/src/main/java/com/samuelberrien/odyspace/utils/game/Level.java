@@ -19,6 +19,8 @@ public interface Level {
 
     void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
 
+    float[] getLightPos();
+
     void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
     void drawLevelInfo(float ratio);

@@ -66,6 +66,11 @@ public class TestBossThread implements Level {
     }
 
     @Override
+    public float[] getLightPos() {
+        return new float[]{0f, 250f, 0f};
+    }
+
+    @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         ArrayList<BaseItem> tmp = new ArrayList<>();
