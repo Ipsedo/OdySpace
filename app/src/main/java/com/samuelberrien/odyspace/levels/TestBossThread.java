@@ -53,7 +53,7 @@ public class TestBossThread implements Level {
         this.noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
         this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f});
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -142,7 +142,7 @@ public class TestBossThread implements Level {
 
     @Override
     public boolean isDead() {
-        return !this.ship.isAlive();
+        return !this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits);
     }
 
     @Override

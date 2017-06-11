@@ -62,7 +62,7 @@ public class TestThread implements Level {
         this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown, limitDown, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -122,7 +122,7 @@ public class TestThread implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
-        if (!this.ship.isAlive())
+        if (!this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits))
             this.ship.addExplosion(this.explosions);
     }
 
@@ -174,7 +174,7 @@ public class TestThread implements Level {
 
     @Override
     public boolean isDead() {
-        return !this.ship.isAlive();
+        return !this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits);
     }
 
     @Override

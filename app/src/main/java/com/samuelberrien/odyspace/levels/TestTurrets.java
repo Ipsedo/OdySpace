@@ -85,8 +85,6 @@ public class TestTurrets implements Level {
         }
 
         this.isInit = true;
-
-        System.out.println("INIT FINI");
     }
 
     @Override
@@ -138,7 +136,7 @@ public class TestTurrets implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
-        if (!this.ship.isAlive())
+        if (!this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits))
             this.ship.addExplosion(this.explosions);
     }
 
@@ -167,6 +165,7 @@ public class TestTurrets implements Level {
         for (int i = this.turrets.size() - 1; i >= 0; i--)
             if (!this.turrets.get(i).isAlive()) {
                 ((Turret) this.turrets.get(i)).addExplosion(this.explosions);
+                this.turrets.get(i).playExplosion();
                 this.turrets.remove(i);
             }
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
@@ -184,7 +183,7 @@ public class TestTurrets implements Level {
 
     @Override
     public boolean isDead() {
-        return !this.ship.isAlive();
+        return !this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits);
     }
 
     @Override
