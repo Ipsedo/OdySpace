@@ -6,15 +6,8 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.maps.Map;
-import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
-import com.samuelberrien.odyspace.utils.collision.Triangle;
-
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Random;
 
 
 /**
