@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
@@ -101,7 +102,7 @@ public class BaseItem extends ObjModelMtlVBO {
         return !levelLimits.isInside(this.mPosition);
     }
 
-    public void mapCollision(NoiseMap map, LevelLimits levelLimits) {
+    public void mapCollision(Map map, LevelLimits levelLimits) {
         if (!this.isOutOfBound(levelLimits) && this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
             this.life = 0;
         }

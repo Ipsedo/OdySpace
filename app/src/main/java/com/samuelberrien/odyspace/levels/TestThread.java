@@ -7,6 +7,7 @@ import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
@@ -35,7 +36,7 @@ public class TestThread implements Level {
 
     private Ship ship;
     //private HeightMap heightMap;
-    private NoiseMap noiseMap;
+    private Map noiseMap;
     private Forest forest;
     private List<BaseItem> rockets;
     private CubeMap cubeMap;
@@ -59,7 +60,7 @@ public class TestThread implements Level {
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);

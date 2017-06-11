@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class NoiseMap {
+public class NoiseMap implements Map {
 
     private Context context;
 
@@ -30,6 +30,7 @@ public class NoiseMap {
     private float lightCoeff;
     private float distanceCoeff;
 
+    private int coeffNoise;
     private float scale;
     private float limitHeight;
 
@@ -58,10 +59,11 @@ public class NoiseMap {
 
     private float[] color;
 
-    public NoiseMap(Context context, float[] color, float lightCoeff, float distanceCoeff, float scale, float limitHeight) {
+    public NoiseMap(Context context, float[] color, float lightCoeff, float distanceCoeff, int coeffNoise, float scale, float limitHeight) {
         this.context = context;
         this.lightCoeff = lightCoeff;
         this.distanceCoeff = distanceCoeff;
+        this.coeffNoise = coeffNoise;
         this.scale = scale;
         this.limitHeight = limitHeight;
         this.color = color;
@@ -90,11 +92,11 @@ public class NoiseMap {
             float[] tmpPoints = new float[(SIZE + 1) * 2 * 3];
             for (int j = 0; j < SIZE + 1; j++) {
                 tmpPoints[j * 2 * 3] = (float) j / (float) SIZE;
-                tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / 8), (double) j / (double) (SIZE / 8)) / (this.scale * 0.1f);
+                tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) / (this.scale * 0.1f);
                 tmpPoints[j * 2 * 3 + 2] = (float) i / (float) SIZE;
 
                 tmpPoints[(j * 2 + 1) * 3] = (float) j / (float) SIZE;
-                tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / 8), (double) j / (double) (SIZE / 8)) / (this.scale * 0.1f);
+                tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) / (this.scale * 0.1f);
                 tmpPoints[(j * 2 + 1) * 3 + 2] = ((float) i + 1) / (float) SIZE;
             }
             for (int j = 0; j < tmpPoints.length / 3 - 2; j += 2) {
@@ -190,6 +192,7 @@ public class NoiseMap {
         this.mNormals = null;
     }
 
+    @Override
     public float[] passToModelMatrix(float[] triangles) {
         float[] tmp;
         float[] res = new float[triangles.length];
@@ -214,6 +217,7 @@ public class NoiseMap {
         mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
     }
 
+    @Override
     public float[] getRestreintArea(float[] position) {
         float xNorm = position[0] / this.scale + 0.5f;
         float zNorm = position[2] / this.scale + 0.5f;
@@ -245,10 +249,12 @@ public class NoiseMap {
         return res;
     }
 
+    @Override
     public float[] getModelMatrix() {
         return this.mModelMatrix.clone();
     }
 
+    @Override
     public void update() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -258,6 +264,7 @@ public class NoiseMap {
         this.mModelMatrix = mModelMatrix;
     }
 
+    @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
         float[] mvpMatrix = new float[16];
         float[] mvMatrix = new float[16];

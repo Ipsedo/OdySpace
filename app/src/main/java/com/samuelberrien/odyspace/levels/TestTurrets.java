@@ -6,6 +6,7 @@ import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
+import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Ship;
@@ -35,7 +36,7 @@ public class TestTurrets implements Level {
     private Ship ship;
 
     private LevelLimits levelLimits;
-    private NoiseMap noiseMap;
+    private Map noiseMap;
     private CubeMap cubeMap;
     private List<BaseItem> rocketsShip;
     private int nbTurret = 40;
@@ -56,7 +57,7 @@ public class TestTurrets implements Level {
         this.controls = controls;
 
         float limitDown = -100f;
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_2/");

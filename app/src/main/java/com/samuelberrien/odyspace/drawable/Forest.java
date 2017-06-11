@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.MainActivity;
+import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
@@ -27,22 +28,22 @@ public class Forest {
     private int nbTree;
     private float[][] mModelsMatrix;
 
-    public Forest(Context context, String treeObjFileName, String treeMtlFileName, int nbTree, NoiseMap noiseMap, float areaSize) {
+    public Forest(Context context, String treeObjFileName, String treeMtlFileName, int nbTree, Map map, float areaSize) {
         this.context = context;
         this.tree = new ObjModelMtlVBO(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
         this.nbTree = nbTree;
         this.mModelsMatrix = new float[this.nbTree][16];
-        this.initTrees(noiseMap, areaSize);
+        this.initTrees(map, areaSize);
     }
 
-    private void initTrees(NoiseMap noiseMap, float areaSize) {
+    private void initTrees(Map map, float areaSize) {
         Random rand = new Random(System.currentTimeMillis());
         for(int i = 0; i < this.nbTree; i++) {
             float x = rand.nextFloat() * areaSize - areaSize * 0.5f;
             float y;
             float z = rand.nextFloat() * areaSize - areaSize * 0.5f;
 
-            float[] triangles = noiseMap.passToModelMatrix(noiseMap.getRestreintArea(new float[]{x, 0f, z}));
+            float[] triangles = map.passToModelMatrix(map.getRestreintArea(new float[]{x, 0f, z}));
             float moy = 0;
             for (int j = 0; j < triangles.length; j += 3) {
                 moy += triangles[j + 1];

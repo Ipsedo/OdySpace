@@ -19,7 +19,7 @@ import java.nio.FloatBuffer;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class HeightMap {
+public class HeightMap implements Map {
 
     private final int NBSLICES = 30;
     private final int NBSTRIPS = 30;
@@ -55,14 +55,6 @@ public class HeightMap {
     private float mScale;
     private float[] mModelMatrix;
 
-    /**
-     * @param context
-     * @param texHMResId
-     * @param texResId
-     * @param coeff
-     * @param lightCoeff
-     * @param distanceCoeff
-     */
     public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff, float scale, float limitHeight) {
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.height_map_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.height_map_fs));
@@ -97,9 +89,6 @@ public class HeightMap {
         mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
     }
 
-    /**
-     *
-     */
     private void initPlan() {
         nbFaces = NBSTRIPS * (NBSLICES + 1) * 2;
         points = new float[nbFaces * 3];
@@ -121,7 +110,36 @@ public class HeightMap {
         mPositions.put(points).position(0);
     }
 
-    private void updateMap() {
+    public float getLimitHeight() {
+        return this.limitHeight;
+    }
+
+    @Override
+    public float[] getModelMatrix() {
+        return this.mModelMatrix;
+    }
+
+    @Override
+    public float[] getRestreintArea(float[] position) {
+        return new float[0];
+    }
+
+    @Override
+    public float[] passToModelMatrix(float[] triangles) {
+        float[] tmp;
+        float[] res = new float[triangles.length];
+        for (int i = 0; i < triangles.length; i += 3) {
+            tmp = new float[]{triangles[i], triangles[i + 1], triangles[i + 2], 1f};
+            Matrix.multiplyMV(tmp, 0, this.mModelMatrix, 0, tmp.clone(), 0);
+            res[i] = tmp[0];
+            res[i + 1] = tmp[1];
+            res[i + 2] = tmp[2];
+        }
+        return res;
+    }
+
+    @Override
+    public void update() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -130,17 +148,8 @@ public class HeightMap {
         this.mModelMatrix = mModelMatrix.clone();
     }
 
-    public float getLimitHeight() {
-        return this.limitHeight;
-    }
-
-    /**
-     * @param pMatrix
-     * @param vMatrix
-     * @param mLightPosInEyeSpace
-     */
+    @Override
     public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace) {
-        this.updateMap();
         float[] mvMatrix = new float[16];
         float[] mvpMatrix = new float[16];
         Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);
