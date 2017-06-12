@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorMainLayout"
@@ -79,5 +80,14 @@
             android:orientation="vertical"
             android:padding="4dp"></LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/button_reset_skull"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="reset"/>
 
 </RelativeLayout>

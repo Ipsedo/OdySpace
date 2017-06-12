@@ -56,12 +56,16 @@ public class PageFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                PageFragment.this.getActivity().runOnUiThread(new Runnable() {
-                    @Override
+                new Thread() {
                     public void run() {
-                        ((ShopActivity) PageFragment.this.getActivity()).setItemChosen(PageFragment.this.mPage - 1, i);
+                        PageFragment.this.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((ShopActivity) PageFragment.this.getActivity()).setItemChosen(PageFragment.this.mPage - 1, i);
+                            }
+                        });
                     }
-                });
+                }.start();
             }
         });
         /*listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

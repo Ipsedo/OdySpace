@@ -115,13 +115,36 @@ public class MainActivity extends AppCompatActivity {
         this.gameInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + System.getProperty("line.separator") + "FireType : " + currFireType + System.getProperty("line.separator") + "Money : " + currMoney);
     }
 
-    public void resetSharedPref() {
+    private void resetSharedPref() {
         SharedPreferences.Editor editor = this.savedShop.edit();
         editor.clear().commit();
         editor = this.savedShip.edit();
         editor.clear().commit();
         editor = this.savedLevelInfo.edit();
         editor.clear().commit();
+    }
+
+    public void reset(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Reset all game ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                MainActivity.this.resetSharedPref();
+                MainActivity.this.initGameInfo();
+                MainActivity.this.initLevelChooser();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     public void start(View v) {
@@ -174,13 +197,14 @@ public class MainActivity extends AppCompatActivity {
 
                         builder.setTitle("Level Done, Score : " + score);
 
+                        /*
                         builder.setNegativeButton("Restart", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent intent = new Intent(MainActivity.this, LevelActivity.class);
                                 intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
                                 startActivityForResult(intent, MainActivity.RESULT_VALUE);
                             }
-                        });
+                        });*/
 
                         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
