@@ -62,7 +62,7 @@ public class Test implements Level {
 
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbIcosahedron; i++) {
-            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand, rand.nextFloat() * 2 + 1);
+            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand.nextFloat() * 2 + 1);
             ico.move();
             ico.makeExplosion(this.context);
             this.icosahedrons.add(ico);

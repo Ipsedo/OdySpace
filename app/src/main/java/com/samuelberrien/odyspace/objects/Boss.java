@@ -5,12 +5,10 @@ import android.media.MediaPlayer;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.utils.game.Fire;
+import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -33,7 +31,7 @@ public class Boss extends BaseItem {
     private float maxSpeed;
 
     private ObjModelMtlVBO rocket;
-    private Fire fireType;
+    private FireType fireType;
 
     private double phi;
     private double theta;
@@ -41,7 +39,7 @@ public class Boss extends BaseItem {
     private int colorCounter;
     private boolean changingColor;
 
-    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, Fire fireType) {
+    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, FireType fireType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.counter = 0;

@@ -5,7 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.utils.game.Fire;
+import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;
@@ -26,13 +26,13 @@ public class Turret extends BaseItem {
 
     private Explosion explosion;
 
-    private Fire fireType;
+    private FireType fireType;
 
-    public Turret(Context context, float[] mPosition) {
+    public Turret(Context context, float[] mPosition, FireType fireType) {
         super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
         this.rand = new Random(System.currentTimeMillis());
         this.rocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
-        this.fireType = Fire.SIMPLE_FIRE;
+        this.fireType = fireType;
     }
 
     public void makeExplosion(Context context) {

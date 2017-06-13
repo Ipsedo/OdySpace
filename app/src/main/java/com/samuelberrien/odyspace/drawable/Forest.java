@@ -3,12 +3,8 @@ package com.samuelberrien.odyspace.drawable;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.MainActivity;
 import com.samuelberrien.odyspace.drawable.maps.Map;
-import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.utils.game.Fire;
 
 import java.util.Random;
 

@@ -2,7 +2,6 @@ package com.samuelberrien.odyspace.objects;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.opengl.GLES20;
 import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 
@@ -11,12 +10,8 @@ import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.utils.game.Fire;
-import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
+import com.samuelberrien.odyspace.utils.game.FireType;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.List;
 
 /**
@@ -46,7 +41,7 @@ public class Ship extends BaseItem {
 
     private ObjModelMtlVBO rocket;
 
-    private Fire fireType;
+    private FireType fireType;
 
     public static Ship makeShip(Context context) {
         SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
@@ -58,13 +53,13 @@ public class Ship extends BaseItem {
 
         String defaultValue = context.getString(R.string.saved_fire_type_default);
         String fireType = savedShip.getString(context.getString(R.string.current_fire_type), defaultValue);
-        Fire shipFireType;
+        FireType shipFireType;
         if (fireType.equals(context.getString(R.string.fire_bonus_1))) {
-            shipFireType = Fire.SIMPLE_FIRE;
+            shipFireType = FireType.SIMPLE_FIRE;
         } else if (fireType.equals(context.getString(R.string.fire_bonus_2))) {
-            shipFireType = Fire.QUINT_FIRE;
+            shipFireType = FireType.QUINT_FIRE;
         } else /*if (fireType.equals(context.getString(R.string.fire_bonus_3)))*/ {
-            shipFireType = Fire.SIMPLE_BOMB;
+            shipFireType = FireType.SIMPLE_BOMB;
         }
 
         String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
@@ -78,7 +73,7 @@ public class Ship extends BaseItem {
         }
     }
 
-    private Ship(Context context, String objFileName, String mtlFileName, int life, Fire fireType) {
+    private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.maxLife = life;
         this.context = context;

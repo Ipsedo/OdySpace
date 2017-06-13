@@ -12,6 +12,7 @@ import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.objects.Turret;
 import com.samuelberrien.odyspace.utils.collision.Octree;
+import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
@@ -79,7 +80,7 @@ public class TestTurrets implements Level {
             }
             moy /= (triangles.length / 3f);
 
-            Turret tmp = new Turret(this.context, new float[]{x, moy, z});
+            Turret tmp = new Turret(this.context, new float[]{x, moy, z}, FireType.SIMPLE_FIRE);
             tmp.move(this.ship);
             tmp.makeExplosion(this.context);
             this.turrets.add(tmp);

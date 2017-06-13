@@ -15,7 +15,7 @@ import java.util.List;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public enum Fire {
+public enum FireType {
 
     SIMPLE_FIRE, QUINT_FIRE, SIMPLE_BOMB;
 
