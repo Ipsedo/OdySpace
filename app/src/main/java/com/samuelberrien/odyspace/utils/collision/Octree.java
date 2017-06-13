@@ -57,9 +57,11 @@ public class Octree {
 
     private void computeCollision() {
         for (int i = this.ennemis.size() - 1; i >= 0; i--)
-            for (int j = this.amis.size() - 1; j >= 0; j--)
+            for (int j = this.amis.size() - 1; j >= 0; j--) {
                 if (this.ennemis.get(i).isCollided(this.amis.get(j)))
                     this.ennemis.get(i).decrementsBothLife(this.amis.get(j));
+                System.out.println("COLLISION DETECTION");
+            }
     }
 
     public void computeOctree() {

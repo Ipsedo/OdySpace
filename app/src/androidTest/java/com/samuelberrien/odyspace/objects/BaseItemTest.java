@@ -45,10 +45,10 @@ public class BaseItemTest {
         assertFalse(r.isCollided(i));*/
 
         Context appContext = InstrumentationRegistry.getTargetContext();
-        Icosahedron i1 = new Icosahedron(appContext, new float[]{0f, 0f, 200f}, new Random(), 1f);
+        Icosahedron i1 = new Icosahedron(appContext, new float[]{0f, 0f, 200f},  1f);
         i1.move();
 
-        Icosahedron i2 = new Icosahedron(appContext, new float[]{0f, 0f, 0f}, new Random(), 1f);
+        Icosahedron i2 = new Icosahedron(appContext, new float[]{0f, 0f, 0f},  1f);
         i2.move();
 
         assertFalse(i1.isCollided(i2));
