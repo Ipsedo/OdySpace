@@ -20,9 +20,8 @@ public class Icosahedron extends BaseItem {
 
     private Explosion mExplosion;
 
-    public Icosahedron(Context context, float[] mPosition, Random rand, float scale) {
+    public Icosahedron(Context context, float[] mPosition, float scale) {
         super(context, "icosahedron.obj", "icosahedron.mtl", 0.7f, 0f, true, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
-        super.radius = scale;
     }
 
     public void makeExplosion(Context context) {

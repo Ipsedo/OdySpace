@@ -77,7 +77,7 @@ public class BaseItem extends ObjModelMtlVBO {
     }
 
     public boolean isCollided(BaseItem other) {
-        return true;//this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), other.allCoords.clone(), other.mModelMatrix.clone());
+        return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), other.allCoords.clone(), other.mModelMatrix.clone());
     }
 
     public void playExplosion() {

@@ -26,10 +26,13 @@ public class Turret extends BaseItem {
 
     private Explosion explosion;
 
+    private Fire fireType;
+
     public Turret(Context context, float[] mPosition) {
         super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
         this.rand = new Random(System.currentTimeMillis());
         this.rocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
+        this.fireType = Fire.SIMPLE_FIRE;
     }
 
     public void makeExplosion(Context context) {
@@ -48,7 +51,7 @@ public class Turret extends BaseItem {
             float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
             Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            Fire.fire(this.rocket, rockets, Fire.Type.SIMPLE_FIRE, super.mPosition.clone(), originaleVec, tmpMat, 0.01f);
+            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.01f);
         }
     }
 
@@ -65,7 +68,7 @@ public class Turret extends BaseItem {
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
         Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, super.mRotationMatrix, 0);
-        Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
+        Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
         super.mModelMatrix = mModelMatrix.clone();
     }

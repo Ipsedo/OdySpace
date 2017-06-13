@@ -78,7 +78,7 @@ public class TestThread implements Level {
 
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbIcosahedron; i++) {
-            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand, rand.nextFloat() * 2 + 1);
+            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand.nextFloat() * 2f + 1f);
             ico.move();
             ico.makeExplosion(this.context);
             this.icosahedrons.add(ico);
@@ -144,7 +144,7 @@ public class TestThread implements Level {
         ArrayList<BaseItem> ami = new ArrayList<>(this.rockets);
         ami.add(this.ship);
         ArrayList<BaseItem> ennemi = new ArrayList<>(this.icosahedrons);
-        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 2f);
+        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 3f);
         octree.computeOctree();
 
         this.ship.mapCollision(this.noiseMap, this.levelLimits);

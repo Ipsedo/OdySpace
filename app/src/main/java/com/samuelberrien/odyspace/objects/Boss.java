@@ -33,6 +33,7 @@ public class Boss extends BaseItem {
     private float maxSpeed;
 
     private ObjModelMtlVBO rocket;
+    private Fire fireType;
 
     private double phi;
     private double theta;
@@ -40,13 +41,14 @@ public class Boss extends BaseItem {
     private int colorCounter;
     private boolean changingColor;
 
-    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition) {
+    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, Fire fireType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.counter = 0;
         this.rand = new Random(System.currentTimeMillis());
         this.maxSpeed = 0.1f;
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
+        this.fireType = fireType;
         this.phi = 0f;
         this.theta = 0f;
         this.colorCounter = 0;
@@ -118,6 +120,7 @@ public class Boss extends BaseItem {
         Matrix.setRotateM(super.mRotationMatrix, 0, angle, 0f, 1f, 0f);
         float[] tmpMat = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
+        Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
         super.mModelMatrix = mModelMatrix.clone();
 
@@ -132,7 +135,7 @@ public class Boss extends BaseItem {
             float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
             Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            Fire.fire(this.rocket, rockets, Fire.Type.SIMPLE_FIRE, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
+            this.fireType.fire(this.rocket, rockets,  super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
         }
     }
 

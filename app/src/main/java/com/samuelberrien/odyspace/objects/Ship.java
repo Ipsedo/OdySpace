@@ -46,7 +46,7 @@ public class Ship extends BaseItem {
 
     private ObjModelMtlVBO rocket;
 
-    private Fire.Type fireType;
+    private Fire fireType;
 
     public static Ship makeShip(Context context) {
         SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
@@ -58,13 +58,13 @@ public class Ship extends BaseItem {
 
         String defaultValue = context.getString(R.string.saved_fire_type_default);
         String fireType = savedShip.getString(context.getString(R.string.current_fire_type), defaultValue);
-        Fire.Type shipFireType;
+        Fire shipFireType;
         if (fireType.equals(context.getString(R.string.fire_bonus_1))) {
-            shipFireType = Fire.Type.SIMPLE_FIRE;
+            shipFireType = Fire.SIMPLE_FIRE;
         } else if (fireType.equals(context.getString(R.string.fire_bonus_2))) {
-            shipFireType = Fire.Type.QUINT_FIRE;
+            shipFireType = Fire.QUINT_FIRE;
         } else /*if (fireType.equals(context.getString(R.string.fire_bonus_3)))*/ {
-            shipFireType = Fire.Type.SIMPLE_BOMB;
+            shipFireType = Fire.SIMPLE_BOMB;
         }
 
         String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
@@ -78,7 +78,7 @@ public class Ship extends BaseItem {
         }
     }
 
-    private Ship(Context context, String objFileName, String mtlFileName, int life, Fire.Type fireType) {
+    private Ship(Context context, String objFileName, String mtlFileName, int life, Fire fireType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.maxLife = life;
         this.context = context;
@@ -134,14 +134,14 @@ public class Ship extends BaseItem {
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
         tmpMat = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
-        Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
+        Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
         super.mModelMatrix = mModelMatrix;
     }
 
     public void fire(Controls controls, List<BaseItem> rockets) {
         if (controls.isFire()) {
-            Fire.fire(this.rocket, rockets, this.fireType, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
             controls.turnOffFire();
         }
     }

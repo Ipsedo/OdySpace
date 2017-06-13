@@ -390,7 +390,7 @@ bool areCollided(float* items1Points, int nbEl1, float* item1Model, float* items
             float u1[3] = {items1Points[currJ + 3], items1Points[currJ + 4], items1Points[currJ + 5]};
             float u2[3] = {items1Points[currJ + 6], items1Points[currJ + 7], items1Points[currJ + 8]};
 
-            if(triangle_intersection(v0, v1, v2, u0, u1, u2)) {
+            if(triangle_intersection(v0, v1, v2, u0, u1, u2) && triangle_intersection(u0, u1, u2, v0, v1, v2)) {
                 return true;
             }
         }
