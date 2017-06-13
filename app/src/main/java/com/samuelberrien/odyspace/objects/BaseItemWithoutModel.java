@@ -53,7 +53,7 @@ public class BaseItemWithoutModel {
     }
 
     public boolean isOutOfBound(LevelLimits levelLimits) {
-        return !levelLimits.isInside(this.mPosition);
+        return false;
     }
 
     public void move() {

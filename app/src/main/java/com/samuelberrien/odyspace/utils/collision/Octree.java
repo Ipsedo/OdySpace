@@ -43,10 +43,10 @@ public class Octree {
             futurEnnemis[i] = new ArrayList<>();
 
             for (int j = this.amis.size() - 1; j >= 0; j--)
-                if (!this.amis.get(j).isOutOfBound(levelLimitsSons[i]))
+                if (this.amis.get(j).isInside(levelLimitsSons[i]))
                     futurAmis[i].add(this.amis.get(j));
             for (int j = this.ennemis.size() - 1; j >= 0; j--)
-                if (!this.ennemis.get(j).isOutOfBound(levelLimitsSons[i]))
+                if (this.ennemis.get(j).isInside(levelLimitsSons[i]))
                     futurEnnemis[i].add(this.ennemis.get(j));
 
             sons[i] = new Octree(levelLimitsSons[i], this, futurAmis[i], futurEnnemis[i], this.limitSize);

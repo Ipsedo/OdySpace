@@ -7,6 +7,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.utils.collision.ObjectBox;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 
@@ -76,7 +77,7 @@ public class BaseItem extends ObjModelMtlVBO {
     }
 
     public boolean isCollided(BaseItem other) {
-        return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), other.allCoords.clone(), other.mModelMatrix.clone());
+        return true;//this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), other.allCoords.clone(), other.mModelMatrix.clone());
     }
 
     public void playExplosion() {
@@ -91,12 +92,13 @@ public class BaseItem extends ObjModelMtlVBO {
         }
     }
 
-    public boolean isOutOfBound(LevelLimits levelLimits) {
-        return !levelLimits.isInside(this.mPosition);
+    public boolean isInside(LevelLimits levelLimits) {
+        ObjectBox baseItemObjectBox = new ObjectBox(this.mPosition[0] - this.radius / 2f, this.mPosition[1] - this.radius / 2f, this.mPosition[2] - this.radius / 2f, this.radius, this.radius, this.radius);
+        return levelLimits.isInside(baseItemObjectBox);
     }
 
     public void mapCollision(Map map, LevelLimits levelLimits) {
-        if (!this.isOutOfBound(levelLimits) && this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
+        if (this.isInside(levelLimits) && this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
             this.life = 0;
         }
     }

@@ -79,7 +79,7 @@ public class Ship extends BaseItem {
     }
 
     private Ship(Context context, String objFileName, String mtlFileName, int life, Fire.Type fireType) {
-        super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
+        super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.maxLife = life;
         this.context = context;
         this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, new float[]{0.8f, 0.2f, 0.1f, 1.0f});
@@ -134,6 +134,7 @@ public class Ship extends BaseItem {
         Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
         tmpMat = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
+        Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
 
         super.mModelMatrix = mModelMatrix;
     }
@@ -212,11 +213,6 @@ public class Ship extends BaseItem {
         Matrix.multiplyMV(tmpRes, 0, invModel, 0, tmp, 0);
 
         return new float[] {tmpRes[0], tmpRes[1], tmpRes[2]};
-    }
-
-    @Override
-    public void move() {
-
     }
 
     public void drawLife(float ratio) {

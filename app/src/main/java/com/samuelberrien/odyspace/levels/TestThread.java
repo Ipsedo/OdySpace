@@ -60,6 +60,7 @@ public class TestThread implements Level {
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
         this.ship = ship;
+        this.ship.move(joystick, controls);
 
         this.currLevelProgression = new ProgressBar(this.context, 49, -0.9f + 0.3f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
 
@@ -133,7 +134,7 @@ public class TestThread implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
-        if (!this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits))
+        if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
             this.ship.addExplosion(this.explosions);
         this.currLevelProgression.updateProgress(this.nbIcosahedron - this.icosahedrons.size());
     }
@@ -143,7 +144,7 @@ public class TestThread implements Level {
         ArrayList<BaseItem> ami = new ArrayList<>(this.rockets);
         ami.add(this.ship);
         ArrayList<BaseItem> ennemi = new ArrayList<>(this.icosahedrons);
-        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
+        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 2f);
         octree.computeOctree();
 
         this.ship.mapCollision(this.noiseMap, this.levelLimits);
@@ -169,13 +170,13 @@ public class TestThread implements Level {
                 ico.playExplosion();
                 this.icosahedrons.remove(i);
                 this.score++;
-            } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
+            } else if (!this.icosahedrons.get(i).isInside(this.levelLimits)) {
                 this.icosahedrons.remove(i);
             }
 
         }
         for (int i = this.rockets.size() - 1; i >= 0; i--)
-            if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.levelLimits))
                 this.rockets.remove(i);
     }
 
@@ -186,7 +187,7 @@ public class TestThread implements Level {
 
     @Override
     public boolean isDead() {
-        return !this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits);
+        return !this.ship.isAlive() || !this.ship.isInside(this.levelLimits);
     }
 
     @Override

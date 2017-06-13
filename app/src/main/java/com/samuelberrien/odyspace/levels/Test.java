@@ -139,13 +139,13 @@ public class Test implements Level {
                 ico.addExplosion(this.explosions);
                 this.icosahedrons.remove(i);
                 this.score++;
-            } else if (this.icosahedrons.get(i).isOutOfBound(this.levelLimits)) {
+            } else if (!this.icosahedrons.get(i).isInside(this.levelLimits)) {
                 this.icosahedrons.remove(i);
             }
         }
 
         for (int i = this.rockets.size() - 1; i >= 0; i--)
-            if (!this.rockets.get(i).isAlive() || this.rockets.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.levelLimits))
                 this.rockets.remove(i);
 
     }
@@ -158,7 +158,7 @@ public class Test implements Level {
     @Override
     public boolean isDead() {
         if (this.isInit) {
-            return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
+            return !this.ship.isInside(this.levelLimits) || !this.ship.isAlive();
         }
         return false;
     }

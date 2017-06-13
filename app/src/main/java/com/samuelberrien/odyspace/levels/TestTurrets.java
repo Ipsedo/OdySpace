@@ -142,7 +142,7 @@ public class TestTurrets implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
-        if (!this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits))
+        if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
             this.ship.addExplosion(this.explosions);
     }
 
@@ -175,10 +175,10 @@ public class TestTurrets implements Level {
                 this.turrets.remove(i);
             }
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
-            if (!this.rocketsShip.get(i).isAlive() || this.rocketsShip.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rocketsShip.get(i).isAlive() || !this.rocketsShip.get(i).isInside(this.levelLimits))
                 this.rocketsShip.remove(i);
         for (int i = this.rocketsTurret.size() - 1; i >= 0; i--)
-            if (!this.rocketsTurret.get(i).isAlive() || this.rocketsTurret.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rocketsTurret.get(i).isAlive() || !this.rocketsTurret.get(i).isInside(this.levelLimits))
                 this.rocketsTurret.remove(i);
     }
 
@@ -189,7 +189,7 @@ public class TestTurrets implements Level {
 
     @Override
     public boolean isDead() {
-        return !this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits);
+        return !this.ship.isAlive() || !this.ship.isInside(this.levelLimits);
     }
 
     @Override

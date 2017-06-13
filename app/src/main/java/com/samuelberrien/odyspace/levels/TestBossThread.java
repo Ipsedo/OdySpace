@@ -134,10 +134,10 @@ public class TestBossThread implements Level {
     @Override
     public void removeObjects() {
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
-            if (!this.rocketsShip.get(i).isAlive() || this.rocketsShip.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rocketsShip.get(i).isAlive() || !this.rocketsShip.get(i).isInside(this.levelLimits))
                 this.rocketsShip.remove(i);
         for (int i = this.rocketsBoss.size() - 1; i >= 0; i--)
-            if (!this.rocketsBoss.get(i).isAlive() || this.rocketsBoss.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rocketsBoss.get(i).isAlive() || !this.rocketsBoss.get(i).isInside(this.levelLimits))
                 this.rocketsBoss.remove(i);
     }
 
@@ -148,7 +148,7 @@ public class TestBossThread implements Level {
 
     @Override
     public boolean isDead() {
-        return !this.ship.isAlive() || this.ship.isOutOfBound(this.levelLimits);
+        return !this.ship.isAlive() || !this.ship.isInside(this.levelLimits);
     }
 
     @Override

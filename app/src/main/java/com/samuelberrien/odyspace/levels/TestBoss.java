@@ -101,10 +101,10 @@ public class TestBoss implements Level {
     @Override
     public void removeObjects() {
         for (int i = 0; i < this.rocketsShip.size(); i++)
-            if (!this.rocketsShip.get(i).isAlive() || this.rocketsShip.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rocketsShip.get(i).isAlive() || !this.rocketsShip.get(i).isInside(this.levelLimits))
                 this.rocketsShip.remove(i);
         for (int i = 0; i < this.rocketsBoss.size(); i++)
-            if (!this.rocketsBoss.get(i).isAlive() || this.rocketsBoss.get(i).isOutOfBound(this.levelLimits))
+            if (!this.rocketsBoss.get(i).isAlive() || !this.rocketsBoss.get(i).isInside(this.levelLimits))
                 this.rocketsBoss.remove(i);
     }
 
@@ -115,7 +115,7 @@ public class TestBoss implements Level {
 
     @Override
     public boolean isDead() {
-        return this.ship.isOutOfBound(this.levelLimits) || !this.ship.isAlive();
+        return !this.ship.isInside(this.levelLimits) || !this.ship.isAlive();
     }
 
     @Override

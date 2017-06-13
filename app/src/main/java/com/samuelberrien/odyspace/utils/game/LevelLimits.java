@@ -1,5 +1,9 @@
 package com.samuelberrien.odyspace.utils.game;
 
+import android.renderscript.Type;
+
+import com.samuelberrien.odyspace.utils.collision.ObjectBox;
+
 import java.util.Random;
 
 /**
@@ -29,10 +33,14 @@ public class LevelLimits {
         this.yMin = yMin;
         this.zMax = zMax;
         this.zMin = zMin;
+
     }
 
-    public boolean isInside(float[] xyz) {
-        return this.xMax > xyz[0] && this.xMin < xyz[0] && this.yMax > xyz[1] && this.yMin < xyz[1] && this.zMax > xyz[2] && this.zMin < xyz[2];
+    public boolean isInside(ObjectBox objectBox) {
+        ObjectBox levelBox = new ObjectBox(this.xMin, this.yMin, this.zMin, this.xMax - this.xMin, this.yMax - this.yMin, this.zMax - this.zMin);
+        return levelBox.checkCollision(objectBox);
+
+        //return this.xMax > xyz[0] && this.xMin < xyz[0] && this.yMax > xyz[1] && this.yMin < xyz[1] && this.zMax > xyz[2] && this.zMin < xyz[2];
     }
 
     public float[] generateRandomPos(Random rand) {
