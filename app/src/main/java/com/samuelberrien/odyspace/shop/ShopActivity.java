@@ -7,15 +7,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class ShopActivity extends AppCompatActivity {
 
