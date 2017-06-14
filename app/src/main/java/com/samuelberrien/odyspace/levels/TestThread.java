@@ -62,7 +62,7 @@ public class TestThread implements Level {
         this.ship = ship;
         this.ship.move(joystick, controls);
 
-        this.currLevelProgression = new ProgressBar(this.context, 49, -0.9f + 0.3f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
+        this.currLevelProgression = new ProgressBar(this.context, 49, -1f + 0.15f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
@@ -157,12 +157,10 @@ public class TestThread implements Level {
 
     @Override
     public void removeObjects() {
-        for (int i = this.explosions.size() - 1; i >= 0; i--) {
-            if (!this.explosions.get(i).isAlive()) {
+        for (int i = this.explosions.size() - 1; i >= 0; i--)
+            if (!this.explosions.get(i).isAlive())
                 this.explosions.remove(i);
-            }
 
-        }
         for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
@@ -170,11 +168,10 @@ public class TestThread implements Level {
                 ico.playExplosion();
                 this.icosahedrons.remove(i);
                 this.score++;
-            } else if (!this.icosahedrons.get(i).isInside(this.levelLimits)) {
+            } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
                 this.icosahedrons.remove(i);
-            }
-
         }
+
         for (int i = this.rockets.size() - 1; i >= 0; i--)
             if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.levelLimits))
                 this.rockets.remove(i);

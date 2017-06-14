@@ -6,6 +6,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.utils.game.BossMoveType;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -26,31 +27,22 @@ public class Boss extends BaseItem {
     private final int MAX_COUNT = 200;
     private int counter;
 
-    private Random rand;
-
-    private float maxSpeed;
-
     private ObjModelMtlVBO rocket;
     private FireType fireType;
-
-    private double phi;
-    private double theta;
+    private BossMoveType bossMoveType;
 
     private int colorCounter;
     private boolean changingColor;
 
-    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, FireType fireType) {
+    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, FireType fireType, BossMoveType bossMoveType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, 1f);
         this.context = context;
         this.counter = 0;
-        this.rand = new Random(System.currentTimeMillis());
-        this.maxSpeed = 0.1f;
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.fireType = fireType;
-        this.phi = 0f;
-        this.theta = 0f;
         this.colorCounter = 0;
         this.changingColor = false;
+        this.bossMoveType = bossMoveType;
         this.mediaPlayer = MediaPlayer.create(this.context, R.raw.big_boom);
     }
 
@@ -92,7 +84,7 @@ public class Boss extends BaseItem {
     }
 
     public void move(Ship ship) {
-        if (this.counter == this.MAX_COUNT / 2) {
+        /*if (this.counter == this.MAX_COUNT / 2) {
             float[] shipBossVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0]});
             super.mSpeed[0] = this.maxSpeed * shipBossVec[0];
             super.mSpeed[1] = this.maxSpeed * shipBossVec[1];
@@ -118,9 +110,9 @@ public class Boss extends BaseItem {
         Matrix.setRotateM(super.mRotationMatrix, 0, angle, 0f, 1f, 0f);
         float[] tmpMat = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
-        Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
+        Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);*/
 
-        super.mModelMatrix = mModelMatrix.clone();
+        super.mModelMatrix = this.bossMoveType.move(super.mPosition, ship.mPosition, super.mSpeed, super.mRotationMatrix, super.scale);
 
         this.count();
     }

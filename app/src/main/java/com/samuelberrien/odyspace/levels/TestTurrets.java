@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.levels;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
@@ -48,6 +49,8 @@ public class TestTurrets implements Level {
     private Joystick joystick;
     private Controls controls;
 
+    private ProgressBar currLevelProgression;
+
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
@@ -56,6 +59,8 @@ public class TestTurrets implements Level {
 
         this.joystick = joystick;
         this.controls = controls;
+
+        this.currLevelProgression = new ProgressBar(this.context, 19, -1f + 0.15f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
 
         float limitDown = -100f;
         this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown);
@@ -80,7 +85,7 @@ public class TestTurrets implements Level {
             }
             moy /= (triangles.length / 3f);
 
-            Turret tmp = new Turret(this.context, new float[]{x, moy, z}, FireType.SIMPLE_FIRE);
+            Turret tmp = new Turret(this.context, new float[]{x, moy + 1, z}, FireType.SIMPLE_FIRE);
             tmp.move(this.ship);
             tmp.makeExplosion(this.context);
             this.turrets.add(tmp);
@@ -118,7 +123,7 @@ public class TestTurrets implements Level {
 
     @Override
     public void drawLevelInfo(float ratio) {
-
+        this.currLevelProgression.draw(ratio);
     }
 
     @Override
@@ -145,6 +150,7 @@ public class TestTurrets implements Level {
             e.move();
         if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
             this.ship.addExplosion(this.explosions);
+        this.currLevelProgression.updateProgress(this.nbTurret - this.turrets.size());
     }
 
     @Override
@@ -153,7 +159,7 @@ public class TestTurrets implements Level {
         ami.add(this.ship);
         ArrayList<BaseItem> ennemi = new ArrayList<>(this.rocketsTurret);
         ennemi.addAll(this.turrets);
-        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
+        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
 
         this.ship.mapCollision(this.noiseMap, this.levelLimits);
