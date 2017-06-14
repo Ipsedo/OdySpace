@@ -63,7 +63,6 @@ public class Octree {
                     this.ennemis.get(i).decrementLife(this.amis.get(j).getDamage());
                     this.amis.get(j).decrementLife(tmp);
                 }
-                System.out.println("COLLISION DETECTION");
             }
     }
 

@@ -15,6 +15,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.BossMoveType;
 import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
@@ -53,10 +54,10 @@ public class TestBossThread implements Level {
         this.ship = ship;
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
-        this.noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 1f, 0f, 8, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, limitDown - 0.02f * levelLimitSize, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
         this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, BossMoveType.NAIF);
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -116,16 +117,15 @@ public class TestBossThread implements Level {
 
     @Override
     public void collide() {
-        ArrayList<BaseItem> ami = new ArrayList<>();
+        ArrayList<Item> ami = new ArrayList<>();
         ami.addAll(this.rocketsShip);
         ami.add(this.ship);
-        ArrayList<BaseItem> ennemi = new ArrayList<>();
+        ArrayList<Item> ennemi = new ArrayList<>();
         ennemi.addAll(this.rocketsBoss);
         ennemi.add(this.boss);
+        ennemi.add(this.noiseMap);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
-
-        this.ship.mapCollision(this.noiseMap, this.levelLimits);
     }
 
     @Override

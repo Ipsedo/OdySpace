@@ -42,6 +42,7 @@ public class NoiseMap implements Map {
     private int coeffNoise;
     private float scale;
     private float limitHeight;
+    private float coeffHeight;
 
     private float[] points;
     private float[] normals;
@@ -68,12 +69,13 @@ public class NoiseMap implements Map {
 
     private float[] color;
 
-    public NoiseMap(Context context, float[] color, float lightCoeff, float distanceCoeff, int coeffNoise, float scale, float limitHeight) {
+    public NoiseMap(Context context, float[] color, float lightCoeff, float distanceCoeff, int coeffNoise, float scale, float limitHeight, float coeffHeight) {
         this.context = context;
         this.lightCoeff = lightCoeff;
         this.distanceCoeff = distanceCoeff;
         this.coeffNoise = coeffNoise;
         this.scale = scale;
+        this.coeffHeight = coeffHeight;
         this.limitHeight = limitHeight;
         this.color = color;
         this.mModelMatrix = new float[16];
@@ -101,13 +103,13 @@ public class NoiseMap implements Map {
             float[] tmpPoints = new float[(SIZE + 1) * 2 * 3];
             for (int j = 0; j < SIZE + 1; j++) {
                 tmpPoints[j * 2 * 3] = (float) j / (float) SIZE;
-                tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)); // / (this.scale * 0.1f);
+                tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) * this.coeffHeight;
                 tmpPoints[j * 2 * 3 + 2] = (float) i / (float) SIZE;
 
                 System.out.println(tmpPoints[j * 2 * 3 + 1]);
 
                 tmpPoints[(j * 2 + 1) * 3] = (float) j / (float) SIZE;
-                tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)); // / (this.scale * 0.1f);
+                tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) * this.coeffHeight;
                 tmpPoints[(j * 2 + 1) * 3 + 2] = ((float) i + 1) / (float) SIZE;
             }
             for (int j = 0; j < tmpPoints.length / 3 - 2; j += 2) {
@@ -270,7 +272,7 @@ public class NoiseMap implements Map {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, -0.5f * this.scale, this.limitHeight, -0.5f * this.scale);
-        Matrix.scaleM(mModelMatrix, 0, this.scale,  0.02f * this.scale, this.scale);
+        Matrix.scaleM(mModelMatrix, 0, this.scale,  this.scale, this.scale);
 
         this.mModelMatrix = mModelMatrix;
     }
@@ -314,19 +316,17 @@ public class NoiseMap implements Map {
 
     @Override
     public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
-        System.out.println("COLLISION DETECTION");
         return this.areCollided(this.points, this.mModelMatrix, triangleArray, modelMatrix);
     }
 
     @Override
     public boolean isCollided(Item other) {
-        System.out.println("COLLISION DETECTION");
         return other.collideTest(this.points, this.mModelMatrix);
     }
 
     @Override
     public boolean isInside(LevelLimits levelLimits) {
-        ObjectBox objectBox = new ObjectBox(-0.5f * this.scale, this.limitHeight -  0.02f * this.scale, -0.5f * this.scale, 0.5f * this.scale, this.limitHeight + 0.02f * this.scale, 0.5f * this.scale);
+        ObjectBox objectBox = new ObjectBox(-0.5f * this.scale, this.limitHeight - this.coeffHeight * this.scale, -0.5f * this.scale, this.scale, 2f * this.coeffHeight * this.scale, this.scale);
         return levelLimits.isInside(objectBox);
     }
 

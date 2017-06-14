@@ -67,10 +67,10 @@ public class TestThread implements Level {
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 1f, 0f, 8, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, limitDown - 0.02f * levelLimitSize, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -150,8 +150,6 @@ public class TestThread implements Level {
         ennemi.add(this.noiseMap);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
-
-        //this.ship.mapCollision(this.noiseMap, this.levelLimits);
     }
 
     @Override

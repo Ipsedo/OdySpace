@@ -14,6 +14,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.objects.Turret;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
@@ -63,9 +64,9 @@ public class TestTurrets implements Level {
         this.currLevelProgression = new ProgressBar(this.context, 19, -1f + 0.15f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
 
         float limitDown = -100f;
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 1f, 0f, 6, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 6, levelLimitSize, limitDown, 0.03f);
         this.noiseMap.update();
-        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
+        this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, limitDown - 0.03f * levelLimitSize, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_2/");
 
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -155,14 +156,15 @@ public class TestTurrets implements Level {
 
     @Override
     public void collide() {
-        ArrayList<BaseItem> ami = new ArrayList<>(this.rocketsShip);
+        ArrayList<Item> ami = new ArrayList<>();
+        ami.addAll(this.rocketsShip);
         ami.add(this.ship);
-        ArrayList<BaseItem> ennemi = new ArrayList<>(this.rocketsTurret);
+        ArrayList<Item> ennemi = new ArrayList<>();
+        ennemi.addAll(this.rocketsTurret);
+        ennemi.add(this.noiseMap);
         ennemi.addAll(this.turrets);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
-
-        this.ship.mapCollision(this.noiseMap, this.levelLimits);
     }
 
     @Override
