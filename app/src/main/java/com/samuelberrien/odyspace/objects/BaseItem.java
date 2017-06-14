@@ -5,11 +5,9 @@ import android.media.MediaPlayer;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.utils.collision.ObjectBox;
+import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
-import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 
 /**
@@ -92,9 +90,9 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
     }
 
     @Override
-    public boolean isInside(LevelLimits levelLimits) {
-        ObjectBox baseItemObjectBox = new ObjectBox(this.mPosition[0] - this.radius / 2f, this.mPosition[1] - this.radius / 2f, this.mPosition[2] - this.radius / 2f, this.radius, this.radius, this.radius);
-        return levelLimits.isInside(baseItemObjectBox);
+    public boolean isInside(Box box) {
+        Box baseItemBox = new Box(this.mPosition[0] - this.radius / 2f, this.mPosition[1] - this.radius / 2f, this.mPosition[2] - this.radius / 2f, this.radius, this.radius, this.radius);
+        return box.isInside(baseItemBox);
     }
 
     @Override
@@ -105,12 +103,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
     @Override
     public void decrementLife(int minus) {
         this.life = this.life - minus >= 0 ? this.life - minus : 0;
-    }
-
-    public void mapCollision(Map map, LevelLimits levelLimits) {
-        if (this.isInside(levelLimits) && this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), map.getRestreintArea(this.mPosition), map.getModelMatrix())) {
-            this.life = 0;
-        }
     }
 
     public float[] vector3fTo(BaseItem to) {

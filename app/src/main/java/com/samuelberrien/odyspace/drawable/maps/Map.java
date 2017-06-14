@@ -11,8 +11,6 @@ import com.samuelberrien.odyspace.utils.game.Item;
 
 public interface Map extends Item {
 
-    float[] getModelMatrix();
-
     float[] getRestreintArea(float[] position);
 
     float[] passToModelMatrix(float[] triangles);

@@ -1,5 +1,7 @@
 package com.samuelberrien.odyspace.utils.game;
 
+import com.samuelberrien.odyspace.utils.collision.Box;
+
 /**
  * Created by samuel on 14/06/17.
  * Copyright samuel, 2016 - 2017.
@@ -13,7 +15,7 @@ public interface Item {
 
     boolean isCollided(Item other);
 
-    boolean isInside(LevelLimits levelLimits);
+    boolean isInside(Box Box);
 
     int getDamage();
 

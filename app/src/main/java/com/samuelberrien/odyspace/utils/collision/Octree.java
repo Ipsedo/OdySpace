@@ -1,7 +1,6 @@
 package com.samuelberrien.odyspace.utils.collision;
 
 import com.samuelberrien.odyspace.utils.game.Item;
-import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 
 public class Octree {
 
-    private LevelLimits levelLimits;
+    private Box boxes;
 
     private Octree father;
 
@@ -24,8 +23,8 @@ public class Octree {
 
     private float limitSize;
 
-    public Octree(LevelLimits levelLimits, Octree father, List<? extends Item> amis, List<? extends Item> ennemis, float limitSize) {
-        this.levelLimits = levelLimits;
+    public Octree(Box boxes, Octree father, List<Item> amis, List<Item> ennemis, float limitSize) {
+        this.boxes = boxes;
         this.father = father;
         this.amis = amis;
         this.ennemis = ennemis;
@@ -34,7 +33,7 @@ public class Octree {
 
     private Octree[] makeSons() {
         Octree[] sons = new Octree[8];
-        LevelLimits[] levelLimitsSons = this.levelLimits.makeOctSons();
+        Box[] levelLimitsSons = this.boxes.makeSons();
         ArrayList<Item>[] futurAmis = new ArrayList[8];
         ArrayList<Item>[] futurEnnemis = new ArrayList[8];
 
@@ -79,7 +78,7 @@ public class Octree {
     }
 
     private boolean isLeaf() {
-        return this.levelLimits.getSizeLength() <= this.limitSize;
+        return this.boxes.getSizeAv() <= this.limitSize;
     }
 
     private boolean containsNoCollision() {

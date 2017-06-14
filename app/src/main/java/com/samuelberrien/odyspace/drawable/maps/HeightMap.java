@@ -5,8 +5,8 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
-import com.samuelberrien.odyspace.utils.game.LevelLimits;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.graphics.TextureHelper;
 
@@ -112,15 +112,6 @@ public class HeightMap implements Map {
         mPositions.put(points).position(0);
     }
 
-    public float getLimitHeight() {
-        return this.limitHeight;
-    }
-
-    @Override
-    public float[] getModelMatrix() {
-        return this.mModelMatrix;
-    }
-
     @Override
     public float[] getRestreintArea(float[] position) {
         return new float[0];
@@ -154,6 +145,7 @@ public class HeightMap implements Map {
     public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace) {
         float[] mvMatrix = new float[16];
         float[] mvpMatrix = new float[16];
+
         Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);
         Matrix.multiplyMM(mvpMatrix, 0, pMatrix, 0, mvMatrix, 0);
 
@@ -202,13 +194,13 @@ public class HeightMap implements Map {
     }
 
     @Override
-    public boolean isInside(LevelLimits levelLimits) {
+    public boolean isInside(Box levelLimits) {
         return false;
     }
 
     @Override
     public int getDamage() {
-        return 0;
+        return Integer.MAX_VALUE - 1;
     }
 
     @Override

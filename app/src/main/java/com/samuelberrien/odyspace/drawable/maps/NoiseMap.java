@@ -5,9 +5,8 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.collision.ObjectBox;
+import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
-import com.samuelberrien.odyspace.utils.game.LevelLimits;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.SimplexNoise;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -263,11 +262,6 @@ public class NoiseMap implements Map {
     }
 
     @Override
-    public float[] getModelMatrix() {
-        return this.mModelMatrix.clone();
-    }
-
-    @Override
     public void update() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -325,9 +319,9 @@ public class NoiseMap implements Map {
     }
 
     @Override
-    public boolean isInside(LevelLimits levelLimits) {
-        ObjectBox objectBox = new ObjectBox(-0.5f * this.scale, this.limitHeight - this.coeffHeight * this.scale, -0.5f * this.scale, this.scale, 2f * this.coeffHeight * this.scale, this.scale);
-        return levelLimits.isInside(objectBox);
+    public boolean isInside(Box otherBox) {
+        Box box = new Box(-0.5f * this.scale, this.limitHeight - this.coeffHeight * this.scale, -0.5f * this.scale, this.scale, 2f * this.coeffHeight * this.scale, this.scale);
+        return box.isInside(otherBox);
     }
 
     @Override

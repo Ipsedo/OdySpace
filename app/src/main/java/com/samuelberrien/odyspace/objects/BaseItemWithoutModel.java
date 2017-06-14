@@ -3,7 +3,6 @@ package com.samuelberrien.odyspace.objects;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
-import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 /**
  * Created by samuel on 26/04/17.
@@ -50,10 +49,6 @@ public class BaseItemWithoutModel {
         int otherLife = other.life;
         other.life -= this.life;
         this.life -= otherLife;
-    }
-
-    public boolean isOutOfBound(LevelLimits levelLimits) {
-        return false;
     }
 
     public void move() {
