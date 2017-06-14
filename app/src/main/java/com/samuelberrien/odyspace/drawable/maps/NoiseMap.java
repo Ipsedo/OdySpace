@@ -5,6 +5,9 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.collision.ObjectBox;
+import com.samuelberrien.odyspace.utils.game.Item;
+import com.samuelberrien.odyspace.utils.game.LevelLimits;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.SimplexNoise;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -22,6 +25,12 @@ import java.util.ArrayList;
  */
 
 public class NoiseMap implements Map {
+
+    private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
+
+    static {
+        System.loadLibrary("collision");
+    }
 
     private Context context;
 
@@ -92,11 +101,13 @@ public class NoiseMap implements Map {
             float[] tmpPoints = new float[(SIZE + 1) * 2 * 3];
             for (int j = 0; j < SIZE + 1; j++) {
                 tmpPoints[j * 2 * 3] = (float) j / (float) SIZE;
-                tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) / (this.scale * 0.1f);
+                tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)); // / (this.scale * 0.1f);
                 tmpPoints[j * 2 * 3 + 2] = (float) i / (float) SIZE;
 
+                System.out.println(tmpPoints[j * 2 * 3 + 1]);
+
                 tmpPoints[(j * 2 + 1) * 3] = (float) j / (float) SIZE;
-                tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) / (this.scale * 0.1f);
+                tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)); // / (this.scale * 0.1f);
                 tmpPoints[(j * 2 + 1) * 3 + 2] = ((float) i + 1) / (float) SIZE;
             }
             for (int j = 0; j < tmpPoints.length / 3 - 2; j += 2) {
@@ -259,7 +270,7 @@ public class NoiseMap implements Map {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, -0.5f * this.scale, this.limitHeight, -0.5f * this.scale);
-        Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
+        Matrix.scaleM(mModelMatrix, 0, this.scale,  0.02f * this.scale, this.scale);
 
         this.mModelMatrix = mModelMatrix;
     }
@@ -299,5 +310,33 @@ public class NoiseMap implements Map {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.points.length / 3);
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
+    }
+
+    @Override
+    public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+        System.out.println("COLLISION DETECTION");
+        return this.areCollided(this.points, this.mModelMatrix, triangleArray, modelMatrix);
+    }
+
+    @Override
+    public boolean isCollided(Item other) {
+        System.out.println("COLLISION DETECTION");
+        return other.collideTest(this.points, this.mModelMatrix);
+    }
+
+    @Override
+    public boolean isInside(LevelLimits levelLimits) {
+        ObjectBox objectBox = new ObjectBox(-0.5f * this.scale, this.limitHeight -  0.02f * this.scale, -0.5f * this.scale, 0.5f * this.scale, this.limitHeight + 0.02f * this.scale, 0.5f * this.scale);
+        return levelLimits.isInside(objectBox);
+    }
+
+    @Override
+    public int getDamage() {
+        return Integer.MAX_VALUE - 1;
+    }
+
+    @Override
+    public void decrementLife(int minus) {
+
     }
 }

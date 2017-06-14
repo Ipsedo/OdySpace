@@ -1,5 +1,7 @@
 package com.samuelberrien.odyspace.drawable.maps;
 
+import com.samuelberrien.odyspace.utils.game.Item;
+
 /**
  * Created by samuel on 11/06/17.
  * Copyright samuel, 2016 - 2017.
@@ -7,7 +9,7 @@ package com.samuelberrien.odyspace.drawable.maps;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public interface Map {
+public interface Map extends Item {
 
     float[] getModelMatrix();
 

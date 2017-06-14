@@ -5,6 +5,8 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.game.Item;
+import com.samuelberrien.odyspace.utils.game.LevelLimits;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.graphics.TextureHelper;
 
@@ -187,5 +189,30 @@ public class HeightMap implements Map {
         int nbStackTriangles = (NBSLICES + 1) * 2;
         for (int i = 0; i < NBSTRIPS; i++)
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, i * nbStackTriangles, nbStackTriangles);
+    }
+
+    @Override
+    public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+        return false;
+    }
+
+    @Override
+    public boolean isCollided(Item other) {
+        return false;
+    }
+
+    @Override
+    public boolean isInside(LevelLimits levelLimits) {
+        return false;
+    }
+
+    @Override
+    public int getDamage() {
+        return 0;
+    }
+
+    @Override
+    public void decrementLife(int minus) {
+
     }
 }

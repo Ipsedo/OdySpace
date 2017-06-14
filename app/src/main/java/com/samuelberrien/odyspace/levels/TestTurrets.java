@@ -63,7 +63,7 @@ public class TestTurrets implements Level {
         this.currLevelProgression = new ProgressBar(this.context, 19, -1f + 0.15f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
 
         float limitDown = -100f;
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 1f, 0f, 6, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_2/");

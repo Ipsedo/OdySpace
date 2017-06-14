@@ -14,6 +14,7 @@ import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.collision.Octree;
+import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
@@ -66,7 +67,7 @@ public class TestThread implements Level {
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 1f, 0f, 8, levelLimitSize, limitDown);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
@@ -141,13 +142,16 @@ public class TestThread implements Level {
 
     @Override
     public void collide() {
-        ArrayList<BaseItem> ami = new ArrayList<>(this.rockets);
+        ArrayList<Item> ami = new ArrayList<>();
+        ami.addAll(this.rockets);
         ami.add(this.ship);
-        ArrayList<BaseItem> ennemi = new ArrayList<>(this.icosahedrons);
+        ArrayList<Item> ennemi = new ArrayList<>();
+        ennemi.addAll(this.icosahedrons);
+        ennemi.add(this.noiseMap);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
 
-        this.ship.mapCollision(this.noiseMap, this.levelLimits);
+        //this.ship.mapCollision(this.noiseMap, this.levelLimits);
     }
 
     @Override
