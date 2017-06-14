@@ -1,6 +1,6 @@
 package com.samuelberrien.odyspace.utils.collision;
 
-import com.samuelberrien.odyspace.objects.BaseItem;
+import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ public class Octree {
 
     private Octree father;
 
-    private List<BaseItem> amis;
-    private List<BaseItem> ennemis;
+    private List<? extends Item> amis;
+    private List<? extends Item> ennemis;
 
     private float limitSize;
 
-    public Octree(LevelLimits levelLimits, Octree father, List<BaseItem> amis, List<BaseItem> ennemis, float limitSize) {
+    public Octree(LevelLimits levelLimits, Octree father, List<? extends Item> amis, List<? extends Item> ennemis, float limitSize) {
         this.levelLimits = levelLimits;
         this.father = father;
         this.amis = amis;
@@ -35,8 +35,8 @@ public class Octree {
     private Octree[] makeSons() {
         Octree[] sons = new Octree[8];
         LevelLimits[] levelLimitsSons = this.levelLimits.makeOctSons();
-        ArrayList<BaseItem>[] futurAmis = new ArrayList[8];
-        ArrayList<BaseItem>[] futurEnnemis = new ArrayList[8];
+        ArrayList<Item>[] futurAmis = new ArrayList[8];
+        ArrayList<Item>[] futurEnnemis = new ArrayList[8];
 
         for (int i = 0; i < 8; i++) {
             futurAmis[i] = new ArrayList<>();
@@ -58,8 +58,11 @@ public class Octree {
     private void computeCollision() {
         for (int i = this.ennemis.size() - 1; i >= 0; i--)
             for (int j = this.amis.size() - 1; j >= 0; j--) {
-                if (this.ennemis.get(i).isCollided(this.amis.get(j)))
-                    this.ennemis.get(i).decrementsBothLife(this.amis.get(j));
+                if (this.ennemis.get(i).isCollided(this.amis.get(j))) {
+                    int tmp = this.ennemis.get(i).getDamage();
+                    this.ennemis.get(i).decrementLife(this.amis.get(j).getDamage());
+                    this.amis.get(j).decrementLife(tmp);
+                }
                 System.out.println("COLLISION DETECTION");
             }
     }

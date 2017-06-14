@@ -8,6 +8,7 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.collision.ObjectBox;
+import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.LevelLimits;
 
 
@@ -18,7 +19,7 @@ import com.samuelberrien.odyspace.utils.game.LevelLimits;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class BaseItem extends ObjModelMtlVBO {
+public class BaseItem extends ObjModelMtlVBO implements Item {
 
     private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
@@ -76,25 +77,34 @@ public class BaseItem extends ObjModelMtlVBO {
         return this.life > 0;
     }
 
-    public boolean isCollided(BaseItem other) {
-        return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), other.allCoords.clone(), other.mModelMatrix.clone());
-    }
-
     public void playExplosion() {
         this.mediaPlayer.start();
     }
 
-    public void decrementsBothLife(BaseItem other) {
-        if (this.life >= 0 && other.life >= 0) {
-            int otherLife = other.life;
-            other.life -= this.life;
-            this.life -= otherLife;
-        }
+    @Override
+    public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+        return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), triangleArray.clone(), modelMatrix.clone());
     }
 
+    @Override
+    public boolean isCollided(Item other) {
+        return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone());
+    }
+
+    @Override
     public boolean isInside(LevelLimits levelLimits) {
         ObjectBox baseItemObjectBox = new ObjectBox(this.mPosition[0] - this.radius / 2f, this.mPosition[1] - this.radius / 2f, this.mPosition[2] - this.radius / 2f, this.radius, this.radius, this.radius);
         return levelLimits.isInside(baseItemObjectBox);
+    }
+
+    @Override
+    public int getDamage() {
+        return this.life;
+    }
+
+    @Override
+    public void decrementLife(int minus) {
+        this.life = this.life - minus >= 0 ? this.life - minus : 0;
     }
 
     public void mapCollision(Map map, LevelLimits levelLimits) {

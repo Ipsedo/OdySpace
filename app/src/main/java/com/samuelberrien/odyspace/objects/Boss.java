@@ -8,6 +8,7 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.BossMoveType;
 import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;
@@ -46,17 +47,9 @@ public class Boss extends BaseItem {
         this.mediaPlayer = MediaPlayer.create(this.context, R.raw.big_boom);
     }
 
-    /**
-     * Besoin de trouver autre solution ....
-     * @param other
-     */
     @Override
-    public void decrementsBothLife(BaseItem other) {
-        if(!(other instanceof  Ship)) {
-            super.decrementsBothLife(other);
-        } else {
-            other.life = 0;
-        }
+    public int getDamage() {
+        return Integer.MAX_VALUE - 1;
     }
 
     private void count() {
@@ -71,7 +64,7 @@ public class Boss extends BaseItem {
     }
 
     @Override
-    public boolean isCollided(BaseItem other) {
+    public boolean isCollided(Item other) {
         if (super.isCollided(other)) {
             if (!this.changingColor) {
                 super.changeColor();

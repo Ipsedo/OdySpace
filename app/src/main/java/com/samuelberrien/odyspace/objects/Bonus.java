@@ -15,7 +15,7 @@ public class Bonus extends BaseItem {
     }
 
     @Override
-    public void decrementsBothLife(BaseItem other) {
-        this.life -= other.life;
+    public int getDamage() {
+        return 0;
     }
 }
