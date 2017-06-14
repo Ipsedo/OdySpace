@@ -12,15 +12,12 @@ import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
-import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
-import com.samuelberrien.odyspace.levels.Test;
-import com.samuelberrien.odyspace.levels.TestBoss;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.game.Level;
 

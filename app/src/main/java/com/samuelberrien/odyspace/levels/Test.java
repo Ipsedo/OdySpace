@@ -3,10 +3,10 @@ package com.samuelberrien.odyspace.levels;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.Explosion;
-import com.samuelberrien.odyspace.drawable.maps.HeightMap;
+import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.maps.HeightMap;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Ship;

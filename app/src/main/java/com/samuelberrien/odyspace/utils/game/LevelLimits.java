@@ -1,7 +1,5 @@
 package com.samuelberrien.odyspace.utils.game;
 
-import android.renderscript.Type;
-
 import com.samuelberrien.odyspace.utils.collision.ObjectBox;
 
 import java.util.Random;

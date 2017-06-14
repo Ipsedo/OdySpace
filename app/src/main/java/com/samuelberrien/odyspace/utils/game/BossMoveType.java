@@ -1,6 +1,5 @@
 package com.samuelberrien.odyspace.utils.game;
 
-import android.graphics.RadialGradient;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.utils.maths.Vector;

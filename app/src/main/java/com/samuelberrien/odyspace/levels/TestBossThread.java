@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Forest;
-import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.objects.BaseItem;

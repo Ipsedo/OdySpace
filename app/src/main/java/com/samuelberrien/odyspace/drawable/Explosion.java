@@ -4,9 +4,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.nio.FloatBuffer;

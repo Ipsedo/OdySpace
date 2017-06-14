@@ -3,10 +3,10 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.opengl.Matrix;
-import com.samuelberrien.odyspace.drawable.ProgressBar;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;

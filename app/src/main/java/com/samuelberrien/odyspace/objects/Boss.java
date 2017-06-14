@@ -12,7 +12,6 @@ import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by samuel on 30/04/17.

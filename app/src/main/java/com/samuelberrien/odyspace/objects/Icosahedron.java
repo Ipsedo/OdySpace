@@ -3,11 +3,8 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.Explosion;
-import com.samuelberrien.odyspace.utils.maths.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by samuel on 24/04/17.
