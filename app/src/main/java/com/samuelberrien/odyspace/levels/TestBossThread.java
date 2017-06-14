@@ -58,7 +58,7 @@ public class TestBossThread implements Level {
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize + limitDown - 10, limitDown - 10, levelLimitSize / 2f, -levelLimitSize / 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
-        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f}, FireType.SIMPLE_FIRE, BossMoveType.NAIF);
+        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, BossMoveType.NAIF);
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.joystick = joystick;
@@ -122,7 +122,7 @@ public class TestBossThread implements Level {
         ArrayList<BaseItem> ennemi = new ArrayList<>();
         ennemi.addAll(this.rocketsBoss);
         ennemi.add(this.boss);
-        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 8f);
+        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
 
         this.ship.mapCollision(this.noiseMap, this.levelLimits);

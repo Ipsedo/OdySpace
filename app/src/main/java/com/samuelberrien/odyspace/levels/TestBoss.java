@@ -44,7 +44,7 @@ public class TestBoss implements Level {
         this.ship = ship;
         this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
         this.levelLimits = new LevelLimits(levelLimitSize / 2f, -levelLimitSize / 2f, levelLimitSize / 2f, -100f, levelLimitSize / 2f, -levelLimitSize / 2f);
-        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 15, new float[]{0f, 0f, 50f}, FireType.SIMPLE_FIRE, BossMoveType.NAIF);
+        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 15, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, BossMoveType.NAIF);
         this.rocketsShip = new ArrayList<>();
         this.rocketsBoss = new ArrayList<>();
         this.joystick = joystick;

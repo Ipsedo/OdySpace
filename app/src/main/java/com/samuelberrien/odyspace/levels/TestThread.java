@@ -144,7 +144,7 @@ public class TestThread implements Level {
         ArrayList<BaseItem> ami = new ArrayList<>(this.rockets);
         ami.add(this.ship);
         ArrayList<BaseItem> ennemi = new ArrayList<>(this.icosahedrons);
-        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 3f);
+        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
 
         this.ship.mapCollision(this.noiseMap, this.levelLimits);

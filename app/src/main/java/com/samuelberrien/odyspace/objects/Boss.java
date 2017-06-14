@@ -34,8 +34,8 @@ public class Boss extends BaseItem {
     private int colorCounter;
     private boolean changingColor;
 
-    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, FireType fireType, BossMoveType bossMoveType) {
-        super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, 1f);
+    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, float scale, FireType fireType, BossMoveType bossMoveType) {
+        super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
         this.context = context;
         this.counter = 0;
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
