@@ -2,6 +2,7 @@ package com.samuelberrien.odyspace.utils.game.threads;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
@@ -38,13 +39,22 @@ public class EndGameThread extends CancelableThread {
             resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(super.level.getScore()));
             this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
         }
-        if(!this.resultSetted && (super.level.isDead() || super.level.isWinner())) {
+        if (!this.resultSetted && (super.level.isDead() || super.level.isWinner())) {
             this.resultSetted = true;
-            new Thread("StopGameThread"){
-                public void run(){
+            Thread tmp = new Thread("StopGameThread") {
+                public void run() {
                     EndGameThread.this.levelActivity.finish();
                 }
-            }.start();
+            };
+            tmp.setPriority(Thread.MAX_PRIORITY);
+            tmp.start();
+            /*new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    EndGameThread.this.levelActivity.finish();
+                }
+            }, 0L);*/
         }
         try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);

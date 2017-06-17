@@ -68,7 +68,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private Level getCurrentLevel(int currLevelId) {
         if (currLevelId == 0) {
             return new TestThread();
-        } else if(currLevelId == 1){
+        } else if (currLevelId == 1) {
             return new TestBossThread();
         } else {
             return new TestTurrets();
@@ -88,7 +88,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
     private void initThreads() {
-        if(!this.threadRunning) {
+        if (!this.threadRunning) {
             this.collisionThread = new CollisionThread(this.currentLevel);
             this.updateThread = new UpdateThread(this.currentLevel);
             this.removeThread = new RemoveThread(this.currentLevel);
@@ -102,7 +102,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
     private void killThread() {
-        if(this.threadRunning) {
+        if (this.threadRunning) {
             this.collisionThread.setCanceled(true);
             this.updateThread.setCanceled(true);
             this.removeThread.setCanceled(true);

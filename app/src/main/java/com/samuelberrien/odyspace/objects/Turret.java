@@ -56,7 +56,7 @@ public class Turret extends BaseItem {
     }
 
     public void move(Ship ship) {
-        float[] u = new float[]{ship.mPosition[0]- super.mPosition[0], 0f, ship.mPosition[2]- super.mPosition[2]};
+        float[] u = new float[]{ship.mPosition[0] - super.mPosition[0], 0f, ship.mPosition[2] - super.mPosition[2]};
         float[] v = new float[]{0f, 0f, 1f};
 
         float[] cross = Vector.normalize3f(Vector.cross3f(Vector.normalize3f(u), Vector.normalize3f(v)));

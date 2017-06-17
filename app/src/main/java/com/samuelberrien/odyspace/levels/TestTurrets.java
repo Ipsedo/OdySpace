@@ -87,7 +87,7 @@ public class TestTurrets implements Level {
             }
             moy /= (triangles.length / 3f);
 
-            Turret tmp = new Turret(this.context, new float[]{x, moy + 1, z}, FireType.SIMPLE_FIRE);
+            Turret tmp = new Turret(this.context, new float[]{x, moy + 1f, z}, FireType.SIMPLE_FIRE);
             tmp.move(this.ship);
             tmp.makeExplosion(this.context);
             this.turrets.add(tmp);
@@ -163,7 +163,7 @@ public class TestTurrets implements Level {
         ArrayList<Item> ennemi = new ArrayList<>();
         ennemi.addAll(this.rocketsTurret);
         ennemi.addAll(this.turrets);
-        //ennemi.add(this.noiseMap);
+        ennemi.add(this.noiseMap);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
     }

@@ -54,7 +54,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         this.mModelMatrix = new float[16];
         Matrix.setIdentityM(this.mModelMatrix, 0);
         this.scale = scale;
-        this.radius = this.scale;
+        this.radius = this.scale * 2f;
 
         this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
     }
@@ -71,7 +71,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         this.mModelMatrix = new float[16];
         Matrix.setIdentityM(this.mModelMatrix, 0);
         this.scale = scale;
-        this.radius = this.scale;
+        this.radius = this.scale * 2f;
     }
 
     public boolean isAlive() {
@@ -104,7 +104,10 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     @Override
     public int getDamage() {
-        return this.damage;
+        if(this.isAlive()) {
+            return this.damage;
+        }
+        return 0;
     }
 
     @Override

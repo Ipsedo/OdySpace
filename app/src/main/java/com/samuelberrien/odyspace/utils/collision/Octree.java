@@ -18,8 +18,8 @@ public class Octree {
 
     private Octree father;
 
-    private List<? extends Item> amis;
-    private List<? extends Item> ennemis;
+    private List<Item> amis;
+    private List<Item> ennemis;
 
     private float limitSize;
 
@@ -41,10 +41,10 @@ public class Octree {
             futurAmis[i] = new ArrayList<>();
             futurEnnemis[i] = new ArrayList<>();
 
-            for (/*int j = this.amis.size() - 1; j >= 0; j--*/Item ami : this.amis)
+            for (Item ami : this.amis)
                 if (ami.isInside(levelLimitsSons[i]))
                     futurAmis[i].add(ami);
-            for (/*int j = this.ennemis.size() - 1; j >= 0; j--*/Item ennemi : this.ennemis)
+            for (Item ennemi : this.ennemis)
                 if (ennemi.isInside(levelLimitsSons[i]))
                     futurEnnemis[i].add(ennemi);
 
@@ -55,32 +55,22 @@ public class Octree {
     }
 
     private void computeCollision() {
-        /*for (int i = this.ennemis.size() - 1; i >= 0; i--)
-            for (int j = this.amis.size() - 1; j >= 0; j--) {
-                if (this.ennemis.get(i).isCollided(this.amis.get(j))) {
-                    this.ennemis.get(i).decrementLife(this.amis.get(j).getDamage());
-                    this.amis.get(j).decrementLife(this.ennemis.get(i).getDamage());
-                }
-            }
-        */
-        for(Item ami : this.amis)
-            for(Item ennemi : this.ennemis)
-                if(ami.isCollided(ennemi)) {
+        for (Item ami : this.amis)
+            for (Item ennemi : this.ennemis)
+                if (ami.isCollided(ennemi)) {
                     ami.decrementLife(ennemi.getDamage());
                     ennemi.decrementLife(ami.getDamage());
                 }
     }
 
     public void computeOctree() {
-        if (this.isLeaf()) {
+        if (this.isLeaf())
             this.computeCollision();
-        } else {
-            for (Octree sb : this.makeSons()) {
+        else
+            for (Octree sb : this.makeSons())
                 if (!sb.containsNoCollision()) {
                     sb.computeOctree();
                 }
-            }
-        }
     }
 
     private boolean isLeaf() {
