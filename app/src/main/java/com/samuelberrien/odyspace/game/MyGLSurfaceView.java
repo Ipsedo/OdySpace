@@ -37,6 +37,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private UpdateThread updateThread;
     private RemoveThread removeThread;
     private EndGameThread endGameThread;
+    private boolean threadRunning;
 
     /**
      * @param context
@@ -53,6 +54,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.controls = new Controls(this.context);
 
         this.currentLevel = this.getCurrentLevel(levelID);
+
+        this.threadRunning = false;
 
         this.renderer = new MyGLRenderer(this.context, this, this.currentLevel, this.joystick, this.controls);
         this.setRenderer(this.renderer);
@@ -85,28 +88,34 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
     private void initThreads() {
-        this.collisionThread = new CollisionThread(this.currentLevel);
-        this.updateThread = new UpdateThread(this.currentLevel);
-        this.removeThread = new RemoveThread(this.currentLevel);
-        this.endGameThread = new EndGameThread(this.currentLevel, this.levelActivity);
-        this.collisionThread.start();
-        this.updateThread.start();
-        this.removeThread.start();
-        this.endGameThread.start();
+        if(!this.threadRunning) {
+            this.collisionThread = new CollisionThread(this.currentLevel);
+            this.updateThread = new UpdateThread(this.currentLevel);
+            this.removeThread = new RemoveThread(this.currentLevel);
+            this.endGameThread = new EndGameThread(this.currentLevel, this.levelActivity);
+            this.collisionThread.start();
+            this.updateThread.start();
+            this.removeThread.start();
+            this.endGameThread.start();
+            this.threadRunning = true;
+        }
     }
 
     private void killThread() {
-        this.collisionThread.setCanceled(true);
-        this.updateThread.setCanceled(true);
-        this.removeThread.setCanceled(true);
-        this.endGameThread.setCanceled(true);
-        try {
-            this.collisionThread.join();
-            this.updateThread.join();
-            this.removeThread.join();
-            this.endGameThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(this.threadRunning) {
+            this.collisionThread.setCanceled(true);
+            this.updateThread.setCanceled(true);
+            this.removeThread.setCanceled(true);
+            this.endGameThread.setCanceled(true);
+            try {
+                this.collisionThread.join();
+                this.updateThread.join();
+                this.removeThread.join();
+                this.endGameThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.threadRunning = false;
         }
     }
 
@@ -176,5 +185,17 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.initThreads();
+    }
+
+    @Override
+    public void onPause() {
+        this.killThread();
+        super.onPause();
     }
 }

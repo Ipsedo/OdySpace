@@ -39,7 +39,7 @@ public class TestTurrets implements Level {
     private Ship ship;
 
     private Box levelLimits;
-    private Map noiseMap;
+    private NoiseMap noiseMap;
     private CubeMap cubeMap;
     private List<BaseItem> rocketsShip;
     private int nbTurret = 40;
@@ -68,6 +68,7 @@ public class TestTurrets implements Level {
         this.noiseMap.update();
         this.levelLimits = new Box(-levelLimitSize / 2f, limitDown - 0.03f * levelLimitSize, - levelLimitSize / 2f, levelLimitSize, levelLimitSize / 2f, levelLimitSize);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_2/");
+        this.cubeMap.update();
 
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsTurret = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -104,7 +105,7 @@ public class TestTurrets implements Level {
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        this.cubeMap.draw(mProjectionMatrix, mViewMatrix);
+        this.cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         ArrayList<BaseItem> tmp = new ArrayList<>();
         tmp.addAll(this.rocketsShip);
         for (BaseItem r : tmp)
@@ -143,7 +144,7 @@ public class TestTurrets implements Level {
         tmpArr.clear();
         tmpArr.addAll(this.turrets);
         for (BaseItem t : tmpArr) {
-            t.move();
+            ((Turret) t).move(this.ship);
             ((Turret) t).fire(this.rocketsTurret, this.ship);
         }
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
@@ -161,8 +162,8 @@ public class TestTurrets implements Level {
         ami.add(this.ship);
         ArrayList<Item> ennemi = new ArrayList<>();
         ennemi.addAll(this.rocketsTurret);
-        ennemi.add(this.noiseMap);
         ennemi.addAll(this.turrets);
+        //ennemi.add(this.noiseMap);
         Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
         octree.computeOctree();
     }

@@ -38,7 +38,7 @@ public class TestBossThread implements Level {
     private Box levelLimits;
     //private HeightMap heightMap;
     private CubeMap cubeMap;
-    private Map noiseMap;
+    private NoiseMap noiseMap;
     private Boss boss;
     private List<BaseItem> rocketsShip;
     private List<BaseItem> rocketsBoss;
@@ -59,6 +59,7 @@ public class TestBossThread implements Level {
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new Box(-levelLimitSize / 2f, limitDown - 0.02f * levelLimitSize, - levelLimitSize / 2f, levelLimitSize, levelLimitSize / 2f, levelLimitSize);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
+        this.cubeMap.update();
         this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, BossMoveType.NAIF);
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -87,7 +88,7 @@ public class TestBossThread implements Level {
         this.boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        this.cubeMap.draw(mProjectionMatrix, mViewMatrix);
+        this.cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
     }
 

@@ -9,7 +9,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public interface Map extends Item {
+public interface Map {
 
     float[] getRestreintArea(float[] position);
 

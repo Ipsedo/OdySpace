@@ -16,40 +16,35 @@ import com.samuelberrien.odyspace.utils.game.Level;
 public class EndGameThread extends CancelableThread {
 
     private LevelActivity levelActivity;
-    private long fstTime;
-    private boolean needToStartCounter;
+    private boolean resultSetted;
 
     public EndGameThread(Level level, LevelActivity levelActivity) {
         super("EndGameThread", level);
         this.levelActivity = levelActivity;
-        this.fstTime = System.currentTimeMillis();
-        this.needToStartCounter = true;
+        this.resultSetted = false;
     }
 
     @Override
     public void work() {
-        if (super.level.isDead()) {
+        if (!this.resultSetted && super.level.isDead()) {
             Intent resultIntent = new Intent();
             resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(0));
             resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(super.level.getScore()));
             this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-            if(this.needToStartCounter) {
-                this.needToStartCounter = false;
-                this.fstTime = System.currentTimeMillis();
-            }
         }
-        if (super.level.isWinner()) {
+        if (!this.resultSetted && super.level.isWinner()) {
             Intent resultIntent = new Intent();
             resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(1));
             resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(super.level.getScore()));
             this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-            if(this.needToStartCounter) {
-                this.needToStartCounter = false;
-                this.fstTime = System.currentTimeMillis();
-            }
         }
-        if((super.level.isDead() || super.level.isWinner()) && System.currentTimeMillis() - this.fstTime > 1000L ) {
-            this.levelActivity.finish();
+        if(!this.resultSetted && (super.level.isDead() || super.level.isWinner())) {
+            this.resultSetted = true;
+            new Thread("StopGameThread"){
+                public void run(){
+                    EndGameThread.this.levelActivity.finish();
+                }
+            }.start();
         }
         try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);

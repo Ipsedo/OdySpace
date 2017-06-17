@@ -26,6 +26,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
     }
 
     protected int life;
+    private int damage;
 
     protected float[] mPosition;
     protected float[] mSpeed;
@@ -35,7 +36,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     protected float[] mModelMatrix;
 
-    protected float radius;
+    private float radius;
 
     protected float scale;
 
@@ -44,6 +45,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
     public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
         this.life = life;
+        this.damage = this.life;
         this.mPosition = mPosition;
         this.mSpeed = mSpeed;
         this.mAcceleration = mAcceleration;
@@ -60,6 +62,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
     public BaseItem(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(objModelMtl);
         this.life = life;
+        this.damage = this.life;
         this.mPosition = mPosition;
         this.mSpeed = mSpeed;
         this.mAcceleration = mAcceleration;
@@ -81,12 +84,16 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     @Override
     public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
-        return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), triangleArray.clone(), modelMatrix.clone());
+        if(this instanceof Turret)
+            System.out.println("COLLISION DETECTION BASEITEM");
+        return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), triangleArray, modelMatrix);
     }
 
     @Override
     public boolean isCollided(Item other) {
-        return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone());
+        if(this instanceof Turret)
+            System.out.println("COLLISION DETECTION BASEITEM");
+        return other.collideTest(super.allCoords, this.mModelMatrix.clone());
     }
 
     @Override
@@ -97,7 +104,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     @Override
     public int getDamage() {
-        return this.life;
+        return this.damage;
     }
 
     @Override

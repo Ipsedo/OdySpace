@@ -21,7 +21,7 @@ import java.nio.FloatBuffer;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class HeightMap implements Map {
+public class HeightMap implements Item, Map {
 
     private final int NBSLICES = 30;
     private final int NBSTRIPS = 30;

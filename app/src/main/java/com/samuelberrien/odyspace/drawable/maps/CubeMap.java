@@ -21,7 +21,7 @@ import java.nio.FloatBuffer;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class CubeMap {
+public class CubeMap implements Map{
 
     private Context context;
 
@@ -80,9 +80,12 @@ public class CubeMap {
 
     private FloatBuffer vertexBuffer;
 
+    private float[] mModelMatrix;
+
     public CubeMap(Context context, float levelLimits, String assetsPathName) {
         this.context = context;
         this.levelLimits = levelLimits;
+        this.mModelMatrix = new float[16];
 
         this.makeProgram();
         this.bind();
@@ -165,13 +168,12 @@ public class CubeMap {
                 .position(0);
     }
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix) {
-        float[] mModelMatrix = new float[16];
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.scaleM(mModelMatrix, 0, this.levelLimits, this.levelLimits, this.levelLimits);
+    @Override
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
         float[] mvpMatrix = new float[16];
         Matrix.multiplyMM(mvpMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        Matrix.multiplyMM(mvpMatrix, 0, mvpMatrix.clone(), 0, mModelMatrix, 0);
+        Matrix.multiplyMM(mvpMatrix, 0, mvpMatrix.clone(), 0, this.mModelMatrix, 0);
+
         GLES20.glUseProgram(this.mProgram);
 
         GLES20.glUniformMatrix4fv(this.mvpMatrixHandle, 1, false, mvpMatrix, 0);
@@ -187,5 +189,23 @@ public class CubeMap {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.pointsCubeMap.length / 3);
 
         GLES20.glDisableVertexAttribArray(this.texCoordHandle);
+    }
+
+    @Override
+    public float[] getRestreintArea(float[] position) {
+        return new float[0];
+    }
+
+    @Override
+    public float[] passToModelMatrix(float[] triangles) {
+        return new float[0];
+    }
+
+    @Override
+    public void update() {
+        float[] mModelMatrix = new float[16];
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.scaleM(mModelMatrix, 0, this.levelLimits, this.levelLimits, this.levelLimits);
+        this.mModelMatrix = mModelMatrix.clone();
     }
 }

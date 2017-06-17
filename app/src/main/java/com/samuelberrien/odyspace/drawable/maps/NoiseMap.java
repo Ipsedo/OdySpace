@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class NoiseMap implements Map {
+public class NoiseMap implements Item, Map {
 
     private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
@@ -278,7 +278,6 @@ public class NoiseMap implements Map {
         Matrix.multiplyMM(mvMatrix, 0, mViewMatrix, 0, this.mModelMatrix, 0);
         Matrix.multiplyMM(mvpMatrix, 0, mProjectionMatrix, 0, mvMatrix, 0);
 
-
         GLES20.glUseProgram(mProgram);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.mPositionsBufferId);
@@ -310,12 +309,12 @@ public class NoiseMap implements Map {
 
     @Override
     public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
-        return this.areCollided(this.points, this.mModelMatrix, triangleArray, modelMatrix);
+        return this.areCollided(this.points.clone(), this.mModelMatrix.clone(), triangleArray, modelMatrix);
     }
 
     @Override
     public boolean isCollided(Item other) {
-        return other.collideTest(this.points, this.mModelMatrix);
+        return other.collideTest(this.points.clone(), this.mModelMatrix.clone());
     }
 
     @Override
