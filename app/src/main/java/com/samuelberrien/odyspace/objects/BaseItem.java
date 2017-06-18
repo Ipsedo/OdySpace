@@ -84,15 +84,11 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     @Override
     public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
-        if(this instanceof Turret)
-            System.out.println("COLLISION DETECTION BASEITEM");
         return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), triangleArray, modelMatrix);
     }
 
     @Override
     public boolean isCollided(Item other) {
-        if(this instanceof Turret)
-            System.out.println("COLLISION DETECTION BASEITEM");
         return other.collideTest(super.allCoords, this.mModelMatrix.clone());
     }
 
@@ -104,10 +100,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     @Override
     public int getDamage() {
-        if(this.isAlive()) {
-            return this.damage;
-        }
-        return 0;
+        return this.life;
     }
 
     @Override

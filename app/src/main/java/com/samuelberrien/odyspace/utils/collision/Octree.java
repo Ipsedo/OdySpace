@@ -58,8 +58,9 @@ public class Octree {
         for (Item ami : this.amis)
             for (Item ennemi : this.ennemis)
                 if (ami.isCollided(ennemi)) {
+                    int tmp = ami.getDamage();
                     ami.decrementLife(ennemi.getDamage());
-                    ennemi.decrementLife(ami.getDamage());
+                    ennemi.decrementLife(tmp);
                 }
     }
 
@@ -68,9 +69,8 @@ public class Octree {
             this.computeCollision();
         else
             for (Octree sb : this.makeSons())
-                if (!sb.containsNoCollision()) {
+                if (!sb.containsNoCollision())
                     sb.computeOctree();
-                }
     }
 
     private boolean isLeaf() {

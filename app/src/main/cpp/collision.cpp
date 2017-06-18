@@ -147,8 +147,6 @@ int tri_tri_overlap_test_2d(double p1[2], double q1[2], double r1[2],
 
 
 
-
-
 /* some 3D macros */
 
 #define CROSS(dest, v1, v2)                       \

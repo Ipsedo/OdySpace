@@ -38,7 +38,6 @@ public abstract class CancelableThread extends Thread {
         }
         while (!this.isCanceled) {
             this.work();
-            System.out.println("Thread : " + this);
         }
     }
 }

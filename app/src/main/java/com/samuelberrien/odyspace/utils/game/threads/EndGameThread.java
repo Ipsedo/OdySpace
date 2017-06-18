@@ -48,13 +48,6 @@ public class EndGameThread extends CancelableThread {
             };
             tmp.setPriority(Thread.MAX_PRIORITY);
             tmp.start();
-            /*new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    EndGameThread.this.levelActivity.finish();
-                }
-            }, 0L);*/
         }
         try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
