@@ -16,16 +16,13 @@ public class Octree {
 
     private Box boxes;
 
-    private Octree father;
-
     private List<Item> amis;
     private List<Item> ennemis;
 
     private float limitSize;
 
-    public Octree(Box boxes, Octree father, List<Item> amis, List<Item> ennemis, float limitSize) {
+    public Octree(Box boxes, List<Item> amis, List<Item> ennemis, float limitSize) {
         this.boxes = boxes;
-        this.father = father;
         this.amis = amis;
         this.ennemis = ennemis;
         this.limitSize = limitSize;
@@ -37,7 +34,7 @@ public class Octree {
         ArrayList<Item>[] futurAmis = new ArrayList[8];
         ArrayList<Item>[] futurEnnemis = new ArrayList[8];
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < sons.length; i++) {
             futurAmis[i] = new ArrayList<>();
             futurEnnemis[i] = new ArrayList<>();
 
@@ -48,7 +45,7 @@ public class Octree {
                 if (ennemi.isInside(levelLimitsSons[i]))
                     futurEnnemis[i].add(ennemi);
 
-            sons[i] = new Octree(levelLimitsSons[i], this, futurAmis[i], futurEnnemis[i], this.limitSize);
+            sons[i] = new Octree(levelLimitsSons[i], futurAmis[i], futurEnnemis[i], this.limitSize);
         }
 
         return sons;

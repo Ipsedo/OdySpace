@@ -63,7 +63,7 @@ public class TestThread implements Level {
         this.ship = ship;
         this.ship.move(joystick, controls);
 
-        this.currLevelProgression = new ProgressBar(this.context, 49, -1f + 0.15f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
+        this.currLevelProgression = new ProgressBar(this.context, 50, -1f + 0.15f, 0.9f, new float[]{38f / 255f, 166f / 255f, 91f / 255f, 1f});
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
@@ -148,8 +148,8 @@ public class TestThread implements Level {
         ami.add(this.ship);
         ArrayList<Item> ennemi = new ArrayList<>();
         ennemi.addAll(this.icosahedrons);
-        ennemi.add(this.noiseMap);
-        Octree octree = new Octree(this.levelLimits, null, ami, ennemi, 1f);
+        //ennemi.add(this.noiseMap);
+        Octree octree = new Octree(this.levelLimits, ami, ennemi, 1f);
         octree.computeOctree();
     }
 

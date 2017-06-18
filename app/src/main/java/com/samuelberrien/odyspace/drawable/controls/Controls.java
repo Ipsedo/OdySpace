@@ -6,6 +6,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.nio.ByteBuffer;
@@ -48,7 +49,7 @@ public class Controls {
     private int mMVPMatrixHandle;
     private int mProgram;
 
-    float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
+    float color[] = Color.ControlsColor;
 
     public Controls(Context context) {
         this.isBoostVisible = false;

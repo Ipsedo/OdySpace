@@ -46,15 +46,18 @@ public class Box {
         float a = this.x + this.sizeX / 2f;
         float b = this.y + this.sizeY / 2f;
         float c = this.z + this.sizeZ / 2f;
-        sons[0] = new Box(this.x, this.y, this.z, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
-        sons[1] = new Box(a, this.y, this.z, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
-        sons[2] = new Box(a, this.y, c, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
-        sons[3] = new Box(this.x, this.y, c, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
+        float newSizeX = this.sizeX / 2f;
+        float newSizeY = this.sizeY / 2f;
+        float newSizeZ = this.sizeZ / 2f;
+        sons[0] = new Box(this.x, this.y, this.z, newSizeX, newSizeY, newSizeZ);
+        sons[1] = new Box(a, this.y, this.z, newSizeX, newSizeY, newSizeZ);
+        sons[2] = new Box(a, this.y, c, newSizeX, newSizeY, newSizeZ);
+        sons[3] = new Box(this.x, this.y, c, newSizeX, newSizeY, newSizeZ);
 
-        sons[4] = new Box(this.x, b, this.z, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
-        sons[5] = new Box(a, b, this.z, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
-        sons[6] = new Box(a, b, c, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
-        sons[7] = new Box(this.x, b, c, this.sizeX / 2f, this.sizeY / 2f, this.sizeZ / 2f);
+        sons[4] = new Box(this.x, b, this.z, newSizeX, newSizeY, newSizeZ);
+        sons[5] = new Box(a, b, this.z, newSizeX, newSizeY, newSizeZ);
+        sons[6] = new Box(a, b, c, newSizeX, newSizeY, newSizeZ);
+        sons[7] = new Box(this.x, b, c, newSizeX, newSizeY, newSizeZ);
         return sons;
     }
 

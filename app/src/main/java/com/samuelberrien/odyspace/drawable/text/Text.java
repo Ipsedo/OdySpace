@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.utils.graphics.Color;
 
 /**
  * Created by samuel on 01/05/17.
@@ -17,7 +18,7 @@ public class Text extends ObjModel {
     private float scale;
 
     public Text(Context context, String objFileName, float scale) {
-        super(context, objFileName, 1f, 0f, 0f, 1f, 0f, 0f);
+        super(context, objFileName, Color.TextsColor[0], Color.TextsColor[1], Color.TextsColor[2], 1f, 0f, 0f);
         this.scale = scale;
     }
 

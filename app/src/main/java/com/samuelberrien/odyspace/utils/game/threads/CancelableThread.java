@@ -37,7 +37,14 @@ public abstract class CancelableThread extends Thread {
             }
         }
         while (!this.isCanceled) {
+            long t1 = System.currentTimeMillis();
             this.work();
+            try {
+                long waitTime = CancelableThread.TIME_TO_WAIT - (System.currentTimeMillis() - t1);
+                Thread.sleep(waitTime >= 0 ? waitTime : 0);
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.nio.ByteBuffer;
@@ -30,6 +31,7 @@ public class ProgressBar {
     private float y;
 
     private float[] color;
+    private float[] containerColor = Color.ControlsColor;
 
     private int mPositionHandle;
     private int mColorHandle;
@@ -132,7 +134,7 @@ public class ProgressBar {
 
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.container);
-        GLES20.glUniform4fv(mColorHandle, 1, new float[]{0.2f, 0.709803922f, 0.898039216f, 1.0f}, 0);
+        GLES20.glUniform4fv(mColorHandle, 1, this.containerColor, 0);
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
         GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, 4);
 

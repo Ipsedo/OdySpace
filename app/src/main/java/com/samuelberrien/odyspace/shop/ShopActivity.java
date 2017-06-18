@@ -99,7 +99,6 @@ public class ShopActivity extends AppCompatActivity {
     }
 
     public void buy() {
-        System.out.println("BIGPB");
         SharedPreferences.Editor editor = this.savedShop.edit();
 
         int defaultMoney = getResources().getInteger(R.integer.saved_init_money);

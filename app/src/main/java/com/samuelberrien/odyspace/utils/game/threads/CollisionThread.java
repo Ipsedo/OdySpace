@@ -18,10 +18,10 @@ public class CollisionThread extends CancelableThread {
     @Override
     public void work() {
         super.level.collide();
-        try {
+        /*try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

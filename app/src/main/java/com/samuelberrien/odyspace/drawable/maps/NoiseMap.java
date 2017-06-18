@@ -105,8 +105,6 @@ public class NoiseMap implements Item, Map {
                 tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) * this.coeffHeight;
                 tmpPoints[j * 2 * 3 + 2] = (float) i / (float) SIZE;
 
-                System.out.println(tmpPoints[j * 2 * 3 + 1]);
-
                 tmpPoints[(j * 2 + 1) * 3] = (float) j / (float) SIZE;
                 tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) * this.coeffHeight;
                 tmpPoints[(j * 2 + 1) * 3 + 2] = ((float) i + 1) / (float) SIZE;

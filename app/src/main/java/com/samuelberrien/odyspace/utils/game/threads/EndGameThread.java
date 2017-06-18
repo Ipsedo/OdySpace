@@ -49,10 +49,10 @@ public class EndGameThread extends CancelableThread {
             tmp.setPriority(Thread.MAX_PRIORITY);
             tmp.start();
         }
-        try {
+        /*try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
