@@ -2,7 +2,8 @@
 // Created by samuel on 29/04/17.
 //
 
-//#define GLM_FORCE_ALIGNED
+#define GLM_FORCE_ALIGNED
+#define GLM_FORCE_PURE
 //#define GLM_FORCE_SSE2
 
 #include <jni.h>
