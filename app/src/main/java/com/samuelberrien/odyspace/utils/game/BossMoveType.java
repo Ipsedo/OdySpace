@@ -64,7 +64,6 @@ public enum BossMoveType {
                 break;
             case FIRST:
                 if (this.counter == this.MAX_COUNT / 2) {
-
                     bossSpeed[0] = this.maxSpeed * vecToShip[0];
                     bossSpeed[1] = this.maxSpeed * vecToShip[1];
                     bossSpeed[2] = this.maxSpeed * vecToShip[2];

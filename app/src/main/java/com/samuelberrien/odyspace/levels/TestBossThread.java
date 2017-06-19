@@ -1,6 +1,7 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
+import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Forest;
@@ -14,14 +15,17 @@ import com.samuelberrien.odyspace.objects.Boss;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
+import com.samuelberrien.odyspace.utils.game.BossMove;
 import com.samuelberrien.odyspace.utils.game.BossMoveType;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by samuel on 09/05/17.
@@ -49,9 +53,9 @@ public class TestBossThread implements Level {
     private Forest forest;
 
     @Override
-    public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
+    public void init(Context context, Ship currShip, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
-        this.ship = ship;
+        this.ship = currShip;
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
         this.noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
@@ -60,7 +64,51 @@ public class TestBossThread implements Level {
         this.levelLimits = new Box(-levelLimitSize / 2f, limitDown - 0.02f * levelLimitSize, - levelLimitSize / 2f, levelLimitSize, levelLimitSize / 2f, levelLimitSize);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
         this.cubeMap.update();
-        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, BossMoveType.NAIF);
+
+        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 10, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, new BossMove() {
+            private final int MAX_COUNT = 200;
+            private int counter;
+            private float phi = 0f;
+            private float theta = 0f;
+            private Random rand = new Random(System.currentTimeMillis());
+            @Override
+            public float[] getModelMatrix(float[] mPosition, float[] mSpeed, float mScale) {
+                float[] vecToShip = Vector.normalize3f(boss.vector3fTo(ship));
+                float[] originaleVec = new float[]{0f, 0f, 1f};
+                float angle;
+
+                if (this.counter == this.MAX_COUNT / 2) {
+                    mSpeed[0] = 0.1f * vecToShip[0];
+                    mSpeed[1] = 0.1f * vecToShip[1];
+                    mSpeed[2] = 0.1f * vecToShip[2];
+                } else {
+                    this.phi += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
+                    this.theta += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
+                    mSpeed[0] = 0.1f * (float) (Math.cos(phi) * Math.sin(theta));
+                    mSpeed[1] = 0.1f * (float) Math.sin(phi);
+                    mSpeed[2] = 0.1f * (float) (Math.cos(phi) * Math.cos(theta));
+                }
+
+                mPosition[0] += mSpeed[0];
+                mPosition[1] += mSpeed[1];
+                mPosition[2] += mSpeed[2];
+
+                float[] mModelMatrix = new float[16];
+                Matrix.setIdentityM(mModelMatrix, 0);
+                Matrix.translateM(mModelMatrix, 0, mPosition[0], mPosition[1], mPosition[2]);
+
+                angle = (float) Math.toDegrees(Math.acos(Vector.dot3f(vecToShip, originaleVec)));
+                float[] mRotationMatrix = new float[16];
+                Matrix.setRotateM(mRotationMatrix, 0, angle, 0f, 1f, 0f);
+                Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, mRotationMatrix, 0);
+                Matrix.scaleM(mModelMatrix, 0, mScale, mScale, mScale);
+
+                this.counter = (this.counter >= this.MAX_COUNT ? 0 : this.counter + 1);
+
+                return mModelMatrix;
+            }
+        });
+
         this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.joystick = joystick;
@@ -81,7 +129,7 @@ public class TestBossThread implements Level {
         tmp.addAll(this.rocketsShip);
         for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        tmp = new ArrayList<>();
+        tmp.clear();
         tmp.addAll(this.rocketsBoss);
         for (BaseItem r : tmp)
             r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
@@ -107,11 +155,11 @@ public class TestBossThread implements Level {
         tmpArr.addAll(this.rocketsShip);
         for (BaseItem r : tmpArr)
             r.move();
-        tmpArr = new ArrayList<>();
+        tmpArr.clear();
         tmpArr.addAll(this.rocketsBoss);
         for (BaseItem r : tmpArr)
             r.move();
-        this.boss.move(this.ship);
+        this.boss.move();
         this.boss.fire(this.rocketsBoss, this.ship);
         this.compass.update(this.ship, this.boss);
     }

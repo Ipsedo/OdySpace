@@ -6,9 +6,8 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.utils.game.BossMoveType;
+import com.samuelberrien.odyspace.utils.game.BossMove;
 import com.samuelberrien.odyspace.utils.game.FireType;
-import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;
@@ -29,12 +28,12 @@ public class Boss extends BaseItem {
 
     private ObjModelMtlVBO rocket;
     private FireType fireType;
-    private BossMoveType bossMoveType;
+    private BossMove bossMoveType;
 
     private int colorCounter;
     private boolean changingColor;
 
-    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, float scale, FireType fireType, BossMoveType bossMoveType) {
+    public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, float scale, FireType fireType, BossMove bossMoveType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
         this.context = context;
         this.counter = 0;
@@ -51,8 +50,17 @@ public class Boss extends BaseItem {
         return Integer.MAX_VALUE - 1;
     }
 
+    @Override
+    public void decrementLife(int minus) {
+        if (minus > 0 && !this.changingColor) {
+            this.changingColor = true;
+            super.changeColor();
+        }
+        super.life = super.life - minus >= 0 ? super.life - minus : 0;
+    }
+
     private void count() {
-        this.counter = (this.counter >= this.MAX_COUNT ? 0 : this.counter + 1);
+        this.counter = (this.counter > this.MAX_COUNT ? 0 : this.counter + 1);
         if (this.changingColor && this.colorCounter > 75) {
             super.changeColor();
             this.changingColor = false;
@@ -62,20 +70,7 @@ public class Boss extends BaseItem {
         }
     }
 
-    @Override
-    public boolean isCollided(Item other) {
-        if (super.isCollided(other)) {
-            if (!this.changingColor) {
-                super.changeColor();
-            }
-            this.colorCounter = 0;
-            this.changingColor = true;
-            return true;
-        }
-        return false;
-    }
 
-    public void move(Ship ship) {
         /*if (this.counter == this.MAX_COUNT / 2) {
             float[] shipBossVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0], ship.mPosition[0] - super.mPosition[0]});
             super.mSpeed[0] = this.maxSpeed * shipBossVec[0];
@@ -104,10 +99,7 @@ public class Boss extends BaseItem {
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
         Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);*/
 
-        super.mModelMatrix = this.bossMoveType.move(super.mPosition, ship.mPosition, super.mSpeed, super.mRotationMatrix, super.scale);
 
-        this.count();
-    }
 
     public void fire(List<BaseItem> rockets, Ship ship) {
         if (this.counter % 101 == 0) {
@@ -123,6 +115,7 @@ public class Boss extends BaseItem {
 
     @Override
     public void move() {
-
+        super.mModelMatrix = this.bossMoveType.getModelMatrix(super.mPosition, super.mSpeed, super.scale);
+        this.count();
     }
 }

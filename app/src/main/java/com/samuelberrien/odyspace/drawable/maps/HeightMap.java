@@ -207,4 +207,9 @@ public class HeightMap implements Item, Map {
     public void decrementLife(int minus) {
 
     }
+
+    @Override
+    public float[] getPosition() {
+        return new float[]{-0.5f * this.mScale, this.limitHeight, -0.5f * this.mScale};
+    }
 }

@@ -307,12 +307,14 @@ public class NoiseMap implements Item, Map {
 
     @Override
     public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
-        return this.areCollided(this.points.clone(), this.mModelMatrix.clone(), triangleArray, modelMatrix);
+        float[] position = new float[]{0f, 0f, 0f, 1f};
+        Matrix.multiplyMV(position, 0, modelMatrix, 0, position.clone(), 0);
+        return this.areCollided(this.getRestreintArea(new float[]{position[0], position[1], position[2]}), this.mModelMatrix.clone(), triangleArray, modelMatrix);
     }
 
     @Override
     public boolean isCollided(Item other) {
-        return other.collideTest(this.points.clone(), this.mModelMatrix.clone());
+        return other.collideTest(this.getRestreintArea(other.getPosition()), this.mModelMatrix.clone());
     }
 
     @Override
@@ -329,5 +331,10 @@ public class NoiseMap implements Item, Map {
     @Override
     public void decrementLife(int minus) {
 
+    }
+
+    @Override
+    public float[] getPosition() {
+        return new float[]{-0.5f * this.scale, this.limitHeight, -0.5f * this.scale};
     }
 }

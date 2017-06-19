@@ -32,27 +32,29 @@ public class EndGameThread extends CancelableThread {
             resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(0));
             resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(super.level.getScore()));
             this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-        }
-        if (!this.resultSetted && super.level.isWinner()) {
+            this.finishGame();
+        } else if (!this.resultSetted && super.level.isWinner()) {
             Intent resultIntent = new Intent();
             resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(1));
             resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(super.level.getScore()));
             this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-        }
-        if (!this.resultSetted && (super.level.isDead() || super.level.isWinner())) {
-            this.resultSetted = true;
-            Thread tmp = new Thread("StopGameThread") {
-                public void run() {
-                    EndGameThread.this.levelActivity.finish();
-                }
-            };
-            tmp.setPriority(Thread.MAX_PRIORITY);
-            tmp.start();
+            this.finishGame();
         }
         /*try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
+    }
+
+    private void finishGame() {
+        this.resultSetted = true;
+        Thread tmp = new Thread("StopGameThread") {
+            public void run() {
+                EndGameThread.this.levelActivity.finish();
+            }
+        };
+        tmp.setPriority(Thread.MAX_PRIORITY);
+        tmp.start();
     }
 }

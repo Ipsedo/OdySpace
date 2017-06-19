@@ -110,6 +110,11 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         this.life = this.life - minus >= 0 ? this.life - minus : 0;
     }
 
+    @Override
+    public float[] getPosition() {
+        return this.mPosition.clone();
+    }
+
     public float[] vector3fTo(BaseItem to) {
         return new float[]{to.mPosition[0] - this.mPosition[0], to.mPosition[1] - this.mPosition[1], to.mPosition[2] - this.mPosition[2]};
     }

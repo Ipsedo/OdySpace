@@ -33,8 +33,7 @@ public class Explosion {
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
         this.particule.setColor(mDiffColor);
         for (int i = 0; i < 10; i++) {
-            Particule tmp = new Particule(rand, mPosition);
-            this.particules.add(tmp);
+            this.particules.add(new Particule(rand, mPosition));
         }
     }
 
@@ -65,8 +64,6 @@ public class Explosion {
     }
 
     private class Particule {
-
-
 
         private float[] mPosition;
         private float[] mSpeed;

@@ -20,4 +20,6 @@ public interface Item {
     int getDamage();
 
     void decrementLife(int minus);
+
+    float[] getPosition();
 }
