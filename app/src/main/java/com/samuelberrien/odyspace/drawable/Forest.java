@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.utils.maths.Triangle;
 
 import java.util.Random;
 
@@ -40,11 +41,8 @@ public class Forest {
             float z = rand.nextFloat() * areaSize - areaSize * 0.5f;
 
             float[] triangles = map.passToModelMatrix(map.getRestreintArea(new float[]{x, 0f, z}));
-            float moy = 0;
-            for (int j = 0; j < triangles.length; j += 3) {
-                moy += triangles[j + 1];
-            }
-            moy /= (triangles.length / 3f);
+            float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
+            moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
             y = moy;
 

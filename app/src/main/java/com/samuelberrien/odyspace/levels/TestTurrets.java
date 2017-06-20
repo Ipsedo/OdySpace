@@ -18,6 +18,7 @@ import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
+import com.samuelberrien.odyspace.utils.maths.Triangle;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,13 +83,10 @@ public class TestTurrets implements Level {
             float z = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
 
             float[] triangles = this.noiseMap.passToModelMatrix(this.noiseMap.getRestreintArea(new float[]{x, 0f, z}));
-            float moy = 0;
-            for (int j = 0; j < triangles.length; j += 3) {
-                moy += triangles[j + 1];
-            }
-            moy /= (triangles.length / 3f);
+            float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
+            moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
-            Turret tmp = new Turret(this.context, new float[]{x, moy + 1f, z}, FireType.SIMPLE_FIRE);
+            Turret tmp = new Turret(this.context, new float[]{x, moy + 3f, z}, FireType.SIMPLE_FIRE);
             tmp.move(this.ship);
             tmp.makeExplosion(this.context);
             this.turrets.add(tmp);
