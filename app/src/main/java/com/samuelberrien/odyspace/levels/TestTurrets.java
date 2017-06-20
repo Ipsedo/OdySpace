@@ -163,7 +163,7 @@ public class TestTurrets implements Level {
         ArrayList<Item> ennemi = new ArrayList<>();
         ennemi.addAll(this.rocketsTurret);
         ennemi.addAll(this.turrets);
-        //ennemi.add(this.noiseMap);
+        ennemi.add(this.noiseMap);
         Octree octree = new Octree(this.levelLimits, ami, ennemi, 1f);
         octree.computeOctree();
     }

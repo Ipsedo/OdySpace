@@ -26,8 +26,9 @@ public class Box {
         this.sizeZ = sizeZ;
     }
 
+
     public boolean isInside(Box b) {
-        //check the X axis
+        /*//check the X axis
         if (Math.abs(this.x - b.x) < this.sizeX + b.sizeX) {
             //check the Y axis
             if (Math.abs(this.y - b.y) < this.sizeY + b.sizeY) {
@@ -36,9 +37,9 @@ public class Box {
                     return true;
                 }
             }
-        }
+        }*/
 
-        return false;
+        return this.x + this.sizeX > b.x && this.x < b.x + b.sizeX && this.y + this.sizeY > b.y && this.y < b.y + b.sizeY && this.z + this.sizeZ > b.z && this.z < b.z + b.sizeZ;
     }
 
     public Box[] makeSons() {
@@ -63,5 +64,10 @@ public class Box {
 
     public float getSizeAv() {
         return (this.sizeX + this.sizeY + this.sizeZ) / 3f;
+    }
+
+    @Override
+    public String toString() {
+        return "Box : { x = " + this.x + ", y = " + this.y + ", z = " + this.z + "; sX = " + this.sizeX + ", sY = " + this.sizeY + ", sZ = " + this.sizeZ + " }";
     }
 }

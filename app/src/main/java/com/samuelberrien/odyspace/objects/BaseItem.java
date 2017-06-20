@@ -97,7 +97,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
     @Override
     public boolean isInside(Box box) {
         Box baseItemBox = new Box(this.mPosition[0] - this.radius / 2f, this.mPosition[1] - this.radius / 2f, this.mPosition[2] - this.radius / 2f, this.radius, this.radius, this.radius);
-        return box.isInside(baseItemBox);
+        return baseItemBox.isInside(box);
     }
 
     @Override

@@ -101,13 +101,13 @@ public class NoiseMap implements Item, Map {
         for (int i = 0; i < SIZE; i++) {
             float[] tmpPoints = new float[(SIZE + 1) * 2 * 3];
             for (int j = 0; j < SIZE + 1; j++) {
-                tmpPoints[j * 2 * 3] = (float) j / (float) SIZE;
+                tmpPoints[j * 2 * 3] = 2f * (float) j / (float) SIZE - 1f;
                 tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) * this.coeffHeight;
-                tmpPoints[j * 2 * 3 + 2] = (float) i / (float) SIZE;
+                tmpPoints[j * 2 * 3 + 2] = 2f * (float) i / (float) SIZE - 1f;
 
-                tmpPoints[(j * 2 + 1) * 3] = (float) j / (float) SIZE;
+                tmpPoints[(j * 2 + 1) * 3] = 2f * (float) j / (float) SIZE - 1f;
                 tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / this.coeffNoise), (double) j / (double) (SIZE / this.coeffNoise)) * this.coeffHeight;
-                tmpPoints[(j * 2 + 1) * 3 + 2] = ((float) i + 1) / (float) SIZE;
+                tmpPoints[(j * 2 + 1) * 3 + 2] = 2f * ((float) i + 1) / (float) SIZE - 1f;
             }
             for (int j = 0; j < tmpPoints.length / 3 - 2; j += 2) {
 
@@ -229,9 +229,9 @@ public class NoiseMap implements Item, Map {
 
     @Override
     public float[] getRestreintArea(float[] position) {
-        if(position[0] >= -0.5f * this.scale && position[0] <= 0.5f * this.scale && position[2] >= -0.5f * this.scale && position[2] <= 0.5f * this.scale) {
-            float xNorm = position[0] / this.scale + 0.5f;
-            float zNorm = position[2] / this.scale + 0.5f;
+        if(position[0] >= -1f * this.scale && position[0] <= 1f * this.scale && position[2] >= -1f * this.scale && position[2] <= 1f * this.scale) {
+            float xNorm = (position[0] / this.scale + 1f) / 2f;
+            float zNorm = (position[2] / this.scale + 1f) / 2f;
 
             float pas = 1f / (float) SIZE;
 
@@ -267,7 +267,7 @@ public class NoiseMap implements Item, Map {
     public void update() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -0.5f * this.scale, this.limitHeight, -0.5f * this.scale);
+        Matrix.translateM(mModelMatrix, 0, 0f, this.limitHeight, 0f);
         Matrix.scaleM(mModelMatrix, 0, this.scale,  this.scale, this.scale);
 
         this.mModelMatrix = mModelMatrix;
@@ -324,7 +324,7 @@ public class NoiseMap implements Item, Map {
 
     @Override
     public boolean isInside(Box otherBox) {
-        Box box = new Box(-0.5f * this.scale, this.limitHeight - this.coeffHeight * this.scale, -0.5f * this.scale, this.scale, 2f * this.coeffHeight * this.scale, this.scale);
+        Box box = new Box(-this.scale, this.limitHeight - this.coeffHeight * this.scale, -this.scale, this.scale * 2f, 2f * this.coeffHeight * this.scale, this.scale * 2f);
         return box.isInside(otherBox);
     }
 
