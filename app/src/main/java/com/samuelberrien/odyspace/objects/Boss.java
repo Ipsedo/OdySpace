@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.BossMove;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -99,7 +100,9 @@ public class Boss extends BaseItem {
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
         Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);*/
 
-
+    public void updateLifeProgress(ProgressBar progressBar) {
+        progressBar.updateProgress(super.life);
+    }
 
     public void fire(List<BaseItem> rockets, Ship ship) {
         if (this.counter % 101 == 0) {

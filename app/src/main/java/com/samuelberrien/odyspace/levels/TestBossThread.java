@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Forest;
+import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
@@ -20,6 +21,7 @@ import com.samuelberrien.odyspace.utils.game.BossMoveType;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class TestBossThread implements Level {
     private Controls controls;
     private Compass compass;
     private Forest forest;
+    private ProgressBar progressBar;
 
     @Override
     public void init(Context context, Ship currShip, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -65,7 +68,8 @@ public class TestBossThread implements Level {
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
         this.cubeMap.update();
 
-        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 10, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, new BossMove() {
+        this.progressBar = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+        this.boss = new Boss(this.context, "skull.obj", "skull.mtl", 20, new float[]{0f, 0f, 50f}, 3f, FireType.SIMPLE_FIRE, new BossMove() {
             private final int MAX_COUNT = 200;
             private int counter;
             private float phi = 0f;

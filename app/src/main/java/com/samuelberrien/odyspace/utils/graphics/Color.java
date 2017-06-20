@@ -21,4 +21,6 @@ public class Color {
 
     public static float[] ControlsColor = Color.RoyalBlue;
 
+    public static float[] LevelProgressBarColor = {38f / 255f, 166f / 255f, 91f / 255f, 1f};
+
 }
