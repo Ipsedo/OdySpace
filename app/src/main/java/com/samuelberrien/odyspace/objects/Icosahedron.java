@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
 import java.util.List;
@@ -28,6 +29,10 @@ public class Icosahedron extends BaseItem {
 
     public void makeExplosion() {
         this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, 1.5f, 0.05f);
+    }
+
+    public void makeExplosion(ObjModel particule) {
+        this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, 1.5f, 0.05f);
     }
 
     public void addExplosion(List<Explosion> explosions) {

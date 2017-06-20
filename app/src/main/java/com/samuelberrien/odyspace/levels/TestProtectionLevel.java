@@ -11,6 +11,7 @@ import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
@@ -41,6 +42,7 @@ public class TestProtectionLevel implements Level {
     private Ship ship;
     private ObjModelMtlVBO icosahedron;
     private List<BaseItem> icosahedrons;
+    private ObjModel particule;
     private List<Explosion> explosions;
     private List<BaseItem> rockets;
 
@@ -83,6 +85,7 @@ public class TestProtectionLevel implements Level {
         this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
+        this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
         this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 
         this.startTime = System.currentTimeMillis();
@@ -92,6 +95,8 @@ public class TestProtectionLevel implements Level {
         this.currLevelProgression = new ProgressBar(this.context, 1000 * 60 * 2, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
         this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
+
+        this.ship.makeExplosion();
 
         this.isInit = true;
     }
@@ -170,7 +175,7 @@ public class TestProtectionLevel implements Level {
         for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
-                ico.makeExplosion();
+                ico.makeExplosion(this.particule);
                 ico.addExplosion(this.explosions);
                 this.mediaPlayer.start();
                 this.icosahedrons.remove(i);
@@ -179,7 +184,7 @@ public class TestProtectionLevel implements Level {
         }
 
         if(this.rand.nextInt(10) == 1) {
-            Icosahedron tmp = new Icosahedron(this.context, this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, this.rand.nextFloat() * 0.3f * this.levelLimitSize + 50f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.5f - 0.25f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.5f - 0.25f}, this.rand.nextFloat() * 2f + 1f);
+            Icosahedron tmp = new Icosahedron(this.context, this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * levelLimitSize + this.levelLimitSize /4f + this.rand.nextFloat() * this.levelLimitSize / 4.1f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.5f - 0.25f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.5f - 0.25f}, this.rand.nextFloat() * 2f + 1f);
             tmp.move();
             this.icosahedrons.add(tmp);
         }

@@ -60,6 +60,14 @@ public class ShaderLoader {
         GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
 
+        int[] compiled = new int[1];
+
+        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
+
+        if (compiled[0] == 0) {
+            throw new RuntimeException("SHADER NOT COMPILED");
+        }
+
         return shader;
     }
 
@@ -79,7 +87,13 @@ public class ShaderLoader {
         int error;
         if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
             Log.e("Renderer 1D", glOperation + ": glError " + error);
-            throw new RuntimeException(glOperation + ": glError " + error);
+            if(error == GLES20.GL_INVALID_OPERATION) {
+                throw new RuntimeException(glOperation + ": glError GL_INVALID_OPERATION " + error);
+            } else if(error == GLES20.GL_INVALID_VALUE) {
+                throw new RuntimeException(glOperation + ": glError GL_INVALID_VALUE " + error);
+            } else {
+                throw new RuntimeException(glOperation + ": glError " + error);
+            }
         }
     }
 }

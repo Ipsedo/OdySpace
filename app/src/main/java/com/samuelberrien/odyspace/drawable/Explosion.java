@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.nio.FloatBuffer;
@@ -31,6 +32,18 @@ public class Explosion {
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
+        this.particule.setColor(mDiffColor);
+        for (int i = 0; i < 10; i++) {
+            this.particules.add(new Particule(rand, mPosition));
+        }
+    }
+
+    public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, float initSpeed, float limitSpeed) {
+        this.maxSpeed = initSpeed;
+        this.limitSpeed = limitSpeed;
+        this.particules = new ArrayList<>();
+        Random rand = new Random(System.currentTimeMillis());
+        this.particule = particule;
         this.particule.setColor(mDiffColor);
         for (int i = 0; i < 10; i++) {
             this.particules.add(new Particule(rand, mPosition));
@@ -102,6 +115,7 @@ public class Explosion {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.setIdentityM(mModelMatrix, 0);
+            System.out.println("EXPLOSION : " + this.mPosition[0] + ", " + this.mPosition[1] + ", " + this.mPosition[2]);
             Matrix.translateM(mModelMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
 
             float[] tmpRot = new float[16];
@@ -119,12 +133,15 @@ public class Explosion {
 
         public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, ObjModel object) {
             GLES20.glDisable(GLES20.GL_CULL_FACE);
-            float[] mPVMatrix = new float[16];
-            Matrix.multiplyMM(mPVMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+            float[] mMVMatrix = new float[16];
+            /*Matrix.multiplyMM(mPVMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
             float[] mPVMMatrix = new float[16];
-            Matrix.multiplyMM(mPVMMatrix, 0, mPVMatrix, 0, this.mModelMatrix, 0);
+            Matrix.multiplyMM(mPVMMatrix, 0, mPVMatrix, 0, this.mModelMatrix, 0);*/
+            Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, this.mModelMatrix, 0);
+            float[] mMVPMatrix = new float[16];
+            Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
-            object.draw(mPVMMatrix, mPVMatrix, mLightPosInEyeSpace);
+            object.draw(mMVPMatrix, mMVMatrix, mLightPosInEyeSpace);
         }
     }
 }

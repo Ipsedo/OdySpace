@@ -100,7 +100,6 @@ public class ObjModel {
             ioe.printStackTrace();
         }
 
-
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
 
@@ -236,9 +235,7 @@ public class ObjModel {
         this.colorBuffer.position(0);
         this.normalsBuffer.position(0);
 
-        // Enable a handle to the triangle vertices
         GLES20.glEnableVertexAttribArray(mPositionHandle);
-        // Prepare the triangle coordinate data
         GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
 
         GLES20.glEnableVertexAttribArray(mColorHandle);
@@ -247,11 +244,11 @@ public class ObjModel {
         GLES20.glEnableVertexAttribArray(mNormalHandle);
         GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, normalsBuffer);
 
-        // get handle to shape's transformation matrix
-        GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
-
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
+
+        // get handle to shape's transformation matrix
+        GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
         GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
 
@@ -266,5 +263,7 @@ public class ObjModel {
 
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(mPositionHandle);
+        GLES20.glDisableVertexAttribArray(mColorHandle);
+        GLES20.glDisableVertexAttribArray(mNormalHandle);
     }
 }
