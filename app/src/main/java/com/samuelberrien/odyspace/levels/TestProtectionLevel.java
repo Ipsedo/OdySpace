@@ -8,8 +8,8 @@ import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
-import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Icosahedron;
 import com.samuelberrien.odyspace.objects.Ship;
@@ -25,74 +25,66 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by samuel on 09/05/17.
+ * Created by samuel on 20/06/17.
  * Copyright samuel, 2016 - 2017.
  * Toute reproduction ou utilisation sans l'autorisation
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class TestThread implements Level {
+public class TestProtectionLevel implements Level {
 
-    Context context;
-
-    private Box levelLimits;
+    private Context context;
 
     private Ship ship;
-    //private HeightMap heightMap;
+    private ObjModelMtlVBO icosahedron;
+    private List<BaseItem> icosahedrons;
+    private List<Explosion> explosions;
+    private List<BaseItem> rockets;
+
+    private float levelLimitSize;
+    private Box levelLimits;
+    private CubeMap cubeMap;
     private NoiseMap noiseMap;
     private Forest forest;
-    private List<BaseItem> rockets;
-    private CubeMap cubeMap;
-
-    private List<BaseItem> icosahedrons;
-    private int nbIcosahedron = 100;
-
-    private List<Explosion> explosions;
-
-    private boolean isInit = false;
-
-    private int score;
 
     private Joystick joystick;
     private Controls controls;
 
+    private boolean isInit = false;
+
+    private long startTime;
+
     private ProgressBar currLevelProgression;
+
+    private Random rand;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
         this.ship = ship;
-        this.ship.move(joystick, controls);
-
-        this.currLevelProgression = new ProgressBar(this.context, 50, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+        this.joystick = joystick;
+        this.controls = controls;
 
         float limitDown = -100f;
-        //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
         this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
         this.levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize / 2f, levelLimitSize * 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
         this.cubeMap.update();
+        this.levelLimitSize = levelLimitSize;
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
-        Random rand = new Random(System.currentTimeMillis());
-        for (int i = 0; i < this.nbIcosahedron; i++) {
-            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand.nextFloat() * 2f + 1f);
-            ico.move();
-            ico.makeExplosion(this.context);
-            this.icosahedrons.add(ico);
-        }
+        this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 
-        this.ship.makeExplosion();
+        this.startTime = System.currentTimeMillis();
 
-        this.score = 0;
+        this.rand = new Random(this.startTime);
 
-        this.joystick = joystick;
-        this.controls = controls;
+        this.currLevelProgression = new ProgressBar(this.context, 1000 * 60 * 2, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
         this.isInit = true;
     }
@@ -105,7 +97,6 @@ public class TestThread implements Level {
     @Override
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-        //this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
         this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         this.cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
@@ -139,7 +130,13 @@ public class TestThread implements Level {
             e.move();
         if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
             this.ship.addExplosion(this.explosions);
-        this.currLevelProgression.updateProgress(this.nbIcosahedron - this.icosahedrons.size());
+
+        tmpArr.clear();
+        tmpArr.addAll(this.icosahedrons);
+        for(BaseItem i : tmpArr)
+            i.move();
+
+        this.currLevelProgression.updateProgress((int) (System.currentTimeMillis() - this.startTime));
     }
 
     @Override
@@ -168,11 +165,17 @@ public class TestThread implements Level {
         for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
+                ico.makeExplosion(this.context);
                 ico.addExplosion(this.explosions);
                 this.icosahedrons.remove(i);
-                this.score++;
             } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
                 this.icosahedrons.remove(i);
+        }
+
+        if(this.rand.nextInt(10) == 1) {
+            Icosahedron tmp = new Icosahedron(this.context, this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, this.rand.nextFloat() * 0.3f * this.levelLimitSize + 50f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.5f - 0.25f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.5f - 0.25f}, this.rand.nextFloat() * 2f + 1f);
+            tmp.move();
+            this.icosahedrons.add(tmp);
         }
 
         for (int i = this.rockets.size() - 1; i >= 0; i--)
@@ -182,7 +185,7 @@ public class TestThread implements Level {
 
     @Override
     public int getScore() {
-        return this.score;
+        return 0;
     }
 
     @Override
@@ -192,6 +195,6 @@ public class TestThread implements Level {
 
     @Override
     public boolean isWinner() {
-        return this.nbIcosahedron - this.icosahedrons.size() > 49;
+        return System.currentTimeMillis() - this.startTime > 1000L * 60L * 2L;
     }
 }

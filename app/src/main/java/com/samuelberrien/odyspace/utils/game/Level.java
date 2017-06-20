@@ -15,7 +15,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-    int MAX_LEVEL = 3;
+    int MAX_LEVEL = 4;
 
     void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
 
@@ -31,7 +31,7 @@ public interface Level {
 
     boolean isInit();
 
-    void removeObjects();
+    void removeAddObjects();
 
     int getScore();
 

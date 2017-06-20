@@ -25,6 +25,8 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         System.loadLibrary("collision");
     }
 
+    protected Context context;
+
     protected int life;
     private int damage;
 
@@ -40,8 +42,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     protected float scale;
 
-    protected MediaPlayer mediaPlayer;
-
     public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
         this.life = life;
@@ -55,11 +55,10 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         Matrix.setIdentityM(this.mModelMatrix, 0);
         this.scale = scale;
         this.radius = this.scale * 2f;
-
-        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
+        this.context = context;
     }
 
-    public BaseItem(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+    public BaseItem(Context context, ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(objModelMtl);
         this.life = life;
         this.damage = this.life;
@@ -72,14 +71,11 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         Matrix.setIdentityM(this.mModelMatrix, 0);
         this.scale = scale;
         this.radius = this.scale * 2f;
+        this.context = context;
     }
 
     public boolean isAlive() {
         return this.life > 0;
-    }
-
-    public void playExplosion() {
-        this.mediaPlayer.start();
     }
 
     @Override

@@ -22,8 +22,6 @@ import java.util.List;
 
 public class Boss extends BaseItem {
 
-    private Context context;
-
     private final int MAX_COUNT = 200;
     private int counter;
 
@@ -36,14 +34,12 @@ public class Boss extends BaseItem {
 
     public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, float scale, FireType fireType, BossMove bossMoveType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
-        this.context = context;
         this.counter = 0;
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.fireType = fireType;
         this.colorCounter = 0;
         this.changingColor = false;
         this.bossMoveType = bossMoveType;
-        this.mediaPlayer = MediaPlayer.create(this.context, R.raw.big_boom);
     }
 
     @Override
@@ -112,7 +108,7 @@ public class Boss extends BaseItem {
             float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
             Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
+            this.fireType.fire(super.context, this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
         }
     }
 

@@ -173,14 +173,13 @@ public class TestTurrets implements Level {
     }
 
     @Override
-    public void removeObjects() {
+    public void removeAddObjects() {
         for (int i = this.explosions.size() - 1; i >= 0; i--)
             if (!this.explosions.get(i).isAlive())
                 this.explosions.remove(i);
         for (int i = this.turrets.size() - 1; i >= 0; i--)
             if (!this.turrets.get(i).isAlive()) {
                 ((Turret) this.turrets.get(i)).addExplosion(this.explosions);
-                this.turrets.get(i).playExplosion();
                 this.turrets.remove(i);
             }
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)

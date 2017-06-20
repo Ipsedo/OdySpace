@@ -24,8 +24,8 @@ public class Rocket extends BaseItem {
         this.maxSpeed = maxSpeed * 3f;
     }
 
-    public Rocket(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-        super(objModelMtl, life, mPosition, mSpeed, mAcceleration, scale);
+    public Rocket(Context context, ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
+        super(context, objModelMtl, life, mPosition, mSpeed, mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
     }

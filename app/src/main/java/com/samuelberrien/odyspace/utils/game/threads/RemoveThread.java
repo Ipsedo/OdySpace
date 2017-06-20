@@ -17,7 +17,7 @@ public class RemoveThread extends CancelableThread {
 
     @Override
     public void work() {
-        super.level.removeObjects();
+        super.level.removeAddObjects();
         /*try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {

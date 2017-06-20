@@ -23,8 +23,6 @@ import java.util.List;
 
 public class Ship extends BaseItem {
 
-    private Context context;
-
     public static float MAX_SPEED = 0.0125f;
     private float maxSpeed = Ship.MAX_SPEED;
     private final float rollCoeff = 1f;
@@ -76,7 +74,6 @@ public class Ship extends BaseItem {
     private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.maxLife = life;
-        this.context = context;
         this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, new float[]{0.8f, 0.2f, 0.1f, 1.0f});
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.fireType = fireType;
@@ -136,7 +133,7 @@ public class Ship extends BaseItem {
 
     public void fire(Controls controls, List<BaseItem> rockets) {
         if (controls.isFire()) {
-            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+            this.fireType.fire(super.context, this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
             controls.turnOffFire();
         }
     }

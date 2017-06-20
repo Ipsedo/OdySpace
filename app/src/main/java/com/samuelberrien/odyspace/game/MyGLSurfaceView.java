@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.TestBossThread;
+import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.levels.TestTurrets;
 import com.samuelberrien.odyspace.utils.game.Level;
@@ -70,8 +71,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
             return new TestThread();
         } else if (currLevelId == 1) {
             return new TestBossThread();
-        } else {
+        } else if (currLevelId == 2) {
             return new TestTurrets();
+        } else {
+            return new TestProtectionLevel();
         }
     }
 

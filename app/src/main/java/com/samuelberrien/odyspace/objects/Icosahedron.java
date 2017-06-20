@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class Icosahedron extends BaseItem {
 
     public Icosahedron(Context context, float[] mPosition, float scale) {
         super(context, "icosahedron.obj", "icosahedron.mtl", 0.7f, 0f, true, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
+    }
+
+    public Icosahedron(Context context, ObjModelMtlVBO model, float[] mPosition, float[] mSpeed, float scale) {
+        super(context, model, 1, mPosition, mSpeed, new float[3], scale);
     }
 
     public void makeExplosion(Context context) {

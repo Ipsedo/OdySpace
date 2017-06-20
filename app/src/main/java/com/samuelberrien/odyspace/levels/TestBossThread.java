@@ -188,7 +188,7 @@ public class TestBossThread implements Level {
     }
 
     @Override
-    public void removeObjects() {
+    public void removeAddObjects() {
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
             if (!this.rocketsShip.get(i).isAlive() || !this.rocketsShip.get(i).isInside(this.levelLimits))
                 this.rocketsShip.remove(i);
