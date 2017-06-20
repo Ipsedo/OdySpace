@@ -19,7 +19,7 @@ public enum FireType {
 
     SIMPLE_FIRE, QUINT_FIRE, SIMPLE_BOMB;
 
-    public  void fire(ObjModelMtlVBO rocketModel, List<BaseItem> rockets, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed) {
+    public void fire(ObjModelMtlVBO rocketModel, List<BaseItem> rockets, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed) {
         switch (this) {
             case SIMPLE_FIRE:
                 rockets.add(new Rocket(rocketModel, position, originalSpeedVec, new float[]{0f, 0f, 0f}, rotationMatrix, maxSpeed, 1f, 1));

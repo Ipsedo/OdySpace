@@ -81,7 +81,7 @@ public class Compass {
         double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
         float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
 
-        if(vecDansRepereShip[0] > 0)
+        if (vecDansRepereShip[0] > 0)
             angle = -angle;
 
         float[] mModelMatrix = new float[16];

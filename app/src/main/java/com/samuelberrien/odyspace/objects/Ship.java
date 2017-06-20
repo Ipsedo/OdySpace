@@ -84,7 +84,7 @@ public class Ship extends BaseItem {
     }
 
     public void addExplosion(List<Explosion> explosions) {
-        if(!this.exploded) {
+        if (!this.exploded) {
             this.mExplosion.setPosition(this.mPosition.clone());
             explosions.add(this.mExplosion);
             this.exploded = true;
@@ -157,7 +157,7 @@ public class Ship extends BaseItem {
 
         float[] camPos = this.getCamPosition();
 
-        return new float[] {lookAtPos[0] - camPos[0], lookAtPos[1] - camPos[1], lookAtPos[2] - camPos[2]};
+        return new float[]{lookAtPos[0] - camPos[0], lookAtPos[1] - camPos[1], lookAtPos[2] - camPos[2]};
     }
 
     public float[] getCamPosition() {
@@ -200,14 +200,14 @@ public class Ship extends BaseItem {
     }
 
     public float[] invVecWithRotMatrix(float[] vec) {
-        float[] tmp = new float[] {vec[0], vec[1], vec[2], 0f};
+        float[] tmp = new float[]{vec[0], vec[1], vec[2], 0f};
         float[] invModel = new float[16];
         Matrix.invertM(invModel, 0, this.mRotationMatrix, 0);
 
         float[] tmpRes = new float[4];
         Matrix.multiplyMV(tmpRes, 0, invModel, 0, tmp, 0);
 
-        return new float[] {tmpRes[0], tmpRes[1], tmpRes[2]};
+        return new float[]{tmpRes[0], tmpRes[1], tmpRes[2]};
     }
 
     public void drawLife(float ratio) {

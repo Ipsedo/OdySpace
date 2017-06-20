@@ -64,7 +64,7 @@ public class TestBossThread implements Level {
         this.noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-        this.levelLimits = new Box(-levelLimitSize / 2f, limitDown - 0.02f * levelLimitSize, - levelLimitSize / 2f, levelLimitSize, levelLimitSize / 2f, levelLimitSize);
+        this.levelLimits = new Box(-levelLimitSize / 2f, limitDown - 0.02f * levelLimitSize, -levelLimitSize / 2f, levelLimitSize, levelLimitSize / 2f, levelLimitSize);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
         this.cubeMap.update();
 
@@ -75,6 +75,7 @@ public class TestBossThread implements Level {
             private float phi = 0f;
             private float theta = 0f;
             private Random rand = new Random(System.currentTimeMillis());
+
             @Override
             public float[] getModelMatrix(float[] mPosition, float[] mSpeed, float mScale) {
                 float[] vecToShip = Vector.normalize3f(boss.vector3fTo(ship));

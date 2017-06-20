@@ -229,7 +229,7 @@ public class NoiseMap implements Item, Map {
 
     @Override
     public float[] getRestreintArea(float[] position) {
-        if(position[0] >= -1f * this.scale && position[0] <= 1f * this.scale && position[2] >= -1f * this.scale && position[2] <= 1f * this.scale) {
+        if (position[0] >= -1f * this.scale && position[0] <= 1f * this.scale && position[2] >= -1f * this.scale && position[2] <= 1f * this.scale) {
             float xNorm = (position[0] / this.scale + 1f) / 2f;
             float zNorm = (position[2] / this.scale + 1f) / 2f;
 
@@ -259,7 +259,7 @@ public class NoiseMap implements Item, Map {
 
             return res;
         } else {
-            return new float[0];
+            return new float[18];
         }
     }
 
@@ -268,7 +268,7 @@ public class NoiseMap implements Item, Map {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, 0f, this.limitHeight, 0f);
-        Matrix.scaleM(mModelMatrix, 0, this.scale,  this.scale, this.scale);
+        Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
 
         this.mModelMatrix = mModelMatrix;
     }

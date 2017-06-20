@@ -84,13 +84,11 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 
     @Override
     public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
-        System.out.println("BASEITEM");
         return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), triangleArray, modelMatrix);
     }
 
     @Override
     public boolean isCollided(Item other) {
-        System.out.println("BASEITEM");
         return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone());
     }
 

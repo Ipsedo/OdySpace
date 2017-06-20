@@ -21,7 +21,7 @@ import java.nio.FloatBuffer;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class CubeMap implements Map{
+public class CubeMap implements Map {
 
     private Context context;
 

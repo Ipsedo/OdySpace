@@ -35,7 +35,7 @@ public class Forest {
 
     private void initTrees(Map map, float areaSize) {
         Random rand = new Random(System.currentTimeMillis());
-        for(int i = 0; i < this.nbTree; i++) {
+        for (int i = 0; i < this.nbTree; i++) {
             float x = rand.nextFloat() * areaSize - areaSize * 0.5f;
             float y;
             float z = rand.nextFloat() * areaSize - areaSize * 0.5f;
@@ -50,7 +50,7 @@ public class Forest {
 
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
-            Matrix.translateM(mModelMatrix, 0, x, y , z);
+            Matrix.translateM(mModelMatrix, 0, x, y, z);
 
             float[] mRotMatrix = new float[16];
             Matrix.setRotateM(mRotMatrix, 0, (float) angle, 0f, 1f, 0f);
