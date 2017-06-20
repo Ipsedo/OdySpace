@@ -1,7 +1,9 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
@@ -19,6 +21,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,6 +61,8 @@ public class TestProtectionLevel implements Level {
 
     private Random rand;
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
@@ -85,6 +90,8 @@ public class TestProtectionLevel implements Level {
         this.rand = new Random(this.startTime);
 
         this.currLevelProgression = new ProgressBar(this.context, 1000 * 60 * 2, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+
+        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
 
         this.isInit = true;
     }
@@ -163,8 +170,9 @@ public class TestProtectionLevel implements Level {
         for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
-                ico.makeExplosion(this.context);
+                ico.makeExplosion();
                 ico.addExplosion(this.explosions);
+                this.mediaPlayer.start();
                 this.icosahedrons.remove(i);
             } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
                 this.icosahedrons.remove(i);

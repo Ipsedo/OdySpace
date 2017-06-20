@@ -1,7 +1,9 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
@@ -19,6 +21,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,6 +61,8 @@ public class TestThread implements Level {
 
     private ProgressBar currLevelProgression;
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
         this.context = context;
@@ -83,7 +88,7 @@ public class TestThread implements Level {
         for (int i = 0; i < this.nbIcosahedron; i++) {
             Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand.nextFloat() * 2f + 1f);
             ico.move();
-            ico.makeExplosion(this.context);
+            ico.makeExplosion();
             this.icosahedrons.add(ico);
         }
 
@@ -93,6 +98,8 @@ public class TestThread implements Level {
 
         this.joystick = joystick;
         this.controls = controls;
+
+        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
 
         this.isInit = true;
     }
@@ -168,6 +175,7 @@ public class TestThread implements Level {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
                 ico.addExplosion(this.explosions);
+                this.mediaPlayer.start();
                 this.icosahedrons.remove(i);
                 this.score++;
             } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))

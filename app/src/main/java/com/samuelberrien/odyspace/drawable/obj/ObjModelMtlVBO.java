@@ -26,6 +26,8 @@ import java.util.Random;
 
 public class ObjModelMtlVBO {
 
+    protected Context context;
+
     /**
      * Size of the position data in elements.
      */
@@ -96,6 +98,8 @@ public class ObjModelMtlVBO {
      */
     public ObjModelMtlVBO(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef, boolean randomColor) {
 
+        this.context = context;
+
         InputStream inputStream;
         inputStream = context.getResources().openRawResource(mtlResId);
         this.parseMtl(inputStream);
@@ -117,6 +121,8 @@ public class ObjModelMtlVBO {
      * @param distanceCoef      The distance attenuation coefficient
      */
     public ObjModelMtlVBO(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor) {
+
+        this.context = context;
 
         InputStream inputStream;
         try {
@@ -141,6 +147,8 @@ public class ObjModelMtlVBO {
     }
 
     public ObjModelMtlVBO(ObjModelMtlVBO objModelMtl) {
+        this.context = objModelMtl.context;
+
         this.mtlAmbColor = objModelMtl.mtlAmbColor;
         this.mtlDiffColor = objModelMtl.mtlDiffColor;
         this.mtlSpecColor = objModelMtl.mtlSpecColor;

@@ -25,8 +25,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         System.loadLibrary("collision");
     }
 
-    protected Context context;
-
     protected int life;
     private int damage;
 
@@ -55,7 +53,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         Matrix.setIdentityM(this.mModelMatrix, 0);
         this.scale = scale;
         this.radius = this.scale * 2f;
-        this.context = context;
     }
 
     public BaseItem(Context context, ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
@@ -71,7 +68,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         Matrix.setIdentityM(this.mModelMatrix, 0);
         this.scale = scale;
         this.radius = this.scale * 2f;
-        this.context = context;
     }
 
     public boolean isAlive() {

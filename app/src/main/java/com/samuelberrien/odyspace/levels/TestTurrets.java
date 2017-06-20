@@ -1,7 +1,9 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
@@ -20,6 +22,7 @@ import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Triangle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,6 +56,8 @@ public class TestTurrets implements Level {
     private Controls controls;
 
     private ProgressBar currLevelProgression;
+
+    private MediaPlayer mediaPlayer;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -91,6 +96,8 @@ public class TestTurrets implements Level {
             tmp.makeExplosion(this.context);
             this.turrets.add(tmp);
         }
+
+        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
 
         this.isInit = true;
     }
@@ -179,6 +186,7 @@ public class TestTurrets implements Level {
         for (int i = this.turrets.size() - 1; i >= 0; i--)
             if (!this.turrets.get(i).isAlive()) {
                 ((Turret) this.turrets.get(i)).addExplosion(this.explosions);
+                this.mediaPlayer.start();
                 this.turrets.remove(i);
             }
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
