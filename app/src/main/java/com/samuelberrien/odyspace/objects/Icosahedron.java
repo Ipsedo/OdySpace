@@ -31,6 +31,7 @@ public class Icosahedron extends BaseItem {
     }
 
     public void addExplosion(List<Explosion> explosions) {
+        this.mExplosion.setPosition(this.mPosition.clone());
         explosions.add(this.mExplosion);
     }
 }

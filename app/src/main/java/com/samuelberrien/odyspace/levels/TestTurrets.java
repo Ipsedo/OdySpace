@@ -149,8 +149,7 @@ public class TestTurrets implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
-        if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
-            this.ship.addExplosion(this.explosions);
+
         this.currLevelProgression.updateProgress(this.nbTurret - this.turrets.size());
     }
 
@@ -188,6 +187,8 @@ public class TestTurrets implements Level {
         for (int i = this.rocketsTurret.size() - 1; i >= 0; i--)
             if (!this.rocketsTurret.get(i).isAlive() || !this.rocketsTurret.get(i).isInside(this.levelLimits))
                 this.rocketsTurret.remove(i);
+        if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
+            this.ship.addExplosion(this.explosions);
     }
 
     @Override

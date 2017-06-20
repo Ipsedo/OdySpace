@@ -137,8 +137,7 @@ public class TestThread implements Level {
         ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
         for (Explosion e : tmpArr2)
             e.move();
-        if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
-            this.ship.addExplosion(this.explosions);
+
         this.currLevelProgression.updateProgress(this.nbIcosahedron - this.icosahedrons.size());
     }
 
@@ -178,6 +177,9 @@ public class TestThread implements Level {
         for (int i = this.rockets.size() - 1; i >= 0; i--)
             if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.levelLimits))
                 this.rockets.remove(i);
+
+        if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
+            this.ship.addExplosion(this.explosions);
     }
 
     @Override
