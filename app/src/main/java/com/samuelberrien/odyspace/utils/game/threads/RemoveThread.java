@@ -16,6 +16,11 @@ public class RemoveThread extends CancelableThread {
     }
 
     @Override
+    public void afterInit() {
+
+    }
+
+    @Override
     public void work() {
         super.level.removeAddObjects();
         /*try {

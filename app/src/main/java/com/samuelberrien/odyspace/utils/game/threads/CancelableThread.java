@@ -26,6 +26,8 @@ public abstract class CancelableThread extends Thread {
         this.isCanceled = canceled;
     }
 
+    public abstract void afterInit();
+
     public abstract void work();
 
     public void run() {
@@ -36,6 +38,7 @@ public abstract class CancelableThread extends Thread {
                 e.printStackTrace();
             }
         }
+        this.afterInit();
         while (!this.isCanceled) {
             long t1 = System.currentTimeMillis();
             this.work();

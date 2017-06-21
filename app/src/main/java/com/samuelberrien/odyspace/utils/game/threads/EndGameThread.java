@@ -26,6 +26,16 @@ public class EndGameThread extends CancelableThread {
     }
 
     @Override
+    public void afterInit() {
+        this.levelActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                levelActivity.levelFinish();
+            }
+        });
+    }
+
+    @Override
     public void work() {
         if (!this.resultSetted && super.level.isDead()) {
             Intent resultIntent = new Intent();

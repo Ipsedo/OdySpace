@@ -16,6 +16,11 @@ public class UpdateThread extends CancelableThread {
     }
 
     @Override
+    public void afterInit() {
+
+    }
+
+    @Override
     public void work() {
         super.level.update();
         /*try {
