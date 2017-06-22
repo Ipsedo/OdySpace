@@ -35,6 +35,15 @@ public class EndGameThread extends CancelableThread {
     }
 
     @Override
+    protected void waitRequiredTime(long t1) {
+        try {
+            Thread.sleep(120L);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+    }
+
+    @Override
     public void work() {
         if (!this.resultSetted && super.level.isDead()) {
             Intent resultIntent = new Intent();
