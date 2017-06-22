@@ -26,26 +26,26 @@ public class Explosion {
     private final float maxSpeed;
     private final float limitSpeed;
 
-    public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, float initSpeed, float limitSpeed) {
+    public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed) {
         this.maxSpeed = initSpeed;
         this.limitSpeed = limitSpeed;
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
         this.particule.setColor(mDiffColor);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < nbParticule; i++) {
             this.particules.add(new Particule(rand, mPosition));
         }
     }
 
-    public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, float initSpeed, float limitSpeed) {
+    public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed) {
         this.maxSpeed = initSpeed;
         this.limitSpeed = limitSpeed;
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         this.particule = particule;
         this.particule.setColor(mDiffColor);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < nbParticule; i++) {
             this.particules.add(new Particule(rand, mPosition));
         }
     }

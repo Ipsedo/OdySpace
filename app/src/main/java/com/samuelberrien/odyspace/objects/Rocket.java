@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
 /**
  * Created by samuel on 20/04/17.
@@ -19,13 +20,13 @@ public class Rocket extends BaseItem {
     private float maxSpeed;
 
     public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, false, life, mPosition, mSpeed, mAcceleration, scale);
+        super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, false, life, mPosition, Vector.normalize3f(mSpeed), mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
     }
 
     public Rocket(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-        super(objModelMtl, life, mPosition, mSpeed, mAcceleration, scale);
+        super(objModelMtl, life, mPosition, Vector.normalize3f(mSpeed), mAcceleration, scale);
         super.mRotationMatrix = mRotationMatrix;
         this.maxSpeed = maxSpeed * 3f;
     }
@@ -36,9 +37,9 @@ public class Rocket extends BaseItem {
 
         Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, realSpeed.clone(), 0);
 
-        super.mPosition[0] += Math.max(this.maxSpeed, Rocket.MAX_SPEED) * realSpeed[0];
-        super.mPosition[1] += Math.max(this.maxSpeed, Rocket.MAX_SPEED) * realSpeed[1];
-        super.mPosition[2] += Math.max(this.maxSpeed, Rocket.MAX_SPEED) * realSpeed[2];
+        super.mPosition[0] += this.maxSpeed * realSpeed[0];
+        super.mPosition[1] += this.maxSpeed * realSpeed[1];
+        super.mPosition[2] += this.maxSpeed * realSpeed[2];
 
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);

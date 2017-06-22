@@ -166,7 +166,14 @@ public class TestProtectionLevel implements Level {
         ArrayList<Item> ennemi = new ArrayList<>();
         ennemi.addAll(this.icosahedrons);
         ennemi.add(this.noiseMap);
-        Octree octree = new Octree(this.levelLimits, ami, ennemi, 1f);
+        Octree octree = new Octree(this.levelLimits, ami, ennemi, 10f);
+        octree.computeOctree();
+
+        ami.clear();
+        ennemi.clear();
+        ami.add(this.noiseMap);
+        ennemi.addAll(this.icosahedrons);
+        octree = new Octree(this.levelLimits, ami, ennemi, 10f);
         octree.computeOctree();
     }
 
@@ -192,8 +199,8 @@ public class TestProtectionLevel implements Level {
                 this.icosahedrons.remove(i);
         }
 
-        if (this.rand.nextInt(10) == 1) {
-            Icosahedron tmp = new Icosahedron(this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * levelLimitSize + this.levelLimitSize / 4f + this.rand.nextFloat() * this.levelLimitSize / 4.1f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.5f - 0.25f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.5f - 0.25f}, this.rand.nextFloat() * 2f + 1f);
+        if (this.rand.nextFloat() < 0.003f) {
+            Icosahedron tmp = new Icosahedron(this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * levelLimitSize + this.levelLimitSize / 4f + this.rand.nextFloat() * this.levelLimitSize / 4.1f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.25f - 0.125f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.25f - 0.125f}, this.rand.nextFloat() * 10f + 10f);
             tmp.move();
             this.icosahedrons.add(tmp);
         }

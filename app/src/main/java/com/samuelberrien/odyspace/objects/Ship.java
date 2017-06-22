@@ -25,6 +25,8 @@ public class Ship extends BaseItem {
 
     public static float MAX_SPEED = 0.0125f;
     private float maxSpeed = Ship.MAX_SPEED;
+    private float boostSpeed;
+    private final float ROCKET_MAX_SPEED = 0.020f;
     private final float rollCoeff = 1f;
     private final float pitchCoeff = 0.5f;
 
@@ -78,6 +80,7 @@ public class Ship extends BaseItem {
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.fireType = fireType;
         this.exploded = false;
+        this.boostSpeed = 0f;
     }
 
     public void addExplosion(List<Explosion> explosions) {
@@ -89,11 +92,12 @@ public class Ship extends BaseItem {
     }
 
     public void makeExplosion() {
-        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 0.5f, 0.16f);
+        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.5f, 0.16f);
     }
 
     public void move(Joystick joystick, Controls controls) {
-        this.maxSpeed = this.MAX_SPEED * (float) Math.pow((controls.getBoost() + 2f) * 2f, 2d);
+        this.boostSpeed = (float) Math.pow((controls.getBoost() + 2f) * 2f, 2d);
+        this.maxSpeed = this.MAX_SPEED * this.boostSpeed;
 
         float[] tmp = joystick.getStickPosition();
 
@@ -133,7 +137,7 @@ public class Ship extends BaseItem {
 
     public void fire(Controls controls, List<BaseItem> rockets) {
         if (controls.isFire()) {
-            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), this.maxSpeed);
+            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.boostSpeed >= 16f ? this.boostSpeed : 16f) * this.ROCKET_MAX_SPEED);
             controls.turnOffFire();
         }
     }

@@ -13,6 +13,7 @@ import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.Map;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.BaseItem;
 import com.samuelberrien.odyspace.objects.Ship;
 import com.samuelberrien.odyspace.objects.Turret;
@@ -85,6 +86,8 @@ public class TestTurrets implements Level {
         this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
         this.turrets = Collections.synchronizedList(new ArrayList<BaseItem>());
 
+        ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "turret.obj", "turret.mtl", 1f, 0f, false);
+        ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbTurret; i++) {
             float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
@@ -94,7 +97,7 @@ public class TestTurrets implements Level {
             float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
             moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
-            Turret tmp = new Turret(this.context, new float[]{x, moy + 3f, z}, FireType.SIMPLE_FIRE);
+            Turret tmp = new Turret(tmpTurret, tmpRocket, new float[]{x, moy + 3f, z}, FireType.SIMPLE_FIRE);
             tmp.move(this.ship);
             tmp.makeExplosion(this.context);
             this.turrets.add(tmp);

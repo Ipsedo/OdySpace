@@ -35,8 +35,15 @@ public class Turret extends BaseItem {
         this.fireType = fireType;
     }
 
+    public Turret(ObjModelMtlVBO turret, ObjModelMtlVBO rocket, float[] mPosition, FireType fireType) {
+        super(turret, 1, mPosition, new float[3], new float[3], 4f);
+        this.rand = new Random(System.currentTimeMillis());
+        this.rocket = rocket;
+        this.fireType = fireType;
+    }
+
     public void makeExplosion(Context context) {
-        this.explosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 1.5f, 0.05f);
+        this.explosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 1.5f, 0.05f);
     }
 
     public void addExplosion(List<Explosion> explosions) {
@@ -51,7 +58,7 @@ public class Turret extends BaseItem {
             float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
             Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.01f);
+            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.15f);
         }
     }
 
