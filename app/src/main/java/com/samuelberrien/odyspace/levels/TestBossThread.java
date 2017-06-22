@@ -147,6 +147,7 @@ public class TestBossThread implements Level {
 
     @Override
     public void drawLevelInfo(float ratio) {
+        this.progressBar.draw(ratio);
         this.compass.draw(ratio);
     }
 
@@ -167,6 +168,7 @@ public class TestBossThread implements Level {
         this.boss.move();
         this.boss.fire(this.rocketsBoss, this.ship);
         this.compass.update(this.ship, this.boss);
+        this.boss.updateLifeProgress(this.progressBar);
     }
 
     @Override

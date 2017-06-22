@@ -23,8 +23,8 @@ public class Icosahedron extends BaseItem {
         super(context, "icosahedron.obj", "icosahedron.mtl", 0.7f, 0f, true, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
     }
 
-    public Icosahedron(Context context, ObjModelMtlVBO model, float[] mPosition, float[] mSpeed, float scale) {
-        super(context, model, 1, mPosition, mSpeed, new float[3], scale);
+    public Icosahedron(ObjModelMtlVBO model, float[] mPosition, float[] mSpeed, float scale) {
+        super(model, 1, mPosition, mSpeed, new float[3], scale);
     }
 
     public void makeExplosion() {

@@ -2,7 +2,6 @@ package com.samuelberrien.odyspace.utils.game.threads;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
 
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
@@ -30,7 +29,7 @@ public class EndGameThread extends CancelableThread {
         this.levelActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                levelActivity.levelFinish();
+                levelActivity.loadingLevelFinished();
             }
         });
     }

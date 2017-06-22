@@ -97,7 +97,7 @@ public class Boss extends BaseItem {
         Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);*/
 
     public void updateLifeProgress(ProgressBar progressBar) {
-        progressBar.updateProgress(super.life);
+        progressBar.updateProgress(super.maxLife - super.life);
     }
 
     public void fire(List<BaseItem> rockets, Ship ship) {
@@ -108,7 +108,7 @@ public class Boss extends BaseItem {
             float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
             float[] tmpMat = new float[16];
             Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            this.fireType.fire(super.context, this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
+            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.005f);
         }
     }
 

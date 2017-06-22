@@ -25,6 +25,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         System.loadLibrary("collision");
     }
 
+    protected final int maxLife;
     protected int life;
     private int damage;
 
@@ -43,6 +44,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
     public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
         this.life = life;
+        this.maxLife = this.life;
         this.damage = this.life;
         this.mPosition = mPosition;
         this.mSpeed = mSpeed;
@@ -55,9 +57,10 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
         this.radius = this.scale * 2f;
     }
 
-    public BaseItem(Context context, ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+    public BaseItem(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
         super(objModelMtl);
         this.life = life;
+        this.maxLife = this.life;
         this.damage = this.life;
         this.mPosition = mPosition;
         this.mSpeed = mSpeed;

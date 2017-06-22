@@ -17,6 +17,8 @@ public class Color {
 
     public static float[] PomegranateRed = {242f / 255f, 38f / 255f, 19f / 255f, 1.0f};
 
+    public static float[] Pumpkin = {211f / 255f, 84f / 255f, 0f / 255f, 1.0f};
+
     public static float[] TextsColor = Color.PomegranateRed;
 
     public static float[] ControlsColor = Color.RoyalBlue;

@@ -1,7 +1,9 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
@@ -63,7 +65,8 @@ public class TestProtectionLevel implements Level {
 
     private Random rand;
 
-    private MediaPlayer mediaPlayer;
+    private SoundPool mSounds;
+    private int soundId;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -94,7 +97,13 @@ public class TestProtectionLevel implements Level {
 
         this.currLevelProgression = new ProgressBar(this.context, 1000 * 60 * 2, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
-        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
+        this.mSounds = new SoundPool.Builder().setMaxStreams(20)
+                .setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build())
+                .build();
+        this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
 
         this.ship.makeExplosion();
 
@@ -143,7 +152,7 @@ public class TestProtectionLevel implements Level {
 
         tmpArr.clear();
         tmpArr.addAll(this.icosahedrons);
-        for(BaseItem i : tmpArr)
+        for (BaseItem i : tmpArr)
             i.move();
 
         this.currLevelProgression.updateProgress((int) (System.currentTimeMillis() - this.startTime));
@@ -177,14 +186,14 @@ public class TestProtectionLevel implements Level {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
                 ico.makeExplosion(this.particule);
                 ico.addExplosion(this.explosions);
-                this.mediaPlayer.start();
+                this.mSounds.play(this.soundId, 1f, 1f, 1, 0, 1f);
                 this.icosahedrons.remove(i);
             } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
                 this.icosahedrons.remove(i);
         }
 
-        if(this.rand.nextInt(10) == 1) {
-            Icosahedron tmp = new Icosahedron(this.context, this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * levelLimitSize + this.levelLimitSize /4f + this.rand.nextFloat() * this.levelLimitSize / 4.1f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.5f - 0.25f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.5f - 0.25f}, this.rand.nextFloat() * 2f + 1f);
+        if (this.rand.nextInt(10) == 1) {
+            Icosahedron tmp = new Icosahedron(this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * levelLimitSize + this.levelLimitSize / 4f + this.rand.nextFloat() * this.levelLimitSize / 4.1f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.5f - 0.25f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.5f - 0.25f}, this.rand.nextFloat() * 2f + 1f);
             tmp.move();
             this.icosahedrons.add(tmp);
         }

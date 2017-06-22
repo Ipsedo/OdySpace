@@ -1,7 +1,10 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
@@ -61,7 +64,8 @@ public class TestThread implements Level {
 
     private ProgressBar currLevelProgression;
 
-    private MediaPlayer mediaPlayer;
+    private SoundPool mSounds;
+    private int soundId;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -86,7 +90,7 @@ public class TestThread implements Level {
 
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbIcosahedron; i++) {
-            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 4f - levelLimitSize / 8f}, rand.nextFloat() * 2f + 1f);
+            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 2f - levelLimitSize / 4f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 2f - levelLimitSize / 4f}, rand.nextFloat() * 2f + 1f);
             ico.move();
             ico.makeExplosion();
             this.icosahedrons.add(ico);
@@ -99,7 +103,14 @@ public class TestThread implements Level {
         this.joystick = joystick;
         this.controls = controls;
 
-        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
+        this.mSounds = new SoundPool.Builder().setMaxStreams(20)
+                .setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build())
+                .build();
+        this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
+
 
         this.isInit = true;
     }
@@ -175,7 +186,7 @@ public class TestThread implements Level {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
                 ico.addExplosion(this.explosions);
-                this.mediaPlayer.start();
+                this.mSounds.play(this.soundId, 1f, 1f, 1, 0, 1f);
                 this.icosahedrons.remove(i);
                 this.score++;
             } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))

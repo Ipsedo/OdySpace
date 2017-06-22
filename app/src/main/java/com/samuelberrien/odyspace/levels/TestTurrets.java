@@ -1,7 +1,9 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
@@ -57,7 +59,8 @@ public class TestTurrets implements Level {
 
     private ProgressBar currLevelProgression;
 
-    private MediaPlayer mediaPlayer;
+    private SoundPool mSounds;
+    private int soundId;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -97,7 +100,13 @@ public class TestTurrets implements Level {
             this.turrets.add(tmp);
         }
 
-        this.mediaPlayer = MediaPlayer.create(context, R.raw.simple_boom);
+        this.mSounds = new SoundPool.Builder().setMaxStreams(20)
+                .setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build())
+                .build();
+        this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
 
         this.isInit = true;
     }
@@ -186,7 +195,7 @@ public class TestTurrets implements Level {
         for (int i = this.turrets.size() - 1; i >= 0; i--)
             if (!this.turrets.get(i).isAlive()) {
                 ((Turret) this.turrets.get(i)).addExplosion(this.explosions);
-                this.mediaPlayer.start();
+                this.mSounds.play(this.soundId, 1f, 1f, 1, 0, 1f);
                 this.turrets.remove(i);
             }
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
