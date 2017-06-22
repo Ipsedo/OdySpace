@@ -13,6 +13,7 @@ public class RemoveThread extends CancelableThread {
 
     public RemoveThread(Level level) {
         super("RemoveThread", level);
+        this.setPriority(Thread.MIN_PRIORITY);
     }
 
     @Override

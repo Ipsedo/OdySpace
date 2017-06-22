@@ -22,6 +22,7 @@ public class EndGameThread extends CancelableThread {
         super("EndGameThread", level);
         this.levelActivity = levelActivity;
         this.resultSetted = false;
+        this.setPriority(Thread.MIN_PRIORITY);
     }
 
     @Override
