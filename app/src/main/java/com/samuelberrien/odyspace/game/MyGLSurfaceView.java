@@ -70,11 +70,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
         if (currLevelId == 0) {
             return new TestThread();
         } else if (currLevelId == 1) {
-            return new TestBossThread();
+            return new TestProtectionLevel();
         } else if (currLevelId == 2) {
             return new TestTurrets();
         } else {
-            return new TestProtectionLevel();
+            return new TestBossThread();
         }
     }
 

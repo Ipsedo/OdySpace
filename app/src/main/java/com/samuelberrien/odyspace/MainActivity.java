@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < maxLevel; i++) {
             final int currLvl = i;
             Button levelItem = new Button(this);
-            levelItem.setText("Level " + (i + 1));
+            levelItem.setText((i + 1) + " - " + Level.LEVELS[i]);
             levelItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
                         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                if (MainActivity.this.currLevel < Level.MAX_LEVEL)
+                                if (MainActivity.this.currLevel < Level.LEVELS.length)
                                     MainActivity.this.currLevel++;
                                 MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
                                 if (MainActivity.this.currLevel > maxLevel) {
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                if (MainActivity.this.currLevel < Level.MAX_LEVEL)
+                                if (MainActivity.this.currLevel < Level.LEVELS.length)
                                     MainActivity.this.currLevel++;
                                 if (MainActivity.this.currLevel > maxLevel) {
                                     SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
