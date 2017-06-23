@@ -2,10 +2,10 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
@@ -24,10 +24,11 @@ import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -47,6 +48,7 @@ public class TestProtectionLevel implements Level {
     private ObjModel particule;
     private List<Explosion> explosions;
     private List<BaseItem> rockets;
+    private Compass directionToIco;
 
     private float levelLimitSize;
     private Box levelLimits;
@@ -67,6 +69,8 @@ public class TestProtectionLevel implements Level {
 
     private SoundPool mSounds;
     private int soundId;
+
+    private long levelTime = 1000L * 60L * 3L;
 
     @Override
     public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
@@ -90,12 +94,13 @@ public class TestProtectionLevel implements Level {
 
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
         this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
+        this.directionToIco = new Compass(this.context);
 
         this.startTime = System.currentTimeMillis();
 
         this.rand = new Random(this.startTime);
 
-        this.currLevelProgression = new ProgressBar(this.context, 1000 * 60 * 2, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+        this.currLevelProgression = new ProgressBar(this.context, (int) this.levelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
         this.mSounds = new SoundPool.Builder().setMaxStreams(20)
                 .setAudioAttributes(new AudioAttributes.Builder()
@@ -135,6 +140,11 @@ public class TestProtectionLevel implements Level {
     @Override
     public void drawLevelInfo(float ratio) {
         this.currLevelProgression.draw(ratio);
+        ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
+        for(BaseItem ico : icos) {
+            this.directionToIco.update(this.ship, ico);
+            this.directionToIco.draw(ratio);
+        }
     }
 
     @Override
@@ -156,6 +166,7 @@ public class TestProtectionLevel implements Level {
             i.move();
 
         this.currLevelProgression.updateProgress((int) (System.currentTimeMillis() - this.startTime));
+
     }
 
     @Override
@@ -199,7 +210,7 @@ public class TestProtectionLevel implements Level {
                 this.icosahedrons.remove(i);
         }
 
-        if (this.rand.nextFloat() < 0.003f) {
+        if (this.rand.nextFloat() < 0.045f) {
             Icosahedron tmp = new Icosahedron(this.icosahedron, new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * levelLimitSize + this.levelLimitSize / 4f + this.rand.nextFloat() * this.levelLimitSize / 4.1f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize}, new float[]{this.rand.nextFloat() * 0.25f - 0.125f, -this.rand.nextFloat() * 0.1f, this.rand.nextFloat() * 0.25f - 0.125f}, this.rand.nextFloat() * 10f + 10f);
             tmp.move();
             this.icosahedrons.add(tmp);
@@ -225,6 +236,6 @@ public class TestProtectionLevel implements Level {
 
     @Override
     public boolean isWinner() {
-        return System.currentTimeMillis() - this.startTime > 1000L * 60L * 2L;
+        return System.currentTimeMillis() - this.startTime > this.levelTime;
     }
 }
