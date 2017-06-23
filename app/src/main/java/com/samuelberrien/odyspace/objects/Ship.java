@@ -23,12 +23,13 @@ import java.util.List;
 
 public class Ship extends BaseItem {
 
-    public static float MAX_SPEED = 0.0125f;
-    private float maxSpeed = Ship.MAX_SPEED;
-    private float boostSpeed;
+    public static float SHIP_MAX_SPEED = 0.0125f;
+    private float mMaxSpeed = Ship.SHIP_MAX_SPEED;
+    private float mBoostSpeed;
     private final float ROCKET_MAX_SPEED = 0.020f;
     private final float rollCoeff = 1f;
     private final float pitchCoeff = 0.5f;
+    private final float boostCoeff = 2.0f;
 
     private final float[] originalSpeedVec = new float[]{0f, 0f, 1f, 0f};
     private final float[] originalUpVec = new float[]{0f, 1f, 0f, 0f};
@@ -80,7 +81,7 @@ public class Ship extends BaseItem {
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.fireType = fireType;
         this.exploded = false;
-        this.boostSpeed = 0f;
+        this.mBoostSpeed = 0f;
     }
 
     public void addExplosion(List<Explosion> explosions) {
@@ -96,8 +97,8 @@ public class Ship extends BaseItem {
     }
 
     public void move(Joystick joystick, Controls controls) {
-        this.boostSpeed = (float) Math.pow((controls.getBoost() + 2f) * 2f, 2d);
-        this.maxSpeed = this.MAX_SPEED * this.boostSpeed;
+        this.mBoostSpeed = (float) Math.exp(controls.getBoost() + 2f) * this.boostCoeff;
+        this.mMaxSpeed = this.SHIP_MAX_SPEED * this.mBoostSpeed;
 
         float[] tmp = joystick.getStickPosition();
 
@@ -121,9 +122,9 @@ public class Ship extends BaseItem {
         float[] tmpMat = super.mRotationMatrix.clone();
         Matrix.multiplyMM(super.mRotationMatrix, 0, tmpMat, 0, currRotMatrix, 0);
 
-        super.mPosition[0] += this.maxSpeed * realSpeed[0];
-        super.mPosition[1] += this.maxSpeed * realSpeed[1];
-        super.mPosition[2] += this.maxSpeed * realSpeed[2];
+        super.mPosition[0] += this.mMaxSpeed * realSpeed[0];
+        super.mPosition[1] += this.mMaxSpeed * realSpeed[1];
+        super.mPosition[2] += this.mMaxSpeed * realSpeed[2];
 
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -137,7 +138,7 @@ public class Ship extends BaseItem {
 
     public void fire(Controls controls, List<BaseItem> rockets) {
         if (controls.isFire()) {
-            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.boostSpeed >= 16f ? this.boostSpeed : 16f) * this.ROCKET_MAX_SPEED);
+            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 16f ? this.mBoostSpeed : 16f) * this.ROCKET_MAX_SPEED);
             controls.turnOffFire();
         }
     }

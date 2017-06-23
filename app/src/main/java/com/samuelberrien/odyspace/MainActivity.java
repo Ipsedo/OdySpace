@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < maxLevel; i++) {
             final int currLvl = i;
             Button levelItem = new Button(this);
+            levelItem.setAllCaps(false);
             levelItem.setText((i + 1) + " - " + Level.LEVELS[i]);
             levelItem.setOnClickListener(new View.OnClickListener() {
                 @Override

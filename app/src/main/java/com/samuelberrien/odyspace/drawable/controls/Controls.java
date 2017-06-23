@@ -183,6 +183,10 @@ public class Controls {
         this.isFire = false;
     }
 
+    /**
+     * Return current boost
+     * @return a float between -1 (min) to 1 (max)
+     */
     public float getBoost() {
         return (this.mBoostStickPosition[1] - this.mBoostPosition[1]) / (0.5f * (this.boostHeight - this.boostWidth));
     }
