@@ -35,12 +35,15 @@ public class Compass {
 
     private double angleWithFrontVec;
 
+    private float vecShipToOtherLength;
+    private float maxLength;
+
     private int mPositionHandle;
     private int mColorHandle;
     private int mMVPMatrixHandle;
     private int mProgram;
 
-    public Compass(Context context) {
+    public Compass(Context context, float maxDistance) {
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
@@ -53,6 +56,8 @@ public class Compass {
 
         this.mModelMatrix = new float[16];
         this.angleWithFrontVec = 0f;
+        this.vecShipToOtherLength = 0.0f;
+        this.maxLength = maxDistance;
     }
 
     private void makeTriangle() {
@@ -71,6 +76,7 @@ public class Compass {
 
     public void update(Ship from, BaseItem to) {
         float[] vecShipToOther = from.vector3fTo(to);
+        this.vecShipToOtherLength = Vector.length3f(vecShipToOther);
         float[] vecUpShip = from.getCamUpVec();
         float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
 
@@ -96,7 +102,7 @@ public class Compass {
     }
 
     public void draw(float ratio) {
-        if (this.angleWithFrontVec > Math.toRadians(30d)) {
+        if (this.angleWithFrontVec > Math.toRadians(30d) && this.maxLength > this.vecShipToOtherLength) {
             float[] mViewMatrix = new float[16];
             Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
             float[] mVPMatrix = new float[16];

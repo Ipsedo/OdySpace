@@ -118,7 +118,7 @@ public class TestBossThread implements Level {
         this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
         this.joystick = joystick;
         this.controls = controls;
-        this.compass = new Compass(this.context);
+        this.compass = new Compass(this.context, Float.MAX_VALUE - 10.0f);
         this.isInit = true;
     }
 

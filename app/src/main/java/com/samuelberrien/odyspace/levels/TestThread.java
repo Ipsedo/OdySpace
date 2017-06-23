@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
@@ -63,6 +64,7 @@ public class TestThread implements Level {
     private Controls controls;
 
     private ProgressBar currLevelProgression;
+    private Compass compass;
 
     private SoundPool mSounds;
     private int soundId;
@@ -111,6 +113,7 @@ public class TestThread implements Level {
                 .build();
         this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
 
+        this.compass = new Compass(this.context, levelLimitSize / 12f);
 
         this.isInit = true;
     }
@@ -141,6 +144,11 @@ public class TestThread implements Level {
     @Override
     public void drawLevelInfo(float ratio) {
         this.currLevelProgression.draw(ratio);
+        ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
+        for (BaseItem ico : icos) {
+            this.compass.update(this.ship, ico);
+            this.compass.draw(ratio);
+        }
     }
 
     @Override

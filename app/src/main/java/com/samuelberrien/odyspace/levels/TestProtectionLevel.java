@@ -94,7 +94,7 @@ public class TestProtectionLevel implements Level {
 
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
         this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
-        this.directionToIco = new Compass(this.context);
+        this.directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
 
         this.startTime = System.currentTimeMillis();
 
