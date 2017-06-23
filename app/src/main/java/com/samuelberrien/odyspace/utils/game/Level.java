@@ -15,7 +15,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-    String[] LEVELS = {"Practice", "We're under attack", "Eliminate the occupants", "The Master is here"};
+    String[] LEVELS = {"Practice", "Protect the bases", "Eliminate the occupants", "The Master is here"};
 
     void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
 

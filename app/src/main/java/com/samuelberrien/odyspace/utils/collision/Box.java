@@ -26,6 +26,9 @@ public class Box {
         this.sizeZ = sizeZ;
     }
 
+    private boolean checkIntersectionInclusion(Box b) {
+        return this.x + this.sizeX > b.x && this.x < b.x + b.sizeX && this.y + this.sizeY > b.y && this.y < b.y + b.sizeY && this.z + this.sizeZ > b.z && this.z < b.z + b.sizeZ;
+    }
 
     public boolean isInside(Box b) {
         /*//check the X axis
@@ -39,7 +42,8 @@ public class Box {
             }
         }*/
 
-        return this.x + this.sizeX > b.x && this.x < b.x + b.sizeX && this.y + this.sizeY > b.y && this.y < b.y + b.sizeY && this.z + this.sizeZ > b.z && this.z < b.z + b.sizeZ;
+        return this.checkIntersectionInclusion(b) || b.checkIntersectionInclusion(this);
+        //return Math.abs(this.x - b.x) * 2f < this.sizeX + b.sizeX && Math.abs(this.y - b.y) * 2f < this.sizeY + b.sizeY && Math.abs(this.z - b.z) * 2f < this.sizeZ + b.sizeZ;
     }
 
     public Box[] makeSons() {

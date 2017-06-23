@@ -11,6 +11,7 @@ import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.utils.graphics.Color;
 
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class Ship extends BaseItem {
     private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType) {
         super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
         this.maxLife = life;
-        this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, new float[]{0.8f, 0.2f, 0.1f, 1.0f});
+        this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
         this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
         this.fireType = fireType;
         this.exploded = false;
@@ -93,7 +94,7 @@ public class Ship extends BaseItem {
     }
 
     public void makeExplosion() {
-        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.5f, 0.16f);
+        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.5f, 0.16f, 1f, 1f);
     }
 
     public void move(Joystick joystick, Controls controls) {

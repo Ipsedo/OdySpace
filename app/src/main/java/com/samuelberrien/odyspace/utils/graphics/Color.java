@@ -25,4 +25,6 @@ public class Color {
 
     public static float[] LevelProgressBarColor = {38f / 255f, 166f / 255f, 91f / 255f, 1f};
 
+    public static float[] LifeRed = new float[]{0.8f, 0.2f, 0.1f, 1.0f};
+
 }

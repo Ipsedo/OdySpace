@@ -26,7 +26,7 @@ public class Explosion {
     private final float maxSpeed;
     private final float limitSpeed;
 
-    public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed) {
+    public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed, float limitScale, float maxScale) {
         this.maxSpeed = initSpeed;
         this.limitSpeed = limitSpeed;
         this.particules = new ArrayList<>();
@@ -34,11 +34,11 @@ public class Explosion {
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
         this.particule.setColor(mDiffColor);
         for (int i = 0; i < nbParticule; i++) {
-            this.particules.add(new Particule(rand, mPosition));
+            this.particules.add(new Particule(rand, mPosition, limitScale, maxScale));
         }
     }
 
-    public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed) {
+    public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed, float limitScale, float maxScale) {
         this.maxSpeed = initSpeed;
         this.limitSpeed = limitSpeed;
         this.particules = new ArrayList<>();
@@ -46,7 +46,7 @@ public class Explosion {
         this.particule = particule;
         this.particule.setColor(mDiffColor);
         for (int i = 0; i < nbParticule; i++) {
-            this.particules.add(new Particule(rand, mPosition));
+            this.particules.add(new Particule(rand, mPosition, limitScale, maxScale));
         }
     }
 
@@ -85,7 +85,9 @@ public class Explosion {
         private float mAngle;
         private float[] mRotAxis;
 
-        public Particule(Random rand, float[] mPosition) {
+        private float scale;
+
+        public Particule(Random rand, float[] mPosition, float limitScale, float maxScale) {
 
             this.mPosition = mPosition.clone();
             this.mSpeed = new float[3];
@@ -100,6 +102,7 @@ public class Explosion {
             this.mRotAxis[0] = rand.nextFloat() * 2f - 1f;
             this.mRotAxis[1] = rand.nextFloat() * 2f - 1f;
             this.mRotAxis[2] = rand.nextFloat() * 2f - 1f;
+            this.scale = limitScale + (maxScale - limitScale) * rand.nextFloat();
         }
 
 
@@ -123,6 +126,8 @@ public class Explosion {
 
             float[] tmpMat = mModelMatrix.clone();
             Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, tmpRot, 0);
+
+            Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
 
             this.mModelMatrix = mModelMatrix.clone();
         }

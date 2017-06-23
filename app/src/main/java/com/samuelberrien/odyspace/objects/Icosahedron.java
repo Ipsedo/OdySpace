@@ -28,11 +28,11 @@ public class Icosahedron extends BaseItem {
     }
 
     public void makeExplosion() {
-        this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, (float) Math.ceil(super.scale / 3f) * 1.5f, 0.05f);
+        this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, (float) Math.ceil(super.scale / 3f) * 1.5f, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f));
     }
 
     public void makeExplosion(ObjModel particule) {
-        this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, (float) Math.ceil(super.scale / 3f) * 1.5f, 0.05f);
+        this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, (float) Math.ceil(super.scale / 3f) * 1.5f, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f));
     }
 
     public void addExplosion(List<Explosion> explosions) {

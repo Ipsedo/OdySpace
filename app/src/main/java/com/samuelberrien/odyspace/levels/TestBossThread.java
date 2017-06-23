@@ -180,7 +180,7 @@ public class TestBossThread implements Level {
         ennemi.addAll(this.rocketsBoss);
         ennemi.add(this.boss);
         ennemi.add(this.noiseMap);
-        Octree octree = new Octree(this.levelLimits, ami, ennemi, 1f);
+        Octree octree = new Octree(this.levelLimits, ami, ennemi, 3f);
         octree.computeOctree();
     }
 

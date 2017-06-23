@@ -43,7 +43,7 @@ public class Turret extends BaseItem {
     }
 
     public void makeExplosion(Context context) {
-        this.explosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 1.5f, 0.05f);
+        this.explosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 1.5f, 0.05f, 1f, 2f);
     }
 
     public void addExplosion(List<Explosion> explosions) {
