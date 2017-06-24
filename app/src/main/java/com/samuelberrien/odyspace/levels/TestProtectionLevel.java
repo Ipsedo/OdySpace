@@ -89,7 +89,7 @@ public class TestProtectionLevel implements Level {
         this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
         this.noiseMap.update();
         this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-        this.levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize - 100f, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
+        this.levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize - 100f, -levelLimitSize, levelLimitSize * 2f, levelLimitSize * 1.5f, levelLimitSize * 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
         this.cubeMap.update();
         this.levelLimitSize = levelLimitSize;
@@ -223,13 +223,13 @@ public class TestProtectionLevel implements Level {
     }
 
     private float[] randomIcoPosition() {
-        return new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * levelLimitSize + this.levelLimitSize / 2f + this.rand.nextFloat() * this.levelLimitSize / 2.1f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize};
+        return new float[]{this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize, -100f - 0.02f * this.levelLimitSize + this.levelLimitSize + this.rand.nextFloat() * this.levelLimitSize * 0.5f, this.rand.nextFloat() * this.levelLimitSize * 2f - this.levelLimitSize};
     }
 
     private float[] randomIcoSpeed(float maxSpeed) {
         float[] speed = new float[3];
 
-        double phi = -this.rand.nextDouble() * Math.PI / 3d - 2d * Math.PI / 3d;
+        double phi = Math.PI / 2d + this.rand.nextDouble() * Math.PI / 6d + 5d * Math.PI / 12d;
         double theta = this.rand.nextDouble() * Math.PI * 2d;
 
         speed[0] = maxSpeed * (float) (Math.cos(theta) * Math.sin(phi));
