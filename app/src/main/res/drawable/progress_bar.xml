@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/progress">
-        <clip>
-            <shape>
+        <rotate
+            android:fromDegrees="0"
+            android:toDegrees="360">
+            <shape
+                android:shape="ring">
                 <gradient
-                    android:startColor="#588f66"
-                    android:centerColor="#76b787"
-                    android:centerY="0.50"
-                    android:endColor="#588f66"
-                    android:angle="270"
-                    />
-                <corners
-                    android:bottomRightRadius="10dp"
-                    android:topRightRadius="10dp"
-                    />
+                    android:startColor="@color/pumpkin"
+                    android:endColor="@color/pumpkin">
+                </gradient>
             </shape>
-        </clip>
+        </rotate>
     </item>
-
 </layer-list>

@@ -2,7 +2,9 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Compass;
@@ -126,12 +128,17 @@ public class TestProtectionLevel implements Level {
 
         this.currLevelProgression = new ProgressBar(this.context, (int) this.levelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
-        this.mSounds = new SoundPool.Builder().setMaxStreams(20)
-                .setAudioAttributes(new AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build())
-                .build();
+        if (Build.VERSION.SDK_INT >= 21 ) {
+            this.mSounds = new SoundPool.Builder().setMaxStreams(20)
+                    .setAudioAttributes(new AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_GAME)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .build())
+                    .build();
+        } else {
+            this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+        }
+
         this.simpleBoomSoundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
         this.bigBoomSoundId = this.mSounds.load(this.context, R.raw.big_boom, 1);
 

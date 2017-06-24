@@ -5,6 +5,7 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.Build;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Compass;
@@ -108,12 +109,17 @@ public class TestThread implements Level {
         this.joystick = joystick;
         this.controls = controls;
 
-        this.mSounds = new SoundPool.Builder().setMaxStreams(20)
-                .setAudioAttributes(new AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build())
-                .build();
+        if (Build.VERSION.SDK_INT >= 21 ) {
+            this.mSounds = new SoundPool.Builder().setMaxStreams(20)
+                    .setAudioAttributes(new AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_GAME)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .build())
+                    .build();
+        } else {
+            this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+        }
+
         this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
 
         this.compass = new Compass(this.context, levelLimitSize / 12f);
