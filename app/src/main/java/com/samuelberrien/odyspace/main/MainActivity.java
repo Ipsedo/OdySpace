@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace;
+package com.samuelberrien.odyspace.main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.shop.ShopActivity;
 import com.samuelberrien.odyspace.utils.game.Level;

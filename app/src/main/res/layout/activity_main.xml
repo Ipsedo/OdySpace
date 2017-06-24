@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorMainLayout"
-    tools:context="com.samuelberrien.odyspace.MainActivity">
+    tools:context="com.samuelberrien.odyspace.main.MainActivity">
 
     <Button
         android:id="@+id/start_button"

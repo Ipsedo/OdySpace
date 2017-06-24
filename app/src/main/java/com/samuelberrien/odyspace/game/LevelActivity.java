@@ -1,22 +1,14 @@
 package com.samuelberrien.odyspace.game;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.samuelberrien.odyspace.MainActivity;
+import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.R;
 
 public class LevelActivity extends AppCompatActivity {
