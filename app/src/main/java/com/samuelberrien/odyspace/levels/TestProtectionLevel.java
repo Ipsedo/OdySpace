@@ -69,7 +69,6 @@ public class TestProtectionLevel implements Level {
     private long startTime;
 
     private ProgressBar currLevelProgression;
-    private ProgressBar currBaseLife;
 
     private Random rand;
 
@@ -126,7 +125,6 @@ public class TestProtectionLevel implements Level {
         }
 
         this.currLevelProgression = new ProgressBar(this.context, (int) this.levelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
-        this.currBaseLife = new ProgressBar(this.context, this.nbBase, 0.9f, 0.7f, Color.LifeRed);
 
         this.mSounds = new SoundPool.Builder().setMaxStreams(20)
                 .setAudioAttributes(new AudioAttributes.Builder()
@@ -170,7 +168,6 @@ public class TestProtectionLevel implements Level {
     @Override
     public void drawLevelInfo(float ratio) {
         this.currLevelProgression.draw(ratio);
-        this.currBaseLife.draw(ratio);
         ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
         for (BaseItem ico : icos) {
             this.directionToIco.update(this.ship, ico);
@@ -197,7 +194,6 @@ public class TestProtectionLevel implements Level {
             i.move();
 
         this.currLevelProgression.updateProgress((int) (System.currentTimeMillis() - this.startTime));
-        this.currBaseLife.updateProgress(this.bases.size());
     }
 
     @Override
@@ -260,7 +256,7 @@ public class TestProtectionLevel implements Level {
                 this.icosahedrons.remove(i);
         }
 
-        if (this.rand.nextFloat() < 0.09f) {
+        if (this.rand.nextFloat() < 0.06f) {
             Icosahedron tmp = new Icosahedron(this.icosahedron, this.randomIcoPosition(), this.randomIcoSpeed(this.rand.nextFloat() * 0.1f + 0.2f), this.rand.nextFloat() * 10f + 10f);
             tmp.move();
             this.icosahedrons.add(tmp);
