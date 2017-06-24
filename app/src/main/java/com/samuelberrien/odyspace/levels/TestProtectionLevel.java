@@ -286,7 +286,7 @@ public class TestProtectionLevel implements Level {
 
     @Override
     public int getScore() {
-        return 0;
+        return 100;
     }
 
     @Override

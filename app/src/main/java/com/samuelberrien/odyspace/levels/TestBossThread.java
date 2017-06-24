@@ -201,7 +201,7 @@ public class TestBossThread implements Level {
 
     @Override
     public int getScore() {
-        return this.boss.isAlive() ? 0 : 100;
+        return this.boss.isAlive() ? 0 : 500;
     }
 
     @Override
