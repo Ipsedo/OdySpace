@@ -115,7 +115,7 @@ public class TestTurrets implements Level {
                             .build())
                     .build();
         } else {
-            this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+            this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 1);
         }
 
         this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);

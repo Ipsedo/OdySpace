@@ -51,8 +51,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.levelActivity = levelActivity;
         this.setEGLContextClientVersion(2);
 
-        this.joystick = new Joystick(this.context);
-        this.controls = new Controls(this.context);
+        this.joystick = new Joystick();
+        this.controls = new Controls();
 
         this.currentLevel = this.getCurrentLevel(levelID);
 

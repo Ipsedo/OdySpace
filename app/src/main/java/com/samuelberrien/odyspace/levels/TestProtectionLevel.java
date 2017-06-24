@@ -137,7 +137,7 @@ public class TestProtectionLevel implements Level {
                             .build())
                     .build();
         } else {
-            this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+            this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 1);
         }
 
         this.simpleBoomSoundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
@@ -213,7 +213,7 @@ public class TestProtectionLevel implements Level {
         ennemi.addAll(this.icosahedrons);
         ennemi.add(this.noiseMap);
         ennemi.addAll(this.bases);
-        Octree octree = new Octree(this.levelLimits, ami, ennemi, 30f);
+        Octree octree = new Octree(this.levelLimits, ami, ennemi, 10f);
         octree.computeOctree();
 
         ami.clear();
@@ -221,7 +221,7 @@ public class TestProtectionLevel implements Level {
         ami.add(this.noiseMap);
         ami.addAll(this.bases);
         ennemi.addAll(this.icosahedrons);
-        octree = new Octree(this.levelLimits, ami, ennemi, 30f);
+        octree = new Octree(this.levelLimits, ami, ennemi, 10f);
         octree.computeOctree();
     }
 

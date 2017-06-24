@@ -51,7 +51,7 @@ public class Controls {
 
     float color[] = Color.ControlsColor;
 
-    public Controls(Context context) {
+    public Controls() {
         this.isBoostVisible = false;
         this.isFire = false;
     }

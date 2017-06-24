@@ -44,7 +44,7 @@ public class Joystick {
 
     float color[] = Color.ControlsColor;
 
-    public Joystick(Context context) {
+    public Joystick() {
         this.isVisible = false;
     }
 
