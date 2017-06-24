@@ -42,6 +42,8 @@ import java.util.Random;
 
 public class TestTurrets implements Level {
 
+    public static String NAME = "Eliminate the occupants";
+
     private Context context;
 
     private boolean isInit = false;

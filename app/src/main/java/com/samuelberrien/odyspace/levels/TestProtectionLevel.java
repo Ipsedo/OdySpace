@@ -42,6 +42,7 @@ import java.util.Random;
 
 public class TestProtectionLevel implements Level {
 
+    public static String NAME = "Protect the bases";
     private Context context;
 
     private Ship ship;

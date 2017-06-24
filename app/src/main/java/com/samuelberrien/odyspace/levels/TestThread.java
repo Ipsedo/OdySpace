@@ -44,6 +44,8 @@ import java.util.Random;
 
 public class TestThread implements Level {
 
+    public static String NAME = "Practice";
+
     Context context;
 
     private Box levelLimits;

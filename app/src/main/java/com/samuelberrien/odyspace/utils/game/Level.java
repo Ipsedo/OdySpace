@@ -4,6 +4,10 @@ import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.levels.TestBossThread;
+import com.samuelberrien.odyspace.levels.TestProtectionLevel;
+import com.samuelberrien.odyspace.levels.TestThread;
+import com.samuelberrien.odyspace.levels.TestTurrets;
 import com.samuelberrien.odyspace.objects.Ship;
 
 /**
@@ -15,7 +19,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-    String[] LEVELS = {"Practice", "Protect the bases", "Eliminate the occupants", "The Master is here"};
+    String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME};
 
     void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
 

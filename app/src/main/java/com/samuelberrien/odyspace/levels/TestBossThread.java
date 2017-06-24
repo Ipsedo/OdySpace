@@ -38,6 +38,8 @@ import java.util.Random;
 
 public class TestBossThread implements Level {
 
+    public static String NAME = "The Master is here";
+
     private Context context;
 
     private Ship ship;
