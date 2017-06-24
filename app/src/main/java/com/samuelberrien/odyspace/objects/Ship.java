@@ -139,7 +139,7 @@ public class Ship extends BaseItem {
 
     public void fire(Controls controls, List<BaseItem> rockets) {
         if (controls.isFire()) {
-            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 16f ? this.mBoostSpeed : 16f) * this.ROCKET_MAX_SPEED);
+            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
             controls.turnOffFire();
         }
     }

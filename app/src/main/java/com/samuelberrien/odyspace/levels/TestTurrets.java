@@ -26,6 +26,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Triangle;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class TestTurrets implements Level {
 
     private Ship ship;
 
+    private float levelLimitSize;
     private Box levelLimits;
     private NoiseMap noiseMap;
     private CubeMap cubeMap;
@@ -73,15 +75,17 @@ public class TestTurrets implements Level {
         this.ship = ship;
         this.ship.makeExplosion();
 
+        this.levelLimitSize = levelLimitSize;
+
         this.joystick = joystick;
         this.controls = controls;
 
         this.currLevelProgression = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
         float limitDown = -100f;
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 6, levelLimitSize, limitDown, 0.03f);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 6, this.levelLimitSize, limitDown, 0.03f);
         this.noiseMap.update();
-        this.levelLimits = new Box(-levelLimitSize, limitDown - 0.03f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
+        this.levelLimits = new Box(-this.levelLimitSize, limitDown - 0.03f * this.levelLimitSize, -this.levelLimitSize, this.levelLimitSize * 2f, this.levelLimitSize, this.levelLimitSize * 2f);
         this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_2/");
         this.cubeMap.update();
 
@@ -94,8 +98,8 @@ public class TestTurrets implements Level {
         ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbTurret; i++) {
-            float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
-            float z = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
+            float x = rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f;
+            float z = rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f;
 
             float[] triangles = this.noiseMap.passToModelMatrix(this.noiseMap.getRestreintArea(new float[]{x, 0f, z}));
             float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
@@ -199,6 +203,11 @@ public class TestTurrets implements Level {
         return this.isInit;
     }
 
+
+    private float getSoundLevel(BaseItem from) {
+        return 1f - Vector.length3f(from.vector3fTo(this.ship)) / this.levelLimitSize;
+    }
+
     @Override
     public void removeAddObjects() {
         for (int i = this.explosions.size() - 1; i >= 0; i--)
@@ -207,7 +216,7 @@ public class TestTurrets implements Level {
         for (int i = this.turrets.size() - 1; i >= 0; i--)
             if (!this.turrets.get(i).isAlive()) {
                 ((Turret) this.turrets.get(i)).addExplosion(this.explosions);
-                this.mSounds.play(this.soundId, 1f, 1f, 1, 0, 1f);
+                this.mSounds.play(this.soundId, this.getSoundLevel(this.turrets.get(i)), this.getSoundLevel(this.turrets.get(i)), 1, 0, 1f);
                 this.turrets.remove(i);
             }
         for (int i = this.rocketsShip.size() - 1; i >= 0; i--)

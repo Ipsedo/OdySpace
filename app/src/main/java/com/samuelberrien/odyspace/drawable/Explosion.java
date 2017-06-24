@@ -118,7 +118,6 @@ public class Explosion {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.setIdentityM(mModelMatrix, 0);
-            System.out.println("EXPLOSION : " + this.mPosition[0] + ", " + this.mPosition[1] + ", " + this.mPosition[2]);
             Matrix.translateM(mModelMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
 
             float[] tmpRot = new float[16];

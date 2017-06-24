@@ -28,6 +28,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Triangle;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class TestThread implements Level {
 
     Context context;
 
+    private float levelLimitSize;
     private Box levelLimits;
 
     private Ship ship;
@@ -64,8 +66,6 @@ public class TestThread implements Level {
 
     private boolean isInit = false;
 
-    private int score;
-
     private Joystick joystick;
     private Controls controls;
 
@@ -80,16 +80,17 @@ public class TestThread implements Level {
         this.context = context;
         this.ship = ship;
         this.ship.move(joystick, controls);
+        this.levelLimitSize = levelLimitSize;
 
         this.currLevelProgression = new ProgressBar(this.context, 50, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
         float limitDown = -100f;
         //this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
-        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
+        this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, this.levelLimitSize, limitDown, 0.02f);
         this.noiseMap.update();
-        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-        this.levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
-        this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
+        this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, this.levelLimitSize);
+        this.levelLimits = new Box(-this.levelLimitSize, limitDown - 0.02f * this.levelLimitSize, -this.levelLimitSize, this.levelLimitSize * 2f, this.levelLimitSize, this.levelLimitSize * 2f);
+        this.cubeMap = new CubeMap(this.context, this.levelLimitSize, "cube_map/ciel_1/");
         this.cubeMap.update();
 
         this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -98,15 +99,13 @@ public class TestThread implements Level {
 
         Random rand = new Random(System.currentTimeMillis());
         for (int i = 0; i < this.nbIcosahedron; i++) {
-            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * levelLimitSize / 2f - levelLimitSize / 4f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * levelLimitSize / 2f - levelLimitSize / 4f}, rand.nextFloat() * 2f + 1f);
+            Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * this.levelLimitSize / 2f - this.levelLimitSize / 4f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize / 2f - this.levelLimitSize / 4f}, rand.nextFloat() * 2f + 1f);
             ico.move();
             ico.makeExplosion();
             this.icosahedrons.add(ico);
         }
 
         this.ship.makeExplosion();
-
-        this.score = 0;
 
         this.joystick = joystick;
         this.controls = controls;
@@ -195,6 +194,10 @@ public class TestThread implements Level {
         return this.isInit;
     }
 
+    private float getSoundLevel(BaseItem from) {
+        return 1f - Vector.length3f(from.vector3fTo(this.ship)) / this.levelLimitSize;
+    }
+
     @Override
     public void removeAddObjects() {
         for (int i = this.explosions.size() - 1; i >= 0; i--)
@@ -205,9 +208,8 @@ public class TestThread implements Level {
             if (!this.icosahedrons.get(i).isAlive()) {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
                 ico.addExplosion(this.explosions);
-                this.mSounds.play(this.soundId, 1f, 1f, 1, 0, 1f);
+                this.mSounds.play(this.soundId, this.getSoundLevel(ico), this.getSoundLevel(ico), 1, 0, 1f);
                 this.icosahedrons.remove(i);
-                this.score++;
             } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
                 this.icosahedrons.remove(i);
         }
@@ -222,7 +224,7 @@ public class TestThread implements Level {
 
     @Override
     public int getScore() {
-        return this.score;
+        return this.nbIcosahedron - this.icosahedrons.size();
     }
 
     @Override

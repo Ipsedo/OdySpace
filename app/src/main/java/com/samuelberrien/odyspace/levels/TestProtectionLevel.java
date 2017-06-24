@@ -27,6 +27,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Triangle;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,7 +122,7 @@ public class TestProtectionLevel implements Level {
 
             float[] pos = new float[]{x, moy + 5f, z};
 
-            Base tmpBase = new Base(this.base, 1, pos, 15f);
+            Base tmpBase = new Base(this.base, 1, pos, 25f);
             tmpBase.move();
             tmpBase.makeExplosion();
             this.bases.add(tmpBase);
@@ -150,7 +151,7 @@ public class TestProtectionLevel implements Level {
 
     @Override
     public float[] getLightPos() {
-        return new float[]{0f, 250f, 0f};
+        return new float[]{0f, this.levelLimitSize * 0.5f, 0f};
     }
 
     @Override
@@ -247,6 +248,10 @@ public class TestProtectionLevel implements Level {
         return speed;
     }
 
+    private float getSoundLevel(BaseItem from) {
+        return 1f - Vector.length3f(from.vector3fTo(this.ship)) / this.levelLimitSize;
+    }
+
     @Override
     public void removeAddObjects() {
         for (int i = this.explosions.size() - 1; i >= 0; i--)
@@ -258,7 +263,7 @@ public class TestProtectionLevel implements Level {
                 Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
                 ico.makeExplosion(this.particule);
                 ico.addExplosion(this.explosions);
-                this.mSounds.play(this.simpleBoomSoundId, 1f, 1f, 1, 0, 1f);
+                this.mSounds.play(this.simpleBoomSoundId, this.getSoundLevel(ico), this.getSoundLevel(ico), 1, 0, 1f);
                 this.icosahedrons.remove(i);
             } else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
                 this.icosahedrons.remove(i);
@@ -279,7 +284,7 @@ public class TestProtectionLevel implements Level {
 
         for (int i = this.bases.size() - 1; i >= 0; i--)
             if (!this.bases.get(i).isAlive()) {
-                this.mSounds.play(this.bigBoomSoundId, 1f, 1f, 1, 0, 1f);
+                this.mSounds.play(this.bigBoomSoundId, this.getSoundLevel(this.bases.get(i)), this.getSoundLevel(this.bases.get(i)), 1, 0, 1f);
                 ((Base) this.bases.get(i)).addExplosion(this.explosions);
                 this.bases.remove(i);
             }
