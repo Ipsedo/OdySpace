@@ -130,7 +130,7 @@ public class TestProtectionLevel implements Level {
 
         this.currLevelProgression = new ProgressBar(this.context, (int) this.levelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
-        if (Build.VERSION.SDK_INT >= 21 ) {
+        if (Build.VERSION.SDK_INT >= 21) {
             this.mSounds = new SoundPool.Builder().setMaxStreams(20)
                     .setAudioAttributes(new AudioAttributes.Builder()
                             .setUsage(AudioAttributes.USAGE_GAME)

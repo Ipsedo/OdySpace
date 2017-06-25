@@ -185,6 +185,7 @@ public class Controls {
 
     /**
      * Return current boost
+     *
      * @return a float between -1 (min) to 1 (max)
      */
     public float getBoost() {

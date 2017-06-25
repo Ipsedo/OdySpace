@@ -110,7 +110,7 @@ public class TestThread implements Level {
         this.joystick = joystick;
         this.controls = controls;
 
-        if (Build.VERSION.SDK_INT >= 21 ) {
+        if (Build.VERSION.SDK_INT >= 21) {
             this.mSounds = new SoundPool.Builder().setMaxStreams(20)
                     .setAudioAttributes(new AudioAttributes.Builder()
                             .setUsage(AudioAttributes.USAGE_GAME)

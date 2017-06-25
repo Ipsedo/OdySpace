@@ -87,9 +87,9 @@ public class ShaderLoader {
         int error;
         if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
             Log.e("Renderer 1D", glOperation + ": glError " + error);
-            if(error == GLES20.GL_INVALID_OPERATION) {
+            if (error == GLES20.GL_INVALID_OPERATION) {
                 throw new RuntimeException(glOperation + ": glError GL_INVALID_OPERATION " + error);
-            } else if(error == GLES20.GL_INVALID_VALUE) {
+            } else if (error == GLES20.GL_INVALID_VALUE) {
                 throw new RuntimeException(glOperation + ": glError GL_INVALID_VALUE " + error);
             } else {
                 throw new RuntimeException(glOperation + ": glError " + error);
