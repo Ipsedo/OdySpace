@@ -8,6 +8,7 @@ import android.media.SoundPool;
 import android.os.Build;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
@@ -65,6 +66,7 @@ public class TestTurrets implements Level {
     private Controls controls;
 
     private ProgressBar currLevelProgression;
+    private Compass compass;
 
     private SoundPool mSounds;
     private int soundId;
@@ -111,7 +113,7 @@ public class TestTurrets implements Level {
             this.turrets.add(tmp);
         }
 
-        if (Build.VERSION.SDK_INT >= 21 ) {
+        if (Build.VERSION.SDK_INT >= 21) {
             this.mSounds = new SoundPool.Builder().setMaxStreams(20)
                     .setAudioAttributes(new AudioAttributes.Builder()
                             .setUsage(AudioAttributes.USAGE_GAME)
@@ -123,6 +125,8 @@ public class TestTurrets implements Level {
         }
 
         this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
+
+        this.compass = new Compass(this.context, this.levelLimitSize / 12f);
 
         this.isInit = true;
     }
@@ -156,6 +160,11 @@ public class TestTurrets implements Level {
 
     @Override
     public void drawLevelInfo(float ratio) {
+        ArrayList<BaseItem> turrets = new ArrayList<>(this.turrets);
+        for (BaseItem t : turrets) {
+            this.compass.update(this.ship, t);
+            this.compass.draw(ratio);
+        }
         this.currLevelProgression.draw(ratio);
     }
 

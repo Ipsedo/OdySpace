@@ -123,7 +123,7 @@ public class TestThread implements Level {
 
         this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
 
-        this.compass = new Compass(this.context, levelLimitSize / 12f);
+        this.compass = new Compass(this.context, this.levelLimitSize / 12f);
 
         this.isInit = true;
     }
