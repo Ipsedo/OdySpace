@@ -3,13 +3,14 @@
     <item android:id="@android:id/progress">
         <rotate
             android:fromDegrees="0"
+            android:pivotX="50%"
+            android:pivotY="50%"
             android:toDegrees="360">
-            <shape
-                android:shape="ring">
+            <shape android:shape="ring">
                 <gradient
-                    android:startColor="@color/pumpkin"
-                    android:endColor="@color/pumpkin">
-                </gradient>
+                    android:endColor="@color/pumpkin"
+                    android:startColor="@color/pumpkin"></gradient>
+                <corners android:radius="3dp"></corners>
             </shape>
         </rotate>
     </item>

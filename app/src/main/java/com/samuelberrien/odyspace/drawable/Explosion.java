@@ -5,7 +5,6 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
-import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.nio.FloatBuffer;
@@ -23,30 +22,27 @@ public class Explosion {
 
     private ArrayList<Particule> particules;
     private ObjModel particule;
-    private final float maxSpeed;
-    private final float limitSpeed;
+    private final float limitSpeedAlife;
 
-    public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed, float limitScale, float maxScale) {
-        this.maxSpeed = initSpeed;
-        this.limitSpeed = limitSpeed;
+    public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
+        this.limitSpeedAlife = limitSpeedAlife;
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
         this.particule.setColor(mDiffColor);
         for (int i = 0; i < nbParticule; i++) {
-            this.particules.add(new Particule(rand, mPosition, limitScale, maxScale));
+            this.particules.add(new Particule(rand, mPosition, limitScale, maxScale, limitSpeed, maxSpeed));
         }
     }
 
-    public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float initSpeed, float limitSpeed, float limitScale, float maxScale) {
-        this.maxSpeed = initSpeed;
-        this.limitSpeed = limitSpeed;
+    public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
+        this.limitSpeedAlife = limitSpeedAlife;
         this.particules = new ArrayList<>();
         Random rand = new Random(System.currentTimeMillis());
         this.particule = particule;
         this.particule.setColor(mDiffColor);
         for (int i = 0; i < nbParticule; i++) {
-            this.particules.add(new Particule(rand, mPosition, limitScale, maxScale));
+            this.particules.add(new Particule(rand, mPosition, limitScale, maxScale, limitSpeed, maxSpeed));
         }
     }
 
@@ -87,15 +83,15 @@ public class Explosion {
 
         private float scale;
 
-        public Particule(Random rand, float[] mPosition, float limitScale, float maxScale) {
+        public Particule(Random rand, float[] mPosition, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
 
             this.mPosition = mPosition.clone();
             this.mSpeed = new float[3];
             double phi = rand.nextDouble() * 360d;
             double theta = rand.nextDouble() * 360d;
-            this.mSpeed[0] = (float) (Math.cos(phi) * Math.sin(theta));
-            this.mSpeed[1] = (float) Math.sin(phi);
-            this.mSpeed[2] = (float) (Math.cos(phi) * Math.cos(theta));
+            this.mSpeed[0] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.sin(theta));
+            this.mSpeed[1] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) Math.sin(phi);
+            this.mSpeed[2] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.cos(theta));
             this.mModelMatrix = new float[16];
             this.mAngle = rand.nextFloat() * 360f;
             this.mRotAxis = new float[3];
@@ -107,9 +103,9 @@ public class Explosion {
 
 
         public void move() {
-            this.mPosition[0] += Explosion.this.maxSpeed * this.mSpeed[0];
-            this.mPosition[1] += Explosion.this.maxSpeed * this.mSpeed[1];
-            this.mPosition[2] += Explosion.this.maxSpeed * this.mSpeed[2];
+            this.mPosition[0] += this.mSpeed[0];
+            this.mPosition[1] += this.mSpeed[1];
+            this.mPosition[2] += this.mSpeed[2];
 
             this.mSpeed[0] /= 1.1;
             this.mSpeed[1] /= 1.1;
@@ -132,7 +128,7 @@ public class Explosion {
         }
 
         public boolean isAlive() {
-            return Vector.length3f(this.mSpeed) > Explosion.this.limitSpeed;
+            return Vector.length3f(this.mSpeed) > Explosion.this.limitSpeedAlife;
         }
 
         public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, ObjModel object) {

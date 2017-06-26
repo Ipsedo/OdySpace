@@ -94,7 +94,7 @@ public class Ship extends BaseItem {
     }
 
     public void makeExplosion() {
-        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.5f, 0.16f, 1f, 1f);
+        this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.16f, 1f, 1f, 0.4f, 0.6f);
     }
 
     public void move(Joystick joystick, Controls controls) {
