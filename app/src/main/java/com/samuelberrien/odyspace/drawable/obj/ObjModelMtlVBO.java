@@ -490,11 +490,6 @@ public class ObjModelMtlVBO implements GLDrawable {
 		this.diffBufferId = tmpSpecColor;
 	}
 
-	/**
-	 * @param mvpMatrix           The Model View Project matrix in which to draw this shape.
-	 * @param mvMatrix            The Model View matrix
-	 * @param mLightPosInEyeSpace The position of light in eye space
-	 */
 	@Override
 	public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		GLES20.glUseProgram(mProgram);

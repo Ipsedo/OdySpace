@@ -6,12 +6,13 @@
             android:pivotX="50%"
             android:pivotY="50%"
             android:toDegrees="200">
-            <shape android:shape="ring"
+            <shape
+                android:shape="ring"
                 android:useLevel="true">
                 <gradient
                     android:endColor="@color/pumpkin"
                     android:startColor="@color/pumpkin2"
-                    android:useLevel="true"/>
+                    android:useLevel="true" />
                 <corners android:radius="3dp" />
             </shape>
         </rotate>

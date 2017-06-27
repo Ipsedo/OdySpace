@@ -34,7 +34,7 @@ public class RemoveThread extends CancelableThread {
 	public void work() {
 		super.level.removeAddObjects();
 		/*try {
-            Thread.sleep(CancelableThread.TIME_TO_WAIT);
+			Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/

@@ -32,7 +32,7 @@ public class Box {
 
 	public boolean isInside(Box b) {
 		/*//check the X axis
-        if (Math.abs(this.x - b.x) < this.sizeX + b.sizeX) {
+		if (Math.abs(this.x - b.x) < this.sizeX + b.sizeX) {
             //check the Y axis
             if (Math.abs(this.y - b.y) < this.sizeY + b.sizeY) {
                 //check the Z axis

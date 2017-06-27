@@ -135,7 +135,7 @@ public class Explosion {
 			GLES20.glDisable(GLES20.GL_CULL_FACE);
 			float[] mMVMatrix = new float[16];
 			/*Matrix.multiplyMM(mPVMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-            float[] mPVMMatrix = new float[16];
+			float[] mPVMMatrix = new float[16];
             Matrix.multiplyMM(mPVMMatrix, 0, mPVMatrix, 0, this.mModelMatrix, 0);*/
 			Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, this.mModelMatrix, 0);
 			float[] mMVPMatrix = new float[16];

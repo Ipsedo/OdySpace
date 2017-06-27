@@ -9,5 +9,11 @@ package com.samuelberrien.odyspace.drawable;
 
 public interface GLDrawable {
 
+	/**
+	 * @param mvpMatrix
+	 * @param mvMatrix
+	 * @param mLightPosInEyeSpace
+	 * @param mCameraPosition
+	 */
 	void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 }

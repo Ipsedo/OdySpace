@@ -25,7 +25,7 @@ public class UpdateThread extends CancelableThread {
 	public void work() {
 		super.level.update();
 		/*try {
-            Thread.sleep(CancelableThread.TIME_TO_WAIT);
+			Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/

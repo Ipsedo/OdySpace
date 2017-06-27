@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-
-
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-<item>
-    <shape android:shape="rectangle">
-        <solid android:color="@color/black" />
-    </shape>
-</item>
-<item android:bottom="2dp"  android:top="2dp" >
-    <shape xmlns:android="http://schemas.android.com/apk/res/android"
-        android:shape="rectangle"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
-        <gradient
-            android:startColor="@color/colorMainLayout"
-            android:centerColor="@color/colorFstButton"
-            android:endColor="@color/colorMainLayout"
-            android:angle="270" />
-    </shape>
-</item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+    <item
+        android:bottom="2dp"
+        android:top="2dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+            <gradient
+                android:startColor="@color/colorMainLayout"
+                android:centerColor="@color/colorFstButton"
+                android:endColor="@color/colorMainLayout"
+                android:angle="270" />
+        </shape>
+    </item>
 </layer-list>

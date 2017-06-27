@@ -60,7 +60,7 @@ public class EndGameThread extends CancelableThread {
 			this.finishGame();
 		}
 		/*try {
-            Thread.sleep(CancelableThread.TIME_TO_WAIT);
+			Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/

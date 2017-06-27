@@ -8,5 +8,8 @@ package com.samuelberrien.odyspace.drawable;
  */
 
 public interface GLInfoDrawable {
+	/**
+	 * @param ratio
+	 */
 	void draw(float ratio);
 }

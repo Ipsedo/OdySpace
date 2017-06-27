@@ -88,6 +88,6 @@
         android:background="@drawable/button_reset_skull"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:onClick="reset"/>
+        android:onClick="reset" />
 
 </RelativeLayout>

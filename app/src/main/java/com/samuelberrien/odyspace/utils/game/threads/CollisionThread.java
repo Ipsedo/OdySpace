@@ -25,7 +25,7 @@ public class CollisionThread extends CancelableThread {
 	public void work() {
 		super.level.collide();
 		/*try {
-            Thread.sleep(CancelableThread.TIME_TO_WAIT);
+			Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
