@@ -1,5 +1,6 @@
 package com.samuelberrien.odyspace.drawable.maps;
 
+import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.game.Item;
 
 /**
@@ -9,13 +10,11 @@ import com.samuelberrien.odyspace.utils.game.Item;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public interface Map {
+public interface Map extends GLDrawable {
 
-    float[] getRestreintArea(float[] position);
+	float[] getRestreintArea(float[] position);
 
-    float[] passToModelMatrix(float[] triangles);
+	float[] passToModelMatrix(float[] triangles);
 
-    void update();
-
-    void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace);
+	void update();
 }

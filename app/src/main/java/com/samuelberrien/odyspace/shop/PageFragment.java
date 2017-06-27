@@ -20,49 +20,49 @@ import com.samuelberrien.odyspace.R;
 
 public class PageFragment extends Fragment {
 
-    public static final String ARG_PAGE = "ARG_PAGE";
+	public static final String ARG_PAGE = "ARG_PAGE";
 
-    private int mPage;
+	private int mPage;
 
-    public static PageFragment newInstance(int page) {
-        Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
-        PageFragment fragment = new PageFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+	public static PageFragment newInstance(int page) {
+		Bundle args = new Bundle();
+		args.putInt(ARG_PAGE, page);
+		PageFragment fragment = new PageFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.mPage = getArguments().getInt(ARG_PAGE);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		this.mPage = getArguments().getInt(ARG_PAGE);
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        ListView listView = (ListView) view;
-        if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
-            listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.fire_shop_list_item)));
-        } else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
-            listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.ship_shop_list_item)));
-        } else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.BONUS_TAB) == 0) {
+		ListView listView = (ListView) view;
+		if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
+			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.fire_shop_list_item)));
+		} else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
+			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.ship_shop_list_item)));
+		} else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.BONUS_TAB) == 0) {
 
-        }
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                PageFragment.this.getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((ShopActivity) PageFragment.this.getActivity()).setItemChosen(PageFragment.this.mPage - 1, i);
-                    }
-                });
-            }
-        });
-        listView.setClickable(true);
+		}
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+				PageFragment.this.getActivity().runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						((ShopActivity) PageFragment.this.getActivity()).setItemChosen(PageFragment.this.mPage - 1, i);
+					}
+				});
+			}
+		});
+		listView.setClickable(true);
 
-        return view;
-    }
+		return view;
+	}
 }

@@ -17,26 +17,26 @@ import java.util.List;
 
 public class Icosahedron extends BaseItem {
 
-    private Explosion mExplosion;
+	private Explosion mExplosion;
 
-    public Icosahedron(Context context, float[] mPosition, float scale) {
-        super(context, "icosahedron.obj", "icosahedron.mtl", 0.7f, 0f, true, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
-    }
+	public Icosahedron(Context context, float[] mPosition, float scale) {
+		super(context, "icosahedron.obj", "icosahedron.mtl", 0.7f, 0f, true, 1, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
+	}
 
-    public Icosahedron(ObjModelMtlVBO model, float[] mPosition, float[] mSpeed, float scale) {
-        super(model, 1, mPosition, mSpeed, new float[3], scale);
-    }
+	public Icosahedron(ObjModelMtlVBO model, float[] mPosition, float[] mSpeed, float scale) {
+		super(model, 1, mPosition, mSpeed, new float[3], scale);
+	}
 
-    public void makeExplosion() {
-        this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);
-    }
+	public void makeExplosion() {
+		this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);
+	}
 
-    public void makeExplosion(ObjModel particule) {
-        this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);
-    }
+	public void makeExplosion(ObjModel particule) {
+		this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);
+	}
 
-    public void addExplosion(List<Explosion> explosions) {
-        this.mExplosion.setPosition(this.mPosition.clone());
-        explosions.add(this.mExplosion);
-    }
+	public void addExplosion(List<Explosion> explosions) {
+		this.mExplosion.setPosition(this.mPosition.clone());
+		explosions.add(this.mExplosion);
+	}
 }

@@ -11,15 +11,15 @@ import com.samuelberrien.odyspace.utils.collision.Box;
 
 public interface Item {
 
-    boolean collideTest(float[] triangleArray, float[] modelMatrix);
+	boolean collideTest(float[] triangleArray, float[] modelMatrix);
 
-    boolean isCollided(Item other);
+	boolean isCollided(Item other);
 
-    boolean isInside(Box Box);
+	boolean isInside(Box Box);
 
-    int getDamage();
+	int getDamage();
 
-    void decrementLife(int minus);
+	void decrementLife(int minus);
 
-    float[] getPosition();
+	float[] getPosition();
 }

@@ -10,12 +10,12 @@ import android.content.Context;
  */
 
 public class Bonus extends BaseItem {
-    public Bonus(Context context, String objFileName, String mtlFileName, float[] mPosition, float[] mSpeed, float[] mAcceleration) {
-        super(context, objFileName, mtlFileName, 1f, 0f, false, 1, mPosition, mSpeed, mAcceleration, 1f);
-    }
+	public Bonus(Context context, String objFileName, String mtlFileName, float[] mPosition, float[] mSpeed, float[] mAcceleration) {
+		super(context, objFileName, mtlFileName, 1f, 0f, false, 1, mPosition, mSpeed, mAcceleration, 1f);
+	}
 
-    @Override
-    public int getDamage() {
-        return 0;
-    }
+	@Override
+	public int getDamage() {
+		return 0;
+	}
 }

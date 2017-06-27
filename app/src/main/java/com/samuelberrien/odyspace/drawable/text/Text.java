@@ -15,27 +15,27 @@ import com.samuelberrien.odyspace.utils.graphics.Color;
 
 public class Text extends ObjModel {
 
-    private float scale;
+	private float scale;
 
-    public Text(Context context, String objFileName, float scale) {
-        super(context, objFileName, Color.TextsColor[0], Color.TextsColor[1], Color.TextsColor[2], 1f, 0f, 0f);
-        this.scale = scale;
-    }
+	public Text(Context context, String objFileName, float scale) {
+		super(context, objFileName, Color.TextsColor[0], Color.TextsColor[1], Color.TextsColor[2], 1f, 0f, 0f);
+		this.scale = scale;
+	}
 
-    public void draw(float ratio) {
-        float[] mViewMatrix = new float[16];
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-        float[] mVPMatrix = new float[16];
-        float[] mPMatrix = new float[16];
-        Matrix.orthoM(mPMatrix, 0, -1f * ratio, 1f * ratio, -1f, 1f, -1f, 1f);
-        Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
-        float[] mMVPMatrix = new float[16];
-        float[] mMMatrix = new float[16];
-        Matrix.setIdentityM(mMMatrix, 0);
-        Matrix.translateM(mMMatrix, 0, 0f, 0f, 0f);
-        Matrix.scaleM(mMMatrix, 0, this.scale, this.scale, this.scale);
-        Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+	public void draw(float ratio) {
+		float[] mViewMatrix = new float[16];
+		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+		float[] mVPMatrix = new float[16];
+		float[] mPMatrix = new float[16];
+		Matrix.orthoM(mPMatrix, 0, -1f * ratio, 1f * ratio, -1f, 1f, -1f, 1f);
+		Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
+		float[] mMVPMatrix = new float[16];
+		float[] mMMatrix = new float[16];
+		Matrix.setIdentityM(mMMatrix, 0);
+		Matrix.translateM(mMMatrix, 0, 0f, 0f, 0f);
+		Matrix.scaleM(mMMatrix, 0, this.scale, this.scale, this.scale);
+		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
-        super.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f});
-    }
+		super.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);
+	}
 }

@@ -18,56 +18,56 @@ import java.util.Random;
 
 public class Forest {
 
-    private Context context;
+	private Context context;
 
-    private ObjModelMtlVBO tree;
+	private ObjModelMtlVBO tree;
 
-    private int nbTree;
-    private float[][] mModelsMatrix;
+	private int nbTree;
+	private float[][] mModelsMatrix;
 
-    public Forest(Context context, String treeObjFileName, String treeMtlFileName, int nbTree, Map map, float areaSize) {
-        this.context = context;
-        this.tree = new ObjModelMtlVBO(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
-        this.nbTree = nbTree;
-        this.mModelsMatrix = new float[this.nbTree][16];
-        this.initTrees(map, areaSize);
-    }
+	public Forest(Context context, String treeObjFileName, String treeMtlFileName, int nbTree, Map map, float areaSize) {
+		this.context = context;
+		this.tree = new ObjModelMtlVBO(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
+		this.nbTree = nbTree;
+		this.mModelsMatrix = new float[this.nbTree][16];
+		this.initTrees(map, areaSize);
+	}
 
-    private void initTrees(Map map, float areaSize) {
-        Random rand = new Random(System.currentTimeMillis());
-        for (int i = 0; i < this.nbTree; i++) {
-            float x = rand.nextFloat() * areaSize - areaSize * 0.5f;
-            float y;
-            float z = rand.nextFloat() * areaSize - areaSize * 0.5f;
+	private void initTrees(Map map, float areaSize) {
+		Random rand = new Random(System.currentTimeMillis());
+		for (int i = 0; i < this.nbTree; i++) {
+			float x = rand.nextFloat() * areaSize - areaSize * 0.5f;
+			float y;
+			float z = rand.nextFloat() * areaSize - areaSize * 0.5f;
 
-            float[] triangles = map.passToModelMatrix(map.getRestreintArea(new float[]{x, 0f, z}));
-            float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
-            moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
+			float[] triangles = map.passToModelMatrix(map.getRestreintArea(new float[]{x, 0f, z}));
+			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
+			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
-            y = moy;
+			y = moy;
 
-            double angle = rand.nextDouble() * 360f;
+			double angle = rand.nextDouble() * 360f;
 
-            float[] mModelMatrix = new float[16];
-            Matrix.setIdentityM(mModelMatrix, 0);
-            Matrix.translateM(mModelMatrix, 0, x, y, z);
+			float[] mModelMatrix = new float[16];
+			Matrix.setIdentityM(mModelMatrix, 0);
+			Matrix.translateM(mModelMatrix, 0, x, y, z);
 
-            float[] mRotMatrix = new float[16];
-            Matrix.setRotateM(mRotMatrix, 0, (float) angle, 0f, 1f, 0f);
+			float[] mRotMatrix = new float[16];
+			Matrix.setRotateM(mRotMatrix, 0, (float) angle, 0f, 1f, 0f);
 
-            Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, mRotMatrix, 0);
+			Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, mRotMatrix, 0);
 
-            this.mModelsMatrix[i] = mModelMatrix.clone();
-        }
-    }
+			this.mModelsMatrix[i] = mModelMatrix.clone();
+		}
+	}
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-        float[] tmpMVMatrix = new float[16];
-        float[] tmpMVPMatrix = new float[16];
-        for (int i = 0; i < this.nbTree; i++) {
-            Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mModelsMatrix[i], 0);
-            Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-            this.tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
-        }
-    }
+	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+		float[] tmpMVMatrix = new float[16];
+		float[] tmpMVPMatrix = new float[16];
+		for (int i = 0; i < this.nbTree; i++) {
+			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mModelsMatrix[i], 0);
+			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
+			this.tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
+		}
+	}
 }

@@ -11,32 +11,32 @@ import com.samuelberrien.odyspace.utils.game.Level;
 
 public class RemoveThread extends CancelableThread {
 
-    public RemoveThread(Level level) {
-        super("RemoveThread", level);
-        this.setPriority(Thread.MIN_PRIORITY);
-    }
+	public RemoveThread(Level level) {
+		super("RemoveThread", level);
+		this.setPriority(Thread.MIN_PRIORITY);
+	}
 
-    @Override
-    public void afterInit() {
+	@Override
+	public void afterInit() {
 
-    }
+	}
 
-    @Override
-    protected void waitRequiredTime(long t1) {
-        try {
-            Thread.sleep(120L);
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
-    }
+	@Override
+	protected void waitRequiredTime(long t1) {
+		try {
+			Thread.sleep(120L);
+		} catch (InterruptedException ie) {
+			ie.printStackTrace();
+		}
+	}
 
-    @Override
-    public void work() {
-        super.level.removeAddObjects();
-        /*try {
+	@Override
+	public void work() {
+		super.level.removeAddObjects();
+		/*try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-    }
+	}
 }

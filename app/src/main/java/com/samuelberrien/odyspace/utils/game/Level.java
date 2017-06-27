@@ -19,27 +19,27 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-    String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME};
+	String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME};
 
-    void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
+	void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
 
-    float[] getLightPos();
+	float[] getLightPos();
 
-    void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
+	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
-    void drawLevelInfo(float ratio);
+	void drawLevelInfo(float ratio);
 
-    void update();
+	void update();
 
-    void collide();
+	void collide();
 
-    boolean isInit();
+	boolean isInit();
 
-    void removeAddObjects();
+	void removeAddObjects();
 
-    int getScore();
+	int getScore();
 
-    boolean isDead();
+	boolean isDead();
 
-    boolean isWinner();
+	boolean isWinner();
 }

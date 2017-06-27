@@ -9,6 +9,6 @@ package com.samuelberrien.odyspace.utils.game;
 
 public interface BossMove {
 
-    float[] getModelMatrix(float[] mPosition, float[] mSpeed, float mScale);
+	float[] getModelMatrix(float[] mPosition, float[] mSpeed, float mScale);
 
 }

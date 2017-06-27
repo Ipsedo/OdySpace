@@ -17,31 +17,31 @@ import java.util.List;
 
 public class Base extends BaseItem {
 
-    private Explosion mExplosion;
+	private Explosion mExplosion;
 
-    public Base(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float scale) {
-        super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, new float[3], new float[3], scale);
-    }
+	public Base(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float scale) {
+		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, new float[3], new float[3], scale);
+	}
 
-    public Base(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float scale) {
-        super(objModelMtl, life, mPosition, new float[3], new float[3], scale);
-    }
+	public Base(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float scale) {
+		super(objModelMtl, life, mPosition, new float[3], new float[3], scale);
+	}
 
-    @Override
-    public int getDamage() {
-        return Integer.MAX_VALUE - 1;
-    }
+	@Override
+	public int getDamage() {
+		return Integer.MAX_VALUE - 1;
+	}
 
-    public void makeExplosion() {
-        this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
-    }
+	public void makeExplosion() {
+		this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+	}
 
-    public void makeExplosion(ObjModel particule) {
-        this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
-    }
+	public void makeExplosion(ObjModel particule) {
+		this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+	}
 
-    public void addExplosion(List<Explosion> explosions) {
-        this.mExplosion.setPosition(this.mPosition.clone());
-        explosions.add(this.mExplosion);
-    }
+	public void addExplosion(List<Explosion> explosions) {
+		this.mExplosion.setPosition(this.mPosition.clone());
+		explosions.add(this.mExplosion);
+	}
 }

@@ -13,30 +13,30 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT = 3;
-    public static String SHIP_TAB = "Ship";
-    public static String FIRE_TAB = "FireType";
-    public static String BONUS_TAB = "Bonus";
-    public static String[] TAB_TITLES = new String[]{SHIP_TAB, FIRE_TAB, BONUS_TAB};
+	final int PAGE_COUNT = 3;
+	public static String SHIP_TAB = "Ship";
+	public static String FIRE_TAB = "FireType";
+	public static String BONUS_TAB = "Bonus";
+	public static String[] TAB_TITLES = new String[]{SHIP_TAB, FIRE_TAB, BONUS_TAB};
 
-    public SampleFragmentPagerAdapter(FragmentManager fm) {
-        super(fm);
-    }
+	public SampleFragmentPagerAdapter(FragmentManager fm) {
+		super(fm);
+	}
 
-    @Override
-    public int getCount() {
-        return PAGE_COUNT;
-    }
+	@Override
+	public int getCount() {
+		return PAGE_COUNT;
+	}
 
-    @Override
-    public Fragment getItem(int position) {
-        return PageFragment.newInstance(position + 1);
-    }
+	@Override
+	public Fragment getItem(int position) {
+		return PageFragment.newInstance(position + 1);
+	}
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
-        return TAB_TITLES[position];
-    }
+	@Override
+	public CharSequence getPageTitle(int position) {
+		// Generate title based on item position
+		return TAB_TITLES[position];
+	}
 
 }

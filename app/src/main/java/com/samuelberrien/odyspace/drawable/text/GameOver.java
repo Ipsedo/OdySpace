@@ -10,7 +10,7 @@ import android.content.Context;
  */
 
 public class GameOver extends Text {
-    public GameOver(Context context) {
-        super(context, "game_over.obj", 0.5f);
-    }
+	public GameOver(Context context) {
+		super(context, "game_over.obj", 0.5f);
+	}
 }

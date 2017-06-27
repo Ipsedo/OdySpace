@@ -20,68 +20,68 @@ import java.util.Random;
 
 public class Turret extends BaseItem {
 
-    private Random rand;
+	private Random rand;
 
-    private ObjModelMtlVBO rocket;
+	private ObjModelMtlVBO rocket;
 
-    private Explosion explosion;
+	private Explosion explosion;
 
-    private FireType fireType;
+	private FireType fireType;
 
-    public Turret(Context context, float[] mPosition, FireType fireType) {
-        super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
-        this.rand = new Random(System.currentTimeMillis());
-        this.rocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
-        this.fireType = fireType;
-    }
+	public Turret(Context context, float[] mPosition, FireType fireType) {
+		super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
+		this.rand = new Random(System.currentTimeMillis());
+		this.rocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
+		this.fireType = fireType;
+	}
 
-    public Turret(ObjModelMtlVBO turret, ObjModelMtlVBO rocket, float[] mPosition, FireType fireType) {
-        super(turret, 1, mPosition, new float[3], new float[3], 4f);
-        this.rand = new Random(System.currentTimeMillis());
-        this.rocket = rocket;
-        this.fireType = fireType;
-    }
+	public Turret(ObjModelMtlVBO turret, ObjModelMtlVBO rocket, float[] mPosition, FireType fireType) {
+		super(turret, 1, mPosition, new float[3], new float[3], 4f);
+		this.rand = new Random(System.currentTimeMillis());
+		this.rocket = rocket;
+		this.fireType = fireType;
+	}
 
-    public void makeExplosion(Context context) {
-        this.explosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.05f, 1f, 2f, 1.0f, 1.5f);
-    }
+	public void makeExplosion(Context context) {
+		this.explosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.05f, 1f, 2f, 1.0f, 1.5f);
+	}
 
-    public void addExplosion(List<Explosion> explosions) {
-        explosions.add(this.explosion);
-    }
+	public void addExplosion(List<Explosion> explosions) {
+		explosions.add(this.explosion);
+	}
 
-    public void fire(List<BaseItem> rockets, Ship ship) {
-        if (this.rand.nextInt(800) == 50) {
-            float[] speedVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
-            float[] originaleVec = new float[]{0f, 0f, 1f};
-            float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
-            float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
-            float[] tmpMat = new float[16];
-            Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-            this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.17f);
-        }
-    }
+	public void fire(List<BaseItem> rockets, Ship ship) {
+		if (this.rand.nextInt(800) == 50) {
+			float[] speedVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
+			float[] originaleVec = new float[]{0f, 0f, 1f};
+			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
+			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
+			float[] tmpMat = new float[16];
+			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
+			this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.17f);
+		}
+	}
 
-    public void move(Ship ship) {
-        float[] u = new float[]{ship.mPosition[0] - super.mPosition[0], 0f, ship.mPosition[2] - super.mPosition[2]};
-        float[] v = new float[]{0f, 0f, 1f};
+	public void move(Ship ship) {
+		float[] u = new float[]{ship.mPosition[0] - super.mPosition[0], 0f, ship.mPosition[2] - super.mPosition[2]};
+		float[] v = new float[]{0f, 0f, 1f};
 
-        float[] cross = Vector.normalize3f(Vector.cross3f(Vector.normalize3f(u), Vector.normalize3f(v)));
-        double angle = Math.acos(Vector.dot3f(Vector.normalize3f(u), Vector.normalize3f(v)));
+		float[] cross = Vector.normalize3f(Vector.cross3f(Vector.normalize3f(u), Vector.normalize3f(v)));
+		double angle = Math.acos(Vector.dot3f(Vector.normalize3f(u), Vector.normalize3f(v)));
 
-        Matrix.setRotateM(super.mRotationMatrix, 0, (float) Math.toDegrees(angle), cross[0], cross[1], cross[2]);
+		Matrix.setRotateM(super.mRotationMatrix, 0, (float) Math.toDegrees(angle), cross[0], cross[1], cross[2]);
 
-        float[] mModelMatrix = new float[16];
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
-        Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, super.mRotationMatrix, 0);
-        Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
+		float[] mModelMatrix = new float[16];
+		Matrix.setIdentityM(mModelMatrix, 0);
+		Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
+		Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, super.mRotationMatrix, 0);
+		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
-        super.mModelMatrix = mModelMatrix.clone();
-    }
+		super.mModelMatrix = mModelMatrix.clone();
+	}
 
-    @Override
-    public void move() {
+	@Override
+	public void move() {
 
-    }
+	}
 }

@@ -11,7 +11,7 @@ import android.content.Context;
 
 public class LevelDone extends Text {
 
-    public LevelDone(Context context) {
-        super(context, "level_done.obj", 0.5f);
-    }
+	public LevelDone(Context context) {
+		super(context, "level_done.obj", 0.5f);
+	}
 }

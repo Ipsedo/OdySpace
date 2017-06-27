@@ -11,23 +11,23 @@ import com.samuelberrien.odyspace.utils.game.Level;
 
 public class UpdateThread extends CancelableThread {
 
-    public UpdateThread(Level level) {
-        super("UpdateThread", level);
-        this.setPriority(Thread.NORM_PRIORITY);
-    }
+	public UpdateThread(Level level) {
+		super("UpdateThread", level);
+		this.setPriority(Thread.NORM_PRIORITY);
+	}
 
-    @Override
-    public void afterInit() {
+	@Override
+	public void afterInit() {
 
-    }
+	}
 
-    @Override
-    public void work() {
-        super.level.update();
-        /*try {
+	@Override
+	public void work() {
+		super.level.update();
+		/*try {
             Thread.sleep(CancelableThread.TIME_TO_WAIT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-    }
+	}
 }

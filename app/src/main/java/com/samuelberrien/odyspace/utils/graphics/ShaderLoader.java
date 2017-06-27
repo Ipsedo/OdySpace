@@ -15,85 +15,85 @@ import java.io.InputStreamReader;
 
 public class ShaderLoader {
 
-    /**
-     * @param context The application context
-     * @param resId   The res glsl file id
-     * @return The shader code
-     */
-    public static String openShader(Context context, int resId) {
-        String shader = "";
+	/**
+	 * @param context The application context
+	 * @param resId   The res glsl file id
+	 * @return The shader code
+	 */
+	public static String openShader(Context context, int resId) {
+		String shader = "";
 
-        InputStream inputStream = context.getResources().openRawResource(resId);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		InputStream inputStream = context.getResources().openRawResource(resId);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                shader += line + "\n";
-            }
-            inputStream.close();
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		String line;
+		try {
+			while ((line = reader.readLine()) != null) {
+				shader += line + "\n";
+			}
+			inputStream.close();
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        return shader;
-    }
+		return shader;
+	}
 
-    /**
-     * Utility method for compiling a OpenGL shader.
-     * <p>
-     * <p><strong>Note:</strong> When developing shaders, use the checkGlError()
-     * method to debug shader coding errors.</p>
-     *
-     * @param type       - Vertex or fragment shader type.
-     * @param shaderCode - String containing the shader code.
-     * @return - Returns an id for the shader.
-     */
-    public static int loadShader(int type, String shaderCode) {
+	/**
+	 * Utility method for compiling a OpenGL shader.
+	 * <p>
+	 * <p><strong>Note:</strong> When developing shaders, use the checkGlError()
+	 * method to debug shader coding errors.</p>
+	 *
+	 * @param type       - Vertex or fragment shader type.
+	 * @param shaderCode - String containing the shader code.
+	 * @return - Returns an id for the shader.
+	 */
+	public static int loadShader(int type, String shaderCode) {
 
-        // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
-        // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-        int shader = GLES20.glCreateShader(type);
+		// create a vertex shader type (GLES20.GL_VERTEX_SHADER)
+		// or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
+		int shader = GLES20.glCreateShader(type);
 
-        // add the source code to the shader and compile it
-        GLES20.glShaderSource(shader, shaderCode);
-        GLES20.glCompileShader(shader);
+		// add the source code to the shader and compile it
+		GLES20.glShaderSource(shader, shaderCode);
+		GLES20.glCompileShader(shader);
 
-        int[] compiled = new int[1];
+		int[] compiled = new int[1];
 
-        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
+		GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
 
-        if (compiled[0] == 0) {
-            throw new RuntimeException("SHADER NOT COMPILED");
-        }
+		if (compiled[0] == 0) {
+			throw new RuntimeException("SHADER NOT COMPILED");
+		}
 
-        return shader;
-    }
+		return shader;
+	}
 
-    /**
-     * Utility method for debugging OpenGL calls. Provide the name of the call
-     * just after making it:
-     * <p>
-     * <pre>
-     * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
-     * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
-     * <p>
-     * If the operation is not successful, the check throws an error.
-     *
-     * @param glOperation - Name of the OpenGL call to check.
-     */
-    public static void checkGlError(String glOperation) {
-        int error;
-        if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
-            Log.e("Renderer 1D", glOperation + ": glError " + error);
-            if (error == GLES20.GL_INVALID_OPERATION) {
-                throw new RuntimeException(glOperation + ": glError GL_INVALID_OPERATION " + error);
-            } else if (error == GLES20.GL_INVALID_VALUE) {
-                throw new RuntimeException(glOperation + ": glError GL_INVALID_VALUE " + error);
-            } else {
-                throw new RuntimeException(glOperation + ": glError " + error);
-            }
-        }
-    }
+	/**
+	 * Utility method for debugging OpenGL calls. Provide the name of the call
+	 * just after making it:
+	 * <p>
+	 * <pre>
+	 * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+	 * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
+	 * <p>
+	 * If the operation is not successful, the check throws an error.
+	 *
+	 * @param glOperation - Name of the OpenGL call to check.
+	 */
+	public static void checkGlError(String glOperation) {
+		int error;
+		if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
+			Log.e("Renderer 1D", glOperation + ": glError " + error);
+			if (error == GLES20.GL_INVALID_OPERATION) {
+				throw new RuntimeException(glOperation + ": glError GL_INVALID_OPERATION " + error);
+			} else if (error == GLES20.GL_INVALID_VALUE) {
+				throw new RuntimeException(glOperation + ": glError GL_INVALID_VALUE " + error);
+			} else {
+				throw new RuntimeException(glOperation + ": glError " + error);
+			}
+		}
+	}
 }

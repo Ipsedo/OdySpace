@@ -14,67 +14,67 @@ import java.util.List;
 
 public class Octree {
 
-    private Box boxes;
+	private Box boxes;
 
-    private List<Item> amis;
-    private List<Item> ennemis;
+	private List<Item> amis;
+	private List<Item> ennemis;
 
-    private float limitSize;
+	private float limitSize;
 
-    public Octree(Box boxes, List<Item> amis, List<Item> ennemis, float limitSize) {
-        this.boxes = boxes;
-        this.amis = amis;
-        this.ennemis = ennemis;
-        this.limitSize = limitSize;
-    }
+	public Octree(Box boxes, List<Item> amis, List<Item> ennemis, float limitSize) {
+		this.boxes = boxes;
+		this.amis = amis;
+		this.ennemis = ennemis;
+		this.limitSize = limitSize;
+	}
 
-    private Octree[] makeSons() {
-        Octree[] sons = new Octree[8];
-        Box[] levelLimitsSons = this.boxes.makeSons();
-        ArrayList<Item>[] futurAmis = new ArrayList[8];
-        ArrayList<Item>[] futurEnnemis = new ArrayList[8];
+	private Octree[] makeSons() {
+		Octree[] sons = new Octree[8];
+		Box[] levelLimitsSons = this.boxes.makeSons();
+		ArrayList<Item>[] futurAmis = new ArrayList[8];
+		ArrayList<Item>[] futurEnnemis = new ArrayList[8];
 
-        for (int i = 0; i < sons.length; i++) {
-            futurAmis[i] = new ArrayList<>();
-            futurEnnemis[i] = new ArrayList<>();
+		for (int i = 0; i < sons.length; i++) {
+			futurAmis[i] = new ArrayList<>();
+			futurEnnemis[i] = new ArrayList<>();
 
-            for (Item ami : this.amis)
-                if (ami.isInside(levelLimitsSons[i]))
-                    futurAmis[i].add(ami);
-            for (Item ennemi : this.ennemis)
-                if (ennemi.isInside(levelLimitsSons[i]))
-                    futurEnnemis[i].add(ennemi);
+			for (Item ami : this.amis)
+				if (ami.isInside(levelLimitsSons[i]))
+					futurAmis[i].add(ami);
+			for (Item ennemi : this.ennemis)
+				if (ennemi.isInside(levelLimitsSons[i]))
+					futurEnnemis[i].add(ennemi);
 
-            sons[i] = new Octree(levelLimitsSons[i], futurAmis[i], futurEnnemis[i], this.limitSize);
-        }
+			sons[i] = new Octree(levelLimitsSons[i], futurAmis[i], futurEnnemis[i], this.limitSize);
+		}
 
-        return sons;
-    }
+		return sons;
+	}
 
-    private void computeCollision() {
-        for (Item ami : this.amis)
-            for (Item ennemi : this.ennemis)
-                if (ami.isCollided(ennemi)) {
-                    int tmp = ami.getDamage();
-                    ami.decrementLife(ennemi.getDamage());
-                    ennemi.decrementLife(tmp);
-                }
-    }
+	private void computeCollision() {
+		for (Item ami : this.amis)
+			for (Item ennemi : this.ennemis)
+				if (ami.isCollided(ennemi)) {
+					int tmp = ami.getDamage();
+					ami.decrementLife(ennemi.getDamage());
+					ennemi.decrementLife(tmp);
+				}
+	}
 
-    public void computeOctree() {
-        if (this.isLeaf())
-            this.computeCollision();
-        else
-            for (Octree sb : this.makeSons())
-                if (!sb.containsNoCollision())
-                    sb.computeOctree();
-    }
+	public void computeOctree() {
+		if (this.isLeaf())
+			this.computeCollision();
+		else
+			for (Octree sb : this.makeSons())
+				if (!sb.containsNoCollision())
+					sb.computeOctree();
+	}
 
-    private boolean isLeaf() {
-        return this.boxes.getSizeAv() <= this.limitSize;
-    }
+	private boolean isLeaf() {
+		return this.boxes.getSizeAv() <= this.limitSize;
+	}
 
-    private boolean containsNoCollision() {
-        return this.amis.isEmpty() || this.ennemis.isEmpty();
-    }
+	private boolean containsNoCollision() {
+		return this.amis.isEmpty() || this.ennemis.isEmpty();
+	}
 }
