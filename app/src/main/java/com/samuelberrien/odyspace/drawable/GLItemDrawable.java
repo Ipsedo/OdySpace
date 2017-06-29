@@ -7,14 +7,14 @@ package com.samuelberrien.odyspace.drawable;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public interface GLDrawable {
+public interface GLItemDrawable {
 
 	/**
 	 *
-	 * @param mMVPMatrix
-	 * @param mMVMatrix
+	 * @param mProjectionMatrix
+	 * @param mViewMatrix
 	 * @param mLightPosInEyeSpace
 	 * @param mCameraPosition
 	 */
-	void draw(float[] mMVPMatrix, float[] mMVMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
+	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 }

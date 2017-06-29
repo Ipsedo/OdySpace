@@ -41,6 +41,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private EndGameThread endGameThread;
 	private boolean threadRunning;
 
+	private boolean isResume;
+
 	/**
 	 * @param context
 	 * @param levelActivity
@@ -61,6 +63,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 		this.renderer = new MyGLRenderer(this.context, this, this.currentLevel, this.joystick, this.controls);
 		this.setRenderer(this.renderer);
+
+		this.isResume = true;
 	}
 
 	/**
@@ -122,6 +126,16 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				e.printStackTrace();
 			}
 			this.threadRunning = false;
+		}
+	}
+
+	public void resumeOrPauseGame() {
+		if (this.isResume) {
+			this.killThread();
+			this.isResume = false;
+		} else {
+			this.initThreads();
+			this.isResume = true;
 		}
 	}
 

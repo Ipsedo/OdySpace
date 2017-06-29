@@ -70,6 +70,10 @@ public class Box {
 		return (this.sizeX + this.sizeY + this.sizeZ) / 3f;
 	}
 
+	public float[] getPos() {
+		return new float[]{this.x + this.sizeX / 2f, this.y + this.sizeY / 2f, this.z + this.sizeZ / 2f};
+	}
+
 	@Override
 	public String toString() {
 		return "Box : { x = " + this.x + ", y = " + this.y + ", z = " + this.z + "; sX = " + this.sizeX + ", sY = " + this.sizeY + ", sZ = " + this.sizeZ + " }";

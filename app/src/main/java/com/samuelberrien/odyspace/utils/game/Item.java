@@ -15,7 +15,7 @@ public interface Item {
 
 	boolean isCollided(Item other);
 
-	boolean isInside(Box Box);
+	boolean isInside(Box box);
 
 	int getDamage();
 

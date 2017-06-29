@@ -6,7 +6,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.GLDrawable;
+import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
@@ -24,7 +24,13 @@ import java.util.ArrayList;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Stretch implements Item, GLDrawable {
+public class Stretch implements Item, GLItemDrawable {
+
+	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
+
+	static {
+		System.loadLibrary("collision");
+	}
 
 	/**
 	 * Size of the position data in elements.
@@ -77,8 +83,12 @@ public class Stretch implements Item, GLDrawable {
 	private int mLightCoefHandle;
 	private int mAmbColorCoefHandle;
 
+	private float[] identityMatrix;
+
 	static final int COORDS_PER_VERTEX = 3;
 	private final int vertexStride = COORDS_PER_VERTEX * 4;
+
+	private Box box;
 
 	public Stretch(Context context, float[] mCircle1ModelMatrix, float[] mCircle2ModelMatrix, int nbPointsCircle, float[] color, float distanceCoef, float lightCoef, float colorCoef) {
 		this.mCircle1ModelMatrix = mCircle1ModelMatrix.clone();
@@ -94,6 +104,9 @@ public class Stretch implements Item, GLDrawable {
 
 		this.makeCircleOriented();
 		this.makeTriangleStretch();
+		this.makeBoundingBox();
+		this.identityMatrix = new float[16];
+		Matrix.setIdentityM(this.identityMatrix, 0);
 
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
@@ -186,8 +199,8 @@ public class Stretch implements Item, GLDrawable {
 			vertex.add(this.circle2[i + 5]);
 
 			tmpN = Vector.cross3f(
-					Vector.normalize3f(new float[]{this.circle2[i] - this.circle1[i + 3], this.circle2[i + 1] - this.circle1[i + 4], this.circle2[i + 2] - this.circle1[i + 5]}),
-					Vector.normalize3f(new float[]{this.circle2[i + 3] - this.circle1[i + 3], this.circle2[i + 4] - this.circle1[i + 4], this.circle2[i + 5] - this.circle1[i + 5]}));
+					Vector.normalize3f(new float[]{this.circle1[i + 3] - this.circle2[i + 3], this.circle1[i + 4] - this.circle2[i + 4], this.circle1[i + 5] - this.circle2[i + 5]}),
+					Vector.normalize3f(new float[]{this.circle2[i] - this.circle2[i + 3], this.circle2[i + 1] - this.circle2[i + 4], this.circle2[i + 2] - this.circle2[i + 5]}));
 
 			normals.add(tmpN[0]);
 			normals.add(tmpN[1]);
@@ -245,8 +258,8 @@ public class Stretch implements Item, GLDrawable {
 		vertex.add(this.circle2[2]);
 
 		tmpN = Vector.cross3f(
-				Vector.normalize3f(new float[]{this.circle2[this.circle1.length - 3] - this.circle1[0], this.circle2[this.circle1.length - 2] - this.circle1[1], this.circle2[this.circle1.length - 1] - this.circle1[2]}),
-				Vector.normalize3f(new float[]{this.circle2[0] - this.circle1[0], this.circle2[1] - this.circle1[1], this.circle2[2] - this.circle1[2]}));
+				Vector.normalize3f(new float[]{this.circle1[0] - this.circle2[0], this.circle1[1] - this.circle2[1], this.circle1[2] - this.circle2[2]}),
+				Vector.normalize3f(new float[]{this.circle2[this.circle1.length - 3] - this.circle2[0], this.circle2[this.circle1.length - 2] - this.circle2[1], this.circle2[this.circle1.length - 1] - this.circle2[2]}));
 
 		normals.add(tmpN[0]);
 		normals.add(tmpN[1]);
@@ -269,10 +282,12 @@ public class Stretch implements Item, GLDrawable {
 			color[i + 2] = this.color[2];
 			color[i + 3] = this.color[3];
 		}
-		for (int i = 0; i < this.vertex.length; i++) {
+		for (int i = 0; i < this.vertex.length; i++)
 			this.vertex[i] = vertex.get(i);
+
+		for (int i = 0; i < this.normals.length; i++)
 			this.normals[i] = normals.get(i);
-		}
+
 
 		this.vertexBuffer = ByteBuffer.allocateDirect(this.vertex.length * 4)
 				.order(ByteOrder.nativeOrder())
@@ -320,20 +335,75 @@ public class Stretch implements Item, GLDrawable {
 		this.colorBuffer = null;
 	}
 
+	private void makeBoundingBox() {
+		float maxX = Float.MIN_VALUE;
+		float maxY = Float.MIN_VALUE;
+		float maxZ = Float.MIN_VALUE;
+
+		float minX = Float.MAX_VALUE;
+		float minY = Float.MAX_VALUE;
+		float minZ = Float.MAX_VALUE;
+
+		for (int i = 0; i < this.circle1.length; i += 3) {
+			if(maxX < this.circle1[i]) {
+				maxX = this.circle1[i];
+			}
+			if(maxX < this.circle2[i]) {
+				maxX = this.circle2[i];
+			}
+			if(minX > this.circle1[i]) {
+				minX = this.circle1[i];
+			}
+			if(minX > this.circle2[i]) {
+				minX = this.circle2[i];
+			}
+
+			if(maxY < this.circle1[i + 1]) {
+				maxY = this.circle1[i + 1];
+			}
+			if(maxY < this.circle2[i + 1]) {
+				maxY = this.circle2[i + 1];
+			}
+			if(minY > this.circle1[i + 1]) {
+				minY = this.circle1[i + 1];
+			}
+			if(minY > this.circle2[i + 1]) {
+				minY = this.circle2[i + 1];
+			}
+
+			if(maxZ < this.circle1[i + 2]) {
+				maxZ = this.circle1[i + 2];
+			}
+			if(maxZ < this.circle2[i + 2]) {
+				maxZ = this.circle2[i + 2];
+			}
+			if(minZ > this.circle1[i + 2]) {
+				minZ = this.circle1[i + 2];
+			}
+			if(minZ > this.circle2[i + 2]) {
+				minZ = this.circle2[i + 2];
+			}
+		}
+		this.box = new Box(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
+	}
+
+	public Box getBox() {
+		return this.box;
+	}
 
 	@Override
 	public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
-		return false;
+		return this.areCollided(this.vertex.clone(), this.identityMatrix.clone(), triangleArray, modelMatrix);
 	}
 
 	@Override
 	public boolean isCollided(Item other) {
-		return false;
+		return other.collideTest(this.vertex.clone(), this.identityMatrix.clone());
 	}
 
 	@Override
-	public boolean isInside(Box Box) {
-		return false;
+	public boolean isInside(Box box) {
+		return this.box.isInside(box);
 	}
 
 	@Override
@@ -348,16 +418,15 @@ public class Stretch implements Item, GLDrawable {
 
 	@Override
 	public float[] getPosition() {
-		return new float[0];
+		return this.box.getPos();
 	}
 
 	@Override
-	public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		float[] identity = new float[16];
-		Matrix.setIdentityM(identity, 0);
-		Matrix.multiplyMM(mvMatrix, 0, mvMatrix.clone(), 0, identity, 0);
-		Matrix.multiplyMM(mvpMatrix, 0, mvpMatrix.clone(), 0, mvMatrix, 0);
-
+	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+		float[] mMVPMatrix = new float[16];
+		float[] mMVMatrix = new float[16];
+		Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix.clone(), 0, this.identityMatrix, 0);
+		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix.clone(), 0, mMVMatrix, 0);
 
 
 		GLES20.glUseProgram(mProgram);
@@ -376,11 +445,13 @@ public class Stretch implements Item, GLDrawable {
 		GLES20.glEnableVertexAttribArray(this.mColorHandle);
 		GLES20.glVertexAttribPointer(this.mColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
 		// Apply the projection and view transformation
-		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
+		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 
 		// get handle to shape's transformation matrix
-		GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
+		GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mMVMatrix, 0);
 
 		GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
 
@@ -390,7 +461,6 @@ public class Stretch implements Item, GLDrawable {
 
 		GLES20.glUniform1f(mAmbColorCoefHandle, this.colorCoef);
 
-		// Draw the polygon
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.vertex.length / 3);
 
 		// Disable vertex array

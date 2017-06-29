@@ -9,6 +9,10 @@ import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
 import com.samuelberrien.odyspace.objects.tunnel.Stretch;
+import com.samuelberrien.odyspace.objects.tunnel.Tunnel;
+import com.samuelberrien.odyspace.utils.collision.Box;
+import com.samuelberrien.odyspace.utils.collision.Octree;
+import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
@@ -16,6 +20,7 @@ import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by samuel on 29/06/17.
@@ -36,10 +41,8 @@ public class TestTunnelLevel implements Level {
 	private Controls controls;
 
 	private Ship ship;
-	private Stretch stretch;
+	private Tunnel tunnel;
 	private List<BaseItem> rockets;
-
-	private CubeMap cubeMap;
 
 	private float levelLimitSize;
 
@@ -53,28 +56,14 @@ public class TestTunnelLevel implements Level {
 
 		this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
 
-		this.cubeMap = new CubeMap(this.context, this.levelLimitSize, "cube_map/ciel_1/");
-		this.cubeMap.update();
-
-		float[] mCircle1ModelMatrix = new float[16];
-		float[] mCircle2ModelMatrix = new float[16];
-
-		Matrix.setIdentityM(mCircle1ModelMatrix, 0);
-		Matrix.setIdentityM(mCircle2ModelMatrix, 0);
-		Matrix.translateM(mCircle1ModelMatrix, 0, 0f, 0f, -3000f);
-		Matrix.translateM(mCircle2ModelMatrix, 0, 0f, 0f, 300f);
-		Matrix.scaleM(mCircle1ModelMatrix, 0, 10f, 10f, 100f);
-		Matrix.scaleM(mCircle2ModelMatrix, 0, 30f, 30f, 300f);
-
-		this.stretch = new Stretch(this.context, mCircle1ModelMatrix, mCircle2ModelMatrix, 20, Color.Pumpkin, 0f, 1f, 0.5f);
-
+		this.tunnel = new Tunnel(this.context, new Random(System.currentTimeMillis()), 200, new float[]{0f, 0f, -250f});
 
 		this.isInit = true;
 	}
 
 	@Override
 	public float[] getLightPos() {
-		return this.ship.getCamPosition().clone();
+		return this.ship.getPosition();
 	}
 
 	@Override
@@ -83,8 +72,7 @@ public class TestTunnelLevel implements Level {
 		ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmp)
 			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		this.cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
-		this.stretch.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
+		this.tunnel.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
 	@Override
@@ -105,7 +93,26 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public void collide() {
+		ArrayList<Item> amis = new ArrayList<>();
+		amis.add(this.ship);
+		amis.addAll(this.rockets);
+		ArrayList<Item> ennemis = new ArrayList<>();
+		ennemis.addAll(this.tunnel.getItems());
 
+		float[] shipPos = this.ship.getPosition();
+		float sizeCollideBox = 100f;
+
+		Octree octree = new Octree(
+				new Box(shipPos[0] - sizeCollideBox / 2f,
+						shipPos[1] - sizeCollideBox / 2f,
+						shipPos[2] - sizeCollideBox / 2f,
+						sizeCollideBox,
+						sizeCollideBox,
+						sizeCollideBox),
+				amis,
+				ennemis,
+				1f);
+		octree.computeOctree();
 	}
 
 	@Override
@@ -120,16 +127,16 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public int getScore() {
-		return 0;
+		return this.tunnel.isInLastStretch(this.ship) ? 1000 : 0;
 	}
 
 	@Override
 	public boolean isDead() {
-		return false;
+		return !this.ship.isAlive();
 	}
 
 	@Override
 	public boolean isWinner() {
-		return false;
+		return this.tunnel.isInLastStretch(this.ship);
 	}
 }

@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects.baseitem;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
@@ -15,7 +16,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class BaseItem extends ObjModelMtlVBO implements Item {
+public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 
 	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
@@ -126,6 +127,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item {
 		this.mModelMatrix = tmp.clone();
 	}
 
+	@Override
 	public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] mvMatrix = new float[16];
 		Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);

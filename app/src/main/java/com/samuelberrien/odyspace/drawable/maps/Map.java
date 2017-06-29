@@ -1,6 +1,6 @@
 package com.samuelberrien.odyspace.drawable.maps;
 
-import com.samuelberrien.odyspace.drawable.GLDrawable;
+import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.utils.game.Item;
 
 /**
@@ -10,7 +10,7 @@ import com.samuelberrien.odyspace.utils.game.Item;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public interface Map extends GLDrawable {
+public interface Map extends GLItemDrawable {
 
 	float[] getRestreintArea(float[] position);
 
