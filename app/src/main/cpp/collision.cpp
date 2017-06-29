@@ -727,7 +727,7 @@ bool areCollided(float *items1Points, int nbEl1, float *item1Model, float *items
 
 extern "C" {
 JNIEXPORT jboolean JNICALL
-Java_com_samuelberrien_odyspace_objects_BaseItem_areCollided(JNIEnv *env, jobject instance,
+Java_com_samuelberrien_odyspace_objects_baseitem_BaseItem_areCollided(JNIEnv *env, jobject instance,
                                                              jfloatArray mPointItem1_,
                                                              jfloatArray mModelMatrix1_,
                                                              jfloatArray mPointItem2_,
@@ -767,4 +767,26 @@ Java_com_samuelberrien_odyspace_drawable_maps_NoiseMap_areCollided(JNIEnv *env, 
     }
     return JNI_FALSE;
 }
+
+JNIEXPORT jboolean JNICALL
+Java_com_samuelberrien_odyspace_objects_tunnel_Stretch_areCollided(JNIEnv *env, jobject instance,
+                                                                   jfloatArray mPointItem1_,
+                                                                   jfloatArray mModelMatrix1_,
+                                                                   jfloatArray mPointItem2_,
+                                                                   jfloatArray mModelMatrix2_) {
+
+    bool res = areCollided(env->GetFloatArrayElements(mPointItem1_, 0),
+                           env->GetArrayLength(mPointItem1_),
+                           env->GetFloatArrayElements(mModelMatrix1_, 0),
+                           env->GetFloatArrayElements(mPointItem2_, 0),
+                           env->GetArrayLength(mPointItem2_),
+                           env->GetFloatArrayElements(mModelMatrix2_, 0));
+
+
+    if (res) {
+        return JNI_TRUE;
+    }
+    return JNI_FALSE;
+}
+
 }
