@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -48,9 +47,18 @@ public class LevelActivity extends AppCompatActivity {
 		this.pauseButton.setLayoutParams(new RelativeLayout.LayoutParams(this.getScreenHeight() / 15, this.getScreenHeight() / 15));
 
 		this.pauseButton.setOnClickListener(new View.OnClickListener() {
+			private boolean paused = false;
+
 			@Override
 			public void onClick(View view) {
 				LevelActivity.this.mSurfaceView.resumeOrPauseGame();
+				if(!this.paused) {
+					LevelActivity.this.pauseButton.setBackground(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_resume_game));
+					this.paused = true;
+				} else {
+					LevelActivity.this.pauseButton.setBackground(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_pause_game));
+					this.paused = false;
+				}
 			}
 		});
 
