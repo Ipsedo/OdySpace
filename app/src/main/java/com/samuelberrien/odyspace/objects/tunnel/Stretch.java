@@ -345,42 +345,42 @@ public class Stretch implements Item, GLItemDrawable {
 		float minZ = Float.MAX_VALUE;
 
 		for (int i = 0; i < this.circle1.length; i += 3) {
-			if(maxX < this.circle1[i]) {
+			if (maxX < this.circle1[i]) {
 				maxX = this.circle1[i];
 			}
-			if(maxX < this.circle2[i]) {
+			if (maxX < this.circle2[i]) {
 				maxX = this.circle2[i];
 			}
-			if(minX > this.circle1[i]) {
+			if (minX > this.circle1[i]) {
 				minX = this.circle1[i];
 			}
-			if(minX > this.circle2[i]) {
+			if (minX > this.circle2[i]) {
 				minX = this.circle2[i];
 			}
 
-			if(maxY < this.circle1[i + 1]) {
+			if (maxY < this.circle1[i + 1]) {
 				maxY = this.circle1[i + 1];
 			}
-			if(maxY < this.circle2[i + 1]) {
+			if (maxY < this.circle2[i + 1]) {
 				maxY = this.circle2[i + 1];
 			}
-			if(minY > this.circle1[i + 1]) {
+			if (minY > this.circle1[i + 1]) {
 				minY = this.circle1[i + 1];
 			}
-			if(minY > this.circle2[i + 1]) {
+			if (minY > this.circle2[i + 1]) {
 				minY = this.circle2[i + 1];
 			}
 
-			if(maxZ < this.circle1[i + 2]) {
+			if (maxZ < this.circle1[i + 2]) {
 				maxZ = this.circle1[i + 2];
 			}
-			if(maxZ < this.circle2[i + 2]) {
+			if (maxZ < this.circle2[i + 2]) {
 				maxZ = this.circle2[i + 2];
 			}
-			if(minZ > this.circle1[i + 2]) {
+			if (minZ > this.circle1[i + 2]) {
 				minZ = this.circle1[i + 2];
 			}
-			if(minZ > this.circle2[i + 2]) {
+			if (minZ > this.circle2[i + 2]) {
 				minZ = this.circle2[i + 2];
 			}
 		}

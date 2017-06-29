@@ -10,7 +10,6 @@ package com.samuelberrien.odyspace.drawable;
 public interface GLItemDrawable {
 
 	/**
-	 *
 	 * @param mProjectionMatrix
 	 * @param mViewMatrix
 	 * @param mLightPosInEyeSpace

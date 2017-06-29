@@ -10,7 +10,6 @@ package com.samuelberrien.odyspace.drawable;
 public interface GLDrawable {
 
 	/**
-	 *
 	 * @param mMVPMatrix
 	 * @param mMVMatrix
 	 * @param mLightPosInEyeSpace
