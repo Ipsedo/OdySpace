@@ -1,10 +1,8 @@
-package com.samuelberrien.odyspace.objects;
+package com.samuelberrien.odyspace.objects.baseitem;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;

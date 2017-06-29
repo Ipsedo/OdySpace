@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.objects;
+package com.samuelberrien.odyspace.objects.baseitem;
 
 import android.content.Context;
 import android.content.SharedPreferences;

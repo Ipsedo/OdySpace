@@ -1,8 +1,10 @@
-package com.samuelberrien.odyspace.objects;
+package com.samuelberrien.odyspace.objects.baseitem;
 
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.utils.collision.Box;
+import com.samuelberrien.odyspace.utils.game.Item;
 
 /**
  * Created by samuel on 26/04/17.
@@ -11,7 +13,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class BaseItemWithoutModel {
+public class BaseItemWithoutModel implements Item {
 
 	protected float radius;
 
@@ -72,5 +74,35 @@ public class BaseItemWithoutModel {
 		float[] mvpMatrix = new float[16];
 		Matrix.multiplyMM(mvpMatrix, 0, pMatrix, 0, mvMatrix, 0);
 		objModelMtl.draw(mvpMatrix, mvMatrix, mLightPosInEyeSpace, mCameraPosition);
+	}
+
+	@Override
+	public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+		return false;
+	}
+
+	@Override
+	public boolean isCollided(Item other) {
+		return false;
+	}
+
+	@Override
+	public boolean isInside(Box Box) {
+		return false;
+	}
+
+	@Override
+	public int getDamage() {
+		return 0;
+	}
+
+	@Override
+	public void decrementLife(int minus) {
+
+	}
+
+	@Override
+	public float[] getPosition() {
+		return new float[0];
 	}
 }

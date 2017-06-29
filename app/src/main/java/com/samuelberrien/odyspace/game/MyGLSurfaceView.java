@@ -9,6 +9,7 @@ import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestThread;
+import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.threads.CollisionThread;
@@ -73,8 +74,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			return new TestProtectionLevel();
 		} else if (currLevelId == 2) {
 			return new TestTurrets();
-		} else {
+		} else if (currLevelId == 3) {
 			return new TestBossThread();
+		} else {
+			return new TestTunnelLevel();
 		}
 	}
 

@@ -18,7 +18,7 @@ import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
-import com.samuelberrien.odyspace.objects.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.Ship;
 import com.samuelberrien.odyspace.utils.game.Level;
 
 import javax.microedition.khronos.egl.EGLConfig;

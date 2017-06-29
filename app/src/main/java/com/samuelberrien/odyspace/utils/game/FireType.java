@@ -1,11 +1,10 @@
 package com.samuelberrien.odyspace.utils.game;
 
-import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.objects.BaseItem;
-import com.samuelberrien.odyspace.objects.Rocket;
+import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
+import com.samuelberrien.odyspace.objects.baseitem.Rocket;
 
 import java.util.List;
 

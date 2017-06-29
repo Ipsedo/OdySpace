@@ -7,8 +7,9 @@ import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestThread;
+import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
-import com.samuelberrien.odyspace.objects.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.Ship;
 
 /**
  * Created by samuel on 18/04/17.
@@ -19,7 +20,7 @@ import com.samuelberrien.odyspace.objects.Ship;
 
 public interface Level {
 
-	String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME};
+	String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME, TestTunnelLevel.NAME};
 
 	void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
 

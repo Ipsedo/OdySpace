@@ -1,14 +1,13 @@
 package com.samuelberrien.odyspace.objects;
 
 import android.content.Context;
-import android.opengl.Matrix;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Random;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
