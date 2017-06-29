@@ -44,7 +44,9 @@ public class LevelActivity extends AppCompatActivity {
 		this.pauseButton = new Button(this);
 		this.pauseButton.setVisibility(View.GONE);
 		this.pauseButton.setBackground(ContextCompat.getDrawable(this, R.drawable.button_pause_game));
-		this.pauseButton.setLayoutParams(new RelativeLayout.LayoutParams(this.getScreenHeight() / 15, this.getScreenHeight() / 15));
+		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(this.getScreenHeight() / 15, this.getScreenHeight() / 15);
+		tmp.setMargins(0, this.getScreenHeight() / 50, 0, 0);
+		this.pauseButton.setLayoutParams(tmp);
 
 		this.pauseButton.setOnClickListener(new View.OnClickListener() {
 			private boolean paused = false;
