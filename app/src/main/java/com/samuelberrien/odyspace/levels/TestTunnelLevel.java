@@ -157,7 +157,6 @@ public class TestTunnelLevel implements Level {
 		ArrayList<Item> ennemis = new ArrayList<>();
 		ennemis.addAll(this.tunnel.getItems());
 		ennemis.addAll(this.icos);
-
 		Octree octree = new Octree(this.makeBoundingBox(this.sizeCollideBox), amis, ennemis, 4f);
 		octree.computeOctree();
 

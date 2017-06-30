@@ -48,12 +48,12 @@ public class Box {
 
 	public Box[] makeSons() {
 		Box[] sons = new Box[8];
-		float a = this.x + this.sizeX / 2f;
-		float b = this.y + this.sizeY / 2f;
-		float c = this.z + this.sizeZ / 2f;
-		float newSizeX = this.sizeX / 2f;
-		float newSizeY = this.sizeY / 2f;
-		float newSizeZ = this.sizeZ / 2f;
+		float a = this.x + this.sizeX * 0.5f;
+		float b = this.y + this.sizeY * 0.5f;
+		float c = this.z + this.sizeZ * 0.5f;
+		float newSizeX = this.sizeX * 0.5f;
+		float newSizeY = this.sizeY * 0.5f;
+		float newSizeZ = this.sizeZ * 0.5f;
 		sons[0] = new Box(this.x, this.y, this.z, newSizeX, newSizeY, newSizeZ);
 		sons[1] = new Box(a, this.y, this.z, newSizeX, newSizeY, newSizeZ);
 		sons[2] = new Box(a, this.y, c, newSizeX, newSizeY, newSizeZ);
@@ -67,11 +67,11 @@ public class Box {
 	}
 
 	public float getSizeAv() {
-		return (this.sizeX + this.sizeY + this.sizeZ) / 3f;
+		return (this.sizeX + this.sizeY + this.sizeZ) * 0.3f;
 	}
 
 	public float[] getPos() {
-		return new float[]{this.x + this.sizeX / 2f, this.y + this.sizeY / 2f, this.z + this.sizeZ / 2f};
+		return new float[]{this.x + this.sizeX * 0.5f, this.y + this.sizeY * 0.5f, this.z + this.sizeZ * 0.5f};
 	}
 
 	@Override
