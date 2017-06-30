@@ -24,7 +24,7 @@ public class RemoveThread extends CancelableThread {
 	@Override
 	protected void waitRequiredTime(long t1) {
 		try {
-			Thread.sleep(120L);
+			Thread.sleep(200L);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 		}

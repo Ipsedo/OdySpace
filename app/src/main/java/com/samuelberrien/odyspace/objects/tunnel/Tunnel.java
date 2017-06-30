@@ -4,6 +4,8 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.GLItemDrawable;
+import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
+import com.samuelberrien.odyspace.objects.baseitem.SuperIcosahedron;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.SimplexNoise;
@@ -115,6 +117,17 @@ public class Tunnel implements GLItemDrawable {
 		ArrayList<Item> res = new ArrayList<>();
 		res.addAll(this.stretches);
 		return res;
+	}
+
+	public void putIcoAtCircleCenter(Context context, List<Icosahedron> icos, float probability) {
+		for (int i = 3; i < this.mPoints.length; i++) {
+			if (this.random.nextFloat() < probability) {
+				Icosahedron tmp = new Icosahedron(context, this.mPoints[i].clone(), this.random.nextFloat() * 3f + 3f);
+				tmp.move();
+				tmp.makeExplosion();
+				icos.add(tmp);
+			}
+		}
 	}
 
 	public boolean isInLastStretch(Item item) {
