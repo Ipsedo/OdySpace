@@ -59,9 +59,6 @@ public class TestTurrets implements Level {
 	private List<BaseItem> rocketsTurret;
 	private List<Explosion> explosions;
 
-	private Joystick joystick;
-	private Controls controls;
-
 	private ProgressBar currLevelProgression;
 	private Compass compass;
 
@@ -69,15 +66,12 @@ public class TestTurrets implements Level {
 	private int soundId;
 
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
+	public void init(Context context, Ship ship, float levelLimitSize) {
 		this.context = context;
 		this.ship = ship;
 		this.ship.makeExplosion();
 
 		this.levelLimitSize = levelLimitSize;
-
-		this.joystick = joystick;
-		this.controls = controls;
 
 		this.currLevelProgression = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
@@ -168,8 +162,8 @@ public class TestTurrets implements Level {
 	@Override
 	public void update() {
 		if (this.ship.isAlive()) {
-			this.ship.move(this.joystick, this.controls);
-			this.ship.fire(this.controls, this.rocketsShip);
+			this.ship.move();
+			this.ship.fire(this.rocketsShip);
 		}
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rocketsShip);
 		for (BaseItem r : tmpArr)

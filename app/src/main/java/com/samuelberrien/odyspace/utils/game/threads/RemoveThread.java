@@ -24,7 +24,7 @@ public class RemoveThread extends CancelableThread {
 	@Override
 	protected void waitRequiredTime(long t1) {
 		try {
-			Thread.sleep(200L);
+			Thread.sleep(100L);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 		}
@@ -33,10 +33,5 @@ public class RemoveThread extends CancelableThread {
 	@Override
 	public void work() {
 		super.level.removeAddObjects();
-		/*try {
-			Thread.sleep(CancelableThread.TIME_TO_WAIT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
 	}
 }

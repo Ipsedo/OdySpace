@@ -88,11 +88,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		this.controls.initGraphics(this.context);
 
 		this.ship = Ship.makeShip(this.context);
+		this.ship.setGameControls(this.joystick, this.controls);
+		this.ship.move();
 
 		this.mCameraPosition = new float[]{0f, 0f, -10f};
 		this.mCameraUpVec = new float[]{0f, 1f, 0f};
 
-		this.currentLevel.init(this.context, this.ship, 500f, this.joystick, this.controls);
+		this.currentLevel.init(this.context, this.ship, 500f);
 
 		this.updateCameraPosition(this.ship.getCamPosition());
 		this.updateCamLookVec(this.ship.getCamLookAtVec());
@@ -143,7 +145,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onDrawFrame(GL10 unused) {
-
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
 		this.updateCameraPosition(this.ship.getCamPosition());

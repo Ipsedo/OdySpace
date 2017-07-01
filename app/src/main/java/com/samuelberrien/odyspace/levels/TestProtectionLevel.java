@@ -65,9 +65,6 @@ public class TestProtectionLevel implements Level {
 	private NoiseMap noiseMap;
 	private Forest forest;
 
-	private Joystick joystick;
-	private Controls controls;
-
 	private boolean isInit = false;
 
 	private long startTime;
@@ -83,11 +80,9 @@ public class TestProtectionLevel implements Level {
 	private long levelTime = 1000L * 60L * 3L;
 
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
+	public void init(Context context, Ship ship, float levelLimitSize) {
 		this.context = context;
 		this.ship = ship;
-		this.joystick = joystick;
-		this.controls = controls;
 
 		float limitDown = -100f;
 		this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
@@ -187,8 +182,8 @@ public class TestProtectionLevel implements Level {
 	@Override
 	public void update() {
 		if (this.ship.isAlive()) {
-			this.ship.move(this.joystick, this.controls);
-			this.ship.fire(this.controls, this.rockets);
+			this.ship.move();
+			this.ship.fire(this.rockets);
 		}
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmpArr)

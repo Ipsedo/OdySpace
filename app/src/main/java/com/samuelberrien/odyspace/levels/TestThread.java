@@ -60,9 +60,6 @@ public class TestThread implements Level {
 
 	private boolean isInit = false;
 
-	private Joystick joystick;
-	private Controls controls;
-
 	private ProgressBar currLevelProgression;
 	private Compass compass;
 
@@ -70,10 +67,9 @@ public class TestThread implements Level {
 	private int soundId;
 
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
+	public void init(Context context, Ship ship, float levelLimitSize) {
 		this.context = context;
 		this.ship = ship;
-		this.ship.move(joystick, controls);
 		this.levelLimitSize = levelLimitSize;
 
 		this.currLevelProgression = new ProgressBar(this.context, 50, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
@@ -100,9 +96,6 @@ public class TestThread implements Level {
 		}
 
 		this.ship.makeExplosion();
-
-		this.joystick = joystick;
-		this.controls = controls;
 
 		if (Build.VERSION.SDK_INT >= 21) {
 			this.mSounds = new SoundPool.Builder().setMaxStreams(20)
@@ -158,8 +151,8 @@ public class TestThread implements Level {
 	@Override
 	public void update() {
 		if (this.ship.isAlive()) {
-			this.ship.move(this.joystick, this.controls);
-			this.ship.fire(this.controls, this.rockets);
+			this.ship.move();
+			this.ship.fire(this.rockets);
 		}
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmpArr)

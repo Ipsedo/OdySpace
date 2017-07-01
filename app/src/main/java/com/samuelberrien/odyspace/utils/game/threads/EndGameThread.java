@@ -38,7 +38,7 @@ public class EndGameThread extends CancelableThread {
 	@Override
 	protected void waitRequiredTime(long t1) {
 		try {
-			Thread.sleep(200L);
+			Thread.sleep(300L);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 		}
@@ -59,11 +59,6 @@ public class EndGameThread extends CancelableThread {
 			this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
 			this.finishGame();
 		}
-		/*try {
-			Thread.sleep(CancelableThread.TIME_TO_WAIT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
 	}
 
 	private void finishGame() {

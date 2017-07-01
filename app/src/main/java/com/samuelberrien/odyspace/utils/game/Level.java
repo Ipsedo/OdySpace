@@ -22,7 +22,7 @@ public interface Level {
 
 	String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME, TestTunnelLevel.NAME};
 
-	void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls);
+	void init(Context context, Ship ship, float levelLimitSize);
 
 	float[] getLightPos();
 

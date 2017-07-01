@@ -46,9 +46,6 @@ public class TestTunnelLevel implements Level {
 
 	private boolean isInit = false;
 
-	private Joystick joystick;
-	private Controls controls;
-
 	private Ship ship;
 	private Tunnel tunnel;
 	private List<BaseItem> rockets;
@@ -62,12 +59,10 @@ public class TestTunnelLevel implements Level {
 	private int soundId;
 
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize, Joystick joystick, Controls controls) {
+	public void init(Context context, Ship ship, float levelLimitSize) {
 		this.context = context;
 		this.ship = ship;
 		this.levelLimitSize = levelLimitSize;
-		this.joystick = joystick;
-		this.controls = controls;
 
 		this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
 		this.icos = Collections.synchronizedList(new ArrayList<Icosahedron>());
@@ -95,9 +90,9 @@ public class TestTunnelLevel implements Level {
 
 	private Box makeBoundingBox(float sizeCollideBox) {
 		float[] shipPos = this.ship.getPosition();
-		Box limitBox = new Box(shipPos[0] - sizeCollideBox / 2f,
-				shipPos[1] - sizeCollideBox / 2f,
-				shipPos[2] - sizeCollideBox / 2f,
+		Box limitBox = new Box(shipPos[0] - sizeCollideBox * 0.5f,
+				shipPos[1] - sizeCollideBox * 0.5f,
+				shipPos[2] - sizeCollideBox * 0.5f,
 				sizeCollideBox,
 				sizeCollideBox,
 				sizeCollideBox);
@@ -137,8 +132,8 @@ public class TestTunnelLevel implements Level {
 	@Override
 	public void update() {
 		if (this.ship.isAlive()) {
-			this.ship.move(this.joystick, this.controls);
-			this.ship.fire(this.controls, this.rockets);
+			this.ship.move();
+			this.ship.fire(this.rockets);
 		}
 
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);

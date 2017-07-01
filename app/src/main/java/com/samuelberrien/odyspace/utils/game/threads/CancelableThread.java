@@ -32,8 +32,9 @@ public abstract class CancelableThread extends Thread {
 
 	protected void waitRequiredTime(long t1) {
 		try {
-			long waitTime = this.TIME_TO_WAIT - (System.currentTimeMillis() - t1);
-			Thread.sleep(waitTime >= 0 ? waitTime : 0);
+			/*long waitTime = this.TIME_TO_WAIT - (System.currentTimeMillis() - t1);
+			Thread.sleep(waitTime >= 0 ? waitTime : 0);*/
+			Thread.sleep(TIME_TO_WAIT);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 		}

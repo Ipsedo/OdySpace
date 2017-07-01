@@ -49,14 +49,12 @@ public class TestBossThread implements Level {
 	private List<BaseItem> rocketsShip;
 	private List<BaseItem> rocketsBoss;
 	private boolean isInit = false;
-	private Joystick joystick;
-	private Controls controls;
 	private Compass compass;
 	private Forest forest;
 	private ProgressBar progressBar;
 
 	@Override
-	public void init(Context context, Ship currShip, float levelLimitSize, Joystick joystick, Controls controls) {
+	public void init(Context context, Ship currShip, float levelLimitSize) {
 		this.context = context;
 		this.ship = currShip;
 		float limitDown = -100f;
@@ -116,8 +114,6 @@ public class TestBossThread implements Level {
 
 		this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
 		this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
-		this.joystick = joystick;
-		this.controls = controls;
 		this.compass = new Compass(this.context, Float.MAX_VALUE - 10.0f);
 		this.isInit = true;
 	}
@@ -154,8 +150,8 @@ public class TestBossThread implements Level {
 	@Override
 	public void update() {
 		if (this.ship.isAlive()) {
-			this.ship.move(this.joystick, this.controls);
-			this.ship.fire(this.controls, this.rocketsShip);
+			this.ship.move();
+			this.ship.fire(this.rocketsShip);
 		}
 		ArrayList<BaseItem> tmpArr = new ArrayList<>();
 		tmpArr.addAll(this.rocketsShip);

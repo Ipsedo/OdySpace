@@ -35,6 +35,9 @@ public class Ship extends BaseItem {
 	private final float[] originalSpeedVec = new float[]{0f, 0f, 1f, 0f};
 	private final float[] originalUpVec = new float[]{0f, 1f, 0f, 0f};
 
+	private Joystick joystick;
+	private Controls controls;
+
 	private int maxLife;
 	private ProgressBar lifeDraw;
 
@@ -85,6 +88,11 @@ public class Ship extends BaseItem {
 		this.mBoostSpeed = 0f;
 	}
 
+	public void setGameControls(Joystick joystick, Controls controls) {
+		this.joystick = joystick;
+		this.controls = controls;
+	}
+
 	public void addExplosion(List<Explosion> explosions) {
 		if (!this.exploded) {
 			this.mExplosion.setPosition(this.mPosition.clone());
@@ -97,11 +105,12 @@ public class Ship extends BaseItem {
 		this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.16f, 1f, 1f, 0.4f, 0.6f);
 	}
 
-	public void move(Joystick joystick, Controls controls) {
-		this.mBoostSpeed = (float) Math.exp(controls.getBoost() + 2f) * this.boostCoeff;
+	@Override
+	public void move() {
+		this.mBoostSpeed = (float) Math.exp(this.controls.getBoost() + 2f) * this.boostCoeff;
 		this.mMaxSpeed = this.SHIP_MAX_SPEED * this.mBoostSpeed;
 
-		float[] tmp = joystick.getStickPosition();
+		float[] tmp = this.joystick.getStickPosition();
 
 		float phi = tmp[0];
 		float theta = tmp[1];
@@ -137,10 +146,10 @@ public class Ship extends BaseItem {
 		super.mModelMatrix = mModelMatrix;
 	}
 
-	public void fire(Controls controls, List<BaseItem> rockets) {
-		if (controls.isFire()) {
+	public void fire(List<BaseItem> rockets) {
+		if (this.controls.isFire()) {
 			this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
-			controls.turnOffFire();
+			this.controls.turnOffFire();
 		}
 	}
 
