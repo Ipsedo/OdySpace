@@ -5,11 +5,10 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
-import com.samuelberrien.odyspace.objects.baseitem.SuperIcosahedron;
+import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.SimplexNoise;
-import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +35,14 @@ public class Tunnel implements GLItemDrawable {
 	private float[][] mRotationMatrix;
 	private float[][] mVec;
 
-	private float limitLength;
-	private float maxLength;
+	public static float LIMIT_LENGTH = 30f;
+	public static float MAX_LENGTH = 70;
 
 	public Tunnel(Context context, Random random, int nbStretch, float[] initPos) {
 		this.context = context;
 		this.random = random;
 		this.nbStretch = nbStretch;
 		this.initPos = initPos.clone();
-
-		this.limitLength = 30f;
-		this.maxLength = 70f;
 
 		this.makePoints();
 		this.makeStretches();
@@ -59,7 +55,7 @@ public class Tunnel implements GLItemDrawable {
 		this.mPoints[0] = this.initPos.clone();
 		this.mVec = new float[this.mPoints.length][4];
 		for (int i = 1; i < this.mPoints.length; i++) {
-			float length = this.random.nextFloat() * (this.maxLength - this.limitLength) + this.limitLength;
+			float length = this.random.nextFloat() * (MAX_LENGTH - LIMIT_LENGTH) + LIMIT_LENGTH;
 
 			float[] pitchMatrix = new float[16];
 			float[] yawMatrix = new float[16];
@@ -89,7 +85,7 @@ public class Tunnel implements GLItemDrawable {
 		float[][] scale = new float[this.mPoints.length][3];
 
 		for (int i = 0; i < scale.length; i++) {
-			float tmp = (float) SimplexNoise.noise(this.mPoints[i][0] / (this.limitLength * (float) this.nbStretch), this.mPoints[i][1] / (this.limitLength * (float) this.nbStretch), this.mPoints[i][2] / (this.limitLength * (float) this.nbStretch)) * 20f;
+			float tmp = (float) SimplexNoise.noise(this.mPoints[i][0] / (LIMIT_LENGTH * (float) this.nbStretch), this.mPoints[i][1] / (LIMIT_LENGTH * (float) this.nbStretch), this.mPoints[i][2] / (LIMIT_LENGTH * (float) this.nbStretch)) * 20f;
 			scale[i][0] = tmp + this.random.nextFloat() * 5f + 20f;
 			scale[i][1] = tmp + this.random.nextFloat() * 5f + 20f;
 			scale[i][2] = tmp + this.random.nextFloat() * 5f + 20f;
@@ -116,6 +112,14 @@ public class Tunnel implements GLItemDrawable {
 	public List<Item> getItems() {
 		ArrayList<Item> res = new ArrayList<>();
 		res.addAll(this.stretches);
+		return res;
+	}
+
+	public List<Item> getItemsInBox(Box box) {
+		ArrayList<Item> res = new ArrayList<>();
+		for (Stretch s : this.stretches)
+			if (s.isInside(box))
+				res.add(s);
 		return res;
 	}
 

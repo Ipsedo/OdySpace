@@ -150,7 +150,7 @@ public class TestTunnelLevel implements Level {
 		ArrayList<Item> amis = new ArrayList<>();
 		amis.add(this.ship);
 		ArrayList<Item> ennemis = new ArrayList<>();
-		ennemis.addAll(this.tunnel.getItems());
+		ennemis.addAll(this.tunnel.getItemsInBox(this.makeBoundingBox(2f)));
 		ennemis.addAll(this.icos);
 		Octree octree = new Octree(this.makeBoundingBox(this.sizeCollideBox), amis, ennemis, 4f);
 		octree.computeOctree();
@@ -159,7 +159,7 @@ public class TestTunnelLevel implements Level {
 		ennemis.clear();
 		amis.addAll(this.rockets);
 		ennemis.addAll(this.icos);
-		octree = new Octree(this.makeBoundingBox(this.levelLimitSize * 2f), amis, ennemis, 10f);
+		octree = new Octree(this.makeBoundingBox(this.levelLimitSize), amis, ennemis, 2f);
 		octree.computeOctree();
 	}
 

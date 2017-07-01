@@ -27,7 +27,6 @@ public class BitmapLoader {
 			bitmap = BitmapFactory.decodeStream(istr);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new RuntimeException("FAIIIIIIIIIL");
 		}
 
 		return bitmap;

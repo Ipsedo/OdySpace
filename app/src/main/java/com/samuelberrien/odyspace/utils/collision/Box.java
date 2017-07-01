@@ -76,6 +76,6 @@ public class Box {
 
 	@Override
 	public String toString() {
-		return "Box : { x = " + this.x + ", y = " + this.y + ", z = " + this.z + "; sX = " + this.sizeX + ", sY = " + this.sizeY + ", sZ = " + this.sizeZ + " }";
+		return "Box : { x = " + this.x + ", y = " + this.y + ", z = " + this.z + " ; sX = " + this.sizeX + ", sY = " + this.sizeY + ", sZ = " + this.sizeZ + " }";
 	}
 }
