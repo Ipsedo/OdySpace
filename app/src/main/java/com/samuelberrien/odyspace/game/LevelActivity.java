@@ -1,9 +1,11 @@
 package com.samuelberrien.odyspace.game;
 
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Gravity;
@@ -49,18 +51,42 @@ public class LevelActivity extends AppCompatActivity {
 		this.pauseButton.setLayoutParams(tmp);
 
 		this.pauseButton.setOnClickListener(new View.OnClickListener() {
-			private boolean paused = false;
+			//private boolean paused = false;
 
 			@Override
 			public void onClick(View view) {
 				LevelActivity.this.mSurfaceView.resumeOrPauseGame();
-				if(!this.paused) {
+				/*if(!this.paused) {
 					LevelActivity.this.pauseButton.setBackground(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_resume_game));
 					this.paused = true;
 				} else {
 					LevelActivity.this.pauseButton.setBackground(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_pause_game));
 					this.paused = false;
-				}
+				}*/
+				AlertDialog.Builder builder = new AlertDialog.Builder(LevelActivity.this);
+				builder.setTitle("Pause menu");
+				builder.setNegativeButton("Quit level", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						LevelActivity.this.finish();
+					}
+				});
+				builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						LevelActivity.this.mSurfaceView.resumeOrPauseGame();
+					}
+				});
+				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+					@Override
+					public void onDismiss(DialogInterface dialogInterface) {
+						LevelActivity.this.mSurfaceView.resumeOrPauseGame();
+					}
+				});
+				AlertDialog pauseDialog = builder.create();
+				pauseDialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
+				pauseDialog.setCanceledOnTouchOutside(false);
+				pauseDialog.show();
 			}
 		});
 
