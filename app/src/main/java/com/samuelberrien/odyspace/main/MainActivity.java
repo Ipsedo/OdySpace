@@ -189,16 +189,8 @@ public class MainActivity extends AppCompatActivity {
 						int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
 						final long maxLevel = MainActivity.this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
 
-						builder.setTitle("Level Done, Score : " + score);
-
-                        /*
-						builder.setNegativeButton("Restart", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(MainActivity.this, LevelActivity.class);
-                                intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
-                                startActivityForResult(intent, MainActivity.RESULT_VALUE);
-                            }
-                        });*/
+						builder.setTitle("Level Done");
+						builder.setMessage("Score : " + score);
 
 						builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
@@ -233,7 +225,8 @@ public class MainActivity extends AppCompatActivity {
 							}
 						});
 					} else {
-						builder.setTitle("Game Over, Score : " + score);
+						builder.setTitle("Game Over");
+						builder.setMessage("Score : " + score);
 
 						builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
 							@Override

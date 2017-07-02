@@ -129,14 +129,14 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		}
 	}
 
-	public void resumeOrPauseGame() {
-		if (this.isResume) {
-			this.killThread();
-			this.isResume = false;
-		} else {
-			this.initThreads();
-			this.isResume = true;
-		}
+	public void resumeGame() {
+		this.initThreads();
+		this.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+	}
+
+	public void pauseGame() {
+		this.killThread();
+		this.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 	}
 
 	@Override
@@ -218,5 +218,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	public void onPause() {
 		this.killThread();
 		super.onPause();
+	}
+
+	public String getScore() {
+		return Integer.toString(this.currentLevel.getScore());
 	}
 }

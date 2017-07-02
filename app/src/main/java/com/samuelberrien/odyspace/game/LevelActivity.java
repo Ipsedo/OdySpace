@@ -1,5 +1,9 @@
 package com.samuelberrien.odyspace.game;
 
+import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
@@ -51,18 +55,9 @@ public class LevelActivity extends AppCompatActivity {
 		this.pauseButton.setLayoutParams(tmp);
 
 		this.pauseButton.setOnClickListener(new View.OnClickListener() {
-			//private boolean paused = false;
-
 			@Override
 			public void onClick(View view) {
-				LevelActivity.this.mSurfaceView.resumeOrPauseGame();
-				/*if(!this.paused) {
-					LevelActivity.this.pauseButton.setBackground(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_resume_game));
-					this.paused = true;
-				} else {
-					LevelActivity.this.pauseButton.setBackground(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_pause_game));
-					this.paused = false;
-				}*/
+				LevelActivity.this.mSurfaceView.pauseGame();
 				AlertDialog.Builder builder = new AlertDialog.Builder(LevelActivity.this);
 				builder.setTitle("Pause menu");
 				builder.setNegativeButton("Quit level", new DialogInterface.OnClickListener() {
@@ -74,19 +69,32 @@ public class LevelActivity extends AppCompatActivity {
 				builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
-						LevelActivity.this.mSurfaceView.resumeOrPauseGame();
+						LevelActivity.this.mSurfaceView.resumeGame();
 					}
 				});
+				/*builder.setNeutralButton("Parameters", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+					}
+				});*/
 				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 					@Override
 					public void onDismiss(DialogInterface dialogInterface) {
-						LevelActivity.this.mSurfaceView.resumeOrPauseGame();
+						LevelActivity.this.mSurfaceView.resumeGame();
 					}
 				});
+				builder.setMessage("Current Score : " + LevelActivity.this.mSurfaceView.getScore());
 				AlertDialog pauseDialog = builder.create();
 				pauseDialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
+				/*Button paremetersbutton = pauseDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+				paremetersbutton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						LevelActivity.this.makeParametersDialog();
+					}
+				});*/
 			}
 		});
 
@@ -99,6 +107,26 @@ public class LevelActivity extends AppCompatActivity {
 
 		this.addContentView(this.progressBar, params);
 		this.addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+	}
+
+	private void makeParametersDialog() {
+		LevelActivity.this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				final Dialog dialog = new Dialog(LevelActivity.this);
+				dialog.setTitle("Parameters");
+				dialog.setContentView(R.layout.parameters_layout);
+				dialog.setCanceledOnTouchOutside(false);
+				Button exitButton = (Button) dialog.findViewById(R.id.exit_parameters_button);
+				exitButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						dialog.dismiss();
+					}
+				});
+				dialog.show();
+			}
+		});
 	}
 
 	private int getScreenHeight() {
