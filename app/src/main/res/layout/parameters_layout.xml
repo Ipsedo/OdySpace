@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/parameters_layout_id"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/button_main"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/test_fragment_button"
-        android:layout_width="wrap_content"
+    <SeekBar
+        android:id="@+id/volume_seek_bar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/button_main"
-        android:text="Test"/>
-
-    <Button
-        android:id="@+id/exit_parameters_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/exit_button"/>
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

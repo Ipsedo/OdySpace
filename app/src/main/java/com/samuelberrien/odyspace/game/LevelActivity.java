@@ -4,23 +4,37 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.R;
+
+import static android.R.attr.type;
 
 public class LevelActivity extends AppCompatActivity {
 
@@ -58,8 +72,13 @@ public class LevelActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				LevelActivity.this.mSurfaceView.pauseGame();
+
+				LayoutInflater inflater = LevelActivity.this.getLayoutInflater();
+				View layout = inflater.inflate(R.layout.parameters_layout, (RelativeLayout) findViewById(R.id.parameters_layout_id));
+
 				AlertDialog.Builder builder = new AlertDialog.Builder(LevelActivity.this);
 				builder.setTitle("Pause menu");
+				builder.setView(layout);
 				builder.setNegativeButton("Quit level", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
@@ -72,11 +91,6 @@ public class LevelActivity extends AppCompatActivity {
 						LevelActivity.this.mSurfaceView.resumeGame();
 					}
 				});
-				/*builder.setNeutralButton("Parameters", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-					}
-				});*/
 				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 					@Override
 					public void onDismiss(DialogInterface dialogInterface) {
@@ -88,13 +102,24 @@ public class LevelActivity extends AppCompatActivity {
 				pauseDialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
-				/*Button paremetersbutton = pauseDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-				paremetersbutton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						LevelActivity.this.makeParametersDialog();
+
+				SeekBar sb = (SeekBar) layout.findViewById(R.id.volume_seek_bar);
+				final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+				sb.setMax(tmp.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+				sb.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
+				sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+						tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);
 					}
-				});*/
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+					}
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+					}
+				});
 			}
 		});
 
@@ -107,26 +132,6 @@ public class LevelActivity extends AppCompatActivity {
 
 		this.addContentView(this.progressBar, params);
 		this.addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-	}
-
-	private void makeParametersDialog() {
-		LevelActivity.this.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				final Dialog dialog = new Dialog(LevelActivity.this);
-				dialog.setTitle("Parameters");
-				dialog.setContentView(R.layout.parameters_layout);
-				dialog.setCanceledOnTouchOutside(false);
-				Button exitButton = (Button) dialog.findViewById(R.id.exit_parameters_button);
-				exitButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						dialog.dismiss();
-					}
-				});
-				dialog.show();
-			}
-		});
 	}
 
 	private int getScreenHeight() {
