@@ -12,8 +12,8 @@
                 <gradient
                     android:endColor="@color/pumpkin"
                     android:startColor="@color/pumpkin2"
-                    android:useLevel="true" />
-                <corners android:radius="3dp" />
+                    android:useLevel="true"/>
+                <corners android:radius="3dp"/>
             </shape>
         </rotate>
     </item>

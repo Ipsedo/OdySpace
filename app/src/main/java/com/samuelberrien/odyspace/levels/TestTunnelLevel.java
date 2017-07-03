@@ -187,7 +187,7 @@ public class TestTunnelLevel implements Level {
 				this.explosions.remove(i);
 
 		for (int i = this.rockets.size() - 1; i >= 0; i--)
-			if(!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.makeBoundingBox(this.levelLimitSize * 2f)))
+			if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.makeBoundingBox(this.levelLimitSize * 2f)))
 				this.rockets.remove(i);
 	}
 

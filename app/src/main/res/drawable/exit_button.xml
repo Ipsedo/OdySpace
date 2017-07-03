@@ -9,16 +9,16 @@
                 android:angle="270"
                 android:centerColor="@color/colorFstButton"
                 android:endColor="@color/colorMainLayout"
-                android:startColor="@color/colorMainLayout" />
-            <corners android:radius="3dp" />
+                android:startColor="@color/colorMainLayout"/>
+            <corners android:radius="3dp"/>
             <stroke
                 android:width="@dimen/strokes_width"
-                android:color="@color/black" />
+                android:color="@color/black"/>
         </shape>
     </item>
     <item>
         <bitmap
             android:gravity="fill"
-            android:src="@drawable/exit" />
+            android:src="@drawable/exit"/>
     </item>
 </layer-list>
