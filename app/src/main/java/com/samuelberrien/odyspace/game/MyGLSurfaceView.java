@@ -67,6 +67,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		this.isResume = true;
 	}
 
+	public void setJoystickInversed(boolean isInversed) {
+		this.joystick.setInversed(isInversed);
+	}
+
 	/**
 	 * @param currLevelId
 	 * @return

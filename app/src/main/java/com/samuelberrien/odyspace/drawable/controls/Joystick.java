@@ -41,10 +41,17 @@ public class Joystick implements GLInfoDrawable {
 	private int mMVPMatrixHandle;
 	private int mProgram;
 
-	float color[] = Color.ControlsColor;
+	private float color[] = Color.ControlsColor;
+
+	private boolean isInversed;
 
 	public Joystick() {
 		this.isVisible = false;
+		this.isInversed = true;
+	}
+
+	public void setInversed(boolean isInversed) {
+		this.isInversed = isInversed;
 	}
 
 	public void initGraphics(Context context) {
@@ -124,7 +131,7 @@ public class Joystick implements GLInfoDrawable {
 
 	public float[] getStickPosition() {
 		if (this.isVisible) {
-			return new float[]{-(this.mStickPosition[0] - this.mPosition[0]) / (float) (this.circleLength - this.stickLength), (this.mStickPosition[1] - this.mPosition[1]) / (float) (this.circleLength - this.stickLength)};
+			return new float[]{-(this.mStickPosition[0] - this.mPosition[0]) / (float) (this.circleLength - this.stickLength), (this.isInversed ? 1f : -1f) * (this.mStickPosition[1] - this.mPosition[1]) / (float) (this.circleLength - this.stickLength)};
 		} else {
 			return new float[]{0f, 0f};
 		}

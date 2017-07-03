@@ -7,4 +7,5 @@
     <bool name="saved_ship_bird_bought_default">false</bool>
     <bool name="saved_ship_supreme_bought_default">false</bool>
     <bool name="faux">false</bool>
+    <bool name="saved_joystick_inversed_default">true</bool>
 </resources>

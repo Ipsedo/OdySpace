@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">OdySpace</string>
     <string name="title_activity_level">LevelActivity</string>
-    <string name="level_info">LevelInfo</string>
+    <string name="level_info_preferences">LevelInfo</string>
     <string name="saved_max_level">SavedMaxLevel</string>
-    <string name="saved_shop">SavedShop</string>
+    <string name="shop_preferences">SavedShop</string>
     <string name="fire_bonus_1">Simple Fire</string>
     <string name="fire_bonus_2">Quint Fire</string>
     <string name="fire_bonus_3">Simple Bomb</string>
@@ -11,7 +11,7 @@
     <string name="ship_simple">Simple Ship</string>
     <string name="ship_supreme">Supreme Ship</string>
     <string name="bought_life">Life</string>
-    <string name="saved_ship_info">SavedShip</string>
+    <string name="ship_info_preferences">SavedShip</string>
     <string name="current_fire_type">CurrentFireType</string>
     <string name="current_life_number">CurrentLifeNumberShip</string>
     <string name="current_ship_used">CurrentShipUsed</string>
@@ -30,4 +30,6 @@
         <item>@string/ship_bird</item>
         <item>@string/ship_supreme</item>
     </string-array>
+    <string name="game_preferences">Game</string>
+    <string name="saved_joystick_inversed">JoystickInversed</string>
 </resources>

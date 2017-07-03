@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -26,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -33,6 +36,7 @@ import android.widget.TextView;
 
 import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.game.Level;
 
 import static android.R.attr.type;
 
@@ -46,12 +50,17 @@ public class LevelActivity extends AppCompatActivity {
 	private ProgressBar progressBar;
 	private Button pauseButton;
 
+	private SharedPreferences gamePreferences;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		this.mSurfaceView = new MyGLSurfaceView(this.getApplicationContext(), this, Integer.parseInt(super.getIntent().getStringExtra(MainActivity.LEVEL_ID)));
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+		this.gamePreferences = this.getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE);
+		this.mSurfaceView.setJoystickInversed(this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
 
 		this.progressBar = new ProgressBar(this);
 		this.progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.pumpkin), PorterDuff.Mode.SRC_IN);
@@ -74,34 +83,7 @@ public class LevelActivity extends AppCompatActivity {
 				LevelActivity.this.mSurfaceView.pauseGame();
 
 				LayoutInflater inflater = LevelActivity.this.getLayoutInflater();
-				View layout = inflater.inflate(R.layout.parameters_layout, (RelativeLayout) findViewById(R.id.parameters_layout_id));
-
-				AlertDialog.Builder builder = new AlertDialog.Builder(LevelActivity.this);
-				builder.setTitle("Pause menu");
-				builder.setView(layout);
-				builder.setNegativeButton("Quit level", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						LevelActivity.this.finish();
-					}
-				});
-				builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						LevelActivity.this.mSurfaceView.resumeGame();
-					}
-				});
-				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-					@Override
-					public void onDismiss(DialogInterface dialogInterface) {
-						LevelActivity.this.mSurfaceView.resumeGame();
-					}
-				});
-				builder.setMessage("Current Score : " + LevelActivity.this.mSurfaceView.getScore());
-				AlertDialog pauseDialog = builder.create();
-				pauseDialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
-				pauseDialog.setCanceledOnTouchOutside(false);
-				pauseDialog.show();
+				View layout = inflater.inflate(R.layout.parameters_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
 
 				SeekBar sb = (SeekBar) layout.findViewById(R.id.volume_seek_bar);
 				final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -120,6 +102,47 @@ public class LevelActivity extends AppCompatActivity {
 					public void onStopTrackingTouch(SeekBar seekBar) {
 					}
 				});
+
+				final CheckBox inverseJoystickCheckBox = (CheckBox) layout.findViewById(R.id.inverse_joystick_checkbox);
+
+				inverseJoystickCheckBox.setChecked(LevelActivity.this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
+				inverseJoystickCheckBox.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						LevelActivity.this.gamePreferences.edit()
+								.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
+								.commit();
+
+						LevelActivity.this.mSurfaceView.setJoystickInversed(inverseJoystickCheckBox.isChecked());
+					}
+				});
+
+				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
+						.setTitle("Pause menu")
+						.setView(layout)
+						.setNegativeButton("Quit level", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {
+								LevelActivity.this.finish();
+							}
+						})
+						.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {
+								LevelActivity.this.mSurfaceView.resumeGame();
+							}
+						})
+						.setOnDismissListener(new DialogInterface.OnDismissListener() {
+							@Override
+							public void onDismiss(DialogInterface dialogInterface) {
+								LevelActivity.this.mSurfaceView.resumeGame();
+							}
+						})
+						.setMessage("Current Score : " + LevelActivity.this.mSurfaceView.getScore())
+						.create();
+				pauseDialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
+				pauseDialog.setCanceledOnTouchOutside(false);
+				pauseDialog.show();
 			}
 		});
 

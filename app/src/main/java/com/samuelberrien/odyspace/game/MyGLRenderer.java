@@ -70,8 +70,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		this.joystick = joystick;
 		this.controls = controls;
 		this.currentLevel = currentLevel;
-		this.savedShop = this.context.getSharedPreferences(this.context.getString(R.string.saved_shop), Context.MODE_PRIVATE);
-		this.savedShip = this.context.getSharedPreferences(this.context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
+		this.savedShop = this.context.getSharedPreferences(this.context.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
+		this.savedShip = this.context.getSharedPreferences(this.context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 	}
 
 	@Override

@@ -86,12 +86,12 @@ public class ShopActivity extends AppCompatActivity {
 		});
 
 		this.currMoneyTextView = (TextView) findViewById(R.id.shop_curr_money_text_view);
-		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_shop), Context.MODE_PRIVATE);
+		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
 		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
 		this.currMoneyTextView.setText(Integer.toString(currMoney) + "$");
 
-		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
+		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
 		// Give the TabLayout the ViewPager
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);

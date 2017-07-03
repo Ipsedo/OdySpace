@@ -49,8 +49,8 @@ public class Ship extends BaseItem {
 	private FireType fireType;
 
 	public static Ship makeShip(Context context) {
-		SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.saved_ship_info), Context.MODE_PRIVATE);
-		SharedPreferences savedShop = context.getSharedPreferences(context.getString(R.string.saved_shop), Context.MODE_PRIVATE);
+		SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+		SharedPreferences savedShop = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		int currBoughtLife = savedShop.getInt(context.getString(R.string.bought_life), context.getResources().getInteger(R.integer.saved_ship_life_shop_default));
 		int currShipLife = savedShip.getInt(context.getString(R.string.current_life_number), context.getResources().getInteger(R.integer.saved_ship_life_default));
 
