@@ -58,8 +58,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private GameOver gameOver;
 	private LevelDone levelDone;
 
-	private SharedPreferences savedShop;
-	private SharedPreferences savedShip;
+	private boolean isInit = false;
 
 	/**
 	 * @param context
@@ -70,38 +69,40 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		this.joystick = joystick;
 		this.controls = controls;
 		this.currentLevel = currentLevel;
-		this.savedShop = this.context.getSharedPreferences(this.context.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
-		this.savedShip = this.context.getSharedPreferences(this.context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 	}
 
 	@Override
 	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-		this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
-
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 		GLES20.glEnable(GLES20.GL_CULL_FACE);
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
 
-		this.joystick.initGraphics(this.context);
-		this.controls.initGraphics(this.context);
+		if(!this.isInit) {
+			this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
 
-		this.ship = Ship.makeShip(this.context);
-		this.ship.setGameControls(this.joystick, this.controls);
-		this.ship.move();
+			this.joystick.initGraphics(this.context);
+			this.controls.initGraphics(this.context);
 
-		this.mCameraPosition = new float[]{0f, 0f, -10f};
-		this.mCameraUpVec = new float[]{0f, 1f, 0f};
+			this.ship = Ship.makeShip(this.context);
+			this.ship.setGameControls(this.joystick, this.controls);
+			this.ship.move();
 
-		this.currentLevel.init(this.context, this.ship, 500f);
+			this.mCameraPosition = new float[]{0f, 0f, -10f};
+			this.mCameraUpVec = new float[]{0f, 1f, 0f};
 
-		this.updateCameraPosition(this.ship.getCamPosition());
-		this.updateCamLookVec(this.ship.getCamLookAtVec());
-		this.updateCamUpVec(this.ship.getCamUpVec());
+			this.currentLevel.init(this.context, this.ship, 500f);
 
-		this.gameOver = new GameOver(this.context);
-		this.levelDone = new LevelDone(this.context);
+			this.updateCameraPosition(this.ship.getCamPosition());
+			this.updateCamLookVec(this.ship.getCamLookAtVec());
+			this.updateCamUpVec(this.ship.getCamUpVec());
+
+			this.gameOver = new GameOver(this.context);
+			this.levelDone = new LevelDone(this.context);
+
+			this.isInit = true;
+		}
 	}
 
 	/**

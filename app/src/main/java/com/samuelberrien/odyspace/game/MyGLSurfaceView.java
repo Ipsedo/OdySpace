@@ -64,6 +64,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		this.renderer = new MyGLRenderer(this.context, this, this.currentLevel, this.joystick, this.controls);
 		this.setRenderer(this.renderer);
 
+		this.setPreserveEGLContextOnPause(true);
+
 		this.isResume = true;
 	}
 
