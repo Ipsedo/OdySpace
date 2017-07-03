@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 	private Button startButton;
 	private Button continueButton;
 	private Button shopButton;
-	private TextView gameInfo;
 	private LinearLayout levelChooser;
 
 	private SharedPreferences savedShop;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		this.savedLevelInfo = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE);
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
-		//this.resetSharedPref();
 		this.startButton = (Button) findViewById(R.id.start_button);
 		this.startButton.setText("START (" + (this.currLevel + 1) + ")");
 		this.continueButton = (Button) findViewById(R.id.continue_button);
@@ -93,20 +93,38 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initGameInfo() {
-		this.gameInfo = (TextView) findViewById(R.id.game_info);
-		String defaultValue = getString(R.string.saved_fire_type_default);
-		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), defaultValue);
+		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
 
-		int defaultLife = getResources().getInteger(R.integer.saved_ship_life_default);
-		int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), defaultLife);
+		int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
 
-		int defaultBoughtLife = getResources().getInteger(R.integer.saved_ship_life_shop_default);
-		int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), defaultBoughtLife);
+		int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
 
-		int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 
-		this.gameInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + System.getProperty("line.separator") + "FireType : " + currFireType + System.getProperty("line.separator") + "Money : " + currMoney);
+		String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
+
+
+		ImageView imageView = (ImageView) findViewById(R.id.fire_image_main);
+		if (currFireType.equals(getString(R.string.fire_bonus_1))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_fire));
+		} else if (currFireType.equals(getString(R.string.fire_bonus_2))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.quint_fire));
+		} else if (currFireType.equals(getString(R.string.fire_bonus_3))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_bomb));
+		}
+
+		imageView = (ImageView) findViewById(R.id.ship_image_main);
+
+		if (shipUsed.equals(getString(R.string.ship_simple))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_ship));
+		} else if (shipUsed.equals(getString(R.string.ship_bird))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_bird));
+		} else if (shipUsed.equals(getString(R.string.ship_supreme))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
+		}
+
+		TextView textView = (TextView) findViewById(R.id.curr_money_main);
+		textView.setText("Life : " + currShipLife + " + " + currBoughtLife + System.getProperty("line.separator") + currMoney + " $");
 	}
 
 	private void resetSharedPref() {

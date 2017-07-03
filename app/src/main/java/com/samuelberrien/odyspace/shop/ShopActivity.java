@@ -28,11 +28,10 @@ public class ShopActivity extends AppCompatActivity {
 	private Button useButton;
 
 	private TextView currMoneyTextView;
+	private TextView currShipInfo;
 
 	private SharedPreferences savedShop;
 	private SharedPreferences savedShip;
-
-	private RelativeLayout relativeLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +48,6 @@ public class ShopActivity extends AppCompatActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.activity_shop);
-
-		this.relativeLayout = (RelativeLayout) this.findViewById(R.id.activity_shop);
 
 		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 		viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager()));
@@ -93,9 +90,24 @@ public class ShopActivity extends AppCompatActivity {
 
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
+		this.currShipInfo = (TextView) findViewById(R.id.shop_curr_ship_info);
+		this.updateShipInfoTextView();
+
 		// Give the TabLayout the ViewPager
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 		tabLayout.setupWithViewPager(viewPager);
+	}
+
+	private void updateShipInfoTextView() {
+		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
+
+		int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
+
+		String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
+
+		int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
+
+		this.currShipInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + " (" + shipUsed + ")" + System.getProperty("line.separator") + "FireType : " + currFireType);
 	}
 
 	public void buy() {
@@ -128,6 +140,8 @@ public class ShopActivity extends AppCompatActivity {
 
 		currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
 		this.currMoneyTextView.setText(Integer.toString(currMoney) + "$");
+
+		this.updateShipInfoTextView();
 	}
 
 	private void buyLife(SharedPreferences.Editor editor, int currMoney) {
@@ -179,6 +193,8 @@ public class ShopActivity extends AppCompatActivity {
 		} else if (!this.currBonusItem.equals("") && this.savedShop.getBoolean(this.currBonusItem, getResources().getBoolean(boolResBought))) {
 
 		}
+
+		this.updateShipInfoTextView();
 	}
 
 	public void setItemChosen(int page, int id) {

@@ -1,25 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorMainLayout"
-    tools:context="com.samuelberrien.odyspace.main.MainActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorMainLayout"
+                tools:context="com.samuelberrien.odyspace.main.MainActivity">
+
+    <TextView
+        android:id="@+id/curr_money_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fire_image_main"
+        android:paddingTop="10dp"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/start_button"
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/game_info"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
         android:background="@drawable/button_main"
         android:onClick="start"
         android:text="Start"
+        android:layout_below="@id/curr_money_main"
         tools:layout_editor_absoluteX="92dp"
-        tools:layout_editor_absoluteY="233dp" />
+        tools:layout_editor_absoluteY="233dp"/>
+
+    <ImageView
+        android:id="@+id/fire_image_main"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="4dp"
+
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_main"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="37dp"/>
+
+    <ImageView
+        android:id="@+id/bonus_image_main"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@id/start_button"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="37dp"
+        android:background="@drawable/button_main"
+        android:padding="4dp"/>
+
+    <ImageView
+        android:id="@+id/ship_image_main"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@id/start_button"
+        android:background="@drawable/button_main"
+        android:padding="4dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="37dp"/>
 
     <Button
         android:id="@+id/continue_button"
@@ -33,7 +72,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/button_main"
         android:onClick="continueStory"
-        android:text="Continue Story" />
+        android:text="Continue Story"/>
 
     <Button
         android:id="@+id/shop_button"
@@ -47,21 +86,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/button_main"
         android:onClick="shop"
-        android:text="Shop" />
-
-    <TextView
-        android:id="@+id/game_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/start_button"
-        android:layout_alignLeft="@+id/start_button"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/start_button"
-        android:layout_alignStart="@+id/start_button"
-        android:layout_marginTop="37dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textAllCaps="false" />
+        android:text="Shop"/>
 
     <ScrollView
         android:id="@+id/level_chooser"
@@ -71,23 +96,25 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/shop_button"
         android:layout_marginTop="35dp"
-        android:background="@drawable/drawable_shop">
+        android:background="@drawable/drawable_shop"
+        android:paddingBottom="@dimen/strokes_width"
+        android:paddingTop="@dimen/strokes_width">
 
         <LinearLayout
             android:id="@+id/level_chooser_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="4dp"></LinearLayout>
+            android:padding="4dp"/>
     </ScrollView>
 
     <Button
         android:id="@+id/reset_button"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:background="@drawable/button_reset_skull"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:onClick="reset" />
+        android:layout_alignParentTop="true"
+        android:background="@drawable/button_reset_skull"
+        android:onClick="reset"/>
 
 </RelativeLayout>
