@@ -41,7 +41,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_separator_main"
             android:background="@drawable/button_main"
-            android:padding="4dp"/>
+            android:padding="@dimen/padding_main"/>
 
         <ImageView
             android:id="@+id/bonus_image_main"
@@ -51,7 +51,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/margin_separator_main"
             android:background="@drawable/button_main"
-            android:padding="4dp"/>
+            android:padding="@dimen/padding_main"/>
 
         <ImageView
             android:id="@+id/ship_image_main"
@@ -61,7 +61,7 @@
             android:layout_alignStart="@id/start_button"
             android:layout_marginTop="@dimen/margin_separator_main"
             android:background="@drawable/button_main"
-            android:padding="4dp"/>
+            android:padding="@dimen/padding_main"/>
 
         <Button
             android:id="@+id/continue_button"
@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="4dp"/>
+            android:padding="@dimen/padding_main"/>
     </ScrollView>
 
 </LinearLayout>
