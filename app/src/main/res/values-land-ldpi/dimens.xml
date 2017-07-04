@@ -7,4 +7,6 @@
     <dimen name="margin_separator_main">10dp</dimen>
     <dimen name="padding_top_text_main">3dp</dimen>
     <dimen name="padding_main">4dp</dimen>
+    <dimen name="margin_shop">4dp</dimen>
+    <dimen name="size_image_shop">50dp</dimen>
 </resources>

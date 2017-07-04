@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
@@ -91,21 +92,41 @@ public class ShopActivity extends AppCompatActivity {
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
 		this.currShipInfo = (TextView) findViewById(R.id.shop_curr_ship_info);
-		this.updateShipInfoTextView();
+		this.updateShipInfo();
 
 		// Give the TabLayout the ViewPager
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
-	private void updateShipInfoTextView() {
+	private void updateShipInfo() {
 		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
 
 		int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
 
+		int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
+
 		String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
 
-		int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
+
+		ImageView imageView = (ImageView) findViewById(R.id.fire_image_shop);
+		if (currFireType.equals(getString(R.string.fire_bonus_1))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_fire));
+		} else if (currFireType.equals(getString(R.string.fire_bonus_2))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.quint_fire));
+		} else if (currFireType.equals(getString(R.string.fire_bonus_3))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_bomb));
+		}
+
+		imageView = (ImageView) findViewById(R.id.ship_image_shop);
+
+		if (shipUsed.equals(getString(R.string.ship_simple))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_ship));
+		} else if (shipUsed.equals(getString(R.string.ship_bird))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_bird));
+		} else if (shipUsed.equals(getString(R.string.ship_supreme))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
+		}
 
 		this.currShipInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + " (" + shipUsed + ")" + System.getProperty("line.separator") + "FireType : " + currFireType);
 	}
@@ -141,7 +162,7 @@ public class ShopActivity extends AppCompatActivity {
 		currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
 		this.currMoneyTextView.setText(Integer.toString(currMoney) + "$");
 
-		this.updateShipInfoTextView();
+		this.updateShipInfo();
 	}
 
 	private void buyLife(SharedPreferences.Editor editor, int currMoney) {
@@ -194,7 +215,7 @@ public class ShopActivity extends AppCompatActivity {
 
 		}
 
-		this.updateShipInfoTextView();
+		this.updateShipInfo();
 	}
 
 	public void setItemChosen(int page, int id) {

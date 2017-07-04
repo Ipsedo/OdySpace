@@ -11,27 +11,29 @@
     <Button
         android:id="@+id/use_item_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/components_height_main"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="@dimen/margin_shop"
+        android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
         android:text="Use It"/>
 
     <Button
         android:id="@+id/buy_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/components_height_main"
         android:layout_below="@id/use_item_button"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="@dimen/margin_shop"
+        android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
         android:text="Buy It"/>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/components_height_main"
         android:layout_below="@id/buy_button"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
         app:tabIndicatorColor="@color/pumpkin">
 
@@ -43,32 +45,78 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/shop_curr_money_text_view"
         android:layout_below="@id/tab_layout"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="@dimen/margin_shop"
+        android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
         android:orientation="vertical">
 
     </android.support.v4.view.ViewPager>
 
-    <TextView
-        android:id="@+id/shop_curr_ship_info"
+    <RelativeLayout
+        android:id="@+id/image_shop_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:padding="4dp"
+        android:background="@drawable/drawable_shop">
+
+        <ImageView
+            android:id="@+id/fire_image_shop"
+            android:layout_width="@dimen/size_image_shop"
+            android:layout_height="@dimen/size_image_shop"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin_shop"
+            android:layout_marginTop="@dimen/margin_shop"
+            android:background="@drawable/button_main"
+            android:padding="@dimen/padding_main"/>
+
+        <ImageView
+            android:id="@+id/bonus_image_shop"
+            android:layout_width="@dimen/size_image_shop"
+            android:layout_height="@dimen/size_image_shop"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/margin_shop"
+            android:layout_marginTop="@dimen/margin_shop"
+            android:background="@drawable/button_main"
+            android:padding="@dimen/padding_main"/>
+
+        <ImageView
+            android:id="@+id/ship_image_shop"
+            android:layout_width="@dimen/size_image_shop"
+            android:layout_height="@dimen/size_image_shop"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/margin_shop"
+            android:layout_marginTop="@dimen/margin_shop"
+            android:background="@drawable/button_main"
+            android:padding="@dimen/padding_main"/>
+
+    </RelativeLayout>
+
+
+    <!--<TextView
+        android:id="@+id/shop_curr_ship_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/components_height_main"
+        android:layout_above="@id/image_shop_layout"
+        android:layout_marginBottom="@dimen/margin_shop"
+        android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
+        android:padding="4dp"
         android:textAlignment="center"
-        android:textSize="15sp"/>
+        android:textSize="15sp"/>-->
 
     <TextView
         android:id="@+id/shop_curr_money_text_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="@dimen/components_height_main"
+        android:layout_above="@id/image_shop_layout"
+        android:layout_marginBottom="@dimen/margin_shop"
+        android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
-        android:layout_above="@id/shop_curr_ship_info"
         android:textAlignment="center"
         android:textSize="30sp"/>
+
+
 </RelativeLayout>
