@@ -180,4 +180,9 @@ public class LevelActivity extends AppCompatActivity {
 		super.onResume();
 		this.mSurfaceView.onResume();
 	}
+
+	@Override
+	public void onBackPressed() {
+		this.pauseButton.performClick();
+	}
 }
