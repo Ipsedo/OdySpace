@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="strokes_width">2dp</dimen>
+    <dimen name="components_height_main">40dp</dimen>
+    <dimen name="components_width_main">150dp</dimen>
+    <dimen name="margin_top_main_buttons">10dp</dimen>
+    <dimen name="margin_separator_main">20dp</dimen>
+    <dimen name="padding_top_text_main">5dp</dimen>
+    <dimen name="padding_main">4dp</dimen>
+</resources>

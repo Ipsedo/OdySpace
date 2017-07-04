@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -59,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
 		this.initLevelChooser();
 	}
 
+	private int getScreenWidth() {
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		return size.x;
+	}
+
 	private void initLevelChooser() {
 		this.levelChooser = (LinearLayout) findViewById(R.id.level_chooser_layout);
 
@@ -71,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 				LinearLayout.LayoutParams.MATCH_PARENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT
 		);
-		params.setMargins(0, 10, 0, 0);
+		params.setMargins(0, this.getScreenWidth() / 100, 0, 0);
 
 		for (int i = 0; i < maxLevel; i++) {
 			final int currLvl = i;
