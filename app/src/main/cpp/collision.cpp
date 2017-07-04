@@ -728,10 +728,10 @@ bool areCollided(float *items1Points, int nbEl1, float *item1Model, float *items
 extern "C" {
 JNIEXPORT jboolean JNICALL
 Java_com_samuelberrien_odyspace_objects_baseitem_BaseItem_areCollided(JNIEnv *env, jobject instance,
-                                                             jfloatArray mPointItem1_,
-                                                             jfloatArray mModelMatrix1_,
-                                                             jfloatArray mPointItem2_,
-                                                             jfloatArray mModelMatrix2_) {
+                                                                      jfloatArray mPointItem1_,
+                                                                      jfloatArray mModelMatrix1_,
+                                                                      jfloatArray mPointItem2_,
+                                                                      jfloatArray mModelMatrix2_) {
 
     bool res = areCollided(env->GetFloatArrayElements(mPointItem1_, 0),
                            env->GetArrayLength(mPointItem1_),
