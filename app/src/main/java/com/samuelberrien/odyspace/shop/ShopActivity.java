@@ -91,7 +91,7 @@ public class ShopActivity extends AppCompatActivity {
 
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
-		this.currShipInfo = (TextView) findViewById(R.id.shop_curr_ship_info);
+		//this.currShipInfo = (TextView) findViewById(R.id.shop_curr_ship_info);
 		this.updateShipInfo();
 
 		// Give the TabLayout the ViewPager
@@ -128,7 +128,7 @@ public class ShopActivity extends AppCompatActivity {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
 		}
 
-		this.currShipInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + " (" + shipUsed + ")" + System.getProperty("line.separator") + "FireType : " + currFireType);
+		//this.currShipInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + " (" + shipUsed + ")" + System.getProperty("line.separator") + "FireType : " + currFireType);
 	}
 
 	public void buy() {

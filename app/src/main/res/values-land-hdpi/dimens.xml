@@ -8,5 +8,5 @@
     <dimen name="padding_top_text_main">5dp</dimen>
     <dimen name="padding_main">4dp</dimen>
     <dimen name="margin_shop">4dp</dimen>
-    <dimen name="size_image_shop">55dp</dimen>
+    <dimen name="size_image_shop">75dp</dimen>
 </resources>
