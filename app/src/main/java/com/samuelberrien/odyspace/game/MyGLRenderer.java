@@ -27,8 +27,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	private Context context;
 
-	private MyGLSurfaceView myGLSurfaceView;
-
 	private final float[] mProjectionMatrix = new float[16];
 	private final float[] mViewMatrix = new float[16];
 
@@ -59,12 +57,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	private boolean isInit = false;
 
-	/**
-	 * @param context
-	 */
-	public MyGLRenderer(Context context, MyGLSurfaceView myGLSurfaceView, Level currentLevel, Joystick joystick, Controls controls) {
+	public MyGLRenderer(Context context, Level currentLevel, Joystick joystick, Controls controls) {
 		this.context = context;
-		this.myGLSurfaceView = myGLSurfaceView;
 		this.joystick = joystick;
 		this.controls = controls;
 		this.currentLevel = currentLevel;

@@ -39,7 +39,7 @@ public class TestThread implements Level {
 
 	public static String NAME = "Practice";
 
-	Context context;
+	private Context context;
 
 	private float levelLimitSize;
 	private Box levelLimits;

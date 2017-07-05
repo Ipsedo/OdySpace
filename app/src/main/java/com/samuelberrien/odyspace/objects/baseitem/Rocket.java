@@ -15,8 +15,6 @@ import com.samuelberrien.odyspace.utils.maths.Vector;
 
 public class Rocket extends BaseItem {
 
-	private static float MAX_SPEED = 0.5f;
-
 	private float maxSpeed;
 
 	public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Ship extends BaseItem {
 
-	public static float SHIP_MAX_SPEED = 0.0125f;
+	private static float SHIP_MAX_SPEED = 0.0125f;
 	private float mMaxSpeed = Ship.SHIP_MAX_SPEED;
 	private float mBoostSpeed;
 	private final float ROCKET_MAX_SPEED = 0.020f;
@@ -114,7 +114,7 @@ public class Ship extends BaseItem {
 	@Override
 	public void move() {
 		this.mBoostSpeed = (float) Math.exp(this.controls.getBoost() + 2f) * this.boostCoeff;
-		this.mMaxSpeed = this.SHIP_MAX_SPEED * this.mBoostSpeed;
+		this.mMaxSpeed = Ship.SHIP_MAX_SPEED * this.mBoostSpeed;
 
 		float[] tmp = this.joystick.getStickPosition();
 

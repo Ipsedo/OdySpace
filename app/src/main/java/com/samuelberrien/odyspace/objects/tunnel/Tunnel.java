@@ -35,8 +35,8 @@ public class Tunnel implements GLItemDrawable {
 	private float[][] mRotationMatrix;
 	private float[][] mVec;
 
-	public static float LIMIT_LENGTH = 30f;
-	public static float MAX_LENGTH = 70;
+	private static float LIMIT_LENGTH = 30f;
+	private static float MAX_LENGTH = 70f;
 
 	public Tunnel(Context context, Random random, int nbStretch, float[] initPos) {
 		this.context = context;

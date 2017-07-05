@@ -2,6 +2,7 @@ package com.samuelberrien.odyspace.game;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.controls.Controls;
@@ -62,7 +63,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 		this.threadRunning = false;
 
-		this.renderer = new MyGLRenderer(this.context, this, this.currentLevel, this.joystick, this.controls);
+		this.renderer = new MyGLRenderer(this.context, this.currentLevel, this.joystick, this.controls);
 		this.setRenderer(this.renderer);
 
 		this.setPreserveEGLContextOnPause(true);
@@ -74,10 +75,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		this.joystick.setInversed(isInversed);
 	}
 
-	/**
-	 * @param currLevelId
-	 * @return
-	 */
 	private Level getCurrentLevel(int currLevelId) {
 		if (currLevelId == 0) {
 			return new TestThread();

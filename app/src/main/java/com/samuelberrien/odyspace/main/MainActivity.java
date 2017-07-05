@@ -140,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
 
 	private void resetSharedPref() {
 		SharedPreferences.Editor editor = this.savedShop.edit();
-		editor.clear().commit();
+		editor.clear().apply();
 		editor = this.savedShip.edit();
-		editor.clear().commit();
+		editor.clear().apply();
 		editor = this.savedLevelInfo.edit();
-		editor.clear().commit();
+		editor.clear().apply();
 	}
 
 	public void reset(View v) {
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
 					int score = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_SCORE));
 					SharedPreferences.Editor editor = this.savedShop.edit();
 					editor.putInt(getString(R.string.saved_money), currMoney + score);
-					editor.commit();
+					editor.apply();
 
 					int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
 					AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 								if (MainActivity.this.currLevel > maxLevel) {
 									SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
 									editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
-									editorLevel.commit();
+									editorLevel.apply();
 								}
 								MainActivity.this.initLevelChooser();
 							}
@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 								if (MainActivity.this.currLevel > maxLevel) {
 									SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
 									editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
-									editorLevel.commit();
+									editorLevel.apply();
 								}
 								MainActivity.this.initLevelChooser();
 								MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");

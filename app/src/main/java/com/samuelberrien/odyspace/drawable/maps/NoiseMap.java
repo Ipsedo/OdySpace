@@ -63,7 +63,7 @@ public class NoiseMap implements Item, Map {
 	private int mDistanceCoefHandle;
 	private int mLightCoefHandle;
 
-	static final int COORDS_PER_VERTEX = 3;
+	private static final int COORDS_PER_VERTEX = 3;
 	private final int vertexStride = COORDS_PER_VERTEX * 4;
 
 	private float[] color;

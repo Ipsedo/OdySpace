@@ -55,9 +55,9 @@ public class ObjModelMtlVBO implements GLDrawable {
 
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer normalsBuffer;
-	protected FloatBuffer ambColorBuffer;
+	private FloatBuffer ambColorBuffer;
 	protected FloatBuffer diffColorBuffer;
-	protected FloatBuffer specColorBuffer;
+	private FloatBuffer specColorBuffer;
 	private FloatBuffer specShininess;
 
 	private int vertexBufferId;
@@ -87,7 +87,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 	// number of coordinates per vertex in this array
 	private final int COORDS_PER_VERTEX = 3;
 	protected float[] allCoords;
-	protected float[] allNormals;
+	private float[] allNormals;
 	private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
 	/**
@@ -189,7 +189,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 		this.allNormals = objModelMtl.allNormals;
 	}
 
-	public void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
+	private void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, vertexShaderResId));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, fragmentShaderResId));
 
@@ -484,7 +484,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 				.position(0);
 	}
 
-	public void changeColor() {
+	protected void changeColor() {
 		int tmpSpecColor = this.specBufferId;
 		this.specBufferId = this.diffBufferId;
 		this.diffBufferId = tmpSpecColor;

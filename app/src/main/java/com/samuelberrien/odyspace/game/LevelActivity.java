@@ -98,7 +98,7 @@ public class LevelActivity extends AppCompatActivity {
 					public void onClick(View view) {
 						LevelActivity.this.gamePreferences.edit()
 								.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
-								.commit();
+								.apply();
 						LevelActivity.this.mSurfaceView.setJoystickInversed(inverseJoystickCheckBox.isChecked());
 					}
 				});
@@ -115,7 +115,7 @@ public class LevelActivity extends AppCompatActivity {
 							LevelActivity.this.mSurfaceView.setShipFireType(FireType.SIMPLE_FIRE);
 							savedShip.edit()
 									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_1))
-									.commit();
+									.apply();
 						}
 					});
 				}
@@ -129,7 +129,7 @@ public class LevelActivity extends AppCompatActivity {
 							LevelActivity.this.mSurfaceView.setShipFireType(FireType.QUINT_FIRE);
 							savedShip.edit()
 									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_2))
-									.commit();
+									.apply();
 						}
 					});
 				}
@@ -143,7 +143,7 @@ public class LevelActivity extends AppCompatActivity {
 							LevelActivity.this.mSurfaceView.setShipFireType(FireType.SIMPLE_BOMB);
 							savedShip.edit()
 									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_3))
-									.commit();
+									.apply();
 						}
 					});
 				}
@@ -157,7 +157,7 @@ public class LevelActivity extends AppCompatActivity {
 							LevelActivity.this.mSurfaceView.setShipFireType(FireType.TRIPLE_FIRE);
 							savedShip.edit()
 									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_4))
-									.commit();
+									.apply();
 						}
 					});
 				}
@@ -194,7 +194,7 @@ public class LevelActivity extends AppCompatActivity {
 						})
 						.setMessage("Current Score : " + LevelActivity.this.mSurfaceView.getScore())
 						.create();
-				pauseDialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
+				pauseDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_main));
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
 			}

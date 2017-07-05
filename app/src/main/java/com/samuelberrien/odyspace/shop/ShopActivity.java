@@ -30,7 +30,6 @@ public class ShopActivity extends AppCompatActivity {
 	private Button useButton;
 
 	private TextView currMoneyTextView;
-	private TextView currShipInfo;
 
 	private SharedPreferences savedShop;
 	private SharedPreferences savedShip;
@@ -88,7 +87,7 @@ public class ShopActivity extends AppCompatActivity {
 		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
 		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
-		this.currMoneyTextView.setText(Integer.toString(currMoney) + "$");
+		this.currMoneyTextView.setText(Integer.toString(currMoney).concat("$"));
 
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
@@ -134,7 +133,7 @@ public class ShopActivity extends AppCompatActivity {
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Toast.makeText(getApplicationContext(), "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -150,7 +149,7 @@ public class ShopActivity extends AppCompatActivity {
 		if (!this.currFireItem.equals("") && currMoney >= this.currPrice) {
 			editor.putBoolean(this.currFireItem, true);
 			editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
-			editor.commit();
+			editor.apply();
 			this.buyButton.setVisibility(View.GONE);
 			this.useButton.setText("Use It (" + this.currFireItem + ")");
 			this.useButton.setVisibility(View.VISIBLE);
@@ -172,7 +171,7 @@ public class ShopActivity extends AppCompatActivity {
 		}
 
 		currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
-		this.currMoneyTextView.setText(Integer.toString(currMoney) + "$");
+		this.currMoneyTextView.setText(Integer.toString(currMoney).concat("$"));
 
 		this.updateShipInfo();
 	}
@@ -212,7 +211,7 @@ public class ShopActivity extends AppCompatActivity {
 
 		if (!this.currFireItem.equals("") && this.savedShop.getBoolean(this.currFireItem, getResources().getBoolean(boolResBought))) {
 			editor.putString(getString(R.string.current_fire_type), this.currFireItem);
-			editor.commit();
+			editor.apply();
 		} else if (!this.currShipItem.equals("") && this.savedShop.getBoolean(this.currShipItem, getResources().getBoolean(boolResBought))) {
 			editor.putString(getString(R.string.current_ship_used), this.currShipItem);
 			if (this.currShipItem.equals(getString(R.string.ship_bird))) {

@@ -124,12 +124,6 @@ public class ObjModel implements GLDrawable {
 		mAmbColorCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_amb_Color_coef");
 	}
 
-	/**
-	 * @param inputreader
-	 * @param red
-	 * @param green
-	 * @param blue
-	 */
 	private void parseObj(InputStreamReader inputreader, float red, float green, float blue) {
 		BufferedReader buffreader1 = new BufferedReader(inputreader);
 		String line;

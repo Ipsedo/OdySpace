@@ -26,7 +26,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 
 	protected final int maxLife;
 	protected int life;
-	private int damage;
 
 	protected float[] mPosition;
 	protected float[] mSpeed;
@@ -44,7 +43,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
 		this.life = life;
 		this.maxLife = this.life;
-		this.damage = this.life;
 		this.mPosition = mPosition;
 		this.mSpeed = mSpeed;
 		this.mAcceleration = mAcceleration;
@@ -60,7 +58,6 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		super(objModelMtl);
 		this.life = life;
 		this.maxLife = this.life;
-		this.damage = this.life;
 		this.mPosition = mPosition;
 		this.mSpeed = mSpeed;
 		this.mAcceleration = mAcceleration;

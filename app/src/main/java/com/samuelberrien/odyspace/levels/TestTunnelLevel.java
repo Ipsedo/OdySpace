@@ -82,13 +82,12 @@ public class TestTunnelLevel implements Level {
 
 	private Box makeBoundingBox(float sizeCollideBox) {
 		float[] shipPos = this.ship.getPosition();
-		Box limitBox = new Box(shipPos[0] - sizeCollideBox * 0.5f,
+		return new Box(shipPos[0] - sizeCollideBox * 0.5f,
 				shipPos[1] - sizeCollideBox * 0.5f,
 				shipPos[2] - sizeCollideBox * 0.5f,
 				sizeCollideBox,
 				sizeCollideBox,
 				sizeCollideBox);
-		return limitBox;
 	}
 
 	@Override

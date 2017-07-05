@@ -84,7 +84,7 @@ public class Stretch implements Item, GLItemDrawable {
 
 	private float[] identityMatrix;
 
-	static final int COORDS_PER_VERTEX = 3;
+	private static final int COORDS_PER_VERTEX = 3;
 	private final int vertexStride = COORDS_PER_VERTEX * 4;
 
 	private Box box;
