@@ -130,14 +130,13 @@ public class ShopActivity extends AppCompatActivity {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
 		}
 
-		imageView.setOnClickListener(new View.OnClickListener() {
+		imageView.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
-			public void onClick(View view) {
+			public boolean onLongClick(View view) {
 				Toast.makeText(getApplicationContext(), "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
+				return true;
 			}
 		});
-
-		//this.currShipInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + " (" + shipUsed + ")" + System.getProperty("line.separator") + "FireType : " + currFireType);
 	}
 
 	public void buy() {
