@@ -21,7 +21,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/transition_button_main"
-            android:text="Use It"
+            android:textAllCaps="false"
             android:textSize="@dimen/shop_text_size"/>
 
         <Button
@@ -31,7 +31,7 @@
             android:layout_below="@id/use_item_button"
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/transition_button_main"
-            android:text="Buy It"
+            android:textAllCaps="false"
             android:textSize="@dimen/shop_text_size"/>
 
 

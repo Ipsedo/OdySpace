@@ -24,7 +24,6 @@
         android:layout_marginTop="@dimen/margin_top_main_buttons"
         android:background="@drawable/transition_button_main"
         android:onClick="start"
-        android:text="Start"
         android:textSize="@dimen/main_text_size"/>
 
     <ImageView

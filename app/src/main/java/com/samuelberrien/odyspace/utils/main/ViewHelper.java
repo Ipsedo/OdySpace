@@ -18,13 +18,13 @@ public final class ViewHelper {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				transition.startTransition(120);
+				transition.startTransition(200);
 			}
 		});
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				transition.reverseTransition(120);
+				transition.reverseTransition(200);
 			}
 		});
 	}

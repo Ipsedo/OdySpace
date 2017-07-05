@@ -131,7 +131,7 @@ public class ShopActivity extends AppCompatActivity {
 			editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
 			editor.apply();
 			this.buyButton.setVisibility(View.GONE);
-			this.useButton.setText("Use It (" + this.currFireItem + ")");
+			this.useButton.setText("USE IT (" + this.currFireItem + ")");
 			this.useButton.setVisibility(View.VISIBLE);
 		} else if (!this.currShipItem.equals("") && currMoney >= this.currPrice) {
 			if (this.currShipItem.equals(getString(R.string.bought_life))) {
@@ -141,7 +141,7 @@ public class ShopActivity extends AppCompatActivity {
 				editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
 				editor.commit();
 				this.buyButton.setVisibility(View.GONE);
-				this.useButton.setText("Use It (" + this.currShipItem + ")");
+				this.useButton.setText("USE IT (" + this.currShipItem + ")");
 				this.useButton.setVisibility(View.VISIBLE);
 			}
 		} else if (!this.currBonusItem.equals("") && currMoney >= this.currPrice) {
@@ -248,10 +248,10 @@ public class ShopActivity extends AppCompatActivity {
 		boolean currentPurchase = this.savedShop.getBoolean(getString(fireResId), defaultValue);
 		if (!currentPurchase) {
 			this.currPrice = getResources().getInteger(fireCostResId);
-			this.buyButton.setText("Buy It (" + this.fireItem[indexFire] + " " + this.currPrice + "$)");
+			this.buyButton.setText("BUY IT (" + this.fireItem[indexFire] + " " + this.currPrice + "$)");
 			this.buyButton.setVisibility(View.VISIBLE);
 		} else {
-			this.useButton.setText("Use It (" + this.fireItem[indexFire] + ")");
+			this.useButton.setText("USE IT (" + this.fireItem[indexFire] + ")");
 			this.useButton.setVisibility(View.VISIBLE);
 		}
 
@@ -264,13 +264,13 @@ public class ShopActivity extends AppCompatActivity {
 		int defaultValue = getResources().getInteger(R.integer.saved_ship_life_shop_default);
 		int currentValue = this.savedShop.getInt(getString(R.string.bought_life), defaultValue);
 		this.currPrice = (int) Math.pow(currentValue, 2d) * getResources().getInteger(R.integer.life_coeff_cost);
-		this.buyButton.setText("Buy It (" + getString(R.string.bought_life) + " " + this.currPrice + "$)");
+		this.buyButton.setText("BUY IT (" + getString(R.string.bought_life) + " " + this.currPrice + "$)");
 	}
 
 	private void shipItemChosen(int id) {
 		if (this.shipItem[id].equals(getString(R.string.bought_life))) {
 			this.updateLifePrice();
-			this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
+			this.buyButton.setText("BUY IT (" + this.shipItem[id] + " " + this.currPrice + "$)");
 			this.buyButton.setVisibility(View.VISIBLE);
 
 			this.currShipItem = this.shipItem[id];
@@ -299,10 +299,10 @@ public class ShopActivity extends AppCompatActivity {
 
 			if (!currentPurchase) {
 				this.currPrice = getResources().getInteger(itemCostResId);
-				this.buyButton.setText("Buy It (" + this.shipItem[id] + " " + this.currPrice + "$)");
+				this.buyButton.setText("BUY IT (" + this.shipItem[id] + " " + this.currPrice + "$)");
 				this.buyButton.setVisibility(View.VISIBLE);
 			} else {
-				this.useButton.setText("Use It (" + this.shipItem[id] + ")");
+				this.useButton.setText("USE IT (" + this.shipItem[id] + ")");
 				this.useButton.setVisibility(View.VISIBLE);
 			}
 

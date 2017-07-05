@@ -16,7 +16,7 @@
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/transition_drawable_shop"
-        android:text="Use It"
+        android:textAllCaps="false"
         android:textSize="@dimen/shop_text_size"/>
 
     <Button
@@ -27,7 +27,7 @@
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/transition_drawable_shop"
-        android:text="Buy It"
+        android:textAllCaps="false"
         android:textSize="@dimen/shop_text_size"/>
 
     <android.support.design.widget.TabLayout
