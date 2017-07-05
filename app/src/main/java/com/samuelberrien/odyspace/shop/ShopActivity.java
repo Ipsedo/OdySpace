@@ -87,7 +87,7 @@ public class ShopActivity extends AppCompatActivity {
 		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
 		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
-		this.currMoneyTextView.setText(Integer.toString(currMoney).concat("$"));
+		this.currMoneyTextView.setText(Integer.toString(currMoney).concat(" $"));
 
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
@@ -170,7 +170,7 @@ public class ShopActivity extends AppCompatActivity {
 		}
 
 		currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
-		this.currMoneyTextView.setText(Integer.toString(currMoney).concat("$"));
+		this.currMoneyTextView.setText(Integer.toString(currMoney).concat(" $"));
 
 		this.updateShipInfo();
 	}

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
@@ -104,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
 	private void initGameInfo() {
 		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
 
-		int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
+		final int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
 
-		int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
+		final int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
 
 		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 
@@ -133,9 +134,16 @@ public class MainActivity extends AppCompatActivity {
 		} else if (shipUsed.equals(getString(R.string.ship_supreme))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
 		}
+		imageView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				Toast.makeText(getApplicationContext(), "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});
 
 		TextView textView = (TextView) findViewById(R.id.curr_money_main);
-		textView.setText("Life : " + currShipLife + " + " + currBoughtLife + System.getProperty("line.separator") + currMoney + " $");
+		textView.setText(Integer.toString(currMoney).concat(" $"));
 	}
 
 	private void resetSharedPref() {
@@ -215,68 +223,57 @@ public class MainActivity extends AppCompatActivity {
 					int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
 					AlertDialog.Builder builder = new AlertDialog.Builder(this);
 					if (result == 1) {
+
 						int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
 						final long maxLevel = MainActivity.this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
+						if (MainActivity.this.currLevel < Level.LEVELS.length)
+							MainActivity.this.currLevel++;
+						MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
+						if (MainActivity.this.currLevel > maxLevel) {
+							SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
+							editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
+							editorLevel.apply();
+						}
+						MainActivity.this.initLevelChooser();
 
-						builder.setTitle("Level Done");
-						builder.setMessage("Score : " + score);
+						builder = builder.setTitle("Level Done")
+								.setMessage("Score : " + score)
+								.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
 
-						builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								if (MainActivity.this.currLevel < Level.LEVELS.length)
-									MainActivity.this.currLevel++;
-								MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
-								if (MainActivity.this.currLevel > maxLevel) {
-									SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
-									editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
-									editorLevel.apply();
-								}
-								MainActivity.this.initLevelChooser();
-							}
-						});
-
-						builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {
-								if (MainActivity.this.currLevel < Level.LEVELS.length)
-									MainActivity.this.currLevel++;
-								if (MainActivity.this.currLevel > maxLevel) {
-									SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
-									editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
-									editorLevel.apply();
-								}
-								MainActivity.this.initLevelChooser();
-								MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
-								Intent intent = new Intent(MainActivity.this, LevelActivity.class);
-								intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
-								startActivityForResult(intent, MainActivity.RESULT_VALUE);
-
-							}
-						});
+									}
+								})
+								.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialogInterface, int i) {
+										MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
+										Intent intent = new Intent(MainActivity.this, LevelActivity.class);
+										intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
+										startActivityForResult(intent, MainActivity.RESULT_VALUE);
+									}
+								});
 					} else {
-						builder.setTitle("Game Over");
-						builder.setMessage("Score : " + score);
+						builder = builder.setTitle("Game Over")
+								.setMessage("Score : " + score)
+								.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialogInterface, int i) {
 
-						builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {
-
-							}
-						});
-
-						builder.setNegativeButton("Restart", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {
-								Intent intent = new Intent(MainActivity.this, LevelActivity.class);
-								intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
-								startActivityForResult(intent, MainActivity.RESULT_VALUE);
-							}
-						});
+									}
+								})
+								.setNegativeButton("Restart", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialogInterface, int i) {
+										Intent intent = new Intent(MainActivity.this, LevelActivity.class);
+										intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
+										startActivityForResult(intent, MainActivity.RESULT_VALUE);
+									}
+								});
 					}
-					AlertDialog dialog = builder.create();
-					dialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
-					dialog.setCanceledOnTouchOutside(false);
-					dialog.show();
+					AlertDialog alertDialog = builder.create();
+					alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
+					alertDialog.setCanceledOnTouchOutside(false);
+					alertDialog.show();
 				}
 				break;
 			}
