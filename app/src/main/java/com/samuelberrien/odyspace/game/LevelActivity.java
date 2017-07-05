@@ -14,12 +14,14 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
@@ -105,7 +107,7 @@ public class LevelActivity extends AppCompatActivity {
 
 				SharedPreferences savedShop = LevelActivity.this.getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 				final SharedPreferences savedShip = LevelActivity.this.getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
-				final RadioButton fire1RadioButton = (RadioButton) layout.findViewById(R.id.fire_1_radio_button);
+				/*final RadioButton fire1RadioButton = (RadioButton) layout.findViewById(R.id.fire_1_radio_button);
 				if (!savedShop.getBoolean(getString(R.string.fire_bonus_1), getResources().getBoolean(R.bool.saved_simple_fire_bought_default))) {
 					fire1RadioButton.setClickable(false);
 				} else {
@@ -169,6 +171,50 @@ public class LevelActivity extends AppCompatActivity {
 					fire3RadioButton.setChecked(true);
 				} else if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(getString(R.string.fire_bonus_4))) {
 					fire4RadioButton.setChecked(true);
+				}*/
+
+
+				RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.select_weapon_radio_group);
+				String[] fireType = LevelActivity.this.getResources().getStringArray(R.array.fire_shop_list_item);
+				for (final String fire : fireType) {
+					RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
+					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					radioGroup.addView(tmpRadioButton);
+
+					tmpRadioButton.setText(fire);
+
+					int rBool;
+					final FireType fireTypeEnum;
+					if (fire.equals(getString(R.string.fire_bonus_4))) {
+						rBool = R.bool.saved_triple_sire_bought_default;
+						fireTypeEnum = FireType.TRIPLE_FIRE;
+					} else if (fire.equals(getString(R.string.fire_bonus_2))) {
+						rBool = R.bool.saved_quint_fire_bought_default;
+						fireTypeEnum = FireType.QUINT_FIRE;
+					} else if (fire.equals(getString(R.string.fire_bonus_3))) {
+						rBool = R.bool.saved_simple_bomb_bought_default;
+						fireTypeEnum = FireType.SIMPLE_BOMB;
+					} else {
+						rBool = R.bool.saved_simple_fire_bought_default;
+						fireTypeEnum = FireType.SIMPLE_FIRE;
+					}
+
+					if (savedShop.getBoolean(fire, getResources().getBoolean(rBool))) {
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								LevelActivity.this.mSurfaceView.setShipFireType(fireTypeEnum);
+								savedShip.edit()
+										.putString(getString(R.string.current_fire_type), fire)
+										.apply();
+							}
+						});
+					} else {
+						tmpRadioButton.setClickable(false);
+					}
+					if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(fire)) {
+						tmpRadioButton.setChecked(true);
+					}
 				}
 
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
@@ -237,7 +283,7 @@ public class LevelActivity extends AppCompatActivity {
 
 	@Override
 	public void onBackPressed() {
-		if(this.pauseButton != null && this.mSurfaceView.isInit()) {
+		if (this.pauseButton != null && this.mSurfaceView.isInit()) {
 			this.pauseButton.performClick();
 		} else {
 			super.onBackPressed();

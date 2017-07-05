@@ -12,4 +12,5 @@
     <dimen name="size_image_main">48dp</dimen>
     <dimen name="main_text_size">11sp</dimen>
     <dimen name="shop_text_size">11sp</dimen>
+    <dimen name="shop_list_view_text_size">17sp</dimen>
 </resources>

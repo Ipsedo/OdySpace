@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
-        android:background="@drawable/drawable_shop"
+        android:background="@drawable/transition_drawable_shop"
         android:text="Use It"
         android:textSize="@dimen/shop_text_size"/>
 
@@ -26,7 +26,7 @@
         android:layout_below="@id/use_item_button"
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
-        android:background="@drawable/drawable_shop"
+        android:background="@drawable/transition_drawable_shop"
         android:text="Buy It"
         android:textSize="@dimen/shop_text_size"/>
 
@@ -38,7 +38,7 @@
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
         app:tabIndicatorColor="@color/pumpkin"
-        android:textSize="@dimen/shop_text_size"/>
+        app:tabGravity="fill"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
@@ -67,7 +67,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_shop"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:padding="@dimen/padding_main"/>
 
         <ImageView
@@ -77,7 +77,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_shop"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:padding="@dimen/padding_main"/>
 
         <ImageView
@@ -87,7 +87,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_shop"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:padding="@dimen/padding_main"/>
     </RelativeLayout>
 

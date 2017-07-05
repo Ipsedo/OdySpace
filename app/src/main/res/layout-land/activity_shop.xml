@@ -20,7 +20,7 @@
             android:layout_height="@dimen/components_height_main"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_shop"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:text="Use It"
             android:textSize="@dimen/shop_text_size"/>
 
@@ -30,7 +30,7 @@
             android:layout_height="@dimen/components_height_main"
             android:layout_below="@id/use_item_button"
             android:layout_margin="@dimen/margin_shop"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:text="Buy It"
             android:textSize="@dimen/shop_text_size"/>
 
@@ -60,7 +60,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="@dimen/margin_shop"
-                android:background="@drawable/button_main"
+                android:background="@drawable/transition_button_main"
                 android:padding="@dimen/padding_main"/>
 
             <ImageView
@@ -70,7 +70,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="@dimen/margin_shop"
-                android:background="@drawable/button_main"
+                android:background="@drawable/transition_button_main"
                 android:padding="@dimen/padding_main"/>
 
             <ImageView
@@ -80,7 +80,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="@dimen/margin_shop"
-                android:background="@drawable/button_main"
+                android:background="@drawable/transition_button_main"
                 android:padding="@dimen/padding_main"/>
 
         </RelativeLayout>
@@ -101,7 +101,7 @@
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/button_main"
             app:tabIndicatorColor="@color/pumpkin"
-            android:textSize="@dimen/shop_text_size"/>
+            app:tabGravity="fill"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"

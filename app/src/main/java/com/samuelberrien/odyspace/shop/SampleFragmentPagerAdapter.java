@@ -15,7 +15,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
 	final int PAGE_COUNT = 3;
 	public static String SHIP_TAB = "Ship";
-	public static String FIRE_TAB = "FireType";
+	public static String FIRE_TAB = "Fire";
 	public static String BONUS_TAB = "Bonus";
 	public static String[] TAB_TITLES = new String[]{SHIP_TAB, FIRE_TAB, BONUS_TAB};
 

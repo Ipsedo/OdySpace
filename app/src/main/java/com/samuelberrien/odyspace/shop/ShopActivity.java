@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
+import com.samuelberrien.odyspace.utils.main.ViewHelper;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -59,6 +60,7 @@ public class ShopActivity extends AppCompatActivity {
 		this.buyButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				ViewHelper.makeViewTransition(ShopActivity.this, ShopActivity.this.buyButton);
 				ShopActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -75,6 +77,7 @@ public class ShopActivity extends AppCompatActivity {
 		this.useButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				ViewHelper.makeViewTransition(ShopActivity.this, ShopActivity.this.useButton);
 				ShopActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

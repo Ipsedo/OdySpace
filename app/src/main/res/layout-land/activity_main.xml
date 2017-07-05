@@ -29,7 +29,7 @@
             android:layout_below="@id/curr_money_main"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_top_main_buttons"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:onClick="start"
             android:text="Start"
             android:textSize="@dimen/main_text_size"/>
@@ -41,7 +41,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_separator_main"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:padding="@dimen/padding_main"/>
 
         <ImageView
@@ -51,7 +51,7 @@
             android:layout_alignEnd="@id/start_button"
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/margin_separator_main"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:padding="@dimen/padding_main"/>
 
         <ImageView
@@ -61,7 +61,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignStart="@id/start_button"
             android:layout_marginTop="@dimen/margin_separator_main"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:padding="@dimen/padding_main"/>
 
         <Button
@@ -72,7 +72,7 @@
             android:layout_alignStart="@+id/start_button"
             android:layout_below="@+id/start_button"
             android:layout_marginTop="@dimen/margin_top_main_buttons"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:onClick="continueStory"
             android:textSize="@dimen/main_text_size"
             android:text="Continue Story"/>
@@ -85,7 +85,7 @@
             android:layout_alignStart="@+id/continue_button"
             android:layout_below="@id/continue_button"
             android:layout_marginTop="@dimen/margin_top_main_buttons"
-            android:background="@drawable/button_main"
+            android:background="@drawable/transition_button_main"
             android:textSize="@dimen/main_text_size"
             android:onClick="shop"
             android:text="Shop"/>

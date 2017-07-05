@@ -7,25 +7,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.shop.ShopActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.main.ViewHelper;
 import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences savedLevelInfo;
 	private SharedPreferences savedShip;
 
-	private Animation myAnim;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 		this.startButton.setText("START (" + (this.currLevel + 1) + ")");
 		this.continueButton = (Button) findViewById(R.id.continue_button);
 		this.shopButton = (Button) findViewById(R.id.shop_button);
-		this.myAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
 		this.initGameInfo();
 		this.initLevelChooser();
 	}
@@ -87,18 +80,19 @@ public class MainActivity extends AppCompatActivity {
 
 		for (int i = 0; i < maxLevel; i++) {
 			final int currLvl = i;
-			Button levelItem = new Button(this);
+			final Button levelItem = new Button(this);
 			levelItem.setAllCaps(false);
 			levelItem.setText((i + 1) + " - " + Level.LEVELS[i]);
 			levelItem.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					ViewHelper.makeViewTransition(MainActivity.this, levelItem);
 					MainActivity.this.currLevel = currLvl;
 					MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
 				}
 			});
 			levelItem.setClickable(true);
-			levelItem.setBackgroundResource(R.drawable.button_main);
+			levelItem.setBackgroundResource(R.drawable.transition_button_main);
 			levelItem.setLayoutParams(params);
 			this.levelChooser.addView(levelItem);
 		}
@@ -159,15 +153,19 @@ public class MainActivity extends AppCompatActivity {
 		dialog.show();
 	}
 
+
+
 	public void start(View v) {
-		this.startButton.startAnimation(this.myAnim);
+		ViewHelper.makeViewTransition(this, this.startButton);
+		//this.startButton.startAnimation(this.myAnim);
 		Intent intent = new Intent(this, LevelActivity.class);
 		intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(this.currLevel));
 		startActivityForResult(intent, MainActivity.RESULT_VALUE);
 	}
 
 	public void continueStory(View v) {
-		this.continueButton.startAnimation(this.myAnim);
+		ViewHelper.makeViewTransition(this, this.continueButton);
+		//this.continueButton.startAnimation(this.myAnim);
 		Intent intent = new Intent(this, LevelActivity.class);
 		int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
 		long maxLevel = this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
@@ -177,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void shop(View v) {
-		this.shopButton.startAnimation(this.myAnim);
+		ViewHelper.makeViewTransition(this, this.shopButton);
+		//this.shopButton.startAnimation(this.myAnim);
 		Intent intent = new Intent(this, ShopActivity.class);
 		startActivity(intent);
 	}
