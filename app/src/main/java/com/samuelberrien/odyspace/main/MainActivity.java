@@ -21,8 +21,8 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.shop.ShopActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.main.ViewHelper;
 import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
+import com.samuelberrien.odyspace.utils.main.ViewHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 	private Button startButton;
 	private Button continueButton;
 	private Button shopButton;
-	private LinearLayout levelChooser;
 
 	private SharedPreferences savedShop;
 	private SharedPreferences savedLevelInfo;
@@ -65,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initLevelChooser() {
-		this.levelChooser = (LinearLayout) findViewById(R.id.level_chooser_layout);
+		LinearLayout levelChooser = (LinearLayout) findViewById(R.id.level_chooser_layout);
 
 		int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
 		int maxLevel = this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
 
-		this.levelChooser.removeAllViews();
+		levelChooser.removeAllViews();
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 			levelItem.setClickable(true);
 			levelItem.setBackgroundResource(R.drawable.transition_button_main);
 			levelItem.setLayoutParams(params);
-			this.levelChooser.addView(levelItem);
+			levelChooser.addView(levelItem);
 		}
 	}
 
@@ -122,42 +121,46 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void resetSharedPref() {
-		SharedPreferences.Editor editor = this.savedShop.edit();
-		editor.clear().apply();
-		editor = this.savedShip.edit();
-		editor.clear().apply();
-		editor = this.savedLevelInfo.edit();
-		editor.clear().apply();
+		this.savedShop.edit()
+				.clear()
+				.apply();
+		this.savedShip.edit()
+				.clear()
+				.apply();
+		this.savedLevelInfo.edit()
+				.clear()
+				.apply();
+		this.getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE).edit()
+				.clear()
+				.apply();
 	}
 
 	public void reset(View v) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Reset all game ?");
-		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-				MainActivity.this.resetSharedPref();
-				MainActivity.this.initGameInfo();
-				MainActivity.this.initLevelChooser();
-			}
-		});
-		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
+		AlertDialog dialog = new AlertDialog.Builder(this)
+				.setTitle("Reset all game ?")
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						MainActivity.this.resetSharedPref();
+						MainActivity.this.initGameInfo();
+						MainActivity.this.initLevelChooser();
+					}
+				})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
 
-			}
-		});
-		AlertDialog dialog = builder.create();
+					}
+				})
+				.create();
 		dialog.getWindow().setBackgroundDrawableResource(R.drawable.button_main);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 	}
 
 
-
 	public void start(View v) {
 		ViewHelper.makeViewTransition(this, this.startButton);
-		//this.startButton.startAnimation(this.myAnim);
 		Intent intent = new Intent(this, LevelActivity.class);
 		intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(this.currLevel));
 		startActivityForResult(intent, MainActivity.RESULT_VALUE);
@@ -165,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
 
 	public void continueStory(View v) {
 		ViewHelper.makeViewTransition(this, this.continueButton);
-		//this.continueButton.startAnimation(this.myAnim);
 		Intent intent = new Intent(this, LevelActivity.class);
 		int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
 		long maxLevel = this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
@@ -176,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
 	public void shop(View v) {
 		ViewHelper.makeViewTransition(this, this.shopButton);
-		//this.shopButton.startAnimation(this.myAnim);
 		Intent intent = new Intent(this, ShopActivity.class);
 		startActivity(intent);
 	}
