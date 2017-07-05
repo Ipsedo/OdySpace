@@ -9,4 +9,5 @@
     <dimen name="padding_main">4dp</dimen>
     <dimen name="margin_shop">4dp</dimen>
     <dimen name="size_image_shop">60dp</dimen>
+    <dimen name="size_image_main">40dp</dimen>
 </resources>

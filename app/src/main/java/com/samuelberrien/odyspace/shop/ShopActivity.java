@@ -100,13 +100,13 @@ public class ShopActivity extends AppCompatActivity {
 	}
 
 	private void updateShipInfo() {
-		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
+		final String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
 
 		final int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
 
 		final int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
 
-		String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
+		final String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
 
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_shop);
@@ -119,6 +119,13 @@ public class ShopActivity extends AppCompatActivity {
 		} else if (currFireType.equals(getString(R.string.fire_bonus_4))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.triple_fire));
 		}
+		imageView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				Toast.makeText(getApplicationContext(), currFireType, Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});
 
 		imageView = (ImageView) findViewById(R.id.ship_image_shop);
 
@@ -129,11 +136,10 @@ public class ShopActivity extends AppCompatActivity {
 		} else if (shipUsed.equals(getString(R.string.ship_supreme))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
 		}
-
 		imageView.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View view) {
-				Toast.makeText(getApplicationContext(), "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), shipUsed + System.getProperty("line.separator") + "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
 				return true;
 			}
 		});

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initGameInfo() {
-		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
+		final String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
 
 		final int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
 
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
 		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 
-		String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
+		final String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
 
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_main);
@@ -124,6 +125,13 @@ public class MainActivity extends AppCompatActivity {
 		} else if (currFireType.equals(getString(R.string.fire_bonus_4))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.triple_fire));
 		}
+		imageView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				Toast.makeText(getApplicationContext(), currFireType, Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});
 
 		imageView = (ImageView) findViewById(R.id.ship_image_main);
 
@@ -137,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 		imageView.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View view) {
-				Toast.makeText(getApplicationContext(), "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), shipUsed + System.getProperty("line.separator") + "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
 				return true;
 			}
 		});

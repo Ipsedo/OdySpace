@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/fire_image_main"
-            android:layout_width="@dimen/components_height_main"
-            android:layout_height="@dimen/components_height_main"
+            android:layout_width="@dimen/size_image_main"
+            android:layout_height="@dimen/size_image_main"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_separator_main"
@@ -44,8 +44,8 @@
 
         <ImageView
             android:id="@+id/bonus_image_main"
-            android:layout_width="@dimen/components_height_main"
-            android:layout_height="@dimen/components_height_main"
+            android:layout_width="@dimen/size_image_main"
+            android:layout_height="@dimen/size_image_main"
             android:layout_alignEnd="@id/start_button"
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/margin_separator_main"
@@ -54,8 +54,8 @@
 
         <ImageView
             android:id="@+id/ship_image_main"
-            android:layout_width="@dimen/components_height_main"
-            android:layout_height="@dimen/components_height_main"
+            android:layout_width="@dimen/size_image_main"
+            android:layout_height="@dimen/size_image_main"
             android:layout_alignParentTop="true"
             android:layout_alignStart="@id/start_button"
             android:layout_marginTop="@dimen/margin_separator_main"

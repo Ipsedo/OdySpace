@@ -10,4 +10,5 @@
     <dimen name="margin_shop">4dp</dimen>
     <dimen name="size_image_shop">85dp</dimen>
     <dimen name="size_scroll_view_pause">60dp</dimen>
+    <dimen name="size_image_main">49dp</dimen>
 </resources>

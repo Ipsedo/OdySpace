@@ -1,7 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="strokes_width">2dp</dimen>
-    <dimen name="components_height_main">50dp</dimen>
+    <dimen name="components_height_main">40dp</dimen>
     <dimen name="components_width_main">200dp</dimen>
     <dimen name="margin_top_main_buttons">12dp</dimen>
     <dimen name="margin_separator_main">24dp</dimen>
@@ -10,4 +10,5 @@
     <dimen name="margin_shop">4dp</dimen>
     <dimen name="size_image_shop">100dp</dimen>
     <dimen name="size_scroll_view_pause">75dp</dimen>
+    <dimen name="size_image_main">64dp</dimen>
 </resources>
