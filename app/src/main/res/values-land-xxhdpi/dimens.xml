@@ -10,4 +10,6 @@
     <dimen name="margin_shop">4dp</dimen>
     <dimen name="size_image_shop">90dp</dimen>
     <dimen name="size_image_main">60dp</dimen>
+    <dimen name="main_text_size">17sp</dimen>
+    <dimen name="shop_text_size">17sp</dimen>
 </resources>

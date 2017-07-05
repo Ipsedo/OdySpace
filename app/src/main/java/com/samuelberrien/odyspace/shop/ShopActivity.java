@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -110,39 +111,10 @@ public class ShopActivity extends AppCompatActivity {
 
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_shop);
-		if (currFireType.equals(getString(R.string.fire_bonus_1))) {
-			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_fire));
-		} else if (currFireType.equals(getString(R.string.fire_bonus_2))) {
-			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.quint_fire));
-		} else if (currFireType.equals(getString(R.string.fire_bonus_3))) {
-			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_bomb));
-		} else if (currFireType.equals(getString(R.string.fire_bonus_4))) {
-			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.triple_fire));
-		}
-		imageView.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View view) {
-				Toast.makeText(getApplicationContext(), currFireType, Toast.LENGTH_SHORT).show();
-				return true;
-			}
-		});
+		ItemImageViewMaker.makeFireTypeImage(this, imageView, currFireType);
 
 		imageView = (ImageView) findViewById(R.id.ship_image_shop);
-
-		if (shipUsed.equals(getString(R.string.ship_simple))) {
-			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_ship));
-		} else if (shipUsed.equals(getString(R.string.ship_bird))) {
-			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_bird));
-		} else if (shipUsed.equals(getString(R.string.ship_supreme))) {
-			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
-		}
-		imageView.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View view) {
-				Toast.makeText(getApplicationContext(), shipUsed + System.getProperty("line.separator") + "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
-				return true;
-			}
-		});
+		ItemImageViewMaker.makeShipImage(this, imageView, shipUsed, currShipLife, currBoughtLife);
 	}
 
 	public void buy() {

@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fire_image_main"
             android:layout_centerHorizontal="true"
-            android:paddingTop="@dimen/padding_top_text_main"/>
+            android:paddingTop="@dimen/padding_top_text_main"
+            android:textSize="@dimen/main_text_size"/>
 
         <Button
             android:id="@+id/start_button"
@@ -30,7 +31,8 @@
             android:layout_marginTop="@dimen/margin_top_main_buttons"
             android:background="@drawable/button_main"
             android:onClick="start"
-            android:text="Start"/>
+            android:text="Start"
+            android:textSize="@dimen/main_text_size"/>
 
         <ImageView
             android:id="@+id/fire_image_main"
@@ -72,6 +74,7 @@
             android:layout_marginTop="@dimen/margin_top_main_buttons"
             android:background="@drawable/button_main"
             android:onClick="continueStory"
+            android:textSize="@dimen/main_text_size"
             android:text="Continue Story"/>
 
         <Button
@@ -83,6 +86,7 @@
             android:layout_below="@id/continue_button"
             android:layout_marginTop="@dimen/margin_top_main_buttons"
             android:background="@drawable/button_main"
+            android:textSize="@dimen/main_text_size"
             android:onClick="shop"
             android:text="Shop"/>
 

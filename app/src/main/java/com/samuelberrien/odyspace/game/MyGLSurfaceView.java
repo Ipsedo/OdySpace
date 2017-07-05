@@ -43,8 +43,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private EndGameThread endGameThread;
 	private boolean threadRunning;
 
-	private boolean isResume;
-
 	/**
 	 * @param context
 	 * @param levelActivity
@@ -67,8 +65,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		this.setRenderer(this.renderer);
 
 		this.setPreserveEGLContextOnPause(true);
+	}
 
-		this.isResume = true;
+	public boolean isInit() {
+		return this.currentLevel.isInit();
 	}
 
 	public void setJoystickInversed(boolean isInversed) {

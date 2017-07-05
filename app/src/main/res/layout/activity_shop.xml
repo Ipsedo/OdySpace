@@ -16,7 +16,8 @@
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
-        android:text="Use It"/>
+        android:text="Use It"
+        android:textSize="@dimen/shop_text_size"/>
 
     <Button
         android:id="@+id/buy_button"
@@ -26,7 +27,8 @@
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
-        android:text="Buy It"/>
+        android:text="Buy It"
+        android:textSize="@dimen/shop_text_size"/>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
@@ -35,7 +37,8 @@
         android:layout_below="@id/buy_button"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
-        app:tabIndicatorColor="@color/pumpkin"/>
+        app:tabIndicatorColor="@color/pumpkin"
+        android:textSize="@dimen/shop_text_size"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
@@ -46,6 +49,7 @@
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
+        android:textSize="@dimen/shop_text_size"
         android:orientation="vertical"/>
 
     <RelativeLayout
@@ -92,12 +96,12 @@
         android:id="@+id/shop_curr_money_text_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/components_height_main"
+        android:layout_above="@id/image_shop_layout"
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
-        android:layout_above="@id/image_shop_layout"
         android:background="@drawable/drawable_shop"
+        android:gravity="center"
         android:textAlignment="center"
-        android:textSize="30sp"
-        android:gravity="center"/>
+        android:textSize="@dimen/shop_text_size"/>
 
 </RelativeLayout>

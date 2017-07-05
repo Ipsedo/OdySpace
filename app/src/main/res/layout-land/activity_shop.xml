@@ -21,7 +21,8 @@
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/button_main"
-            android:text="Use It"/>
+            android:text="Use It"
+            android:textSize="@dimen/shop_text_size"/>
 
         <Button
             android:id="@+id/buy_button"
@@ -30,7 +31,8 @@
             android:layout_below="@id/use_item_button"
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/button_main"
-            android:text="Buy It"/>
+            android:text="Buy It"
+            android:textSize="@dimen/shop_text_size"/>
 
 
         <TextView
@@ -40,8 +42,8 @@
             android:layout_below="@id/buy_button"
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/button_main"
-            android:textAlignment="center"
-            android:textSize="30sp"/>
+            android:gravity="center"
+            android:textSize="@dimen/shop_text_size"/>
 
         <RelativeLayout
             android:id="@+id/image_shop_layout"
@@ -98,7 +100,8 @@
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/button_main"
-            app:tabIndicatorColor="@color/pumpkin"/>
+            app:tabIndicatorColor="@color/pumpkin"
+            android:textSize="@dimen/shop_text_size"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
@@ -108,7 +111,8 @@
             android:layout_margin="@dimen/margin_shop"
             android:layout_below="@id/tab_layout"
             android:background="@drawable/button_main"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            android:textSize="@dimen/shop_text_size"/>
     </RelativeLayout>
 
 

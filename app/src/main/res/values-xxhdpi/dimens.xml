@@ -11,4 +11,6 @@
     <dimen name="size_image_shop">105dp</dimen>
     <dimen name="size_scroll_view_pause">80dp</dimen>
     <dimen name="size_image_main">65dp</dimen>
+    <dimen name="main_text_size">17sp</dimen>
+    <dimen name="shop_text_size">17sp</dimen>
 </resources>

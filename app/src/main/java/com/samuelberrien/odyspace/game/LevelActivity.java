@@ -237,6 +237,10 @@ public class LevelActivity extends AppCompatActivity {
 
 	@Override
 	public void onBackPressed() {
-		this.pauseButton.performClick();
+		if(this.pauseButton != null && this.mSurfaceView.isInit()) {
+			this.pauseButton.performClick();
+		} else {
+			super.onBackPressed();
+		}
 	}
 }
