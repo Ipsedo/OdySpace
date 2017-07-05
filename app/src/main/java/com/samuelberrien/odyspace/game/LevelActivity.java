@@ -1,20 +1,10 @@
 package com.samuelberrien.odyspace.game;
 
-import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -24,21 +14,18 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.game.Level;
-
-import static android.R.attr.type;
+import com.samuelberrien.odyspace.main.MainActivity;
+import com.samuelberrien.odyspace.utils.game.FireType;
 
 public class LevelActivity extends AppCompatActivity {
 
@@ -112,10 +99,77 @@ public class LevelActivity extends AppCompatActivity {
 						LevelActivity.this.gamePreferences.edit()
 								.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
 								.commit();
-
 						LevelActivity.this.mSurfaceView.setJoystickInversed(inverseJoystickCheckBox.isChecked());
 					}
 				});
+
+				SharedPreferences savedShop = LevelActivity.this.getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
+				final SharedPreferences savedShip = LevelActivity.this.getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+				final RadioButton fire1RadioButton = (RadioButton) layout.findViewById(R.id.fire_1_radio_button);
+				if (!savedShop.getBoolean(getString(R.string.fire_bonus_1), getResources().getBoolean(R.bool.saved_simple_fire_bought_default))) {
+					fire1RadioButton.setClickable(false);
+				} else {
+					fire1RadioButton.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							LevelActivity.this.mSurfaceView.setShipFireType(FireType.SIMPLE_FIRE);
+							savedShip.edit()
+									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_1))
+									.commit();
+						}
+					});
+				}
+				final RadioButton fire2RadioButton = (RadioButton) layout.findViewById(R.id.fire_2_radio_button);
+				if (!savedShop.getBoolean(getString(R.string.fire_bonus_2), getResources().getBoolean(R.bool.saved_quint_fire_bought_default))) {
+					fire2RadioButton.setClickable(false);
+				} else {
+					fire2RadioButton.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							LevelActivity.this.mSurfaceView.setShipFireType(FireType.QUINT_FIRE);
+							savedShip.edit()
+									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_2))
+									.commit();
+						}
+					});
+				}
+				final RadioButton fire3RadioButton = (RadioButton) layout.findViewById(R.id.fire_3_radio_button);
+				if (!savedShop.getBoolean(getString(R.string.fire_bonus_3), getResources().getBoolean(R.bool.saved_simple_bomb_bought_default))) {
+					fire3RadioButton.setClickable(false);
+				} else {
+					fire3RadioButton.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							LevelActivity.this.mSurfaceView.setShipFireType(FireType.SIMPLE_BOMB);
+							savedShip.edit()
+									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_3))
+									.commit();
+						}
+					});
+				}
+				final RadioButton fire4RadioButton = (RadioButton) layout.findViewById(R.id.fire_4_radio_button);
+				if (!savedShop.getBoolean(getString(R.string.fire_bonus_4), getResources().getBoolean(R.bool.saved_triple_sire_bought_default))) {
+					fire4RadioButton.setClickable(false);
+				} else {
+					fire4RadioButton.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							LevelActivity.this.mSurfaceView.setShipFireType(FireType.TRIPLE_FIRE);
+							savedShip.edit()
+									.putString(getString(R.string.current_fire_type), getString(R.string.fire_bonus_4))
+									.commit();
+						}
+					});
+				}
+				if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(getString(R.string.fire_bonus_1))) {
+					fire1RadioButton.setChecked(true);
+				} else if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(getString(R.string.fire_bonus_2))) {
+					fire2RadioButton.setChecked(true);
+				} else if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(getString(R.string.fire_bonus_3))) {
+					fire3RadioButton.setChecked(true);
+				} else if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(getString(R.string.fire_bonus_4))) {
+					fire4RadioButton.setChecked(true);
+				}
 
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
 						.setTitle("Pause menu")

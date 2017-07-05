@@ -2,8 +2,6 @@ package com.samuelberrien.odyspace.utils.game;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.drawable.controls.Controls;
-import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestThread;

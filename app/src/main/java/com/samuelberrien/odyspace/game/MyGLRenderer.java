@@ -8,17 +8,16 @@ package com.samuelberrien.odyspace.game;
  */
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
+import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Level;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -103,6 +102,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 			this.isInit = true;
 		}
+	}
+
+	public void setShipFireType(FireType fireType) {
+		this.ship.setFireType(fireType);
 	}
 
 	/**

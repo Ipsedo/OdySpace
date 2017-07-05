@@ -1,7 +1,6 @@
 package com.samuelberrien.odyspace.objects.tunnel;
 
 import android.content.Context;
-import android.media.MediaActionSound;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 

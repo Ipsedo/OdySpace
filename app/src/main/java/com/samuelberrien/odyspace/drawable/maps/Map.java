@@ -1,7 +1,6 @@
 package com.samuelberrien.odyspace.drawable.maps;
 
 import com.samuelberrien.odyspace.drawable.GLItemDrawable;
-import com.samuelberrien.odyspace.utils.game.Item;
 
 /**
  * Created by samuel on 11/06/17.

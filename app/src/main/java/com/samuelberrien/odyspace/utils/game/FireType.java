@@ -17,9 +17,10 @@ import java.util.List;
 
 public enum FireType {
 
-	SIMPLE_FIRE, QUINT_FIRE, SIMPLE_BOMB;
+	SIMPLE_FIRE, QUINT_FIRE, SIMPLE_BOMB, TRIPLE_FIRE;
 
 	public void fire(ObjModelMtlVBO rocketModel, List<BaseItem> rockets, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed) {
+		float[] tmpMat;
 		switch (this) {
 			case SIMPLE_FIRE:
 				rockets.add(new Rocket(rocketModel, position, originalSpeedVec, new float[]{0f, 0f, 0f}, rotationMatrix, maxSpeed, 1f, 1));
@@ -27,7 +28,7 @@ public enum FireType {
 			case QUINT_FIRE:
 				rockets.add(new Rocket(rocketModel, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, rotationMatrix.clone(), maxSpeed, 1f, 1));
 
-				float[] tmpMat = new float[16];
+				tmpMat = new float[16];
 				Matrix.setRotateM(tmpMat, 0, 2.5f, 1f, 0f, 0f);
 				float[] res = new float[16];
 				Matrix.multiplyMM(res, 0, rotationMatrix, 0, tmpMat, 0);
@@ -50,6 +51,21 @@ public enum FireType {
 				break;
 			case SIMPLE_BOMB:
 				rockets.add(new Rocket(rocketModel, position, originalSpeedVec, new float[]{0f, 0f, 0f}, rotationMatrix, maxSpeed, 2.5f, 3));
+				break;
+			case TRIPLE_FIRE:
+				tmpMat = new float[16];
+				Matrix.setRotateM(tmpMat, 0, -1f, 1f, 0f, 0f);
+				Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
+				rockets.add(new Rocket(rocketModel, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, tmpMat.clone(), maxSpeed, 1f, 1));
+
+				Matrix.setRotateM(tmpMat, 0, 1f, (float) Math.cos(Math.PI / 3d), (float) Math.sin(Math.PI / 3d), 0f);
+				Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
+				rockets.add(new Rocket(rocketModel, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, tmpMat.clone(), maxSpeed, 1f, 1));
+
+				Matrix.setRotateM(tmpMat, 0, 1f, (float) Math.cos(Math.PI / 3d), -(float) Math.sin(Math.PI / 3d), 0f);
+				Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
+				rockets.add(new Rocket(rocketModel, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, tmpMat.clone(), maxSpeed, 1f, 1));
+
 				break;
 		}
 	}

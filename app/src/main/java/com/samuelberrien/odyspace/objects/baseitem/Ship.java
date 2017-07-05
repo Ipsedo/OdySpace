@@ -63,8 +63,10 @@ public class Ship extends BaseItem {
 			shipFireType = FireType.SIMPLE_FIRE;
 		} else if (fireType.equals(context.getString(R.string.fire_bonus_2))) {
 			shipFireType = FireType.QUINT_FIRE;
-		} else /*if (fireType.equals(context.getString(R.string.fire_bonus_3)))*/ {
+		} else if (fireType.equals(context.getString(R.string.fire_bonus_3))) {
 			shipFireType = FireType.SIMPLE_BOMB;
+		} else {
+			shipFireType = FireType.TRIPLE_FIRE;
 		}
 
 		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
@@ -91,6 +93,10 @@ public class Ship extends BaseItem {
 	public void setGameControls(Joystick joystick, Controls controls) {
 		this.joystick = joystick;
 		this.controls = controls;
+	}
+
+	public void setFireType(FireType newFireType) {
+		this.fireType = newFireType;
 	}
 
 	public void addExplosion(List<Explosion> explosions) {

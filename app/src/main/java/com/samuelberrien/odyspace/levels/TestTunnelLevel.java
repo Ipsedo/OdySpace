@@ -4,26 +4,18 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.opengl.Matrix;
 import android.os.Build;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
-import com.samuelberrien.odyspace.drawable.controls.Controls;
-import com.samuelberrien.odyspace.drawable.controls.Joystick;
-import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
-import com.samuelberrien.odyspace.objects.baseitem.SuperIcosahedron;
-import com.samuelberrien.odyspace.objects.tunnel.Stretch;
 import com.samuelberrien.odyspace.objects.tunnel.Tunnel;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.graphics.Color;
-import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;

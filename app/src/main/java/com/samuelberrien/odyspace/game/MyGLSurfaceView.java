@@ -11,6 +11,7 @@ import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
+import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.threads.CollisionThread;
 import com.samuelberrien.odyspace.utils.game.threads.EndGameThread;
@@ -224,6 +225,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	public void onPause() {
 		this.killThread();
 		super.onPause();
+	}
+
+	public void setShipFireType(FireType fireType) {
+		this.renderer.setShipFireType(fireType);
 	}
 
 	public String getScore() {

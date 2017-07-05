@@ -43,17 +43,6 @@
             android:textAlignment="center"
             android:textSize="30sp"/>
 
-        <!--<TextView
-            android:id="@+id/shop_curr_ship_info"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/components_height_main"
-            android:layout_below="@id/shop_curr_money_text_view"
-            android:layout_margin="@dimen/margin_shop"
-            android:background="@drawable/button_main"
-            android:padding="4dp"
-            android:textAlignment="center"
-            android:textSize="15sp"/>-->
-
         <RelativeLayout
             android:id="@+id/image_shop_layout"
             android:layout_width="match_parent"
@@ -107,22 +96,19 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/components_height_main"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="4dp"
+            android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/button_main"
-            app:tabIndicatorColor="@color/pumpkin">
-
-        </android.support.design.widget.TabLayout>
+            app:tabIndicatorColor="@color/pumpkin"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin_shop"
             android:layout_below="@id/tab_layout"
             android:background="@drawable/button_main"
-            android:orientation="vertical">
-
-        </android.support.v4.view.ViewPager>
+            android:orientation="vertical"/>
     </RelativeLayout>
 
 

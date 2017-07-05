@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
 
@@ -102,9 +103,9 @@ public class ShopActivity extends AppCompatActivity {
 	private void updateShipInfo() {
 		String currFireType = this.savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
 
-		int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
+		final int currShipLife = this.savedShip.getInt(getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
 
-		int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
+		final int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
 
 		String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
 
@@ -116,6 +117,8 @@ public class ShopActivity extends AppCompatActivity {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.quint_fire));
 		} else if (currFireType.equals(getString(R.string.fire_bonus_3))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_bomb));
+		} else if (currFireType.equals(getString(R.string.fire_bonus_4))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.triple_fire));
 		}
 
 		imageView = (ImageView) findViewById(R.id.ship_image_shop);
@@ -127,6 +130,13 @@ public class ShopActivity extends AppCompatActivity {
 		} else if (shipUsed.equals(getString(R.string.ship_supreme))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ship_supreme));
 		}
+
+		imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Toast.makeText(getApplicationContext(), "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_LONG).show();
+			}
+		});
 
 		//this.currShipInfo.setText("Life : " + currShipLife + " + " + currBoughtLife + " (" + shipUsed + ")" + System.getProperty("line.separator") + "FireType : " + currFireType);
 	}
@@ -157,6 +167,8 @@ public class ShopActivity extends AppCompatActivity {
 			}
 		} else if (!this.currBonusItem.equals("") && currMoney >= this.currPrice) {
 
+		} else {
+			Toast.makeText(getApplicationContext(), "Can't buy it !", Toast.LENGTH_SHORT).show();
 		}
 
 		currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
@@ -243,10 +255,14 @@ public class ShopActivity extends AppCompatActivity {
 			defaultFireResId = R.bool.saved_quint_fire_bought_default;
 			fireResId = R.string.fire_bonus_2;
 			fireCostResId = R.integer.quint_fire_cost;
-		} else {
-			defaultFireResId = R.bool.saved_quint_fire_bought_default;
+		} else if (this.fireItem[indexFire].equals(getString(R.string.fire_bonus_3))) {
+			defaultFireResId = R.bool.saved_simple_bomb_bought_default;
 			fireResId = R.string.fire_bonus_3;
 			fireCostResId = R.integer.simple_bomb_cost;
+		} else {
+			defaultFireResId = R.bool.saved_triple_sire_bought_default;
+			fireResId = R.string.fire_bonus_4;
+			fireCostResId = R.integer.triple_fire_cost;
 		}
 
 		boolean defaultValue = getResources().getBoolean(defaultFireResId);

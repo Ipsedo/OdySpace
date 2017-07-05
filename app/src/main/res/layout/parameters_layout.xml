@@ -3,29 +3,74 @@
               android:id="@+id/parameters_layout_id"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/set_volume_text"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="Set volume :"
-        android:textAlignment="textStart"/>
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
 
-    <SeekBar
-        android:id="@+id/volume_seek_bar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"/>
+        <TextView
+            android:id="@+id/set_volume_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Set volume :"
+            android:textAlignment="textStart"/>
 
-    <CheckBox
-        android:id="@+id/inverse_joystick_checkbox"
+        <SeekBar
+            android:id="@+id/volume_seek_bar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <CheckBox
+            android:id="@+id/inverse_joystick_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:checked="false"
+            android:text="Inverse joystick Y-axis"/>
+    </LinearLayout>
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="5dp"
-        android:checked="false"
-        android:text="Inverse joystick Y-axis"/>
+        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/drawable_corner">
+
+        <RadioGroup
+            android:id="@+id/select_weapon_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/fire_1_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fire_bonus_1"/>
+
+            <RadioButton
+                android:id="@+id/fire_2_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fire_bonus_2"/>
+
+            <RadioButton
+                android:id="@+id/fire_3_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fire_bonus_3"/>
+
+            <RadioButton
+                android:id="@+id/fire_4_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fire_bonus_4"/>
+        </RadioGroup>
+    </ScrollView>
 </LinearLayout>

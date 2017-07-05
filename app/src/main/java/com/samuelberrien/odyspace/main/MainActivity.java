@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.quint_fire));
 		} else if (currFireType.equals(getString(R.string.fire_bonus_3))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.simple_bomb));
+		} else if (currFireType.equals(getString(R.string.fire_bonus_4))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.triple_fire));
 		}
 
 		imageView = (ImageView) findViewById(R.id.ship_image_main);
