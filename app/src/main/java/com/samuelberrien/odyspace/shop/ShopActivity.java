@@ -36,6 +36,8 @@ public class ShopActivity extends AppCompatActivity {
 	private SharedPreferences savedShop;
 	private SharedPreferences savedShip;
 
+	private Toast myToast;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,6 +97,8 @@ public class ShopActivity extends AppCompatActivity {
 
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
+		this.myToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+
 		//this.currShipInfo = (TextView) findViewById(R.id.shop_curr_ship_info);
 		this.updateShipInfo();
 
@@ -114,10 +118,10 @@ public class ShopActivity extends AppCompatActivity {
 
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_shop);
-		ItemImageViewMaker.makeFireTypeImage(this, imageView, currFireType);
+		ItemImageViewMaker.makeFireTypeImage(this, this.myToast, imageView, currFireType);
 
 		imageView = (ImageView) findViewById(R.id.ship_image_shop);
-		ItemImageViewMaker.makeShipImage(this, imageView, shipUsed, currShipLife, currBoughtLife);
+		ItemImageViewMaker.makeShipImage(this, this.myToast, imageView, shipUsed, currShipLife, currBoughtLife);
 	}
 
 	public void buy() {

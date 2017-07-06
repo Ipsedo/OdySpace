@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences savedLevelInfo;
 	private SharedPreferences savedShip;
 
+	private Toast myToast;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 		this.startButton.setText("START (" + (this.currLevel + 1) + ")");
 		this.continueButton = (Button) findViewById(R.id.continue_button);
 		this.shopButton = (Button) findViewById(R.id.shop_button);
+		this.myToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
 		this.initGameInfo();
 		this.initLevelChooser();
 	}
@@ -110,10 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_main);
-		ItemImageViewMaker.makeFireTypeImage(this, imageView, currFireType);
+		ItemImageViewMaker.makeFireTypeImage(this, this.myToast, imageView, currFireType);
 
 		imageView = (ImageView) findViewById(R.id.ship_image_main);
-		ItemImageViewMaker.makeShipImage(this, imageView, shipUsed, currShipLife, currBoughtLife);
+		ItemImageViewMaker.makeShipImage(this, this.myToast, imageView, shipUsed, currShipLife, currBoughtLife);
 
 
 		TextView textView = (TextView) findViewById(R.id.curr_money_main);

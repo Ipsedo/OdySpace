@@ -17,7 +17,7 @@ import com.samuelberrien.odyspace.R;
 
 public final class ItemImageViewMaker {
 
-	public static void makeFireTypeImage(final Activity activity, final ImageView imageView, final String currFireType) {
+	public static void makeFireTypeImage(final Activity activity, final Toast myToast, final ImageView imageView, final String currFireType) {
 		if (currFireType.equals(activity.getString(R.string.fire_bonus_1))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_fire));
 		} else if (currFireType.equals(activity.getString(R.string.fire_bonus_2))) {
@@ -31,13 +31,14 @@ public final class ItemImageViewMaker {
 			@Override
 			public boolean onLongClick(View view) {
 				ViewHelper.makeViewTransition(activity, imageView);
-				Toast.makeText(activity, currFireType, Toast.LENGTH_SHORT).show();
+				myToast.setText(currFireType);
+				myToast.show();
 				return true;
 			}
 		});
 	}
 
-	public static void makeShipImage(final Activity activity, final ImageView imageView, final String shipUsed, final int currShipLife, final int currBoughtLife) {
+	public static void makeShipImage(final Activity activity, final Toast myToast, final ImageView imageView, final String shipUsed, final int currShipLife, final int currBoughtLife) {
 		if (shipUsed.equals(activity.getString(R.string.ship_simple))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_ship));
 		} else if (shipUsed.equals(activity.getString(R.string.ship_bird))) {
@@ -49,7 +50,8 @@ public final class ItemImageViewMaker {
 			@Override
 			public boolean onLongClick(View view) {
 				ViewHelper.makeViewTransition(activity, imageView);
-				Toast.makeText(activity, shipUsed + System.getProperty("line.separator") + "Life : " + currShipLife + " + " + currBoughtLife, Toast.LENGTH_SHORT).show();
+				myToast.setText(shipUsed + System.getProperty("line.separator") + "Life : " + currShipLife + " + " + currBoughtLife);
+				myToast.show();
 				return true;
 			}
 		});
