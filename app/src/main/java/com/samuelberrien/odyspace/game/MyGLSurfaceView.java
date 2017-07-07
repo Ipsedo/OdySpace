@@ -152,9 +152,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		switch (e.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					if (!this.controls.isTouchFireButton(x, y, ratio)) {
-						this.controls.setBoostVisible(true);
-						this.controls.updateBoostPosition(x, y, ratio);
+					if (this.controls.isTouchFireButton(x, y, ratio)) {
+						/*this.controls.setBoostVisible(true);
+						this.controls.updateBoostPosition(x, y, ratio);*/
+					} else if(this.controls.isTouchBoost(x, y, ratio)) {
+
 					}
 				} else {
 					this.joystick.setVisible(true);
@@ -163,7 +165,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				break;
 			case MotionEvent.ACTION_UP:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					this.controls.setBoostVisible(false);
+					//this.controls.setBoostVisible(false);
 				} else {
 					this.joystick.setVisible(false);
 				}
@@ -171,20 +173,26 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			case MotionEvent.ACTION_MOVE:
 				if (e.getPointerCount() > 1) {
 					if (e.getX(1) / this.getHeight() > 1) {
-						if (!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio)) {
+						/*if (!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio)) {
 							this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.getHeight() - 1f));
 						} else {
 							this.controls.turnOffFire();
+						}*/
+						if(this.controls.isTouchBoost(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio)) {
+
 						}
 					} else {
 						this.joystick.updateStickPosition(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio);
 					}
 				}
 				if (e.getX(0) / this.getHeight() > 1) {
-					if (!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio)) {
+					/*if (!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio)) {
 						this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.getHeight() - 1f));
 					} else {
 						this.controls.turnOffFire();
+					}*/
+					if(this.controls.isTouchBoost(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio)) {
+
 					}
 				} else {
 					this.joystick.updateStickPosition(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio);
@@ -192,9 +200,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					if (!this.controls.isTouchFireButton(x, y, ratio)) {
-						this.controls.setBoostVisible(true);
-						this.controls.updateBoostPosition(x, y, ratio);
+					if (this.controls.isTouchFireButton(x, y, ratio)) {
+						/*this.controls.setBoostVisible(true);
+						this.controls.updateBoostPosition(x, y, ratio);*/
+					} else if (this.controls.isTouchBoost(x, y, ratio)) {
+
 					}
 				} else {
 					this.joystick.setVisible(true);
@@ -203,7 +213,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					this.controls.setBoostVisible(false);
+					//this.controls.setBoostVisible(false);
 				} else {
 					this.joystick.setVisible(false);
 				}

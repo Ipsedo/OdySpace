@@ -146,6 +146,8 @@ public class Joystick implements GLInfoDrawable {
 		if (this.isVisible) {
 			GLES20.glUseProgram(this.mProgram);
 
+			GLES20.glLineWidth(5f);
+
 			float[] mViewMatrix = new float[16];
 			Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 			float[] mVPMatrix = new float[16];
@@ -172,6 +174,8 @@ public class Joystick implements GLInfoDrawable {
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mStickPoint.length / 3);
 			GLES20.glDisableVertexAttribArray(mPositionHandle);
+
+			GLES20.glLineWidth(1f);
 		}
 	}
 }

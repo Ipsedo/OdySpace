@@ -23,7 +23,7 @@ import java.nio.FloatBuffer;
 
 public class Controls implements GLInfoDrawable {
 
-	private boolean isBoostVisible;
+	//private boolean isBoostVisible;
 
 	private float boostWidth = 0.3f;
 	private float boostHeight = 1f;
@@ -39,7 +39,7 @@ public class Controls implements GLInfoDrawable {
 	private float fireButtonRay = 0.3f;
 	private float[] fireButtonPoints = new float[this.nbPoint * 3];
 	private FloatBuffer fireButtonVertexBuffer;
-	private float[] mFireButtonPosition = new float[]{-1f + this.fireButtonRay, -1f + this.fireButtonRay, 0f};
+	private float[] mFireButtonPosition = new float[]{-1f+ 1e-2f, -1f + this.fireButtonRay + 1e-2f, 0f};
 	private ObjModel fireText;
 	private boolean isFire;
 
@@ -48,10 +48,13 @@ public class Controls implements GLInfoDrawable {
 	private int mMVPMatrixHandle;
 	private int mProgram;
 
-	float color[] = Color.ControlsColor;
+	private float color[] = Color.ControlsColor;
 
 	public Controls() {
-		this.isBoostVisible = false;
+		this.mBoostPosition[0] = -1f + 1e-2f;
+		this.mBoostPosition[1] = 1.5e-1f;
+		this.mBoostPosition[2] = 0f;
+		this.mBoostStickPosition = this.mBoostPosition.clone();
 		this.isFire = false;
 	}
 
@@ -68,7 +71,7 @@ public class Controls implements GLInfoDrawable {
 		this.makeBoost();
 		this.makeFireButton();
 		this.makeBoostStick();
-		this.fireText = new ObjModel(context, "fire.obj", color[0], color[1], color[2], 1f, 0f, 0f);
+		this.fireText = new ObjModel(context, "bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {
@@ -139,31 +142,23 @@ public class Controls implements GLInfoDrawable {
 		this.fireButtonVertexBuffer.position(0);
 	}
 
-	public void updateBoostPosition(float x, float y, float ratio) {
-		if (this.isBoostVisible) {
-			x = x * ratio;
-			this.mBoostPosition[0] = x;
-			this.mBoostPosition[1] = y;
-			this.mBoostPosition[2] = 0f;
-
-			this.mBoostStickPosition = this.mBoostPosition.clone();
-		}
-	}
-
-	public void updateBoostStickPosition(float y) {
-		if (this.isBoostVisible) {
-			if (y > this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2) {
-				this.mBoostStickPosition[1] = this.mBoostPosition[1] + this.boostHeight / 2 - this.boostWidth / 2;
-			} else if (y < this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2) {
-				this.mBoostStickPosition[1] = this.mBoostPosition[1] - this.boostHeight / 2 + this.boostWidth / 2;
-			} else {
-				this.mBoostStickPosition[1] = y;
-			}
+	public boolean isTouchBoost(float x, float y, float ratio) {
+		if (x * ratio < this.mBoostPosition[0] * ratio - this.boostWidth * 0.5f + this.fireButtonRay) {
+			return false;
+		} else if (x * ratio > this.mBoostPosition[0] * ratio + this.boostWidth * 0.5f + this.fireButtonRay) {
+			return false;
+		} else if (y < this.mBoostPosition[1] - this.boostHeight * 0.5f + this.boostWidth * 0.5f) {
+			return false;
+		} else if (y > this.mBoostPosition[1] + this.boostHeight * 0.5f - this.boostWidth * 0.5f) {
+			return false;
+		} else {
+			this.mBoostStickPosition[1] = y;
+			return true;
 		}
 	}
 
 	public boolean isTouchFireButton(float x, float y, float ratio) {
-		float xRef = x * ratio - this.mFireButtonPosition[0] * ratio;
+		float xRef = x * ratio - (this.mFireButtonPosition[0] * ratio  + this.fireButtonRay);
 		float yRef = y - this.mFireButtonPosition[1];
 		if (xRef * xRef + yRef * yRef < this.fireButtonRay * this.fireButtonRay) {
 			this.isFire = true;
@@ -191,13 +186,15 @@ public class Controls implements GLInfoDrawable {
 		return (this.mBoostStickPosition[1] - this.mBoostPosition[1]) / (0.5f * (this.boostHeight - this.boostWidth));
 	}
 
-	public void setBoostVisible(boolean isBoostVisible) {
+	/*public void setBoostVisible(boolean isBoostVisible) {
 		this.isBoostVisible = isBoostVisible;
-	}
+	}*/
 
 	@Override
 	public void draw(float ratio) {
 		GLES20.glUseProgram(this.mProgram);
+
+		GLES20.glLineWidth(5f);
 
 		float[] mViewMatrix = new float[16];
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
@@ -208,30 +205,28 @@ public class Controls implements GLInfoDrawable {
 		float[] mMVPMatrix = new float[16];
 
 		float[] mMMatrix = new float[16];
-		if (this.isBoostVisible) {
-			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, this.mBoostPosition[0], this.mBoostPosition[1], this.mBoostPosition[2]);
-			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+		Matrix.setIdentityM(mMMatrix, 0);
+		Matrix.translateM(mMMatrix, 0, this.mBoostPosition[0] * ratio + this.fireButtonRay, this.mBoostPosition[1], this.mBoostPosition[2]);
+		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
-			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.boostVertexBuffer);
-			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
-			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostPoint.length / 3);
-
-			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, this.mBoostStickPosition[0], this.mBoostStickPosition[1], this.mBoostStickPosition[2]);
-			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
-
-			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.boostStickVertexBuffer);
-			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
-			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostStickPoint.length / 3);
-		}
+		GLES20.glEnableVertexAttribArray(mPositionHandle);
+		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.boostVertexBuffer);
+		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostPoint.length / 3);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
+		Matrix.translateM(mMMatrix, 0, this.mBoostStickPosition[0] * ratio + this.fireButtonRay, this.mBoostStickPosition[1], this.mBoostStickPosition[2]);
+		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+
+		GLES20.glEnableVertexAttribArray(mPositionHandle);
+		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.boostStickVertexBuffer);
+		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostStickPoint.length / 3);
+
+		Matrix.setIdentityM(mMMatrix, 0);
+		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio  + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -241,9 +236,13 @@ public class Controls implements GLInfoDrawable {
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.fireButtonPoints.length / 3);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
+		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio  + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
 		Matrix.scaleM(mMMatrix, 0, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
+
+		GLES20.glDisableVertexAttribArray(mPositionHandle);
+
+		GLES20.glLineWidth(1f);
 
 		this.fireText.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);
 
