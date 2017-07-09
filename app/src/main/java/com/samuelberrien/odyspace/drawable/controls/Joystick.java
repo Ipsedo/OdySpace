@@ -43,15 +43,11 @@ public class Joystick implements GLInfoDrawable {
 
 	private float color[] = Color.ControlsColor;
 
-	private boolean isInversed;
+	private int pointerID;
 
 	public Joystick() {
 		this.isVisible = false;
-		this.isInversed = true;
-	}
-
-	public void setInversed(boolean isInversed) {
-		this.isInversed = isInversed;
+		this.pointerID = -1;
 	}
 
 	public void initGraphics(Context context) {
@@ -102,27 +98,29 @@ public class Joystick implements GLInfoDrawable {
 		mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
 	}
 
-	public void updatePosition(float x, float y, float ratio) {
-		x = x * ratio;
-		this.mPosition[0] = x;
-		this.mPosition[1] = y;
-		this.mPosition[2] = 0f;
+	public void updatePosition(float x, float y, float ratio, int pointerID) {
+		if(this.pointerID == pointerID) {
+			x = x * ratio;
+			this.mPosition[0] = x;
+			this.mPosition[1] = y;
+			this.mPosition[2] = 0f;
 
-		this.mStickPosition[0] = x;
-		this.mStickPosition[1] = y;
-		this.mStickPosition[2] = 0f;
+			this.mStickPosition[0] = x;
+			this.mStickPosition[1] = y;
+			this.mStickPosition[2] = 0f;
+		}
 	}
 
-	public void updateStickPosition(float x, float y, float ratio) {
+	public void updateStickPosition(float x, float y, float ratio, int pointerID) {
 		x = x * ratio;
 		double length = Math.sqrt(Math.pow(this.mPosition[0] - x, 2d) + Math.pow(this.mPosition[1] - y, 2d));
-		if (length > this.circleLength - this.stickLength) {
+		if (this.pointerID == pointerID && length > this.circleLength - this.stickLength) {
 			double xDist = x - this.mPosition[0];
 			double yDist = y - this.mPosition[1];
 			this.mStickPosition[0] = this.mPosition[0] + (float) ((this.circleLength - this.stickLength) * xDist / length);
 			this.mStickPosition[1] = this.mPosition[1] + (float) ((this.circleLength - this.stickLength) * yDist / length);
 			this.mStickPosition[2] = 0f;
-		} else {
+		} else if (this.pointerID == pointerID){
 			this.mStickPosition[0] = x;
 			this.mStickPosition[1] = y;
 			this.mStickPosition[2] = 0f;
@@ -131,14 +129,19 @@ public class Joystick implements GLInfoDrawable {
 
 	public float[] getStickPosition() {
 		if (this.isVisible) {
-			return new float[]{-(this.mStickPosition[0] - this.mPosition[0]) / (float) (this.circleLength - this.stickLength), (this.isInversed ? 1f : -1f) * (this.mStickPosition[1] - this.mPosition[1]) / (float) (this.circleLength - this.stickLength)};
+			return new float[]{-(this.mStickPosition[0] - this.mPosition[0]) / (float) (this.circleLength - this.stickLength), (this.mStickPosition[1] - this.mPosition[1]) / (float) (this.circleLength - this.stickLength)};
 		} else {
 			return new float[]{0f, 0f};
 		}
 	}
 
-	public void setVisible(boolean isVisible) {
-		this.isVisible = isVisible;
+	public void setVisible(boolean isVisible, int pointerID) {
+		if(isVisible) {
+			this.pointerID = pointerID;
+			this.isVisible = isVisible;
+		} else if (this.pointerID == pointerID) {
+			this.isVisible = isVisible;
+		}
 	}
 
 	@Override

@@ -34,4 +34,5 @@
     </string-array>
     <string name="game_preferences">Game</string>
     <string name="saved_joystick_inversed">JoystickInversed</string>
+    <string name="saved_yaw_roll_switched">YawRollSwitched</string>
 </resources>

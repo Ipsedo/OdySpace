@@ -218,6 +218,31 @@ public class ObjModel implements GLDrawable {
 	}
 
 	/**
+	 * Make a FloatBuffer containing RGBA value for all vertex with the give color
+	 * @param color A 4 float array RGBA color
+	 * @return A new color FloatBuffer for the ObjModel instance
+	 */
+	public FloatBuffer makeColor(float[] color) {
+		float[] tmp = new float[this.coords.length * 4 / 3];
+		for (int i = 0; i < tmp.length; i += 4) {
+			tmp[i] = color[0];
+			tmp[i + 1] = color[1];
+			tmp[i + 2] = color[2];
+			tmp[i + 3] = color[3];
+		}
+
+		return (FloatBuffer) ByteBuffer.allocateDirect(tmp.length * 4)
+				.order(ByteOrder.nativeOrder())
+				.asFloatBuffer().put(tmp)
+				.position(0);
+	}
+
+	@Override
+	public void changeColor() {
+		throw new RuntimeException("Not implemented yet !");
+	}
+
+	/**
 	 * @param mvpMatrix           The Model View Project matrix in which to draw this shape.
 	 * @param mvMatrix            The Model View matrix
 	 * @param mLightPosInEyeSpace The light position in the eye space

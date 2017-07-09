@@ -8,6 +8,7 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.Controls;
+import com.samuelberrien.odyspace.drawable.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -30,13 +31,15 @@ public class Ship extends BaseItem {
 	private final float ROCKET_MAX_SPEED = 0.020f;
 	private final float rollCoeff = 1f;
 	private final float pitchCoeff = 0.5f;
+	private final float yawCoeff = 0.5f;
 	private final float boostCoeff = 2.0f;
 
 	private final float[] originalSpeedVec = new float[]{0f, 0f, 1f, 0f};
 	private final float[] originalUpVec = new float[]{0f, 1f, 0f, 0f};
 
-	private Joystick joystick;
-	private Controls controls;
+	/*private Joystick joystick;
+	private Controls controls;*/
+	private GamePad gamePad;
 
 	private int maxLife;
 	private ProgressBar lifeDraw;
@@ -48,7 +51,7 @@ public class Ship extends BaseItem {
 
 	private FireType fireType;
 
-	public static Ship makeShip(Context context) {
+	public static Ship makeShip(Context context, GamePad gamePad) {
 		SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 		SharedPreferences savedShop = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		int currBoughtLife = savedShop.getInt(context.getString(R.string.bought_life), context.getResources().getInteger(R.integer.saved_ship_life_shop_default));
@@ -72,15 +75,15 @@ public class Ship extends BaseItem {
 		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
 
 		if (shipUsed.equals(context.getString(R.string.ship_bird))) {
-			return new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType);
+			return new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType, gamePad);
 		} else if (shipUsed.equals(context.getString(R.string.ship_supreme))) {
-			return new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType);
+			return new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType, gamePad);
 		} else {
-			return new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType);
+			return new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType, gamePad);
 		}
 	}
 
-	private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType) {
+	private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType, GamePad gamePad) {
 		super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
 		this.maxLife = life;
 		this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
@@ -88,11 +91,7 @@ public class Ship extends BaseItem {
 		this.fireType = fireType;
 		this.exploded = false;
 		this.mBoostSpeed = 0f;
-	}
-
-	public void setGameControls(Joystick joystick, Controls controls) {
-		this.joystick = joystick;
-		this.controls = controls;
+		this.gamePad = gamePad;
 	}
 
 	public void setFireType(FireType newFireType) {
@@ -113,21 +112,23 @@ public class Ship extends BaseItem {
 
 	@Override
 	public void move() {
-		this.mBoostSpeed = (float) Math.exp(this.controls.getBoost() + 2f) * this.boostCoeff;
+		this.mBoostSpeed = (float) Math.exp(this.gamePad.getBoost() + 2f) * this.boostCoeff;
 		this.mMaxSpeed = Ship.SHIP_MAX_SPEED * this.mBoostSpeed;
 
-		float[] tmp = this.joystick.getStickPosition();
-
-		float phi = tmp[0];
-		float theta = tmp[1];
 
 		float[] pitchMatrix = new float[16];
 		float[] rollMatrix = new float[16];
-		Matrix.setRotateM(rollMatrix, 0, (phi >= 0 ? (float) Math.exp(phi) - 1f : (float) -Math.exp(Math.abs(phi)) + 1f) * this.rollCoeff, 0f, 0f, 1f);
-		Matrix.setRotateM(pitchMatrix, 0, (theta >= 0 ? (float) Math.exp(theta) - 1f : (float) -Math.exp(Math.abs(theta)) + 1f) * this.pitchCoeff, 1f, 0f, 0f);
+		float[] yawMatrix = new float[16];
+		float roll = this.gamePad.getRoll();
+		float pitch = this.gamePad.getPitch();
+		float yaw = this.gamePad.getYaw();
+		Matrix.setRotateM(rollMatrix, 0, (roll >= 0 ? (float) Math.exp(roll) - 1f : (float) -Math.exp(Math.abs(roll)) + 1f) * this.rollCoeff, 0f, 0f, 1f);
+		Matrix.setRotateM(pitchMatrix, 0, (pitch >= 0 ? (float) Math.exp(pitch) - 1f : (float) -Math.exp(Math.abs(pitch)) + 1f) * this.pitchCoeff, 1f, 0f, 0f);
+		Matrix.setRotateM(yawMatrix, 0, (yaw >= 0 ? (float) Math.exp(yaw) - 1f : (float) -Math.exp(Math.abs(yaw)) + 1f) * this.yawCoeff, 0f, 1f, 0f);
 
 		float[] currRotMatrix = new float[16];
 		Matrix.multiplyMM(currRotMatrix, 0, pitchMatrix, 0, rollMatrix, 0);
+		Matrix.multiplyMM(currRotMatrix, 0, currRotMatrix.clone(), 0, yawMatrix, 0);
 
 		float[] currSpeed = new float[4];
 		Matrix.multiplyMV(currSpeed, 0, currRotMatrix, 0, this.originalSpeedVec, 0);
@@ -153,9 +154,8 @@ public class Ship extends BaseItem {
 	}
 
 	public void fire(List<BaseItem> rockets) {
-		if (this.controls.isFire()) {
+		if (this.gamePad.fire()) {
 			this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
-			this.controls.turnOffFire();
 		}
 	}
 

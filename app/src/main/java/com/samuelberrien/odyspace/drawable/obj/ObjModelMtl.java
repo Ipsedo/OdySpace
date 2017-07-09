@@ -400,6 +400,13 @@ public class ObjModelMtl implements GLDrawable {
 	}
 
 	@Override
+	public void changeColor() {
+		FloatBuffer tmp = this.ambColorBuffer;
+		this.ambColorBuffer = this.diffColorBuffer;
+		this.diffColorBuffer = tmp;
+	}
+
+	@Override
 	public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		GLES20.glUseProgram(mProgram);
 

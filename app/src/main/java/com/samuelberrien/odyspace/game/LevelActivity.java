@@ -49,7 +49,8 @@ public class LevelActivity extends AppCompatActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		this.gamePreferences = this.getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE);
-		this.mSurfaceView.setJoystickInversed(this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
+		this.mSurfaceView.inversePitchJoystick(this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
+		this.mSurfaceView.inverseYawRoll(this.gamePreferences.getBoolean(getString(R.string.saved_yaw_roll_switched), getResources().getBoolean(R.bool.saved_yaw_roll_switched_default)));
 
 		this.progressBar = new ProgressBar(this);
 		this.progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.pumpkin), PorterDuff.Mode.SRC_IN);
@@ -93,7 +94,6 @@ public class LevelActivity extends AppCompatActivity {
 				});
 
 				final CheckBox inverseJoystickCheckBox = (CheckBox) layout.findViewById(R.id.inverse_joystick_checkbox);
-
 				inverseJoystickCheckBox.setChecked(LevelActivity.this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
 				inverseJoystickCheckBox.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -101,7 +101,19 @@ public class LevelActivity extends AppCompatActivity {
 						LevelActivity.this.gamePreferences.edit()
 								.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
 								.apply();
-						LevelActivity.this.mSurfaceView.setJoystickInversed(inverseJoystickCheckBox.isChecked());
+						LevelActivity.this.mSurfaceView.inversePitchJoystick(inverseJoystickCheckBox.isChecked());
+					}
+				});
+
+				final CheckBox switchYawRollCheckBox = (CheckBox) layout.findViewById(R.id.switch_yaw_roll_checkbox);
+				switchYawRollCheckBox.setChecked(LevelActivity.this.gamePreferences.getBoolean(getString(R.string.saved_yaw_roll_switched), getResources().getBoolean(R.bool.saved_yaw_roll_switched_default)));
+				switchYawRollCheckBox.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						LevelActivity.this.gamePreferences.edit()
+								.putBoolean(getString(R.string.saved_yaw_roll_switched), switchYawRollCheckBox.isChecked())
+								.apply();
+						LevelActivity.this.mSurfaceView.inverseYawRoll(switchYawRollCheckBox.isChecked());
 					}
 				});
 

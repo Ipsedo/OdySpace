@@ -30,7 +30,6 @@ public class Controls implements GLInfoDrawable {
 	private float[] mBoostPoint = new float[3 * 4];
 	private FloatBuffer boostVertexBuffer;
 	private float[] mBoostPosition = new float[3];
-
 	private float[] mBoostStickPoint = new float[3 * 4];
 	private FloatBuffer boostStickVertexBuffer;
 	private float[] mBoostStickPosition = new float[3];
@@ -39,8 +38,8 @@ public class Controls implements GLInfoDrawable {
 	private float fireButtonRay = 0.3f;
 	private float[] fireButtonPoints = new float[this.nbPoint * 3];
 	private FloatBuffer fireButtonVertexBuffer;
-	private float[] mFireButtonPosition = new float[]{-1f+ 1e-2f, -1f + this.fireButtonRay + 1e-2f, 0f};
-	private ObjModel fireText;
+	private float[] mFireButtonPosition = new float[]{-1f + 1e-2f, -1f + this.fireButtonRay + 1e-2f, 0f};
+	private ObjModel fireLogo;
 	private boolean isFire;
 
 	private int mPositionHandle;
@@ -71,7 +70,7 @@ public class Controls implements GLInfoDrawable {
 		this.makeBoost();
 		this.makeFireButton();
 		this.makeBoostStick();
-		this.fireText = new ObjModel(context, "bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
+		this.fireLogo = new ObjModel(context, "bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {
@@ -81,20 +80,20 @@ public class Controls implements GLInfoDrawable {
 	}
 
 	private void makeBoost() {
-		this.mBoostPoint[0] = this.boostWidth / 2;
-		this.mBoostPoint[1] = this.boostHeight / 2;
+		this.mBoostPoint[0] = this.boostWidth * 0.5f;
+		this.mBoostPoint[1] = this.boostHeight * 0.5f;
 		this.mBoostPoint[2] = 0f;
 
-		this.mBoostPoint[3] = this.boostWidth / 2;
-		this.mBoostPoint[4] = -this.boostHeight / 2;
+		this.mBoostPoint[3] = this.boostWidth * 0.5f;
+		this.mBoostPoint[4] = -this.boostHeight * 0.5f;
 		this.mBoostPoint[5] = 0f;
 
-		this.mBoostPoint[6] = -this.boostWidth / 2;
-		this.mBoostPoint[7] = -this.boostHeight / 2;
+		this.mBoostPoint[6] = -this.boostWidth * 0.5f;
+		this.mBoostPoint[7] = -this.boostHeight * 0.5f;
 		this.mBoostPoint[8] = 0f;
 
-		this.mBoostPoint[9] = -this.boostWidth / 2;
-		this.mBoostPoint[10] = this.boostHeight / 2;
+		this.mBoostPoint[9] = -this.boostWidth * 0.5f;
+		this.mBoostPoint[10] = this.boostHeight * 0.5f;
 		this.mBoostPoint[11] = 0f;
 
 		ByteBuffer bb = ByteBuffer.allocateDirect(this.mBoostPoint.length * 4);
@@ -105,20 +104,20 @@ public class Controls implements GLInfoDrawable {
 	}
 
 	private void makeBoostStick() {
-		this.mBoostStickPoint[0] = this.boostWidth / 2;
-		this.mBoostStickPoint[1] = this.boostWidth / 2;
+		this.mBoostStickPoint[0] = this.boostWidth * 0.5f;
+		this.mBoostStickPoint[1] = this.boostWidth * 0.5f;
 		this.mBoostPoint[2] = 0f;
 
-		this.mBoostStickPoint[3] = this.boostWidth / 2;
-		this.mBoostStickPoint[4] = -this.boostWidth / 2;
+		this.mBoostStickPoint[3] = this.boostWidth * 0.5f;
+		this.mBoostStickPoint[4] = -this.boostWidth * 0.5f;
 		this.mBoostStickPoint[5] = 0f;
 
-		this.mBoostStickPoint[6] = -this.boostWidth / 2;
-		this.mBoostStickPoint[7] = -this.boostWidth / 2;
+		this.mBoostStickPoint[6] = -this.boostWidth * 0.5f;
+		this.mBoostStickPoint[7] = -this.boostWidth * 0.5f;
 		this.mBoostStickPoint[8] = 0f;
 
-		this.mBoostStickPoint[9] = -this.boostWidth / 2;
-		this.mBoostStickPoint[10] = this.boostWidth / 2;
+		this.mBoostStickPoint[9] = -this.boostWidth * 0.5f;
+		this.mBoostStickPoint[10] = this.boostWidth * 0.5f;
 		this.mBoostStickPoint[11] = 0f;
 
 		ByteBuffer bb = ByteBuffer.allocateDirect(this.mBoostStickPoint.length * 4);
@@ -127,6 +126,8 @@ public class Controls implements GLInfoDrawable {
 		this.boostStickVertexBuffer.put(this.mBoostStickPoint);
 		this.boostStickVertexBuffer.position(0);
 	}
+
+
 
 	private void makeFireButton() {
 		for (int i = 0; i < this.nbPoint; i++) {
@@ -158,7 +159,7 @@ public class Controls implements GLInfoDrawable {
 	}
 
 	public boolean isTouchFireButton(float x, float y, float ratio) {
-		float xRef = x * ratio - (this.mFireButtonPosition[0] * ratio  + this.fireButtonRay);
+		float xRef = x * ratio - (this.mFireButtonPosition[0] * ratio + this.fireButtonRay);
 		float yRef = y - this.mFireButtonPosition[1];
 		if (xRef * xRef + yRef * yRef < this.fireButtonRay * this.fireButtonRay) {
 			this.isFire = true;
@@ -185,10 +186,6 @@ public class Controls implements GLInfoDrawable {
 	public float getBoost() {
 		return (this.mBoostStickPosition[1] - this.mBoostPosition[1]) / (0.5f * (this.boostHeight - this.boostWidth));
 	}
-
-	/*public void setBoostVisible(boolean isBoostVisible) {
-		this.isBoostVisible = isBoostVisible;
-	}*/
 
 	@Override
 	public void draw(float ratio) {
@@ -226,7 +223,7 @@ public class Controls implements GLInfoDrawable {
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostStickPoint.length / 3);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio  + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
+		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -235,16 +232,15 @@ public class Controls implements GLInfoDrawable {
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.fireButtonPoints.length / 3);
 
+		GLES20.glDisableVertexAttribArray(mPositionHandle);
+
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio  + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
+		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
 		Matrix.scaleM(mMMatrix, 0, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
-		GLES20.glDisableVertexAttribArray(mPositionHandle);
-
 		GLES20.glLineWidth(1f);
 
-		this.fireText.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);
-
+		this.fireLogo.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);
 	}
 }

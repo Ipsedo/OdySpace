@@ -285,7 +285,7 @@ public class TestProtectionLevel implements Level {
 
 	@Override
 	public int getScore() {
-		return 100;
+		return this.ship.isAlive() && this.nbBase - this.bases.size() == 0 ? 100 : 0;
 	}
 
 	@Override

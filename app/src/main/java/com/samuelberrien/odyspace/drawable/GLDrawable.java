@@ -10,6 +10,11 @@ package com.samuelberrien.odyspace.drawable;
 public interface GLDrawable {
 
 	/**
+	 *
+	 */
+	void changeColor();
+
+	/**
 	 * @param mMVPMatrix
 	 * @param mMVMatrix
 	 * @param mLightPosInEyeSpace

@@ -484,7 +484,8 @@ public class ObjModelMtlVBO implements GLDrawable {
 				.position(0);
 	}
 
-	protected void changeColor() {
+	@Override
+	public void changeColor() {
 		int tmpSpecColor = this.specBufferId;
 		this.specBufferId = this.diffBufferId;
 		this.diffBufferId = tmpSpecColor;

@@ -31,21 +31,21 @@ public class Octree {
 	private Octree[] makeSons() {
 		Octree[] sons = new Octree[8];
 		Box[] levelLimitsSons = this.boxes.makeSons();
-		ArrayList<Item>[] futurAmis = new ArrayList[8];
-		ArrayList<Item>[] futurEnnemis = new ArrayList[8];
+		/*ArrayList<Item>[] futurAmis = new ArrayList[8];
+		ArrayList<Item>[] futurEnnemis = new ArrayList[8];*/
 
 		for (int i = 0; i < sons.length; i++) {
-			futurAmis[i] = new ArrayList<>();
-			futurEnnemis[i] = new ArrayList<>();
+			ArrayList<Item> futurAmis = new ArrayList<>();
+			ArrayList<Item> futurEnnemis = new ArrayList<>();
 
 			for (Item ami : this.amis)
 				if (ami.isInside(levelLimitsSons[i]))
-					futurAmis[i].add(ami);
+					futurAmis.add(ami);
 			for (Item ennemi : this.ennemis)
 				if (ennemi.isInside(levelLimitsSons[i]))
-					futurEnnemis[i].add(ennemi);
+					futurEnnemis.add(ennemi);
 
-			sons[i] = new Octree(levelLimitsSons[i], futurAmis[i], futurEnnemis[i], this.limitSize);
+			sons[i] = new Octree(levelLimitsSons[i], futurAmis, futurEnnemis, this.limitSize);
 		}
 
 		return sons;

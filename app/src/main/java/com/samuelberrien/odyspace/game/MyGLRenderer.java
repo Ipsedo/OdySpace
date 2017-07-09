@@ -12,8 +12,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.controls.Controls;
-import com.samuelberrien.odyspace.drawable.controls.Joystick;
+import com.samuelberrien.odyspace.drawable.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
@@ -43,8 +42,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private float maxProjDist = 1200f;
 	private float ratio = 1f;
 
-	private Joystick joystick;
-	private Controls controls;
+	/*private Joystick joystick;
+	private Controls controls;*/
+	private GamePad gamePad;
 
 	private Level currentLevel;
 
@@ -57,10 +57,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	private boolean isInit = false;
 
-	public MyGLRenderer(Context context, Level currentLevel, Joystick joystick, Controls controls) {
+	public MyGLRenderer(Context context, Level currentLevel, GamePad gamePad) {
 		this.context = context;
-		this.joystick = joystick;
-		this.controls = controls;
+		/*this.joystick = joystick;
+		this.controls = controls;*/
+		this.gamePad = gamePad;
 		this.currentLevel = currentLevel;
 	}
 
@@ -75,11 +76,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		if (!this.isInit) {
 			this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
 
-			this.joystick.initGraphics(this.context);
-			this.controls.initGraphics(this.context);
+			/*this.joystick.initGraphics(this.context);
+			this.controls.initGraphics(this.context);*/
+			this.gamePad.initGraphics(this.context);
 
-			this.ship = Ship.makeShip(this.context);
-			this.ship.setGameControls(this.joystick, this.controls);
+			this.ship = Ship.makeShip(this.context, this.gamePad);
 			this.ship.move();
 
 			this.mCameraPosition = new float[]{0f, 0f, -10f};
@@ -158,8 +159,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		this.currentLevel.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
 
 		GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-		this.joystick.draw(this.ratio);
-		this.controls.draw(this.ratio);
+		this.gamePad.draw(ratio);
 		this.ship.drawLife(this.ratio);
 		this.currentLevel.drawLevelInfo(this.ratio);
 

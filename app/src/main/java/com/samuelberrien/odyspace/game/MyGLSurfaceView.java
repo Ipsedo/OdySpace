@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.controls.Controls;
+import com.samuelberrien.odyspace.drawable.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
@@ -34,8 +35,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private MyGLRenderer renderer;
 
 	private Level currentLevel;
-	private Joystick joystick;
-	private Controls controls;
+	/*private Joystick joystick;
+	private Controls controls;*/
+	private GamePad gamePad;
 
 	private CollisionThread collisionThread;
 	private UpdateThread updateThread;
@@ -54,14 +56,15 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		this.levelActivity = levelActivity;
 		this.setEGLContextClientVersion(2);
 
-		this.joystick = new Joystick();
-		this.controls = new Controls();
+		/*this.joystick = new Joystick();
+		this.controls = new Controls();*/
+		this.gamePad = new GamePad();
 
 		this.currentLevel = this.getCurrentLevel(levelID);
 
 		this.threadRunning = false;
 
-		this.renderer = new MyGLRenderer(this.context, this.currentLevel, this.joystick, this.controls);
+		this.renderer = new MyGLRenderer(this.context, this.currentLevel, this.gamePad);
 		this.setRenderer(this.renderer);
 
 		this.setPreserveEGLContextOnPause(true);
@@ -71,8 +74,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		return this.currentLevel.isInit();
 	}
 
-	public void setJoystickInversed(boolean isInversed) {
-		this.joystick.setInversed(isInversed);
+	public void inversePitchJoystick(boolean isInversed) {
+		this.gamePad.inversePitch(isInversed);
+	}
+
+	public void inverseYawRoll(boolean isInversed) {
+		this.gamePad.inverseRollAndYaw(isInversed);
 	}
 
 	private Level getCurrentLevel(int currLevelId) {
@@ -145,7 +152,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
-		int pointerIndex = e.getActionIndex();
+		/*int pointerIndex = e.getActionIndex();
 		float x = -(2f * e.getX(pointerIndex) / this.getWidth() - 1f);
 		float y = -(2f * e.getY(pointerIndex) / this.getHeight() - 1f);
 		float ratio = (float) this.getWidth() / (float) this.getHeight();
@@ -153,10 +160,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			case MotionEvent.ACTION_DOWN:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
 					if (this.controls.isTouchFireButton(x, y, ratio)) {
-						/*this.controls.setBoostVisible(true);
-						this.controls.updateBoostPosition(x, y, ratio);*/
 					} else if(this.controls.isTouchBoost(x, y, ratio)) {
-
 					}
 				} else {
 					this.joystick.setVisible(true);
@@ -165,7 +169,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				break;
 			case MotionEvent.ACTION_UP:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					//this.controls.setBoostVisible(false);
 				} else {
 					this.joystick.setVisible(false);
 				}
@@ -173,26 +176,14 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			case MotionEvent.ACTION_MOVE:
 				if (e.getPointerCount() > 1) {
 					if (e.getX(1) / this.getHeight() > 1) {
-						/*if (!this.controls.isTouchFireButton(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio)) {
-							this.controls.updateBoostStickPosition(-(2f * e.getY(1) / this.getHeight() - 1f));
-						} else {
-							this.controls.turnOffFire();
-						}*/
 						if(this.controls.isTouchBoost(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio)) {
-
 						}
 					} else {
 						this.joystick.updateStickPosition(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio);
 					}
 				}
 				if (e.getX(0) / this.getHeight() > 1) {
-					/*if (!this.controls.isTouchFireButton(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio)) {
-						this.controls.updateBoostStickPosition(-(2f * e.getY(0) / this.getHeight() - 1f));
-					} else {
-						this.controls.turnOffFire();
-					}*/
 					if(this.controls.isTouchBoost(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio)) {
-
 					}
 				} else {
 					this.joystick.updateStickPosition(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio);
@@ -201,10 +192,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			case MotionEvent.ACTION_POINTER_DOWN:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
 					if (this.controls.isTouchFireButton(x, y, ratio)) {
-						/*this.controls.setBoostVisible(true);
-						this.controls.updateBoostPosition(x, y, ratio);*/
 					} else if (this.controls.isTouchBoost(x, y, ratio)) {
-
 					}
 				} else {
 					this.joystick.setVisible(true);
@@ -213,12 +201,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
 				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					//this.controls.setBoostVisible(false);
 				} else {
 					this.joystick.setVisible(false);
 				}
 				break;
-		}
+		}*/
+		this.gamePad.update(e, this.getWidth(), this.getHeight());
 		return true;
 	}
 

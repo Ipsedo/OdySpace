@@ -13,5 +13,5 @@
     <dimen name="size_image_main">90dp</dimen>
     <dimen name="main_text_size">30sp</dimen>
     <dimen name="shop_text_size">30sp</dimen>
-    <dimen name="shop_list_view_text_size">20sp</dimen>
+    <dimen name="shop_list_view_text_size">40sp</dimen>
 </resources>
