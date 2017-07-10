@@ -131,12 +131,12 @@ public class GamePad implements GLInfoDrawable {
 			case MotionEvent.ACTION_POINTER_DOWN:
 				if (e.getX(pointerIndex) / screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
 					this.remotePointerID = pointerIndex;
-					this.joystickPointerID = 1 - pointerIndex;
+					this.joystickPointerID = pointerIndex == 1 ? 0 : 1;
 					this.remote.setVisible(true);
 					this.remote.updatePosition(x, y, ratio);
 				} else if (e.getX(pointerIndex) / screenHeight < this.limitScreen) {
 					this.joystickPointerID = pointerIndex;
-					this.remotePointerID = 1 - pointerIndex;
+					this.remotePointerID = pointerIndex == 1 ? 0 : 1;
 					this.joystick.setVisible(true);
 					this.joystick.updatePosition(x, y, ratio);
 				}
@@ -144,11 +144,11 @@ public class GamePad implements GLInfoDrawable {
 			case MotionEvent.ACTION_POINTER_UP:
 				if (this.remotePointerID == pointerIndex) {
 					this.remote.setVisible(false);
-					this.joystickPointerID = 1 - pointerIndex;
+					this.joystickPointerID = 0;
 					this.remotePointerID = -1;
 				} else if (this.joystickPointerID == pointerIndex) {
 					this.joystick.setVisible(false);
-					this.remotePointerID = 1 - pointerIndex;
+					this.remotePointerID = 0;
 					this.joystickPointerID = -1;
 				}
 				break;
