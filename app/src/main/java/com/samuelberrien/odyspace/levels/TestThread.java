@@ -170,7 +170,7 @@ public class TestThread implements Level {
 		ArrayList<Item> ennemi = new ArrayList<>();
 		ennemi.addAll(this.icosahedrons);
 		ennemi.add(this.noiseMap);
-		Octree octree = new Octree(this.levelLimits, ami, ennemi, 1f);
+		Octree octree = new Octree(this.levelLimits, ami, ennemi, 2f);
 		octree.computeOctree();
 	}
 

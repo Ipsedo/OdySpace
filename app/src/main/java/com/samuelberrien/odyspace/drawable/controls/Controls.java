@@ -70,7 +70,7 @@ public class Controls implements GLInfoDrawable {
 		this.makeBoost();
 		this.makeFireButton();
 		this.makeBoostStick();
-		this.fireLogo = new ObjModel(context, "bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
+		this.fireLogo = new ObjModel(context, "bullet.obj", this.color[0], this.color[1], this.color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {

@@ -71,11 +71,9 @@ public class ShopActivity extends AppCompatActivity {
 				});
 			}
 		});
-		//this.turnOffBuyButton();
 
 		this.useButton = (Button) findViewById(R.id.use_item_button);
 		this.useButton.setVisibility(View.GONE);
-		//this.turnOffUseButton();
 		this.useButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -99,10 +97,8 @@ public class ShopActivity extends AppCompatActivity {
 
 		this.myToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
 
-		//this.currShipInfo = (TextView) findViewById(R.id.shop_curr_ship_info);
 		this.updateShipInfo();
 
-		// Give the TabLayout the ViewPager
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 		tabLayout.setupWithViewPager(viewPager);
 	}
@@ -115,7 +111,6 @@ public class ShopActivity extends AppCompatActivity {
 		final int currBoughtLife = this.savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
 
 		final String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
-
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_shop);
 		ItemImageViewMaker.makeFireTypeImage(this, this.myToast, imageView, currFireType);
@@ -151,7 +146,8 @@ public class ShopActivity extends AppCompatActivity {
 		} else if (!this.currBonusItem.equals("") && currMoney >= this.currPrice) {
 
 		} else {
-			Toast.makeText(getApplicationContext(), "Can't buy it !", Toast.LENGTH_SHORT).show();
+			this.myToast.setText("Can't buy it !");
+			this.myToast.show();
 		}
 
 		currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
@@ -191,6 +187,7 @@ public class ShopActivity extends AppCompatActivity {
 				boolResBought = R.bool.saved_ship_simple_bought_default;
 			}
 		} else if (!this.currBonusItem.equals("")) {
+
 		}
 
 		if (!this.currFireItem.equals("") && this.savedShop.getBoolean(this.currFireItem, getResources().getBoolean(boolResBought))) {
@@ -208,6 +205,9 @@ public class ShopActivity extends AppCompatActivity {
 			editor.commit();
 		} else if (!this.currBonusItem.equals("") && this.savedShop.getBoolean(this.currBonusItem, getResources().getBoolean(boolResBought))) {
 
+		} else {
+			this.myToast.setText("Can't use it !");
+			this.myToast.show();
 		}
 
 		this.updateShipInfo();

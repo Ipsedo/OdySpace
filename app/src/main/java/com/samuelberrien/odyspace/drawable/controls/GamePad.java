@@ -33,7 +33,7 @@ public class GamePad implements GLInfoDrawable {
 		this.isPitchInversed = true;
 		this.isRollAndYawInversed = false;
 		this.remotePointerID = -1;
-		this.joystickPointerID = -2;
+		this.joystickPointerID = -1;
 	}
 
 	public void initGraphics(Context context) {
@@ -82,18 +82,24 @@ public class GamePad implements GLInfoDrawable {
 		return false;
 	}
 
-	public void update(MotionEvent e, int screenWidth, int screenHeight) {
+	/**
+	 * Update all the game pad items
+	 * @param e A Motion Event to handle
+	 * @param screenWidth Px value in float precision
+	 * @param screenHeight Px value in float precision
+	 */
+	public void update(MotionEvent e, float screenWidth, float screenHeight) {
 		int pointerIndex = e.getActionIndex();
 		float x = -(2f * e.getX(pointerIndex) / screenWidth - 1f);
 		float y = -(2f * e.getY(pointerIndex) / screenHeight - 1f);
-		float ratio = (float) screenWidth / (float) screenHeight;
+		float ratio = screenWidth / screenHeight;
 		switch (e.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
-				if (e.getX(pointerIndex) / (float) screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
+				if (e.getX(pointerIndex) / screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
 					this.remotePointerID = pointerIndex;
 					this.remote.setVisible(true);
 					this.remote.updatePosition(x, y, ratio);
-				} else if (e.getX(pointerIndex) / (float) screenHeight < this.limitScreen) {
+				} else if (e.getX(pointerIndex) / screenHeight < this.limitScreen) {
 					this.joystickPointerID = pointerIndex;
 					this.joystick.setVisible(true);
 					this.joystick.updatePosition(x, y, ratio);
@@ -123,12 +129,12 @@ public class GamePad implements GLInfoDrawable {
 				}
 				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
-				if (e.getX(pointerIndex) / (float) screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
+				if (e.getX(pointerIndex) / screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
 					this.remotePointerID = pointerIndex;
 					this.joystickPointerID = 1 - pointerIndex;
 					this.remote.setVisible(true);
 					this.remote.updatePosition(x, y, ratio);
-				} else if (e.getX(pointerIndex) / (float) screenHeight < this.limitScreen) {
+				} else if (e.getX(pointerIndex) / screenHeight < this.limitScreen) {
 					this.joystickPointerID = pointerIndex;
 					this.remotePointerID = 1 - pointerIndex;
 					this.joystick.setVisible(true);
