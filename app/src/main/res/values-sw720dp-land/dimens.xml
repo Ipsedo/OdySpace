@@ -8,7 +8,7 @@
     <dimen name="padding_top_text_main">10dp</dimen>
     <dimen name="padding_main">4dp</dimen>
     <dimen name="margin_shop">4dp</dimen>
-    <dimen name="size_image_shop">200dp</dimen>
+    <dimen name="size_image_shop">160dp</dimen>
     <dimen name="size_scroll_view_pause">80dp</dimen>
     <dimen name="size_image_main">95dp</dimen>
     <dimen name="main_text_size">30sp</dimen>
