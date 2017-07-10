@@ -17,6 +17,8 @@ public class GamePad implements GLInfoDrawable {
 	private Joystick joystick;
 	private Controls controls;
 	private Remote remote;
+	private int remotePointerID;
+	private int joystickPointerID;
 
 	private float limitScreen = 0.8f;
 
@@ -30,6 +32,8 @@ public class GamePad implements GLInfoDrawable {
 		this.remote = new Remote();
 		this.isPitchInversed = true;
 		this.isRollAndYawInversed = false;
+		this.remotePointerID = -1;
+		this.joystickPointerID = -2;
 	}
 
 	public void initGraphics(Context context) {
@@ -86,41 +90,61 @@ public class GamePad implements GLInfoDrawable {
 		switch (e.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
 				if (e.getX(pointerIndex) / (float) screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
-					this.remote.setVisible(true, pointerIndex);
-					this.remote.updatePosition(x, y, ratio, pointerIndex);
+					this.remotePointerID = pointerIndex;
+					this.remote.setVisible(true);
+					this.remote.updatePosition(x, y, ratio);
 				} else if (e.getX(pointerIndex) / (float) screenHeight < this.limitScreen) {
-					this.joystick.setVisible(true, pointerIndex);
-					this.joystick.updatePosition(x, y, ratio, pointerIndex);
+					this.joystickPointerID = pointerIndex;
+					this.joystick.setVisible(true);
+					this.joystick.updatePosition(x, y, ratio);
 				}
 				break;
 			case MotionEvent.ACTION_UP:
-				this.remote.setVisible(false, pointerIndex);
-				this.joystick.setVisible(false, pointerIndex);
+				if (this.remotePointerID == pointerIndex) {
+					this.remote.setVisible(false);
+					this.remotePointerID = -1;
+				} else if (this.joystickPointerID == pointerIndex) {
+					this.joystick.setVisible(false);
+					this.joystickPointerID = -1;
+				}
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (e.getPointerCount() > 1) {
-					if (!this.controls.isTouchBoost(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio)) {
-						this.remote.updateStickPosition(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio, 1);
-						this.joystick.updateStickPosition(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio, 1);
+					if (!this.controls.isTouchBoost(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio) && this.remotePointerID == 1) {
+						this.remote.updateStickPosition(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio);
+					} else if (this.joystickPointerID == 1) {
+						this.joystick.updateStickPosition(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio);
 					}
 				}
-				if (!this.controls.isTouchBoost(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio)) {
-					this.remote.updateStickPosition(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio, 0);
+				if (!this.controls.isTouchBoost(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio) && this.remotePointerID == 0) {
+					this.remote.updateStickPosition(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio);
+				} else if (this.joystickPointerID == 0) {
+					this.joystick.updateStickPosition(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio);
 				}
-				this.joystick.updateStickPosition(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio, 0);
 				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
 				if (e.getX(pointerIndex) / (float) screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
-					this.remote.setVisible(true, pointerIndex);
-					this.remote.updatePosition(x, y, ratio, pointerIndex);
+					this.remotePointerID = pointerIndex;
+					this.joystickPointerID = 1 - pointerIndex;
+					this.remote.setVisible(true);
+					this.remote.updatePosition(x, y, ratio);
 				} else if (e.getX(pointerIndex) / (float) screenHeight < this.limitScreen) {
-					this.joystick.setVisible(true, pointerIndex);
-					this.joystick.updatePosition(x, y, ratio, pointerIndex);
+					this.joystickPointerID = pointerIndex;
+					this.remotePointerID = 1 - pointerIndex;
+					this.joystick.setVisible(true);
+					this.joystick.updatePosition(x, y, ratio);
 				}
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				this.remote.setVisible(false, pointerIndex);
-				this.joystick.setVisible(false, pointerIndex);
+				if (this.remotePointerID == pointerIndex) {
+					this.remote.setVisible(false);
+					this.joystickPointerID = 1 - pointerIndex;
+					this.remotePointerID = -1;
+				} else if (this.joystickPointerID == pointerIndex) {
+					this.joystick.setVisible(false);
+					this.remotePointerID = 1 - pointerIndex;
+					this.joystickPointerID = -1;
+				}
 				break;
 		}
 	}

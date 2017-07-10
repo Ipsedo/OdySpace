@@ -186,9 +186,9 @@ public class Ship extends BaseItem {
 		float[] v = new float[4];
 		Matrix.multiplyMV(v, 0, super.mRotationMatrix, 0, this.originalUpVec, 0);
 
-		res[0] = -10f * u[0] + super.mPosition[0] + 3f * v[0];
-		res[1] = -10f * u[1] + super.mPosition[1] + 3f * v[1];
-		res[2] = -10f * u[2] + super.mPosition[2] + 3f * v[2];
+		res[0] = -10f * u[0] + super.mPosition[0] + 1f * v[0];
+		res[1] = -10f * u[1] + super.mPosition[1] + 1f * v[1];
+		res[2] = -10f * u[2] + super.mPosition[2] + 1f * v[2];
 
 		return res;
 	}

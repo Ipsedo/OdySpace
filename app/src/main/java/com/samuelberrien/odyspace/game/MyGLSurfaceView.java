@@ -35,8 +35,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private MyGLRenderer renderer;
 
 	private Level currentLevel;
-	/*private Joystick joystick;
-	private Controls controls;*/
 	private GamePad gamePad;
 
 	private CollisionThread collisionThread;
@@ -55,9 +53,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		this.context = context;
 		this.levelActivity = levelActivity;
 		this.setEGLContextClientVersion(2);
-
-		/*this.joystick = new Joystick();
-		this.controls = new Controls();*/
 		this.gamePad = new GamePad();
 
 		this.currentLevel = this.getCurrentLevel(levelID);
@@ -152,60 +147,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
-		/*int pointerIndex = e.getActionIndex();
-		float x = -(2f * e.getX(pointerIndex) / this.getWidth() - 1f);
-		float y = -(2f * e.getY(pointerIndex) / this.getHeight() - 1f);
-		float ratio = (float) this.getWidth() / (float) this.getHeight();
-		switch (e.getActionMasked()) {
-			case MotionEvent.ACTION_DOWN:
-				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					if (this.controls.isTouchFireButton(x, y, ratio)) {
-					} else if(this.controls.isTouchBoost(x, y, ratio)) {
-					}
-				} else {
-					this.joystick.setVisible(true);
-					this.joystick.updatePosition(x, y, ratio);
-				}
-				break;
-			case MotionEvent.ACTION_UP:
-				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-				} else {
-					this.joystick.setVisible(false);
-				}
-				break;
-			case MotionEvent.ACTION_MOVE:
-				if (e.getPointerCount() > 1) {
-					if (e.getX(1) / this.getHeight() > 1) {
-						if(this.controls.isTouchBoost(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio)) {
-						}
-					} else {
-						this.joystick.updateStickPosition(-(2f * e.getX(1) / this.getWidth() - 1f), -(2f * e.getY(1) / this.getHeight() - 1f), ratio);
-					}
-				}
-				if (e.getX(0) / this.getHeight() > 1) {
-					if(this.controls.isTouchBoost(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio)) {
-					}
-				} else {
-					this.joystick.updateStickPosition(-(2f * e.getX(0) / this.getWidth() - 1f), -(2f * e.getY(0) / this.getHeight() - 1f), ratio);
-				}
-				break;
-			case MotionEvent.ACTION_POINTER_DOWN:
-				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-					if (this.controls.isTouchFireButton(x, y, ratio)) {
-					} else if (this.controls.isTouchBoost(x, y, ratio)) {
-					}
-				} else {
-					this.joystick.setVisible(true);
-					this.joystick.updatePosition(x, y, ratio);
-				}
-				break;
-			case MotionEvent.ACTION_POINTER_UP:
-				if (e.getX(pointerIndex) / this.getHeight() > 1f) {
-				} else {
-					this.joystick.setVisible(false);
-				}
-				break;
-		}*/
 		this.gamePad.update(e, this.getWidth(), this.getHeight());
 		return true;
 	}

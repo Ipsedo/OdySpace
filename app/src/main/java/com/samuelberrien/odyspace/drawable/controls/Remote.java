@@ -37,13 +37,10 @@ public class Remote implements GLInfoDrawable {
 	private int mMVPMatrixHandle;
 	private int mProgram;
 
-	private int pointerID;
-
 	private float color[] = Color.ControlsColor;
 
 	public Remote() {
 		this.isVisible = false;
-		this.pointerID = -1;
 	}
 
 	public void initGraphics(Context context) {
@@ -114,35 +111,27 @@ public class Remote implements GLInfoDrawable {
 				.position(0);
 	}
 
-	public void setVisible(boolean isRemoteVisible, int pointerID) {
-		if(isRemoteVisible) {
-			this.isVisible = isRemoteVisible;
-			this.pointerID = pointerID;
-		} else if(this.pointerID == pointerID) {
-			this.isVisible = isRemoteVisible;
-		}
+	public void setVisible(boolean isRemoteVisible) {
+		this.isVisible = isRemoteVisible;
 	}
 
-	public void updatePosition(float x, float y, float ratio, int pointerID) {
-		if(this.pointerID == pointerID) {
-			this.mRemotePosition[0] = x * ratio;
-			this.mRemotePosition[1] = y;
-			this.mRemotePosition[2] = 0f;
-			this.mRemoteStickPosition = this.mRemotePosition.clone();
-		}
+	public void updatePosition(float x, float y, float ratio) {
+		this.mRemotePosition[0] = x * ratio;
+		this.mRemotePosition[1] = y;
+		this.mRemotePosition[2] = 0f;
+		this.mRemoteStickPosition = this.mRemotePosition.clone();
 	}
 
-	public void updateStickPosition(float x, float y, float ratio, int pointerID) {
-		if(this.pointerID == pointerID) {
-			x *= ratio;
-			if (x - this.mRemotePosition[0] > this.width * 0.5f - this.height * 0.5f) {
-				this.mRemoteStickPosition[0] = this.mRemotePosition[0] + this.width * 0.5f - this.height * 0.5f;
-			} else if (x - this.mRemotePosition[0] < -this.width * 0.5f + this.height * 0.5f) {
-				this.mRemoteStickPosition[0] = this.mRemotePosition[0] - this.width * 0.5f + this.height * 0.5f;
-			} else {
-				this.mRemoteStickPosition[0] = x;
-			}
+	public void updateStickPosition(float x, float y, float ratio) {
+		x *= ratio;
+		if (x - this.mRemotePosition[0] > this.width * 0.5f - this.height * 0.5f) {
+			this.mRemoteStickPosition[0] = this.mRemotePosition[0] + this.width * 0.5f - this.height * 0.5f;
+		} else if (x - this.mRemotePosition[0] < -this.width * 0.5f + this.height * 0.5f) {
+			this.mRemoteStickPosition[0] = this.mRemotePosition[0] - this.width * 0.5f + this.height * 0.5f;
+		} else {
+			this.mRemoteStickPosition[0] = x;
 		}
+
 	}
 
 	public float getRemoteLevel() {

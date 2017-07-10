@@ -43,11 +43,8 @@ public class Joystick implements GLInfoDrawable {
 
 	private float color[] = Color.ControlsColor;
 
-	private int pointerID;
-
 	public Joystick() {
 		this.isVisible = false;
-		this.pointerID = -1;
 	}
 
 	public void initGraphics(Context context) {
@@ -98,8 +95,7 @@ public class Joystick implements GLInfoDrawable {
 		mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
 	}
 
-	public void updatePosition(float x, float y, float ratio, int pointerID) {
-		if(this.pointerID == pointerID) {
+	public void updatePosition(float x, float y, float ratio) {
 			x = x * ratio;
 			this.mPosition[0] = x;
 			this.mPosition[1] = y;
@@ -108,19 +104,18 @@ public class Joystick implements GLInfoDrawable {
 			this.mStickPosition[0] = x;
 			this.mStickPosition[1] = y;
 			this.mStickPosition[2] = 0f;
-		}
 	}
 
-	public void updateStickPosition(float x, float y, float ratio, int pointerID) {
+	public void updateStickPosition(float x, float y, float ratio) {
 		x = x * ratio;
 		double length = Math.sqrt(Math.pow(this.mPosition[0] - x, 2d) + Math.pow(this.mPosition[1] - y, 2d));
-		if (this.pointerID == pointerID && length > this.circleLength - this.stickLength) {
+		if (length > this.circleLength - this.stickLength) {
 			double xDist = x - this.mPosition[0];
 			double yDist = y - this.mPosition[1];
 			this.mStickPosition[0] = this.mPosition[0] + (float) ((this.circleLength - this.stickLength) * xDist / length);
 			this.mStickPosition[1] = this.mPosition[1] + (float) ((this.circleLength - this.stickLength) * yDist / length);
 			this.mStickPosition[2] = 0f;
-		} else if (this.pointerID == pointerID){
+		} else {
 			this.mStickPosition[0] = x;
 			this.mStickPosition[1] = y;
 			this.mStickPosition[2] = 0f;
@@ -135,13 +130,8 @@ public class Joystick implements GLInfoDrawable {
 		}
 	}
 
-	public void setVisible(boolean isVisible, int pointerID) {
-		if(isVisible) {
-			this.pointerID = pointerID;
-			this.isVisible = isVisible;
-		} else if (this.pointerID == pointerID) {
-			this.isVisible = isVisible;
-		}
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 
 	@Override

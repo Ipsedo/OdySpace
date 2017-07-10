@@ -42,8 +42,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private float maxProjDist = 1200f;
 	private float ratio = 1f;
 
-	/*private Joystick joystick;
-	private Controls controls;*/
 	private GamePad gamePad;
 
 	private Level currentLevel;
@@ -59,8 +57,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	public MyGLRenderer(Context context, Level currentLevel, GamePad gamePad) {
 		this.context = context;
-		/*this.joystick = joystick;
-		this.controls = controls;*/
 		this.gamePad = gamePad;
 		this.currentLevel = currentLevel;
 	}
@@ -76,8 +72,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		if (!this.isInit) {
 			this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
 
-			/*this.joystick.initGraphics(this.context);
-			this.controls.initGraphics(this.context);*/
 			this.gamePad.initGraphics(this.context);
 
 			this.ship = Ship.makeShip(this.context, this.gamePad);
