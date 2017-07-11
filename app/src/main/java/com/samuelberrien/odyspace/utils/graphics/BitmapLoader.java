@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils;
+package com.samuelberrien.odyspace.utils.graphics;
 
 import android.content.Context;
 import android.content.res.AssetManager;

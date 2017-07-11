@@ -12,6 +12,7 @@ import com.samuelberrien.odyspace.drawable.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.utils.game.Shooter;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Ship extends BaseItem {
+public class Ship extends BaseItem implements Shooter {
 
 	private static float SHIP_MAX_SPEED = 0.0125f;
 	private float mMaxSpeed = Ship.SHIP_MAX_SPEED;
@@ -48,6 +49,7 @@ public class Ship extends BaseItem {
 	private boolean exploded;
 
 	private ObjModelMtlVBO rocket;
+	private List<BaseItem> rockets;
 
 	private FireType fireType;
 
@@ -94,6 +96,10 @@ public class Ship extends BaseItem {
 		this.gamePad = gamePad;
 	}
 
+	public void setRockets(List<BaseItem> rockets) {
+		this.rockets = rockets;
+	}
+
 	public void setFireType(FireType newFireType) {
 		this.fireType = newFireType;
 	}
@@ -112,50 +118,52 @@ public class Ship extends BaseItem {
 
 	@Override
 	public void move() {
-		this.mBoostSpeed = (float) Math.exp(this.gamePad.getBoost() + 2f) * this.boostCoeff;
-		this.mMaxSpeed = Ship.SHIP_MAX_SPEED * this.mBoostSpeed;
+		if(super.isAlive()) {
+			this.mBoostSpeed = (float) Math.exp(this.gamePad.getBoost() + 2f) * this.boostCoeff;
+			this.mMaxSpeed = Ship.SHIP_MAX_SPEED * this.mBoostSpeed;
 
+			float[] pitchMatrix = new float[16];
+			float[] rollMatrix = new float[16];
+			float[] yawMatrix = new float[16];
+			float roll = this.gamePad.getRoll();
+			float pitch = this.gamePad.getPitch();
+			float yaw = this.gamePad.getYaw();
+			Matrix.setRotateM(rollMatrix, 0, (roll >= 0 ? (float) Math.exp(roll) - 1f : (float) -Math.exp(Math.abs(roll)) + 1f) * this.rollCoeff, 0f, 0f, 1f);
+			Matrix.setRotateM(pitchMatrix, 0, (pitch >= 0 ? (float) Math.exp(pitch) - 1f : (float) -Math.exp(Math.abs(pitch)) + 1f) * this.pitchCoeff, 1f, 0f, 0f);
+			Matrix.setRotateM(yawMatrix, 0, (yaw >= 0 ? (float) Math.exp(yaw) - 1f : (float) -Math.exp(Math.abs(yaw)) + 1f) * this.yawCoeff, 0f, 1f, 0f);
 
-		float[] pitchMatrix = new float[16];
-		float[] rollMatrix = new float[16];
-		float[] yawMatrix = new float[16];
-		float roll = this.gamePad.getRoll();
-		float pitch = this.gamePad.getPitch();
-		float yaw = this.gamePad.getYaw();
-		Matrix.setRotateM(rollMatrix, 0, (roll >= 0 ? (float) Math.exp(roll) - 1f : (float) -Math.exp(Math.abs(roll)) + 1f) * this.rollCoeff, 0f, 0f, 1f);
-		Matrix.setRotateM(pitchMatrix, 0, (pitch >= 0 ? (float) Math.exp(pitch) - 1f : (float) -Math.exp(Math.abs(pitch)) + 1f) * this.pitchCoeff, 1f, 0f, 0f);
-		Matrix.setRotateM(yawMatrix, 0, (yaw >= 0 ? (float) Math.exp(yaw) - 1f : (float) -Math.exp(Math.abs(yaw)) + 1f) * this.yawCoeff, 0f, 1f, 0f);
+			float[] currRotMatrix = new float[16];
+			Matrix.multiplyMM(currRotMatrix, 0, pitchMatrix, 0, rollMatrix, 0);
+			Matrix.multiplyMM(currRotMatrix, 0, currRotMatrix.clone(), 0, yawMatrix, 0);
 
-		float[] currRotMatrix = new float[16];
-		Matrix.multiplyMM(currRotMatrix, 0, pitchMatrix, 0, rollMatrix, 0);
-		Matrix.multiplyMM(currRotMatrix, 0, currRotMatrix.clone(), 0, yawMatrix, 0);
+			float[] currSpeed = new float[4];
+			Matrix.multiplyMV(currSpeed, 0, currRotMatrix, 0, this.originalSpeedVec, 0);
 
-		float[] currSpeed = new float[4];
-		Matrix.multiplyMV(currSpeed, 0, currRotMatrix, 0, this.originalSpeedVec, 0);
+			float[] realSpeed = new float[4];
+			Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, currSpeed, 0);
 
-		float[] realSpeed = new float[4];
-		Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, currSpeed, 0);
+			float[] tmpMat = super.mRotationMatrix.clone();
+			Matrix.multiplyMM(super.mRotationMatrix, 0, tmpMat, 0, currRotMatrix, 0);
 
-		float[] tmpMat = super.mRotationMatrix.clone();
-		Matrix.multiplyMM(super.mRotationMatrix, 0, tmpMat, 0, currRotMatrix, 0);
+			super.mPosition[0] += this.mMaxSpeed * realSpeed[0];
+			super.mPosition[1] += this.mMaxSpeed * realSpeed[1];
+			super.mPosition[2] += this.mMaxSpeed * realSpeed[2];
 
-		super.mPosition[0] += this.mMaxSpeed * realSpeed[0];
-		super.mPosition[1] += this.mMaxSpeed * realSpeed[1];
-		super.mPosition[2] += this.mMaxSpeed * realSpeed[2];
+			float[] mModelMatrix = new float[16];
+			Matrix.setIdentityM(mModelMatrix, 0);
+			Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
+			tmpMat = mModelMatrix.clone();
+			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
+			Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
-		float[] mModelMatrix = new float[16];
-		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
-		tmpMat = mModelMatrix.clone();
-		Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
-		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
-
-		super.mModelMatrix = mModelMatrix;
+			super.mModelMatrix = mModelMatrix;
+		}
 	}
 
-	public void fire(List<BaseItem> rockets) {
-		if (this.gamePad.fire()) {
-			this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
+	@Override
+	public void fire() {
+		if (super.isAlive() && this.gamePad.fire()) {
+			this.fireType.fire(this.rocket, this.rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
 		}
 	}
 

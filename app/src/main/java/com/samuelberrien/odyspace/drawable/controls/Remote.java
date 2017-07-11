@@ -23,7 +23,7 @@ import java.nio.FloatBuffer;
 public class Remote implements GLInfoDrawable {
 
 	private boolean isVisible;
-	private float width = 0.8f;
+	private float width = 1f;
 	private float height = 0.3f;
 	private float[] mRemotePoints = new float[3 * 4];
 	private FloatBuffer remoteVertexBuffer;

@@ -26,6 +26,9 @@ public class GamePad implements GLInfoDrawable {
 
 	private boolean isRollAndYawInversed;
 
+	/**
+	 * Create a new GamePad instance
+	 */
 	public GamePad() {
 		this.joystick = new Joystick();
 		this.controls = new Controls();
@@ -36,24 +39,44 @@ public class GamePad implements GLInfoDrawable {
 		this.joystickPointerID = -1;
 	}
 
+	/**
+	 * Init the graphics, must be called an OpenGL Thread
+	 * @param context The Application context
+	 */
 	public void initGraphics(Context context) {
 		this.joystick.initGraphics(context);
 		this.controls.initGraphics(context);
 		this.remote.initGraphics(context);
 	}
 
+	/**
+	 * Inverse pitch
+	 * @param isInversed A boolean (true if inversed, false otherwise)
+	 */
 	public void inversePitch(boolean isInversed) {
 		this.isPitchInversed = isInversed;
 	}
 
+	/**
+	 * Inverse Roll and Yaw from joystick and remote
+	 * @param isInversed A boolean (true if inversed, false otherwise)
+	 */
 	public void inverseRollAndYaw(boolean isInversed) {
 		this.isRollAndYawInversed = isInversed;
 	}
 
+	/**
+	 * Get the gamepad pitch
+	 * @return pitch value between -1 and 1
+	 */
 	public float getPitch() {
 		return this.joystick.getStickPosition()[1] * (this.isPitchInversed ? 1f : -1f);
 	}
 
+	/**
+	 * Get the gamepad roll
+	 * @return roll value between -1 and 1
+	 */
 	public float getRoll() {
 		if (!this.isRollAndYawInversed) {
 			return this.joystick.getStickPosition()[0];
@@ -62,6 +85,10 @@ public class GamePad implements GLInfoDrawable {
 		}
 	}
 
+	/**
+	 * Get the gamepad yaw
+	 * @return yaw value between -1 and 1
+	 */
 	public float getYaw() {
 		if (!this.isRollAndYawInversed) {
 			return this.remote.getRemoteLevel();
@@ -70,10 +97,18 @@ public class GamePad implements GLInfoDrawable {
 		}
 	}
 
+	/**
+	 * Get the gamepad boost
+	 * @return boost value between -1 and 1
+	 */
 	public float getBoost() {
 		return this.controls.getBoost();
 	}
 
+	/**
+	 * Gamepad fire
+	 * @return true if there is a fire
+	 */
 	public boolean fire() {
 		if (this.controls.isFire()) {
 			this.controls.turnOffFire();

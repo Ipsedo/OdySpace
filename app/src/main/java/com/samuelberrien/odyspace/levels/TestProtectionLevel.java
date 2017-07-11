@@ -19,6 +19,7 @@ import com.samuelberrien.odyspace.objects.baseitem.Base;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.SuperIcosahedron;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Item;
@@ -52,8 +53,7 @@ public class TestProtectionLevel implements Level {
 	private List<BaseItem> rockets;
 	private Compass directionToIco;
 
-
-	private int nbBase = 16;
+	private int nbBase = 64;
 	private ObjModelMtlVBO base;
 	private List<BaseItem> bases;
 
@@ -96,6 +96,8 @@ public class TestProtectionLevel implements Level {
 		this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 		this.bases = Collections.synchronizedList(new ArrayList<BaseItem>());
 
+		this.ship.setRockets(this.rockets);
+
 		this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
 		this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		this.directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
@@ -106,8 +108,8 @@ public class TestProtectionLevel implements Level {
 
 		this.base = new ObjModelMtlVBO(this.context, "base.obj", "base.mtl", 1f, 0f, false);
 		for (int i = 0; i < this.nbBase; i++) {
-			float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
-			float z = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
+			float x = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
+			float z = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
 
 			float[] triangles = this.noiseMap.passToModelMatrix(this.noiseMap.getRestreintArea(new float[]{x, 0f, z}));
 			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
@@ -171,18 +173,17 @@ public class TestProtectionLevel implements Level {
 	public void drawLevelInfo(float ratio) {
 		this.currLevelProgression.draw(ratio);
 		ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
+		ArrayList<BaseItem> targets = new ArrayList<>(this.bases);
 		for (BaseItem ico : icos) {
-			this.directionToIco.update(this.ship, ico);
+			this.directionToIco.update(this.ship, ico, ico.willIntersectOne(targets));
 			this.directionToIco.draw(ratio);
 		}
 	}
 
 	@Override
 	public void update() {
-		if (this.ship.isAlive()) {
-			this.ship.move();
-			this.ship.fire(this.rockets);
-		}
+		this.ship.move();
+
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmpArr)
 			r.move();
@@ -262,8 +263,8 @@ public class TestProtectionLevel implements Level {
 				this.icosahedrons.remove(i);
 		}
 
-		if (this.rand.nextFloat() < 0.06f) {
-			Icosahedron tmp = new Icosahedron(this.icosahedron, this.randomIcoPosition(), this.randomIcoSpeed(this.rand.nextFloat() * 0.1f + 0.2f), this.rand.nextFloat() * 10f + 10f);
+		if (this.rand.nextFloat() < 2e-2f) {
+			Icosahedron tmp = new SuperIcosahedron(this.icosahedron, (int) Math.ceil(this.rand.nextDouble() * 3), this.randomIcoPosition(), this.randomIcoSpeed(this.rand.nextFloat() * 0.1f + 0.2f), this.rand.nextFloat() * 10f + 10f);
 			tmp.move();
 			this.icosahedrons.add(tmp);
 		}
@@ -281,6 +282,8 @@ public class TestProtectionLevel implements Level {
 				((Base) this.bases.get(i)).addExplosion(this.explosions);
 				this.bases.remove(i);
 			}
+
+		this.ship.fire();
 	}
 
 	@Override

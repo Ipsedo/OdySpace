@@ -30,7 +30,7 @@ public class ExampleInstrumentedTest {
     @Test
     public void boxTest() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        Icosahedron ico = new Icosahedron(appContext, new float[]{0f, 0f, 510f}, 1f);
+        Icosahedron ico = new Icosahedron(appContext, 1, new float[]{0f, 0f, 510f}, 1f);
         ico.move();
 
         Box box = new Box(-500f, -500f, -500f, 1000f, 1000f, 1000f);

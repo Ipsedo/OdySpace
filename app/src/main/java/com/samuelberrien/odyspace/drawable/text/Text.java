@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.drawable.text;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
@@ -13,7 +14,7 @@ import com.samuelberrien.odyspace.utils.graphics.Color;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Text extends ObjModel {
+public class Text extends ObjModel implements GLInfoDrawable {
 
 	private float scale;
 
@@ -22,6 +23,7 @@ public class Text extends ObjModel {
 		this.scale = scale;
 	}
 
+	@Override
 	public void draw(float ratio) {
 		float[] mViewMatrix = new float[16];
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);

@@ -17,6 +17,8 @@ public class Box {
 	private float sizeY;
 	private float sizeZ;
 
+	private float[][] bounds;
+
 	public Box(float x, float y, float z, float sizeX, float sizeY, float sizeZ) {
 		this.x = x;
 		this.y = y;
@@ -24,6 +26,13 @@ public class Box {
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.sizeZ = sizeZ;
+		this.bounds = new float[2][3];
+		this.bounds[0][0] = this.x;
+		this.bounds[0][1] = this.y;
+		this.bounds[0][2] = this.z;
+		this.bounds[1][0] = this.x + this.sizeX;
+		this.bounds[1][1] = this.y + this.sizeY;
+		this.bounds[1][2] = this.z + this.sizeZ;
 	}
 
 	private boolean checkIntersectionInclusion(Box b) {
@@ -44,6 +53,34 @@ public class Box {
 
 		return this.checkIntersectionInclusion(b) || b.checkIntersectionInclusion(this);
 		//return Math.abs(this.x - b.x) * 2f < this.sizeX + b.sizeX && Math.abs(this.y - b.y) * 2f < this.sizeY + b.sizeY && Math.abs(this.z - b.z) * 2f < this.sizeZ + b.sizeZ;
+	}
+
+	public boolean rayIntersect(Ray r) {
+		float tmin, tmax, tymin, tymax, tzmin, tzmax;
+
+		tmin = (this.bounds[r.signGet(0)][0] - r.originGet(0)) * r.invDirGet(0);
+		tmax = (this.bounds[1-r.signGet(0)][0] - r.originGet(0)) * r.invDirGet(0);
+		tymin = (this.bounds[r.signGet(1)][1] - r.originGet(1)) * r.invDirGet(1);
+		tymax = (this.bounds[1-r.signGet(1)][1] - r.originGet(1)) * r.invDirGet(1);
+
+		if ((tmin > tymax) || (tymin > tmax))
+			return false;
+		if (tymin > tmin)
+			tmin = tymin;
+		if (tymax < tmax)
+			tmax = tymax;
+
+		tzmin = (this.bounds[r.signGet(2)][2] - r.originGet(2)) * r.invDirGet(2);
+		tzmax = (this.bounds[1-r.signGet(2)][2] - r.originGet(2)) * r.invDirGet(2);
+
+		if ((tmin > tzmax) || (tzmin > tmax))
+			return false;
+		/*if (tzmin > tmin)
+			tmin = tzmin;
+		if (tzmax < tmax)
+			tmax = tzmax;*/
+
+		return true;
 	}
 
 	public Box[] makeSons() {

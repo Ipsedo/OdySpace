@@ -60,6 +60,8 @@ public class TestTunnelLevel implements Level {
 		this.icos = Collections.synchronizedList(new ArrayList<Icosahedron>());
 		this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
+		this.ship.setRockets(this.rockets);
+
 		this.tunnel = new Tunnel(this.context, new Random(System.currentTimeMillis()), 200, new float[]{0f, 0f, -250f});
 
 		this.tunnel.putIcoAtCircleCenter(this.context, this.icos, 0.1f);
@@ -122,10 +124,7 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public void update() {
-		if (this.ship.isAlive()) {
-			this.ship.move();
-			this.ship.fire(this.rockets);
-		}
+		this.ship.move();
 
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmpArr)
@@ -180,6 +179,8 @@ public class TestTunnelLevel implements Level {
 		for (int i = this.rockets.size() - 1; i >= 0; i--)
 			if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.makeBoundingBox(this.levelLimitSize * 2f)))
 				this.rockets.remove(i);
+
+		this.ship.fire();
 	}
 
 	@Override

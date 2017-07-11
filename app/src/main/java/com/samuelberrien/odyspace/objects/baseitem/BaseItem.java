@@ -6,7 +6,11 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.collision.Box;
+import com.samuelberrien.odyspace.utils.collision.Ray;
 import com.samuelberrien.odyspace.utils.game.Item;
+import com.samuelberrien.odyspace.utils.maths.Vector;
+
+import java.util.List;
 
 
 /**
@@ -38,6 +42,8 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 	private float radius;
 
 	protected float scale;
+
+	private static float RayMaxRand = Float.MAX_VALUE * 0.5f;
 
 	public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
@@ -83,10 +89,13 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone());
 	}
 
+	private Box makeBox() {
+		return new Box(this.mPosition[0] - this.radius * 0.5f, this.mPosition[1] - this.radius * 0.5f, this.mPosition[2] - this.radius * 0.5f, this.radius, this.radius, this.radius);
+	}
+
 	@Override
 	public boolean isInside(Box box) {
-		Box baseItemBox = new Box(this.mPosition[0] - this.radius * 0.5f, this.mPosition[1] - this.radius * 0.5f, this.mPosition[2] - this.radius * 0.5f, this.radius, this.radius, this.radius);
-		return baseItemBox.isInside(box);
+		return this.makeBox().isInside(box);
 	}
 
 	@Override
@@ -102,6 +111,20 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 	@Override
 	public float[] getPosition() {
 		return this.mPosition.clone();
+	}
+
+	public boolean willIntersect(BaseItem target) {
+		float[] normSpeed = Vector.normalize3f(this.mSpeed);
+		float[] maxSpeed = Vector.mul3f(normSpeed, BaseItem.RayMaxRand);
+		float[] dir = Vector.add3f(maxSpeed, this.mPosition);
+		return target.makeBox().rayIntersect(new Ray(this.mPosition, dir));
+	}
+
+	public boolean willIntersectOne(List<BaseItem> targets) {
+		for(BaseItem t : targets)
+			if(this.willIntersect(t))
+				return true;
+		return false;
 	}
 
 	public float[] vector3fTo(BaseItem to) {

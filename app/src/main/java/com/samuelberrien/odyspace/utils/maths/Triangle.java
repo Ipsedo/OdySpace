@@ -7,7 +7,7 @@ package com.samuelberrien.odyspace.utils.maths;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Triangle {
+public final class Triangle {
 
 	public static float CalcY(float[] p1, float[] p2, float[] p3, float x, float z) {
 		float det = (p2[2] - p3[2]) * (p1[0] - p3[0]) + (p3[0] - p2[0]) * (p1[2] - p3[2]);

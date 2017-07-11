@@ -16,11 +16,13 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
 import com.samuelberrien.odyspace.objects.baseitem.Turret;
+import com.samuelberrien.odyspace.objects.tunnel.Tunnel;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.game.Shooter;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Triangle;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -53,7 +55,7 @@ public class TestTurrets implements Level {
 	private CubeMap cubeMap;
 	private List<BaseItem> rocketsShip;
 	private int nbTurret = 40;
-	private List<BaseItem> turrets;
+	private List<Turret> turrets;
 	private List<BaseItem> rocketsTurret;
 	private List<Explosion> explosions;
 
@@ -83,7 +85,9 @@ public class TestTurrets implements Level {
 		this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
 		this.rocketsTurret = Collections.synchronizedList(new ArrayList<BaseItem>());
 		this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
-		this.turrets = Collections.synchronizedList(new ArrayList<BaseItem>());
+		this.turrets = Collections.synchronizedList(new ArrayList<Turret>());
+
+		this.ship.setRockets(this.rocketsShip);
 
 		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "turret.obj", "turret.mtl", 1f, 0f, false);
 		ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
@@ -96,8 +100,8 @@ public class TestTurrets implements Level {
 			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
 			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
-			Turret tmp = new Turret(tmpTurret, tmpRocket, new float[]{x, moy + 3f, z}, FireType.SIMPLE_FIRE);
-			tmp.move(this.ship);
+			Turret tmp = new Turret(tmpTurret, tmpRocket, new float[]{x, moy + 3f, z}, FireType.SIMPLE_FIRE, this.ship, this.rocketsTurret);
+			tmp.move();
 			tmp.makeExplosion(this.context);
 			this.turrets.add(tmp);
 		}
@@ -149,9 +153,10 @@ public class TestTurrets implements Level {
 
 	@Override
 	public void drawLevelInfo(float ratio) {
-		ArrayList<BaseItem> turrets = new ArrayList<>(this.turrets);
+		ArrayList<BaseItem> turrets = new ArrayList<>();
+		turrets.addAll(this.turrets);
 		for (BaseItem t : turrets) {
-			this.compass.update(this.ship, t);
+			this.compass.update(this.ship, t, false);
 			this.compass.draw(ratio);
 		}
 		this.currLevelProgression.draw(ratio);
@@ -159,10 +164,8 @@ public class TestTurrets implements Level {
 
 	@Override
 	public void update() {
-		if (this.ship.isAlive()) {
-			this.ship.move();
-			this.ship.fire(this.rocketsShip);
-		}
+		this.ship.move();
+
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rocketsShip);
 		for (BaseItem r : tmpArr)
 			r.move();
@@ -173,8 +176,7 @@ public class TestTurrets implements Level {
 		tmpArr.clear();
 		tmpArr.addAll(this.turrets);
 		for (BaseItem t : tmpArr) {
-			((Turret) t).move(this.ship);
-			((Turret) t).fire(this.rocketsTurret, this.ship);
+			t.move();
 		}
 		ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
 		for (Explosion e : tmpArr2)
@@ -213,7 +215,7 @@ public class TestTurrets implements Level {
 				this.explosions.remove(i);
 		for (int i = this.turrets.size() - 1; i >= 0; i--)
 			if (!this.turrets.get(i).isAlive()) {
-				((Turret) this.turrets.get(i)).addExplosion(this.explosions);
+				this.turrets.get(i).addExplosion(this.explosions);
 				this.mSounds.play(this.soundId, this.getSoundLevel(this.turrets.get(i)), this.getSoundLevel(this.turrets.get(i)), 1, 0, 1f);
 				this.turrets.remove(i);
 			}
@@ -225,6 +227,12 @@ public class TestTurrets implements Level {
 				this.rocketsTurret.remove(i);
 		if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
 			this.ship.addExplosion(this.explosions);
+
+		ArrayList<Shooter> shooters = new ArrayList<>();
+		shooters.addAll(this.turrets);
+		shooters.add(this.ship);
+		for (Shooter s : shooters)
+			s.fire();
 	}
 
 	@Override

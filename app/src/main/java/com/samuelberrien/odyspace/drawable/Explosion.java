@@ -18,7 +18,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Explosion {
+public class Explosion implements GLItemDrawable {
 
 	private ArrayList<Particule> particules;
 	private ObjModel particule;
@@ -58,6 +58,7 @@ public class Explosion {
 		}
 	}
 
+	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		for (Particule p : this.particules) {
 			p.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, this.particule);

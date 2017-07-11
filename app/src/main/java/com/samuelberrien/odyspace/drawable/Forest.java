@@ -16,7 +16,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Forest {
+public class Forest implements GLItemDrawable{
 
 	private Context context;
 
@@ -61,6 +61,7 @@ public class Forest {
 		}
 	}
 
+	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] tmpMVMatrix = new float[16];
 		float[] tmpMVPMatrix = new float[16];

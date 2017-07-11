@@ -7,7 +7,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.BitmapLoader;
+import com.samuelberrien.odyspace.utils.graphics.BitmapLoader;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.nio.ByteBuffer;

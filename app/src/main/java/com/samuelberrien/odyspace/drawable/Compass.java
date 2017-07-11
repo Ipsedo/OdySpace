@@ -30,6 +30,8 @@ public class Compass implements GLInfoDrawable {
 	private FloatBuffer triangleBuffer;
 
 	private float[] color = {236f / 255f, 240f / 255f, 241f / 255f, 1f};
+	private float[] colorAccent = {242f / 255f, 38f / 255f, 19f / 255f, 1f};
+	private boolean isAccent;
 
 	private float[] mModelMatrix;
 
@@ -58,6 +60,7 @@ public class Compass implements GLInfoDrawable {
 		this.angleWithFrontVec = 0f;
 		this.vecShipToOtherLength = 0.0f;
 		this.maxLength = maxDistance;
+		this.isAccent = false;
 	}
 
 	private void makeTriangle() {
@@ -74,7 +77,7 @@ public class Compass implements GLInfoDrawable {
 		mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
 	}
 
-	public void update(Ship from, BaseItem to) {
+	public void update(Ship from, BaseItem to, boolean isAccent) {
 		float[] vecShipToOther = from.vector3fTo(to);
 		this.vecShipToOtherLength = Vector.length3f(vecShipToOther);
 		float[] vecUpShip = from.getCamUpVec();
@@ -98,6 +101,7 @@ public class Compass implements GLInfoDrawable {
 		Matrix.multiplyMM(mModelMatrix, 0, rotMat, 0, mModelMatrix.clone(), 0);
 		Matrix.scaleM(mModelMatrix, 0, 0.1f, 0.1f, 0.1f);
 
+		this.isAccent = isAccent;
 		this.mModelMatrix = mModelMatrix.clone();
 	}
 
@@ -115,7 +119,7 @@ public class Compass implements GLInfoDrawable {
 
 			GLES20.glEnableVertexAttribArray(this.mPositionHandle);
 			GLES20.glVertexAttribPointer(this.mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.triangleBuffer);
-			GLES20.glUniform4fv(this.mColorHandle, 1, this.color, 0);
+			GLES20.glUniform4fv(this.mColorHandle, 1, this.isAccent ? this.colorAccent : this.color, 0);
 			GLES20.glUniformMatrix4fv(this.mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 			GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.triangle.length / 3);
 		}

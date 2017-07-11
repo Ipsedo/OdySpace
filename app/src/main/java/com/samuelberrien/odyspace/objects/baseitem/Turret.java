@@ -6,6 +6,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.utils.game.Shooter;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Turret extends BaseItem {
+public class Turret extends BaseItem implements Shooter {
 
 	private Random rand;
 
@@ -28,18 +29,26 @@ public class Turret extends BaseItem {
 
 	private FireType fireType;
 
-	public Turret(Context context, float[] mPosition, FireType fireType) {
+	private Ship ship;
+
+	private List<BaseItem> rockets;
+
+	public Turret(Context context, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
 		super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
 		this.rand = new Random(System.currentTimeMillis());
 		this.rocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
 		this.fireType = fireType;
+		this.ship = ship;
+		this.rockets = rockets;
 	}
 
-	public Turret(ObjModelMtlVBO turret, ObjModelMtlVBO rocket, float[] mPosition, FireType fireType) {
+	public Turret(ObjModelMtlVBO turret, ObjModelMtlVBO rocket, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
 		super(turret, 1, mPosition, new float[3], new float[3], 4f);
 		this.rand = new Random(System.currentTimeMillis());
 		this.rocket = rocket;
 		this.fireType = fireType;
+		this.ship = ship;
+		this.rockets = rockets;
 	}
 
 	public void makeExplosion(Context context) {
@@ -50,20 +59,22 @@ public class Turret extends BaseItem {
 		explosions.add(this.explosion);
 	}
 
-	public void fire(List<BaseItem> rockets, Ship ship) {
-		if (this.rand.nextInt(800) == 50) {
-			float[] speedVec = Vector.normalize3f(new float[]{ship.mPosition[0] - super.mPosition[0], ship.mPosition[1] - super.mPosition[1], ship.mPosition[2] - super.mPosition[2]});
+	@Override
+	public void fire() {
+		if (this.rand.nextFloat() < 1e-2f) {
+			float[] speedVec = Vector.normalize3f(super.vector3fTo(this.ship));
 			float[] originaleVec = new float[]{0f, 0f, 1f};
 			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			this.fireType.fire(this.rocket, rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.17f);
+			this.fireType.fire(this.rocket, this.rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.5f);
 		}
 	}
 
-	public void move(Ship ship) {
-		float[] u = new float[]{ship.mPosition[0] - super.mPosition[0], 0f, ship.mPosition[2] - super.mPosition[2]};
+	@Override
+	public void move() {
+		float[] u = new float[]{this.ship.mPosition[0] - super.mPosition[0], 0f, this.ship.mPosition[2] - super.mPosition[2]};
 		float[] v = new float[]{0f, 0f, 1f};
 
 		float[] cross = Vector.normalize3f(Vector.cross3f(Vector.normalize3f(u), Vector.normalize3f(v)));
@@ -78,10 +89,5 @@ public class Turret extends BaseItem {
 		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
 		super.mModelMatrix = mModelMatrix.clone();
-	}
-
-	@Override
-	public void move() {
-
 	}
 }

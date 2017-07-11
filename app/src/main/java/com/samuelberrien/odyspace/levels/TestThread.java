@@ -13,6 +13,7 @@ import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
@@ -85,9 +86,12 @@ public class TestThread implements Level {
 		this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
 		this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
+		this.ship.setRockets(this.rockets);
+
 		Random rand = new Random(System.currentTimeMillis());
+		//ObjModelMtlVBO modelIco = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		for (int i = 0; i < this.nbIcosahedron; i++) {
-			Icosahedron ico = new Icosahedron(this.context, new float[]{rand.nextFloat() * this.levelLimitSize / 2f - this.levelLimitSize / 4f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize / 2f - this.levelLimitSize / 4f}, rand.nextFloat() * 2f + 1f);
+			Icosahedron ico = new Icosahedron(this.context, 1, new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f}, rand.nextFloat() * 2f + 1f);
 			ico.move();
 			ico.makeExplosion();
 			this.icosahedrons.add(ico);
@@ -141,17 +145,15 @@ public class TestThread implements Level {
 		this.currLevelProgression.draw(ratio);
 		ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
 		for (BaseItem ico : icos) {
-			this.compass.update(this.ship, ico);
+			this.compass.update(this.ship, ico, false);
 			this.compass.draw(ratio);
 		}
 	}
 
 	@Override
 	public void update() {
-		if (this.ship.isAlive()) {
-			this.ship.move();
-			this.ship.fire(this.rockets);
-		}
+		this.ship.move();
+
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmpArr)
 			r.move();
@@ -205,6 +207,8 @@ public class TestThread implements Level {
 
 		if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
 			this.ship.addExplosion(this.explosions);
+
+		this.ship.fire();
 	}
 
 	@Override
