@@ -173,9 +173,8 @@ public class TestProtectionLevel implements Level {
 	public void drawLevelInfo(float ratio) {
 		this.currLevelProgression.draw(ratio);
 		ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
-		ArrayList<BaseItem> targets = new ArrayList<>(this.bases);
 		for (BaseItem ico : icos) {
-			this.directionToIco.update(this.ship, ico, ico.willIntersectOne(targets));
+			this.directionToIco.update(this.ship, ico, ico.isDanger());
 			this.directionToIco.draw(ratio);
 		}
 	}
@@ -255,7 +254,6 @@ public class TestProtectionLevel implements Level {
 		for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
 			if (!this.icosahedrons.get(i).isAlive()) {
 				Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
-				ico.makeExplosion(this.particule);
 				ico.addExplosion(this.explosions);
 				this.mSounds.play(this.simpleBoomSoundId, this.getSoundLevel(ico), this.getSoundLevel(ico), 1, 0, 1f);
 				this.icosahedrons.remove(i);
@@ -263,9 +261,12 @@ public class TestProtectionLevel implements Level {
 				this.icosahedrons.remove(i);
 		}
 
-		if (this.rand.nextFloat() < 2e-2f) {
+		List<BaseItem> targets = new ArrayList<>(this.bases);
+		if (this.rand.nextFloat() < 4e-2f) {
 			Icosahedron tmp = new SuperIcosahedron(this.icosahedron, (int) Math.ceil(this.rand.nextDouble() * 3), this.randomIcoPosition(), this.randomIcoSpeed(this.rand.nextFloat() * 0.1f + 0.2f), this.rand.nextFloat() * 10f + 10f);
 			tmp.move();
+			tmp.makeExplosion(this.particule);
+			tmp.computeDanger(targets);
 			this.icosahedrons.add(tmp);
 		}
 

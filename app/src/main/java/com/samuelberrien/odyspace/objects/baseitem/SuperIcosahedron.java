@@ -12,6 +12,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
  */
 
 public class SuperIcosahedron extends Icosahedron {
+
 	public SuperIcosahedron(Context context, int life, float[] mPosition, float scale) {
 		super(context, life, mPosition, scale);
 	}

@@ -145,7 +145,7 @@ public class TestThread implements Level {
 		this.currLevelProgression.draw(ratio);
 		ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
 		for (BaseItem ico : icos) {
-			this.compass.update(this.ship, ico, false);
+			this.compass.update(this.ship, ico, ico.isDanger());
 			this.compass.draw(ratio);
 		}
 	}

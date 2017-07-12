@@ -114,7 +114,7 @@ public class TestBossThread implements Level {
 		for (BaseItem r : tmpArr)
 			r.move();
 		this.boss.move();
-		this.compass.update(this.ship, this.boss, false);
+		this.compass.update(this.ship, this.boss, this.boss.isDanger());
 		this.boss.updateLifeProgress(this.progressBar);
 	}
 

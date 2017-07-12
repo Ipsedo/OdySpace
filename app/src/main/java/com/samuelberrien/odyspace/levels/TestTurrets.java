@@ -156,7 +156,7 @@ public class TestTurrets implements Level {
 		ArrayList<BaseItem> turrets = new ArrayList<>();
 		turrets.addAll(this.turrets);
 		for (BaseItem t : turrets) {
-			this.compass.update(this.ship, t, false);
+			this.compass.update(this.ship, t, t.isDanger());
 			this.compass.draw(ratio);
 		}
 		this.currLevelProgression.draw(ratio);

@@ -44,6 +44,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 	protected float scale;
 
 	private static float RayMaxRand = Float.MAX_VALUE * 0.5f;
+	private boolean isDanger;
 
 	public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
@@ -58,6 +59,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		Matrix.setIdentityM(this.mModelMatrix, 0);
 		this.scale = scale;
 		this.radius = this.scale * 2f;
+		this.isDanger = false;
 	}
 
 	public BaseItem(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
@@ -73,6 +75,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		Matrix.setIdentityM(this.mModelMatrix, 0);
 		this.scale = scale;
 		this.radius = this.scale * 2f;
+		this.isDanger = false;
 	}
 
 	public boolean isAlive() {
@@ -113,18 +116,26 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		return this.mPosition.clone();
 	}
 
-	public boolean willIntersect(BaseItem target) {
+	private boolean willIntersect(BaseItem target) {
 		float[] normSpeed = Vector.normalize3f(this.mSpeed);
 		float[] maxSpeed = Vector.mul3f(normSpeed, BaseItem.RayMaxRand);
 		float[] dir = Vector.add3f(maxSpeed, this.mPosition);
 		return target.makeBox().rayIntersect(new Ray(this.mPosition, dir));
 	}
 
-	public boolean willIntersectOne(List<BaseItem> targets) {
+	private boolean willIntersectOne(List<BaseItem> targets) {
 		for(BaseItem t : targets)
 			if(this.willIntersect(t))
 				return true;
 		return false;
+	}
+
+	public boolean isDanger() {
+		return this.isDanger;
+	}
+
+	public void computeDanger(List<BaseItem> targets) {
+		this.isDanger = this.willIntersectOne(targets);
 	}
 
 	public float[] vector3fTo(BaseItem to) {

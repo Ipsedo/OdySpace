@@ -60,9 +60,13 @@ public class Explosion implements GLItemDrawable {
 
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+		GLES20.glDisable(GLES20.GL_CULL_FACE);
+		float[] mVPMatrix = new float[16];
+		Matrix.multiplyMM(mVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 		for (Particule p : this.particules) {
-			p.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, this.particule);
+			p.draw(mVPMatrix, mViewMatrix, mLightPosInEyeSpace, this.particule);
 		}
+		GLES20.glEnable(GLES20.GL_CULL_FACE);
 	}
 
 	public boolean isAlive() {
@@ -79,13 +83,11 @@ public class Explosion implements GLItemDrawable {
 		private float[] mSpeed;
 		private float[] mModelMatrix;
 
-		private float mAngle;
-		private float[] mRotAxis;
+		private float[] mRotMatrix;
 
 		private float scale;
 
-		public Particule(Random rand, float[] mPosition, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
-
+		private Particule(Random rand, float[] mPosition, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
 			this.mPosition = mPosition.clone();
 			this.mSpeed = new float[3];
 			double phi = rand.nextDouble() * Math.PI * 2d;
@@ -94,54 +96,46 @@ public class Explosion implements GLItemDrawable {
 			this.mSpeed[1] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) Math.sin(phi);
 			this.mSpeed[2] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.cos(theta));
 			this.mModelMatrix = new float[16];
-			this.mAngle = rand.nextFloat() * 360f;
-			this.mRotAxis = new float[3];
-			this.mRotAxis[0] = rand.nextFloat() * 2f - 1f;
-			this.mRotAxis[1] = rand.nextFloat() * 2f - 1f;
-			this.mRotAxis[2] = rand.nextFloat() * 2f - 1f;
+			float mAngle = rand.nextFloat() * 360f;
+			float[] mRotAxis = new float[3];
+			mRotAxis[0] = rand.nextFloat() * 2f - 1f;
+			mRotAxis[1] = rand.nextFloat() * 2f - 1f;
+			mRotAxis[2] = rand.nextFloat() * 2f - 1f;
+			this.mRotMatrix = new float[16];
+			Matrix.setRotateM(this.mRotMatrix, 0, mAngle, mRotAxis[0], mRotAxis[1], mRotAxis[2]);
 			this.scale = limitScale + (maxScale - limitScale) * rand.nextFloat();
 		}
 
-
-		public void move() {
+		private void move() {
 			this.mPosition[0] += this.mSpeed[0];
 			this.mPosition[1] += this.mSpeed[1];
 			this.mPosition[2] += this.mSpeed[2];
 
-			this.mSpeed[0] /= 1.1;
-			this.mSpeed[1] /= 1.1;
-			this.mSpeed[2] /= 1.1;
+			this.mSpeed[0] *= 0.9f;
+			this.mSpeed[1] *= 0.9f;
+			this.mSpeed[2] *= 0.9f;
 
 			float[] mModelMatrix = new float[16];
 			Matrix.setIdentityM(mModelMatrix, 0);
-			Matrix.setIdentityM(mModelMatrix, 0);
 			Matrix.translateM(mModelMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
 
-			float[] tmpRot = new float[16];
-			Matrix.setRotateM(tmpRot, 0, this.mAngle, this.mRotAxis[0], this.mRotAxis[1], this.mRotAxis[2]);
-
 			float[] tmpMat = mModelMatrix.clone();
-			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, tmpRot, 0);
+			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, this.mRotMatrix, 0);
 
 			Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
 
 			this.mModelMatrix = mModelMatrix.clone();
 		}
 
-		public boolean isAlive() {
+		private boolean isAlive() {
 			return Vector.length3f(this.mSpeed) > Explosion.this.limitSpeedAlife;
 		}
 
-		public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, ObjModel object) {
-			GLES20.glDisable(GLES20.GL_CULL_FACE);
+		private void draw(float[] mVPMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, ObjModel object) {
 			float[] mMVMatrix = new float[16];
-			/*Matrix.multiplyMM(mPVMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-			float[] mPVMMatrix = new float[16];
-            Matrix.multiplyMM(mPVMMatrix, 0, mPVMatrix, 0, this.mModelMatrix, 0);*/
 			Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, this.mModelMatrix, 0);
 			float[] mMVPMatrix = new float[16];
-			Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
-
+			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, this.mModelMatrix, 0);
 			object.draw(mMVPMatrix, mMVMatrix, mLightPosInEyeSpace, new float[0]);
 		}
 	}
