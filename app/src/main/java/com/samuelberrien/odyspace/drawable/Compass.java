@@ -79,30 +79,33 @@ public class Compass implements GLInfoDrawable {
 
 	public void update(Ship from, BaseItem to, boolean isAccent) {
 		float[] vecShipToOther = from.vector3fTo(to);
-		this.vecShipToOtherLength = Vector.length3f(vecShipToOther);
-		float[] vecUpShip = from.getCamUpVec();
-		float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
+		float length3f = Vector.length3f(vecShipToOther);
+		if (this.maxLength > length3f) {
+			this.vecShipToOtherLength = length3f;
+			float[] vecUpShip = from.getCamUpVec();
+			float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
 
-		float[] vecProjeté = Vector.cross3f(vecFrontShip, Vector.cross3f(vecShipToOther, vecFrontShip));
+			float[] vecProjeté = Vector.cross3f(vecFrontShip, Vector.cross3f(vecShipToOther, vecFrontShip));
 
-		this.angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
+			this.angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
 
-		double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
-		float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
+			double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
+			float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
 
-		if (vecDansRepereShip[0] > 0)
-			angle = -angle;
+			if (vecDansRepereShip[0] > 0)
+				angle = -angle;
 
-		float[] mModelMatrix = new float[16];
-		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.translateM(mModelMatrix, 0, 0f, 0.9f, 0f);
-		float[] rotMat = new float[16];
-		Matrix.setRotateM(rotMat, 0, (float) Math.toDegrees(angle), 0f, 0f, 1f);
-		Matrix.multiplyMM(mModelMatrix, 0, rotMat, 0, mModelMatrix.clone(), 0);
-		Matrix.scaleM(mModelMatrix, 0, 0.1f, 0.1f, 0.1f);
+			float[] mModelMatrix = new float[16];
+			Matrix.setIdentityM(mModelMatrix, 0);
+			Matrix.translateM(mModelMatrix, 0, 0f, 0.9f, 0f);
+			float[] rotMat = new float[16];
+			Matrix.setRotateM(rotMat, 0, (float) Math.toDegrees(angle), 0f, 0f, 1f);
+			Matrix.multiplyMM(mModelMatrix, 0, rotMat, 0, mModelMatrix.clone(), 0);
+			Matrix.scaleM(mModelMatrix, 0, 0.1f, 0.1f, 0.1f);
 
-		this.isAccent = isAccent;
-		this.mModelMatrix = mModelMatrix.clone();
+			this.isAccent = isAccent;
+			this.mModelMatrix = mModelMatrix.clone();
+		}
 	}
 
 	@Override

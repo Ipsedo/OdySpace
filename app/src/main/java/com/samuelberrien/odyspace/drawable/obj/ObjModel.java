@@ -219,6 +219,7 @@ public class ObjModel implements GLDrawable {
 
 	/**
 	 * Make a FloatBuffer containing RGBA value for all vertex with the give color
+	 *
 	 * @param color A 4 float array RGBA color
 	 * @return A new color FloatBuffer for the ObjModel instance
 	 */

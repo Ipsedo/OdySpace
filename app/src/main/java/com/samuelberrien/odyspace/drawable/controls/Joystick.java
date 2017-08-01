@@ -96,14 +96,14 @@ public class Joystick implements GLInfoDrawable {
 	}
 
 	public void updatePosition(float x, float y, float ratio) {
-			x = x * ratio;
-			this.mPosition[0] = x;
-			this.mPosition[1] = y;
-			this.mPosition[2] = 0f;
+		x = x * ratio;
+		this.mPosition[0] = x;
+		this.mPosition[1] = y;
+		this.mPosition[2] = 0f;
 
-			this.mStickPosition[0] = x;
-			this.mStickPosition[1] = y;
-			this.mStickPosition[2] = 0f;
+		this.mStickPosition[0] = x;
+		this.mStickPosition[1] = y;
+		this.mStickPosition[2] = 0f;
 	}
 
 	public void updateStickPosition(float x, float y, float ratio) {

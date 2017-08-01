@@ -59,9 +59,9 @@ public class Box {
 		float tmin, tmax, tymin, tymax, tzmin, tzmax;
 
 		tmin = (this.bounds[r.signGet(0)][0] - r.originGet(0)) * r.invDirGet(0);
-		tmax = (this.bounds[1-r.signGet(0)][0] - r.originGet(0)) * r.invDirGet(0);
+		tmax = (this.bounds[1 - r.signGet(0)][0] - r.originGet(0)) * r.invDirGet(0);
 		tymin = (this.bounds[r.signGet(1)][1] - r.originGet(1)) * r.invDirGet(1);
-		tymax = (this.bounds[1-r.signGet(1)][1] - r.originGet(1)) * r.invDirGet(1);
+		tymax = (this.bounds[1 - r.signGet(1)][1] - r.originGet(1)) * r.invDirGet(1);
 
 		if ((tmin > tymax) || (tymin > tmax))
 			return false;
@@ -71,7 +71,7 @@ public class Box {
 			tmax = tymax;
 
 		tzmin = (this.bounds[r.signGet(2)][2] - r.originGet(2)) * r.invDirGet(2);
-		tzmax = (this.bounds[1-r.signGet(2)][2] - r.originGet(2)) * r.invDirGet(2);
+		tzmax = (this.bounds[1 - r.signGet(2)][2] - r.originGet(2)) * r.invDirGet(2);
 
 		if ((tmin > tzmax) || (tzmin > tmax))
 			return false;

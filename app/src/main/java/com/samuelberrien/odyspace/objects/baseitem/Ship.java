@@ -118,7 +118,7 @@ public class Ship extends BaseItem implements Shooter {
 
 	@Override
 	public void move() {
-		if(super.isAlive()) {
+		if (super.isAlive()) {
 			this.mBoostSpeed = (float) Math.exp(this.gamePad.getBoost() + 2f) * this.boostCoeff;
 			this.mMaxSpeed = Ship.SHIP_MAX_SPEED * this.mBoostSpeed;
 

@@ -124,8 +124,8 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 	}
 
 	private boolean willIntersectOne(List<BaseItem> targets) {
-		for(BaseItem t : targets)
-			if(this.willIntersect(t))
+		for (BaseItem t : targets)
+			if (this.willIntersect(t))
 				return true;
 		return false;
 	}

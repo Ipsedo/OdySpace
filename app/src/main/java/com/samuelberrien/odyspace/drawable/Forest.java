@@ -16,7 +16,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Forest implements GLItemDrawable{
+public class Forest implements GLItemDrawable {
 
 	private Context context;
 

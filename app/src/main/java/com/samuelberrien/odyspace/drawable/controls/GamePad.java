@@ -41,6 +41,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Init the graphics, must be called an OpenGL Thread
+	 *
 	 * @param context The Application context
 	 */
 	public void initGraphics(Context context) {
@@ -51,6 +52,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Inverse pitch
+	 *
 	 * @param isInversed A boolean (true if inversed, false otherwise)
 	 */
 	public void inversePitch(boolean isInversed) {
@@ -59,6 +61,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Inverse Roll and Yaw from joystick and remote
+	 *
 	 * @param isInversed A boolean (true if inversed, false otherwise)
 	 */
 	public void inverseRollAndYaw(boolean isInversed) {
@@ -67,6 +70,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Get the gamepad pitch
+	 *
 	 * @return pitch value between -1 and 1
 	 */
 	public float getPitch() {
@@ -75,6 +79,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Get the gamepad roll
+	 *
 	 * @return roll value between -1 and 1
 	 */
 	public float getRoll() {
@@ -87,6 +92,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Get the gamepad yaw
+	 *
 	 * @return yaw value between -1 and 1
 	 */
 	public float getYaw() {
@@ -99,6 +105,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Get the gamepad boost
+	 *
 	 * @return boost value between -1 and 1
 	 */
 	public float getBoost() {
@@ -107,6 +114,7 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Gamepad fire
+	 *
 	 * @return true if there is a fire
 	 */
 	public boolean fire() {
@@ -119,8 +127,9 @@ public class GamePad implements GLInfoDrawable {
 
 	/**
 	 * Update all the game pad items
-	 * @param e A Motion Event to handle
-	 * @param screenWidth Px value in float precision
+	 *
+	 * @param e            A Motion Event to handle
+	 * @param screenWidth  Px value in float precision
 	 * @param screenHeight Px value in float precision
 	 */
 	public void update(MotionEvent e, float screenWidth, float screenHeight) {

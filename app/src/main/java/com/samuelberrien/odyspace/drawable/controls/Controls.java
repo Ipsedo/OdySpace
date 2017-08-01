@@ -128,7 +128,6 @@ public class Controls implements GLInfoDrawable {
 	}
 
 
-
 	private void makeFireButton() {
 		for (int i = 0; i < this.nbPoint; i++) {
 			double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
