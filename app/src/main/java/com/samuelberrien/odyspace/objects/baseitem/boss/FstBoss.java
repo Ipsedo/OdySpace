@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects.baseitem.boss;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -24,6 +25,7 @@ public class FstBoss extends Boss {
 	private float phi;
 	private float theta;
 	private Random rand;
+	private ObjModelMtlVBO ammo;
 
 	public FstBoss(Context context, float[] mPosition, Ship ship, List<BaseItem> rockets) {
 		super(context, "skull.obj", "skull.mtl", 20, mPosition, 3f, FireType.SIMPLE_FIRE, rockets);
@@ -31,6 +33,7 @@ public class FstBoss extends Boss {
 		this.phi = 0f;
 		this.theta = 0f;
 		this.rand = new Random(System.currentTimeMillis());
+		this.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class FstBoss extends Boss {
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			this.fireType.fire(this.rocket, super.rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.3f);
+			this.fireType.fire(super.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.3f);
 		}
 	}
 

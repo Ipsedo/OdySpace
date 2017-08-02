@@ -92,7 +92,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone());
 	}
 
-	private Box makeBox() {
+	protected Box makeBox() {
 		return new Box(this.mPosition[0] - this.radius * 0.5f, this.mPosition[1] - this.radius * 0.5f, this.mPosition[2] - this.radius * 0.5f, this.radius, this.radius, this.radius);
 	}
 

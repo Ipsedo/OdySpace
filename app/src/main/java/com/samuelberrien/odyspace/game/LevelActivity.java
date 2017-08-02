@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -41,9 +42,13 @@ public class LevelActivity extends AppCompatActivity {
 
 	private SharedPreferences gamePreferences;
 
+	private static Context context;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		context = getApplicationContext();
 
 		this.mSurfaceView = new MyGLSurfaceView(this.getApplicationContext(), this, Integer.parseInt(super.getIntent().getStringExtra(MainActivity.LEVEL_ID)));
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -129,19 +134,18 @@ public class LevelActivity extends AppCompatActivity {
 
 					tmpRadioButton.setText(fire);
 
-					int rBool;
+					int rBool = R.bool.faux;
 					final FireType fireTypeEnum;
 					if (fire.equals(getString(R.string.fire_bonus_4))) {
-						rBool = R.bool.saved_triple_sire_bought_default;
 						fireTypeEnum = FireType.TRIPLE_FIRE;
 					} else if (fire.equals(getString(R.string.fire_bonus_2))) {
-						rBool = R.bool.saved_quint_fire_bought_default;
 						fireTypeEnum = FireType.QUINT_FIRE;
 					} else if (fire.equals(getString(R.string.fire_bonus_3))) {
-						rBool = R.bool.saved_simple_bomb_bought_default;
 						fireTypeEnum = FireType.SIMPLE_BOMB;
+					} else if(fire.equals(getString(R.string.fire_bonus_5))) {
+						fireTypeEnum = FireType.LASER;
 					} else {
-						rBool = R.bool.saved_simple_fire_bought_default;
+						rBool = R.bool.vrai;
 						fireTypeEnum = FireType.SIMPLE_FIRE;
 					}
 
@@ -201,6 +205,16 @@ public class LevelActivity extends AppCompatActivity {
 
 		this.addContentView(this.progressBar, params);
 		this.addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+	}
+
+	public static Context getAppContext() {
+		while (context == null)
+			try {
+				Thread.sleep(10L);
+			} catch (InterruptedException ie) {
+				ie.printStackTrace();
+			}
+		return context;
 	}
 
 	private int getScreenHeight() {

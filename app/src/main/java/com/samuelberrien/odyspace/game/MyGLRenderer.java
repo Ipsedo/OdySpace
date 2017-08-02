@@ -69,6 +69,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
 
+		FireType.initAmmos(this.context);
+
 		if (!this.isInit) {
 			this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
 

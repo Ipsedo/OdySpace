@@ -23,8 +23,6 @@ public class Turret extends BaseItem implements Shooter {
 
 	private Random rand;
 
-	private ObjModelMtlVBO rocket;
-
 	private Explosion explosion;
 
 	private FireType fireType;
@@ -33,22 +31,23 @@ public class Turret extends BaseItem implements Shooter {
 
 	private List<BaseItem> rockets;
 
+	private ObjModelMtlVBO ammo;
+
 	public Turret(Context context, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
 		super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
 		this.rand = new Random(System.currentTimeMillis());
-		this.rocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
 		this.fireType = fireType;
 		this.ship = ship;
 		this.rockets = rockets;
 	}
 
-	public Turret(ObjModelMtlVBO turret, ObjModelMtlVBO rocket, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
+	public Turret(ObjModelMtlVBO turret, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
 		super(turret, 1, mPosition, new float[3], new float[3], 4f);
 		this.rand = new Random(System.currentTimeMillis());
-		this.rocket = rocket;
 		this.fireType = fireType;
 		this.ship = ship;
 		this.rockets = rockets;
+		this.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 	}
 
 	public void makeExplosion(Context context) {
@@ -68,7 +67,7 @@ public class Turret extends BaseItem implements Shooter {
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			this.fireType.fire(this.rocket, this.rockets, super.mPosition.clone(), originaleVec, tmpMat, 0.5f);
+			this.fireType.fire(this.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f);
 		}
 	}
 

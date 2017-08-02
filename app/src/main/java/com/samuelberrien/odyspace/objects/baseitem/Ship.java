@@ -7,9 +7,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
-import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.GamePad;
-import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Shooter;
@@ -48,8 +46,8 @@ public class Ship extends BaseItem implements Shooter {
 	private Explosion mExplosion;
 	private boolean exploded;
 
-	private ObjModelMtlVBO rocket;
 	private List<BaseItem> rockets;
+	private ObjModelMtlVBO ammo;
 
 	private FireType fireType;
 
@@ -70,8 +68,10 @@ public class Ship extends BaseItem implements Shooter {
 			shipFireType = FireType.QUINT_FIRE;
 		} else if (fireType.equals(context.getString(R.string.fire_bonus_3))) {
 			shipFireType = FireType.SIMPLE_BOMB;
-		} else {
+		} else if(fireType.equals(context.getString(R.string.fire_bonus_4))){
 			shipFireType = FireType.TRIPLE_FIRE;
+		} else {
+			shipFireType = FireType.LASER;
 		}
 
 		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
@@ -89,11 +89,11 @@ public class Ship extends BaseItem implements Shooter {
 		super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
 		this.maxLife = life;
 		this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
-		this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 		this.fireType = fireType;
 		this.exploded = false;
 		this.mBoostSpeed = 0f;
 		this.gamePad = gamePad;
+		this.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 	}
 
 	public void setRockets(List<BaseItem> rockets) {
@@ -163,7 +163,7 @@ public class Ship extends BaseItem implements Shooter {
 	@Override
 	public void fire() {
 		if (super.isAlive() && this.gamePad.fire()) {
-			this.fireType.fire(this.rocket, this.rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
+			this.fireType.fire(this.rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
 		}
 	}
 

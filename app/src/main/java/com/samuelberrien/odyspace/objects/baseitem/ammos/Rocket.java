@@ -1,9 +1,10 @@
-package com.samuelberrien.odyspace.objects.baseitem;
+package com.samuelberrien.odyspace.objects.baseitem.ammos;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 /**

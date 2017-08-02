@@ -26,5 +26,4 @@
         <activity
             android:name=".shop.ShopActivity"/>
     </application>
-
 </manifest>

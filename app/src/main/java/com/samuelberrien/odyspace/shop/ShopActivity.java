@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -172,19 +171,11 @@ public class ShopActivity extends AppCompatActivity {
 
 		if (!this.currFireItem.equals("")) {
 			if (this.currFireItem.equals(getString(R.string.fire_bonus_1))) {
-				boolResBought = R.bool.saved_simple_fire_bought_default;
-			} else if (this.currFireItem.equals(getString(R.string.fire_bonus_2))) {
-				boolResBought = R.bool.saved_quint_fire_bought_default;
-			} else {
-				boolResBought = R.bool.saved_quint_fire_bought_default;
+				boolResBought = R.bool.vrai;
 			}
 		} else if (!this.currShipItem.equals("")) {
-			if (this.currShipItem.equals(getString(R.string.ship_bird))) {
-				boolResBought = R.bool.saved_ship_bird_bought_default;
-			} else if (this.currShipItem.equals(getString(R.string.ship_supreme))) {
-				boolResBought = R.bool.saved_ship_supreme_bought_default;
-			} else {
-				boolResBought = R.bool.saved_ship_simple_bought_default;
+			if (this.currShipItem.equals(getString(R.string.ship_simple))) {
+				boolResBought = R.bool.vrai;
 			}
 		} else if (!this.currBonusItem.equals("")) {
 
@@ -227,25 +218,25 @@ public class ShopActivity extends AppCompatActivity {
 	}
 
 	private void fireTypeChosen(int indexFire) {
-		int defaultFireResId;
+		int defaultFireResId = R.bool.faux;
 		int fireResId;
 		int fireCostResId;
 		if (this.fireItem[indexFire].equals(getString(R.string.fire_bonus_1))) {
-			defaultFireResId = R.bool.saved_simple_fire_bought_default;
+			defaultFireResId = R.bool.vrai;
 			fireResId = R.string.fire_bonus_1;
 			fireCostResId = R.integer.simple_fire_cost;
 		} else if (this.fireItem[indexFire].equals(getString(R.string.fire_bonus_2))) {
-			defaultFireResId = R.bool.saved_quint_fire_bought_default;
 			fireResId = R.string.fire_bonus_2;
 			fireCostResId = R.integer.quint_fire_cost;
 		} else if (this.fireItem[indexFire].equals(getString(R.string.fire_bonus_3))) {
-			defaultFireResId = R.bool.saved_simple_bomb_bought_default;
 			fireResId = R.string.fire_bonus_3;
 			fireCostResId = R.integer.simple_bomb_cost;
-		} else {
-			defaultFireResId = R.bool.saved_triple_sire_bought_default;
+		} else if(this.fireItem[indexFire].equals(getString(R.string.fire_bonus_4))){
 			fireResId = R.string.fire_bonus_4;
 			fireCostResId = R.integer.triple_fire_cost;
+		} else {
+			fireResId = R.string.fire_bonus_5;
+			fireCostResId = R.integer.laser_cost;
 		}
 
 		boolean defaultValue = getResources().getBoolean(defaultFireResId);
@@ -281,19 +272,17 @@ public class ShopActivity extends AppCompatActivity {
 			this.currBonusItem = "";
 			this.currFireItem = "";
 		} else {
-			int defaultItemResId;
+			int defaultItemResId = R.bool.faux;
 			int itemResId;
 			int itemCostResId;
 			if (this.shipItem[id].equals(getString(R.string.ship_bird))) {
-				defaultItemResId = R.bool.saved_ship_bird_bought_default;
 				itemResId = R.string.ship_bird;
 				itemCostResId = R.integer.ship_bird_cost;
 			} else if (this.shipItem[id].equals(getString(R.string.ship_supreme))) {
-				defaultItemResId = R.bool.saved_ship_supreme_bought_default;
 				itemResId = R.string.ship_supreme;
 				itemCostResId = R.integer.ship_supreme_cost;
 			} else {
-				defaultItemResId = R.bool.saved_ship_simple_bought_default;
+				defaultItemResId = R.bool.vrai;
 				itemResId = R.string.ship_simple;
 				itemCostResId = R.integer.ship_simple_cost;
 			}

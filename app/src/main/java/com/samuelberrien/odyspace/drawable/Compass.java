@@ -37,7 +37,7 @@ public class Compass implements GLInfoDrawable {
 
 	private double angleWithFrontVec;
 
-	private float vecShipToOtherLength;
+	private boolean willDraw;
 	private float maxLength;
 
 	private int mPositionHandle;
@@ -58,7 +58,6 @@ public class Compass implements GLInfoDrawable {
 
 		this.mModelMatrix = new float[16];
 		this.angleWithFrontVec = 0f;
-		this.vecShipToOtherLength = 0.0f;
 		this.maxLength = maxDistance;
 		this.isAccent = false;
 	}
@@ -81,13 +80,16 @@ public class Compass implements GLInfoDrawable {
 		float[] vecShipToOther = from.vector3fTo(to);
 		float length3f = Vector.length3f(vecShipToOther);
 		if (this.maxLength > length3f) {
-			this.vecShipToOtherLength = length3f;
 			float[] vecUpShip = from.getCamUpVec();
 			float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
 
-			float[] vecProjeté = Vector.cross3f(vecFrontShip, Vector.cross3f(vecShipToOther, vecFrontShip));
-
 			this.angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
+			if (this.angleWithFrontVec < Math.toRadians(30d)) {
+				willDraw = false;
+				return;
+			}
+
+			float[] vecProjeté = Vector.cross3f(vecFrontShip, Vector.cross3f(vecShipToOther, vecFrontShip));
 
 			double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
 			float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
@@ -105,12 +107,15 @@ public class Compass implements GLInfoDrawable {
 
 			this.isAccent = isAccent;
 			this.mModelMatrix = mModelMatrix.clone();
+			willDraw = true;
+		} else {
+			willDraw = false;
 		}
 	}
 
 	@Override
 	public void draw(float ratio) {
-		if (this.angleWithFrontVec > Math.toRadians(30d) && this.maxLength > this.vecShipToOtherLength) {
+		if (willDraw) {
 			float[] mViewMatrix = new float[16];
 			Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 			float[] mVPMatrix = new float[16];

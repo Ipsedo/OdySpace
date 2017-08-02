@@ -2,12 +2,9 @@ package com.samuelberrien.odyspace.game;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.samuelberrien.odyspace.drawable.controls.Controls;
 import com.samuelberrien.odyspace.drawable.controls.GamePad;
-import com.samuelberrien.odyspace.drawable.controls.Joystick;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestThread;

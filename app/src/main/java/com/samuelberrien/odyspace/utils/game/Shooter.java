@@ -1,10 +1,5 @@
 package com.samuelberrien.odyspace.utils.game;
 
-import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by samuel on 10/07/17.
  * Copyright samuel, 2016 - 2017.

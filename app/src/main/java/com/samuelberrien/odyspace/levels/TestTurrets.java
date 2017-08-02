@@ -16,7 +16,6 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Ship;
 import com.samuelberrien.odyspace.objects.baseitem.Turret;
-import com.samuelberrien.odyspace.objects.tunnel.Tunnel;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -100,7 +99,8 @@ public class TestTurrets implements Level {
 			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
 			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
-			Turret tmp = new Turret(tmpTurret, tmpRocket, new float[]{x, moy + 3f, z}, FireType.SIMPLE_FIRE, this.ship, this.rocketsTurret);
+			FireType fireType = FireType.SIMPLE_FIRE;
+			Turret tmp = new Turret(tmpTurret, new float[]{x, moy + 3f, z}, fireType, this.ship, this.rocketsTurret);
 			tmp.move();
 			tmp.makeExplosion(this.context);
 			this.turrets.add(tmp);
