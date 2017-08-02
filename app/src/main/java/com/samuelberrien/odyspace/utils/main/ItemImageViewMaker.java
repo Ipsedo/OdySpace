@@ -26,6 +26,8 @@ public final class ItemImageViewMaker {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_bomb));
 		} else if (currFireType.equals(activity.getString(R.string.fire_bonus_4))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.triple_fire));
+		} else if(currFireType.equals(activity.getString(R.string.fire_bonus_5))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.laser));
 		}
 		imageView.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
