@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
+import com.samuelberrien.odyspace.objects.baseitem.ammos.Bomb;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Laser;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Rocket;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Torus;
@@ -35,7 +36,7 @@ public enum FireType {
 		ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 		SIMPLE_FIRE.ammo = tmpRocket;
 		QUINT_FIRE.ammo = tmpRocket;
-		SIMPLE_BOMB.ammo = tmpRocket;
+		SIMPLE_BOMB.ammo = new ObjModelMtlVBO(context, "bomb.obj", "bomb.mtl", 0.8f, 0f, false);
 		TRIPLE_FIRE.ammo = tmpRocket;
 		LASER.ammo = new ObjModelMtlVBO(context, "laser.obj", "laser.mtl", 2f, 0f, false);
 		TORUS.ammo = new ObjModelMtlVBO(context, "torus.obj", "torus.mtl", 2f, 0f, false);
@@ -47,48 +48,48 @@ public enum FireType {
 		float[] tmpMat;
 		switch (this) {
 			case SIMPLE_FIRE:
-				rockets.add(new Rocket(ammo, position, originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, rotationMatrix.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
 				break;
 			case QUINT_FIRE:
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, rotationMatrix.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
 
 				tmpMat = new float[16];
 				Matrix.setRotateM(tmpMat, 0, 2.5f, 1f, 0f, 0f);
 				float[] res = new float[16];
 				Matrix.multiplyMM(res, 0, rotationMatrix, 0, tmpMat, 0);
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, res.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), res.clone(), maxSpeed));
 
 				Matrix.setRotateM(tmpMat, 0, -2.5f, 1f, 0f, 0f);
 				res = new float[16];
 				Matrix.multiplyMM(res, 0, rotationMatrix, 0, tmpMat, 0);
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, res.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), res.clone(), maxSpeed));
 
 				Matrix.setRotateM(tmpMat, 0, -2.5f, 0f, 1f, 0f);
 				res = new float[16];
 				Matrix.multiplyMM(res, 0, rotationMatrix, 0, tmpMat, 0);
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, res.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), res.clone(), maxSpeed));
 
 				Matrix.setRotateM(tmpMat, 0, 2.5f, 0f, 1f, 0f);
 				res = new float[16];
 				Matrix.multiplyMM(res, 0, rotationMatrix, 0, tmpMat, 0);
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, res.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), res.clone(), maxSpeed));
 				break;
 			case SIMPLE_BOMB:
-				rockets.add(new Rocket(ammo, position, originalSpeedVec, new float[]{0f, 0f, 0f}, rotationMatrix, maxSpeed, 2.5f, 3));
+				rockets.add(new Bomb(ammo, position.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
 				break;
 			case TRIPLE_FIRE:
 				tmpMat = new float[16];
 				Matrix.setRotateM(tmpMat, 0, -1f, 1f, 0f, 0f);
 				Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, tmpMat.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
 
 				Matrix.setRotateM(tmpMat, 0, 1f, (float) Math.cos(Math.PI / 3d), (float) Math.sin(Math.PI / 3d), 0f);
 				Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, tmpMat.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
 
 				Matrix.setRotateM(tmpMat, 0, 1f, (float) Math.cos(Math.PI / 3d), -(float) Math.sin(Math.PI / 3d), 0f);
 				Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
-				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), new float[]{0f, 0f, 0f}, tmpMat.clone(), maxSpeed, 1f, 1));
+				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
 				break;
 			case LASER:
 				int nbElements = 10;
@@ -118,7 +119,7 @@ public enum FireType {
 				}
 				break;
 			case TORUS:
-				rockets.add(new Torus(ammo, position, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
+				rockets.add(new Torus(ammo, position.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
 				break;
 		}
 	}

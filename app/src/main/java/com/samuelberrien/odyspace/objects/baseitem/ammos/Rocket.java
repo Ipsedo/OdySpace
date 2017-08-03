@@ -14,39 +14,11 @@ import com.samuelberrien.odyspace.utils.maths.Vector;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Rocket extends BaseItem {
+public class Rocket extends Ammos {
 
-	private float maxSpeed;
+	private static int Life = 1;
 
-	public Rocket(Context context, float lightCoeff, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-		super(context, "rocket.obj", "rocket.mtl", lightCoeff, 0f, false, life, mPosition, Vector.normalize3f(mSpeed), mAcceleration, scale);
-		super.mRotationMatrix = mRotationMatrix;
-		this.maxSpeed = maxSpeed * 3f;
-	}
-
-	public Rocket(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-		super(objModelMtl, life, mPosition, Vector.normalize3f(mSpeed), mAcceleration, scale);
-		super.mRotationMatrix = mRotationMatrix;
-		this.maxSpeed = maxSpeed * 3f;
-	}
-
-	@Override
-	public void move() {
-		float[] realSpeed = new float[]{super.mSpeed[0], super.mSpeed[1], super.mSpeed[2], 0f};
-
-		Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, realSpeed.clone(), 0);
-
-		super.mPosition[0] += this.maxSpeed * realSpeed[0];
-		super.mPosition[1] += this.maxSpeed * realSpeed[1];
-		super.mPosition[2] += this.maxSpeed * realSpeed[2];
-
-		float[] mModelMatrix = new float[16];
-		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
-		float[] tmpMat = mModelMatrix.clone();
-		Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
-		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
-
-		super.mModelMatrix = mModelMatrix;
+	public Rocket(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed) {
+		super(objModelMtl, mPosition, mSpeed, new float[3], mRotationMatrix, 3f * maxSpeed, 1f, Life);
 	}
 }
