@@ -32,10 +32,11 @@ public enum FireType {
 	 * @param context the application context
 	 */
 	public static void initAmmos(Context context) {
-		SIMPLE_FIRE.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
-		QUINT_FIRE.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
-		SIMPLE_BOMB.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
-		TRIPLE_FIRE.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
+		ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
+		SIMPLE_FIRE.ammo = tmpRocket;
+		QUINT_FIRE.ammo = tmpRocket;
+		SIMPLE_BOMB.ammo = tmpRocket;
+		TRIPLE_FIRE.ammo = tmpRocket;
 		LASER.ammo = new ObjModelMtlVBO(context, "laser.obj", "laser.mtl", 2f, 0f, false);
 		TORUS.ammo = new ObjModelMtlVBO(context, "torus.obj", "torus.mtl", 2f, 0f, false);
 	}

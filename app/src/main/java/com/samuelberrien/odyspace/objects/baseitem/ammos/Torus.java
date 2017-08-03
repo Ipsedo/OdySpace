@@ -37,6 +37,6 @@ public class Torus extends BaseItem {
 		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
 		super.mModelMatrix = mModelMatrix;
-		super.scale += 3e-3f;
+		super.scale += 9e-3f;
 	}
 }
