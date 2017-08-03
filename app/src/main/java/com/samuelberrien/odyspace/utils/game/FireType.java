@@ -1,15 +1,13 @@
 package com.samuelberrien.odyspace.utils.game;
 
 import android.content.Context;
-import android.opengl.GLES20;
 import android.opengl.Matrix;
-import android.support.v4.content.ContextCompat;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Laser;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Rocket;
+import com.samuelberrien.odyspace.objects.baseitem.ammos.Torus;
 
 import java.util.List;
 
@@ -26,14 +24,20 @@ public enum FireType {
 	QUINT_FIRE,
 	SIMPLE_BOMB,
 	TRIPLE_FIRE,
-	LASER;
+	LASER,
+	TORUS;
 
+	/**
+	 * Init ammo models, must be called on GLES Thread !
+	 * @param context the application context
+	 */
 	public static void initAmmos(Context context) {
 		SIMPLE_FIRE.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 		QUINT_FIRE.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 		SIMPLE_BOMB.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 		TRIPLE_FIRE.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 		LASER.ammo = new ObjModelMtlVBO(context, "laser.obj", "laser.mtl", 2f, 0f, false);
+		TORUS.ammo = new ObjModelMtlVBO(context, "torus.obj", "torus.mtl", 2f, 0f, false);
 	}
 
 	private ObjModelMtlVBO ammo;
@@ -111,6 +115,9 @@ public enum FireType {
 					mPositions[i][2] = mPositions[i - 1][2] + realSpeed[2] * length * 10f;
 					rockets.add(new Laser(ammo, new float[]{mPositions[i][0], mPositions[i][1], mPositions[i][2]}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 10f));
 				}
+				break;
+			case TORUS:
+				rockets.add(new Torus(ammo, position, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
 				break;
 		}
 	}

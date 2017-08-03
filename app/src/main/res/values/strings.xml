@@ -9,6 +9,7 @@
     <string name="fire_bonus_3">Simple Bomb</string>
     <string name="fire_bonus_4">Triple Fire</string>
     <string name="fire_bonus_5">Laser</string>
+    <string name="fire_bonus_6">Torus</string>
     <string name="ship_bird">Bird Ship</string>
     <string name="ship_simple">Simple Ship</string>
     <string name="ship_supreme">Supreme Ship</string>
@@ -27,6 +28,7 @@
         <item>@string/fire_bonus_3</item>
         <item>@string/fire_bonus_4</item>
         <item>@string/fire_bonus_5</item>
+        <item>@string/fire_bonus_6</item>
     </string-array>
     <string-array name="ship_shop_list_item">
         <item>@string/bought_life</item>

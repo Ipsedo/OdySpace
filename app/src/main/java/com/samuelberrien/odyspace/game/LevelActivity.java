@@ -144,6 +144,8 @@ public class LevelActivity extends AppCompatActivity {
 						fireTypeEnum = FireType.SIMPLE_BOMB;
 					} else if(fire.equals(getString(R.string.fire_bonus_5))) {
 						fireTypeEnum = FireType.LASER;
+					} else if(fire.equals(getString(R.string.fire_bonus_6))) {
+						fireTypeEnum = FireType.TORUS;
 					} else {
 						rBool = R.bool.vrai;
 						fireTypeEnum = FireType.SIMPLE_FIRE;

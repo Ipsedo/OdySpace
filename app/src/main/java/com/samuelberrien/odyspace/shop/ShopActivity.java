@@ -234,9 +234,12 @@ public class ShopActivity extends AppCompatActivity {
 		} else if(this.fireItem[indexFire].equals(getString(R.string.fire_bonus_4))){
 			fireResId = R.string.fire_bonus_4;
 			fireCostResId = R.integer.triple_fire_cost;
-		} else {
+		} else if(this.fireItem[indexFire].equals(getString(R.string.fire_bonus_5))){
 			fireResId = R.string.fire_bonus_5;
 			fireCostResId = R.integer.laser_cost;
+		} else {
+			fireResId = R.string.fire_bonus_6;
+			fireCostResId = R.integer.torus_cost;
 		}
 
 		boolean defaultValue = getResources().getBoolean(defaultFireResId);

@@ -70,8 +70,10 @@ public class Ship extends BaseItem implements Shooter {
 			shipFireType = FireType.SIMPLE_BOMB;
 		} else if(fireType.equals(context.getString(R.string.fire_bonus_4))){
 			shipFireType = FireType.TRIPLE_FIRE;
-		} else {
+		} else if(fireType.equals(context.getString(R.string.fire_bonus_5))){
 			shipFireType = FireType.LASER;
+		} else {
+			shipFireType = FireType.TORUS;
 		}
 
 		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
