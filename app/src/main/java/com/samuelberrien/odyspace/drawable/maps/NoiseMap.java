@@ -324,7 +324,7 @@ public class NoiseMap implements Item, Map {
 
 	@Override
 	public boolean isCollided(Item other) {
-		return other.collideTest(this.getRestreintArea(other.getPosition()), this.mModelMatrix.clone(), box);
+		return other.collideTest(this.getRestreintArea(other.clonePosition()), this.mModelMatrix.clone(), box);
 	}
 
 	private void makeBox() {
@@ -352,7 +352,7 @@ public class NoiseMap implements Item, Map {
 	}
 
 	@Override
-	public float[] getPosition() {
+	public float[] clonePosition() {
 		return new float[]{-0.5f * this.scale, this.limitHeight, -0.5f * this.scale};
 	}
 }

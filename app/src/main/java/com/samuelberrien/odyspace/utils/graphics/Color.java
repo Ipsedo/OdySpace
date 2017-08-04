@@ -7,7 +7,7 @@ package com.samuelberrien.odyspace.utils.graphics;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Color {
+public final class Color {
 
 	public static float[] MainBlue = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 

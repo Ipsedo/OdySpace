@@ -15,7 +15,7 @@ import java.io.InputStream;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class BitmapLoader {
+public final class BitmapLoader {
 
 	public static Bitmap getBitmapFromAsset(Context context, String filePath) {
 		AssetManager assetManager = context.getAssets();

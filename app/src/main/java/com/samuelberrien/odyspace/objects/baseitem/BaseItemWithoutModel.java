@@ -102,7 +102,7 @@ public class BaseItemWithoutModel implements Item {
 	}
 
 	@Override
-	public float[] getPosition() {
+	public float[] clonePosition() {
 		return new float[0];
 	}
 }

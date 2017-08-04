@@ -214,7 +214,7 @@ public class HeightMap implements Item, Map {
 	}
 
 	@Override
-	public float[] getPosition() {
+	public float[] clonePosition() {
 		return new float[]{-0.5f * this.mScale, this.limitHeight, -0.5f * this.mScale};
 	}
 }

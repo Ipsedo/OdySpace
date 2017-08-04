@@ -167,7 +167,7 @@ public class Ship extends BaseItem implements Shooter {
 
 	public float[] fromCamTo(BaseItem to) {
 		float[] camPos = this.getCamPosition();
-		float[] toPos = to.getPosition();
+		float[] toPos = to.clonePosition();
 		return new float[]{toPos[0] - camPos[0], toPos[1] - camPos[1], toPos[2] - camPos[2]};
 	}
 

@@ -23,5 +23,5 @@ public interface Item {
 
 	void decrementLife(int minus);
 
-	float[] getPosition();
+	float[] clonePosition();
 }

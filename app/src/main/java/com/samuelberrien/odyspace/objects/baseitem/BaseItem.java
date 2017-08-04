@@ -114,7 +114,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, Up
 	}
 
 	@Override
-	public float[] getPosition() {
+	public float[] clonePosition() {
 		return this.mPosition.clone();
 	}
 

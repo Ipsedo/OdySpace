@@ -9,7 +9,7 @@ import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
  * Created by samuel on 03/08/17.
  */
 
-class Ammos extends BaseItem {
+public class Ammos extends BaseItem {
 
 	protected float maxSpeed;
 
@@ -32,8 +32,7 @@ class Ammos extends BaseItem {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
 		Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
-		float[] tmpMat = mModelMatrix.clone();
-		Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
+		Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, super.mRotationMatrix, 0);
 		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
 		super.mModelMatrix = mModelMatrix;

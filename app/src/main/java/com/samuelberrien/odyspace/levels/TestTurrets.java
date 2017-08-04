@@ -89,7 +89,6 @@ public class TestTurrets implements Level {
 		this.ship.setRockets(this.rocketsShip);
 
 		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "turret.obj", "turret.mtl", 1f, 0f, false);
-		ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 1f, 0f, false);
 		Random rand = new Random(System.currentTimeMillis());
 		for (int i = 0; i < this.nbTurret; i++) {
 			float x = rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f;
@@ -99,7 +98,7 @@ public class TestTurrets implements Level {
 			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
 			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
-			FireType fireType = FireType.SIMPLE_FIRE;
+			FireType fireType = FireType.GUIDED_MISSILE;
 			Turret tmp = new Turret(tmpTurret, new float[]{x, moy + 3f, z}, fireType, this.ship, this.rocketsTurret);
 			tmp.update();
 			tmp.makeExplosion(this.context);

@@ -421,7 +421,7 @@ public class Stretch implements Item, GLItemDrawable {
 	}
 
 	@Override
-	public float[] getPosition() {
+	public float[] clonePosition() {
 		return this.box.getPos();
 	}
 

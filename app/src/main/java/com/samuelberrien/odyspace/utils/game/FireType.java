@@ -6,6 +6,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Bomb;
+import com.samuelberrien.odyspace.objects.baseitem.ammos.GuidedMissile;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Laser;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Rocket;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Torus;
@@ -26,7 +27,8 @@ public enum FireType {
 	SIMPLE_BOMB,
 	TRIPLE_FIRE,
 	LASER,
-	TORUS;
+	TORUS,
+	GUIDED_MISSILE;
 
 	/**
 	 * Init ammo models, must be called on GLES Thread !
@@ -41,11 +43,12 @@ public enum FireType {
 		TRIPLE_FIRE.ammo = tmpRocket;
 		LASER.ammo = new ObjModelMtlVBO(context, "laser.obj", "laser.mtl", 2f, 0f, false);
 		TORUS.ammo = new ObjModelMtlVBO(context, "torus.obj", "torus.mtl", 2f, 0f, false);
+		GUIDED_MISSILE.ammo = tmpRocket;
 	}
 
 	private ObjModelMtlVBO ammo;
 
-	public void fire(List<BaseItem> rockets, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed) {
+	public void fire(List<BaseItem> rockets, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed, Item... targets) {
 		float[] tmpMat;
 		switch (this) {
 			case SIMPLE_FIRE:
@@ -125,9 +128,13 @@ public enum FireType {
 				Matrix.multiplyMV(realSpeed, 0, rotationMatrix, 0, realSpeed.clone(), 0);
 
 				rockets.add(new Torus(ammo, positions.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0d));
-				rockets.add(new Torus(ammo, new float[]{positions[0] += realSpeed[0] * 3f, positions[1] += realSpeed[1] * 3f, positions[2] += realSpeed[2] * 3f}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0.2d));
-				rockets.add(new Torus(ammo, new float[]{positions[0] += realSpeed[0] * 3f, positions[1] += realSpeed[1] * 3f, positions[2] += realSpeed[2] * 3f}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0.4d));
+				rockets.add(new Torus(ammo, new float[]{positions[0] += realSpeed[0] * 6f, positions[1] += realSpeed[1] * 6f, positions[2] += realSpeed[2] * 6f}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0.4d));
+				rockets.add(new Torus(ammo, new float[]{positions[0] += realSpeed[0] * 6f, positions[1] += realSpeed[1] * 6f, positions[2] += realSpeed[2] * 6f}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0.8d));
 				break;
+			case GUIDED_MISSILE:
+				rockets.add(new GuidedMissile(ammo, position.clone(), originalSpeedVec, rotationMatrix, maxSpeed, targets[0]));
+				break;
+
 		}
 	}
 }

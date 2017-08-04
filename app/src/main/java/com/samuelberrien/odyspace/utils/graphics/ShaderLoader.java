@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
  * Created by samuel on 14/01/17.
  */
 
-public class ShaderLoader {
+public final class ShaderLoader {
 
 	/**
 	 * @param context The application context

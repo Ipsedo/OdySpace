@@ -13,7 +13,7 @@ import android.opengl.GLUtils;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class TextureHelper {
+public final class TextureHelper {
 
 	/**
 	 * @param context    the application context

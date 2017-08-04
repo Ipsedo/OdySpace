@@ -61,7 +61,7 @@ public class GroupItem implements Item, GLItemDrawable, UpdatableItem {
 	}
 
 	@Override
-	public float[] getPosition() {
+	public float[] clonePosition() {
 		return this.mPosition.clone();
 	}
 
