@@ -199,6 +199,11 @@ public class HeightMap implements Item, Map {
 	}
 
 	@Override
+	public boolean isAlive() {
+		return true;
+	}
+
+	@Override
 	public int getDamage() {
 		return Integer.MAX_VALUE - 1;
 	}

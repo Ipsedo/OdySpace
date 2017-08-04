@@ -33,7 +33,7 @@ public class Tree implements UpdatableItem, GLItemDrawable {
 		this.modelMatrixToPass = nodeModelMatrix;
 	}
 
-	private void setParentModelMatrix(float[] parentModelMatrix) {
+	public void setParentModelMatrix(float[] parentModelMatrix) {
 		float[] res = new float[16];
 		Matrix.multiplyMM(res, 0, parentModelMatrix, 0, nodeModelMatrix, 0);
 		modelMatrixToPass = res;

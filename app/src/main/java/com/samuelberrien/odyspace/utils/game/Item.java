@@ -17,6 +17,8 @@ public interface Item {
 
 	boolean isInside(Box box);
 
+	boolean isAlive();
+
 	int getDamage();
 
 	void decrementLife(int minus);

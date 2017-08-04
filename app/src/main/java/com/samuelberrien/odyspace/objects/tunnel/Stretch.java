@@ -406,6 +406,11 @@ public class Stretch implements Item, GLItemDrawable {
 	}
 
 	@Override
+	public boolean isAlive() {
+		return true;
+	}
+
+	@Override
 	public int getDamage() {
 		return Integer.MAX_VALUE - 1;
 	}

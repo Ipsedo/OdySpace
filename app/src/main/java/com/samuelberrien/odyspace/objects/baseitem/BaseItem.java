@@ -79,6 +79,7 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, Up
 		this.isDanger = false;
 	}
 
+	@Override
 	public boolean isAlive() {
 		return this.life > 0;
 	}
