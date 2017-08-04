@@ -8,6 +8,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Ray;
 import com.samuelberrien.odyspace.utils.game.Item;
+import com.samuelberrien.odyspace.utils.game.UpdatableItem;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
+public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, UpdatableItem {
 
 	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
@@ -83,16 +84,16 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 	}
 
 	@Override
-	public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
 		return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), triangleArray, modelMatrix);
 	}
 
 	@Override
 	public boolean isCollided(Item other) {
-		return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone());
+		return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone(), this.makeBox());
 	}
 
-	protected Box makeBox() {
+	public Box makeBox() {
 		return new Box(this.mPosition[0] - this.radius * 0.5f, this.mPosition[1] - this.radius * 0.5f, this.mPosition[2] - this.radius * 0.5f, this.radius, this.radius, this.radius);
 	}
 
@@ -142,7 +143,8 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable {
 		return new float[]{to.mPosition[0] - this.mPosition[0], to.mPosition[1] - this.mPosition[1], to.mPosition[2] - this.mPosition[2]};
 	}
 
-	public void move() {
+	@Override
+	public void update() {
 		this.mSpeed[0] += this.mAcceleration[0];
 		this.mSpeed[1] += this.mAcceleration[1];
 		this.mSpeed[2] += this.mAcceleration[2];

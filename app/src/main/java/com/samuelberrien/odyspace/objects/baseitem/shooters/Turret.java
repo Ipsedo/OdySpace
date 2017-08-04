@@ -1,10 +1,12 @@
-package com.samuelberrien.odyspace.objects.baseitem;
+package com.samuelberrien.odyspace.objects.baseitem.shooters;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Shooter;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -31,8 +33,6 @@ public class Turret extends BaseItem implements Shooter {
 
 	private List<BaseItem> rockets;
 
-	private ObjModelMtlVBO ammo;
-
 	public Turret(Context context, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
 		super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
 		this.rand = new Random(System.currentTimeMillis());
@@ -47,14 +47,14 @@ public class Turret extends BaseItem implements Shooter {
 		this.fireType = fireType;
 		this.ship = ship;
 		this.rockets = rockets;
-		this.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 	}
 
 	public void makeExplosion(Context context) {
-		this.explosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.05f, 1f, 2f, 1.0f, 1.5f);
+		this.explosion = new Explosion(context, super.diffColorBuffer, 10, 0.05f, 1f, 2f, 1.0f, 1.5f);
 	}
 
 	public void addExplosion(List<Explosion> explosions) {
+		this.explosion.setPosition(super.mPosition.clone());
 		explosions.add(this.explosion);
 	}
 
@@ -72,8 +72,9 @@ public class Turret extends BaseItem implements Shooter {
 	}
 
 	@Override
-	public void move() {
-		float[] u = new float[]{this.ship.mPosition[0] - super.mPosition[0], 0f, this.ship.mPosition[2] - super.mPosition[2]};
+	public void update() {
+		float[] shipPos = this.ship.getPosition();
+		float[] u = new float[]{shipPos[0] - super.mPosition[0], 0f, shipPos[2] - super.mPosition[2]};
 		float[] v = new float[]{0f, 0f, 1f};
 
 		float[] cross = Vector.normalize3f(Vector.cross3f(Vector.normalize3f(u), Vector.normalize3f(v)));

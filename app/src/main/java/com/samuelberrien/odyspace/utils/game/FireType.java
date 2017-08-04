@@ -30,6 +30,7 @@ public enum FireType {
 
 	/**
 	 * Init ammo models, must be called on GLES Thread !
+	 *
 	 * @param context the application context
 	 */
 	public static void initAmmos(Context context) {
@@ -92,7 +93,7 @@ public enum FireType {
 				rockets.add(new Rocket(ammo, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
 				break;
 			case LASER:
-				int nbElements = 10;
+				int nbElements = 20;
 
 				float[][] mPositions = new float[nbElements][3];
 
@@ -119,7 +120,13 @@ public enum FireType {
 				}
 				break;
 			case TORUS:
-				rockets.add(new Torus(ammo, position.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
+				float[] positions = position.clone();
+				realSpeed = new float[]{originalSpeedVec[0], originalSpeedVec[1], originalSpeedVec[2], 0f};
+				Matrix.multiplyMV(realSpeed, 0, rotationMatrix, 0, realSpeed.clone(), 0);
+
+				rockets.add(new Torus(ammo, positions.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0d));
+				rockets.add(new Torus(ammo, new float[]{positions[0] += realSpeed[0] * 3f, positions[1] += realSpeed[1] * 3f, positions[2] += realSpeed[2] * 3f}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0.2d));
+				rockets.add(new Torus(ammo, new float[]{positions[0] += realSpeed[0] * 3f, positions[1] += realSpeed[1] * 3f, positions[2] += realSpeed[2] * 3f}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 0.4d));
 				break;
 		}
 	}

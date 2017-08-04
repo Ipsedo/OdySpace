@@ -23,26 +23,27 @@ public class Explosion implements GLItemDrawable {
 	private ArrayList<Particule> particules;
 	private ObjModel particule;
 	private final float limitSpeedAlife;
+	private float[] initialPos;
 
-	public Explosion(Context context, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
+	public Explosion(Context context, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
 		this.limitSpeedAlife = limitSpeedAlife;
 		this.particules = new ArrayList<>();
 		Random rand = new Random(System.currentTimeMillis());
 		this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
 		this.particule.setColor(mDiffColor);
 		for (int i = 0; i < nbParticule; i++) {
-			this.particules.add(new Particule(rand, mPosition, limitScale, maxScale, limitSpeed, maxSpeed));
+			this.particules.add(new Particule(rand, limitScale, maxScale, limitSpeed, maxSpeed));
 		}
 	}
 
-	public Explosion(ObjModel particule, float[] mPosition, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
+	public Explosion(ObjModel particule, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
 		this.limitSpeedAlife = limitSpeedAlife;
 		this.particules = new ArrayList<>();
 		Random rand = new Random(System.currentTimeMillis());
 		this.particule = particule;
 		this.particule.setColor(mDiffColor);
 		for (int i = 0; i < nbParticule; i++) {
-			this.particules.add(new Particule(rand, mPosition, limitScale, maxScale, limitSpeed, maxSpeed));
+			this.particules.add(new Particule(rand, limitScale, maxScale, limitSpeed, maxSpeed));
 		}
 	}
 
@@ -53,9 +54,7 @@ public class Explosion implements GLItemDrawable {
 	}
 
 	public void setPosition(float[] mPosition) {
-		for (Particule p : this.particules) {
-			p.mPosition = mPosition.clone();
-		}
+		this.initialPos = mPosition;
 	}
 
 	@Override
@@ -87,9 +86,12 @@ public class Explosion implements GLItemDrawable {
 
 		private float scale;
 
-		private Particule(Random rand, float[] mPosition, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
-			this.mPosition = mPosition.clone();
+		private boolean fstMove;
+
+		private Particule(Random rand, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
+			this.mPosition = new float[3];
 			this.mSpeed = new float[3];
+			this.fstMove = true;
 			double phi = rand.nextDouble() * Math.PI * 2d;
 			double theta = rand.nextDouble() * Math.PI * 2d;
 			this.mSpeed[0] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.sin(theta));
@@ -107,6 +109,10 @@ public class Explosion implements GLItemDrawable {
 		}
 
 		private void move() {
+			if (this.fstMove) {
+				this.mPosition = Explosion.this.initialPos.clone();
+				this.fstMove = false;
+			}
 			this.mPosition[0] += this.mSpeed[0];
 			this.mPosition[1] += this.mSpeed[1];
 			this.mPosition[2] += this.mSpeed[2];

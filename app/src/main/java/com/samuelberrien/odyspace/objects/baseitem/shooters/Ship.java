@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.objects.baseitem;
+package com.samuelberrien.odyspace.objects.baseitem.shooters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +8,7 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.GamePad;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Shooter;
 import com.samuelberrien.odyspace.utils.graphics.Color;
@@ -47,7 +47,6 @@ public class Ship extends BaseItem implements Shooter {
 	private boolean exploded;
 
 	private List<BaseItem> rockets;
-	private ObjModelMtlVBO ammo;
 
 	private FireType fireType;
 
@@ -62,15 +61,15 @@ public class Ship extends BaseItem implements Shooter {
 		String defaultValue = context.getString(R.string.saved_fire_type_default);
 		String fireType = savedShip.getString(context.getString(R.string.current_fire_type), defaultValue);
 		FireType shipFireType;
-		if (fireType.equals(context.getString(R.string.fire_bonus_1))) {
+		if (fireType.equals(context.getString(R.string.fire_1))) {
 			shipFireType = FireType.SIMPLE_FIRE;
-		} else if (fireType.equals(context.getString(R.string.fire_bonus_2))) {
+		} else if (fireType.equals(context.getString(R.string.fire_2))) {
 			shipFireType = FireType.QUINT_FIRE;
-		} else if (fireType.equals(context.getString(R.string.fire_bonus_3))) {
+		} else if (fireType.equals(context.getString(R.string.fire_3))) {
 			shipFireType = FireType.SIMPLE_BOMB;
-		} else if(fireType.equals(context.getString(R.string.fire_bonus_4))){
+		} else if(fireType.equals(context.getString(R.string.fire_4))){
 			shipFireType = FireType.TRIPLE_FIRE;
-		} else if(fireType.equals(context.getString(R.string.fire_bonus_5))){
+		} else if(fireType.equals(context.getString(R.string.fire_5))){
 			shipFireType = FireType.LASER;
 		} else {
 			shipFireType = FireType.TORUS;
@@ -95,7 +94,6 @@ public class Ship extends BaseItem implements Shooter {
 		this.exploded = false;
 		this.mBoostSpeed = 0f;
 		this.gamePad = gamePad;
-		this.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 	}
 
 	public void setRockets(List<BaseItem> rockets) {
@@ -115,11 +113,11 @@ public class Ship extends BaseItem implements Shooter {
 	}
 
 	public void makeExplosion() {
-		this.mExplosion = new Explosion(context, super.mPosition.clone(), super.diffColorBuffer, 10, 0.16f, 1f, 1f, 0.4f, 0.6f);
+		this.mExplosion = new Explosion(context, super.diffColorBuffer, 10, 0.16f, 1f, 1f, 0.4f, 0.6f);
 	}
 
 	@Override
-	public void move() {
+	public void update() {
 		if (super.isAlive()) {
 			this.mBoostSpeed = (float) Math.exp(this.gamePad.getBoost() + 2f) * this.boostCoeff;
 			this.mMaxSpeed = Ship.SHIP_MAX_SPEED * this.mBoostSpeed;
@@ -171,7 +169,8 @@ public class Ship extends BaseItem implements Shooter {
 
 	public float[] fromCamTo(BaseItem to) {
 		float[] camPos = this.getCamPosition();
-		return new float[]{to.mPosition[0] - camPos[0], to.mPosition[1] - camPos[1], to.mPosition[2] - camPos[2]};
+		float[] toPos = to.getPosition();
+		return new float[]{toPos[0] - camPos[0], toPos[1] - camPos[1], toPos[2] - camPos[2]};
 	}
 
 	public float[] getCamFrontVec() {

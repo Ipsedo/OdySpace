@@ -29,26 +29,26 @@ public class BaseItemTest {
         float[] tmpRot = new float[16];
         Matrix.setIdentityM(tmpRot, 0);
         Rocket r = new Rocket(appContext, 2f, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, tmpRot, 2f, 1f);
-        r.move();
+        r.update();
 
         Icosahedron i = new Icosahedron(appContext, new float[]{0f, 0f, 0.2f}, new Random(), 1f);
-        i.move();
+        i.update();
 
         assertTrue(i.isCollided(r));
         assertTrue(r.isCollided(i));
 
         i = new Icosahedron(appContext, new float[]{0f, 0f, 20f}, new Random(), 1f);
-        i.move();
+        i.update();
 
         assertFalse(i.isCollided(r));
         assertFalse(r.isCollided(i));*/
 
         Context appContext = InstrumentationRegistry.getTargetContext();
         Icosahedron i1 = new Icosahedron(appContext, 1, new float[]{0f, 0f, 200f},  1f);
-        i1.move();
+        i1.update();
 
         Icosahedron i2 = new Icosahedron(appContext, 1, new float[]{0f, 0f, 0f},  1f);
-        i2.move();
+        i2.update();
 
         assertFalse(i1.isCollided(i2));
         assertFalse(i2.isCollided(i1));

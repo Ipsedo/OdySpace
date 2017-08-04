@@ -184,7 +184,7 @@ public class HeightMap implements Item, Map {
 	}
 
 	@Override
-	public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box container) {
 		return false;
 	}
 

@@ -127,7 +127,7 @@ public class Tunnel implements GLItemDrawable {
 		for (int i = 3; i < this.mPoints.length; i++) {
 			if (this.random.nextFloat() < probability) {
 				Icosahedron tmp = new Icosahedron(context, 1, this.mPoints[i].clone(), this.random.nextFloat() * 3f + 3f);
-				tmp.move();
+				tmp.update();
 				tmp.makeExplosion();
 				icos.add(tmp);
 			}

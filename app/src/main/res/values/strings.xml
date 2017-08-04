@@ -4,12 +4,12 @@
     <string name="level_info_preferences">LevelInfo</string>
     <string name="saved_max_level">SavedMaxLevel</string>
     <string name="shop_preferences">SavedShop</string>
-    <string name="fire_bonus_1">Simple Fire</string>
-    <string name="fire_bonus_2">Quint Fire</string>
-    <string name="fire_bonus_3">Simple Bomb</string>
-    <string name="fire_bonus_4">Triple Fire</string>
-    <string name="fire_bonus_5">Laser</string>
-    <string name="fire_bonus_6">Torus</string>
+    <string name="fire_1">Simple Fire</string>
+    <string name="fire_2">Quint Fire</string>
+    <string name="fire_3">Bomb</string>
+    <string name="fire_4">Triple Fire</string>
+    <string name="fire_5">Laser</string>
+    <string name="fire_6">Torus</string>
     <string name="ship_bird">Bird Ship</string>
     <string name="ship_simple">Simple Ship</string>
     <string name="ship_supreme">Supreme Ship</string>
@@ -18,23 +18,31 @@
     <string name="current_fire_type">CurrentFireType</string>
     <string name="current_life_number">CurrentLifeNumberShip</string>
     <string name="current_ship_used">CurrentShipUsed</string>
-    <string name="saved_fire_type_default">@string/fire_bonus_1</string>
+    <string name="saved_fire_type_default">@string/fire_1</string>
     <string name="saved_ship_used_default">@string/ship_simple</string>
     <string name="fire_type_shop">Fire Type</string>
     <string name="saved_money">SavedMoney</string>
+    <string name="bought_duration">Duration</string>
+    <string name="bonus_1">Speed</string>
+    <string name="current_bonus_used">CurrentBonusUsed</string>
+    <string name="current_bonus_duration">CurrentBonusDuration</string>
     <string-array name="fire_shop_list_item">
-        <item>@string/fire_bonus_1</item>
-        <item>@string/fire_bonus_2</item>
-        <item>@string/fire_bonus_3</item>
-        <item>@string/fire_bonus_4</item>
-        <item>@string/fire_bonus_5</item>
-        <item>@string/fire_bonus_6</item>
+        <item>@string/fire_1</item>
+        <item>@string/fire_2</item>
+        <item>@string/fire_3</item>
+        <item>@string/fire_4</item>
+        <item>@string/fire_5</item>
+        <item>@string/fire_6</item>
     </string-array>
     <string-array name="ship_shop_list_item">
         <item>@string/bought_life</item>
         <item>@string/ship_simple</item>
         <item>@string/ship_bird</item>
         <item>@string/ship_supreme</item>
+    </string-array>
+    <string-array name="bonus_shop_list_item">
+        <item>@string/bought_duration</item>
+        <item>@string/bonus_1</item>
     </string-array>
     <string name="game_preferences">Game</string>
     <string name="saved_joystick_inversed">JoystickInversed</string>

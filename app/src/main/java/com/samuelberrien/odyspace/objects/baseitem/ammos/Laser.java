@@ -1,9 +1,6 @@
 package com.samuelberrien.odyspace.objects.baseitem.ammos;
 
-import android.opengl.Matrix;
-
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 
 /**
  * Created by samuel on 02/08/17.

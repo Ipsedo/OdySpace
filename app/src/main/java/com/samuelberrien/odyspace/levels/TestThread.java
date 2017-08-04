@@ -15,7 +15,7 @@ import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
-import com.samuelberrien.odyspace.objects.baseitem.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Item;
@@ -91,7 +91,7 @@ public class TestThread implements Level {
 		//ObjModelMtlVBO modelIco = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		for (int i = 0; i < this.nbIcosahedron; i++) {
 			Icosahedron ico = new Icosahedron(this.context, 1, new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f}, rand.nextFloat() * 2f + 1f);
-			ico.move();
+			ico.update();
 			ico.makeExplosion();
 			this.icosahedrons.add(ico);
 		}
@@ -151,11 +151,11 @@ public class TestThread implements Level {
 
 	@Override
 	public void update() {
-		this.ship.move();
+		this.ship.update();
 
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmpArr)
-			r.move();
+			r.update();
 		ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
 		for (Explosion e : tmpArr2)
 			e.move();

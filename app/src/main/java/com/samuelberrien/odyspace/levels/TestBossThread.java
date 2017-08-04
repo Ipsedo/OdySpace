@@ -8,9 +8,9 @@ import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.Ship;
-import com.samuelberrien.odyspace.objects.baseitem.boss.Boss;
-import com.samuelberrien.odyspace.objects.baseitem.boss.FstBoss;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.boss.Boss;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.boss.FstBoss;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Item;
@@ -103,17 +103,17 @@ public class TestBossThread implements Level {
 
 	@Override
 	public void update() {
-		this.ship.move();
+		this.ship.update();
 
 		ArrayList<BaseItem> tmpArr = new ArrayList<>();
 		tmpArr.addAll(this.rocketsShip);
 		for (BaseItem r : tmpArr)
-			r.move();
+			r.update();
 		tmpArr.clear();
 		tmpArr.addAll(this.rocketsBoss);
 		for (BaseItem r : tmpArr)
-			r.move();
-		this.boss.move();
+			r.update();
+		this.boss.update();
 		this.compass.update(this.ship, this.boss, this.boss.isDanger());
 		this.boss.updateLifeProgress(this.progressBar);
 	}

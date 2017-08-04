@@ -7,10 +7,10 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,13 +42,10 @@ public class LevelActivity extends AppCompatActivity {
 
 	private SharedPreferences gamePreferences;
 
-	private static Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		context = getApplicationContext();
 
 		this.mSurfaceView = new MyGLSurfaceView(this.getApplicationContext(), this, Integer.parseInt(super.getIntent().getStringExtra(MainActivity.LEVEL_ID)));
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -122,6 +119,12 @@ public class LevelActivity extends AppCompatActivity {
 					}
 				});
 
+				/*ViewPager viewPager = (ViewPager) layout.findViewById(R.id.pause_view_pager);
+				viewPager.setAdapter(new PauseFragmentPagerAdapter(getSupportFragmentManager()));
+
+				TabLayout tabLayout = (TabLayout) layout.findViewById(R.id.pause_tab_layout);
+				tabLayout.setupWithViewPager(viewPager);*/
+
 				SharedPreferences savedShop = LevelActivity.this.getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 				final SharedPreferences savedShip = LevelActivity.this.getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
@@ -136,15 +139,15 @@ public class LevelActivity extends AppCompatActivity {
 
 					int rBool = R.bool.faux;
 					final FireType fireTypeEnum;
-					if (fire.equals(getString(R.string.fire_bonus_4))) {
+					if (fire.equals(getString(R.string.fire_4))) {
 						fireTypeEnum = FireType.TRIPLE_FIRE;
-					} else if (fire.equals(getString(R.string.fire_bonus_2))) {
+					} else if (fire.equals(getString(R.string.fire_2))) {
 						fireTypeEnum = FireType.QUINT_FIRE;
-					} else if (fire.equals(getString(R.string.fire_bonus_3))) {
+					} else if (fire.equals(getString(R.string.fire_3))) {
 						fireTypeEnum = FireType.SIMPLE_BOMB;
-					} else if(fire.equals(getString(R.string.fire_bonus_5))) {
+					} else if(fire.equals(getString(R.string.fire_5))) {
 						fireTypeEnum = FireType.LASER;
-					} else if(fire.equals(getString(R.string.fire_bonus_6))) {
+					} else if(fire.equals(getString(R.string.fire_6))) {
 						fireTypeEnum = FireType.TORUS;
 					} else {
 						rBool = R.bool.vrai;
@@ -167,6 +170,16 @@ public class LevelActivity extends AppCompatActivity {
 					if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(fire)) {
 						tmpRadioButton.setChecked(true);
 					}
+				}
+
+				radioGroup = (RadioGroup) layout.findViewById(R.id.select_bonus_radio_group);
+				String[] bonus = LevelActivity.this.getResources().getStringArray(R.array.bonus_shop_list_item);
+				for (final String item : bonus) {
+					RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
+					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					radioGroup.addView(tmpRadioButton);
+
+					tmpRadioButton.setText(item);
 				}
 
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
@@ -195,6 +208,7 @@ public class LevelActivity extends AppCompatActivity {
 				pauseDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_main));
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
+				pauseDialog.getWindow().setLayout(getScreenWidth() * 4 / 5, pauseDialog.getWindow().getAttributes().height);
 			}
 		});
 
@@ -209,14 +223,11 @@ public class LevelActivity extends AppCompatActivity {
 		this.addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 	}
 
-	public static Context getAppContext() {
-		while (context == null)
-			try {
-				Thread.sleep(10L);
-			} catch (InterruptedException ie) {
-				ie.printStackTrace();
-			}
-		return context;
+	private int getScreenWidth() {
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		return size.x;
 	}
 
 	private int getScreenHeight() {
@@ -224,6 +235,10 @@ public class LevelActivity extends AppCompatActivity {
 		Point size = new Point();
 		display.getSize(size);
 		return size.y;
+	}
+
+	public void setShipFireType(FireType fireType) {
+		this.mSurfaceView.setShipFireType(fireType);
 	}
 
 	public void loadingLevelFinished() {

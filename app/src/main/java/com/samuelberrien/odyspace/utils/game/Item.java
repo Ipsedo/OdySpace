@@ -11,7 +11,7 @@ import com.samuelberrien.odyspace.utils.collision.Box;
 
 public interface Item {
 
-	boolean collideTest(float[] triangleArray, float[] modelMatrix);
+	boolean collideTest(float[] triangleArray, float[] modelMatrix, Box container);
 
 	boolean isCollided(Item other);
 

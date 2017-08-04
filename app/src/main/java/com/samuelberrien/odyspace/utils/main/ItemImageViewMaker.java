@@ -18,17 +18,17 @@ import com.samuelberrien.odyspace.R;
 public final class ItemImageViewMaker {
 
 	public static void makeFireTypeImage(final Activity activity, final Toast myToast, final ImageView imageView, final String currFireType) {
-		if (currFireType.equals(activity.getString(R.string.fire_bonus_1))) {
+		if (currFireType.equals(activity.getString(R.string.fire_1))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_fire));
-		} else if (currFireType.equals(activity.getString(R.string.fire_bonus_2))) {
+		} else if (currFireType.equals(activity.getString(R.string.fire_2))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.quint_fire));
-		} else if (currFireType.equals(activity.getString(R.string.fire_bonus_3))) {
+		} else if (currFireType.equals(activity.getString(R.string.fire_3))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_bomb));
-		} else if (currFireType.equals(activity.getString(R.string.fire_bonus_4))) {
+		} else if (currFireType.equals(activity.getString(R.string.fire_4))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.triple_fire));
-		} else if(currFireType.equals(activity.getString(R.string.fire_bonus_5))) {
+		} else if(currFireType.equals(activity.getString(R.string.fire_5))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.laser));
-		} else if(currFireType.equals(activity.getString(R.string.fire_bonus_6))) {
+		} else if(currFireType.equals(activity.getString(R.string.fire_6))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.torus));
 		}
 		imageView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -55,6 +55,22 @@ public final class ItemImageViewMaker {
 			public boolean onLongClick(View view) {
 				ViewHelper.makeViewTransition(activity, imageView);
 				myToast.setText(shipUsed + System.getProperty("line.separator") + "Life : " + currShipLife + " + " + currBoughtLife);
+				myToast.show();
+				return true;
+			}
+		});
+	}
+
+	public static void makeBonusImage(final Activity activity, final Toast myToast, final ImageView imageView, final String bonusUsed, final int bonusDuration, final int currBoughtDurantion) {
+		if (bonusUsed.equals(activity.getString(R.string.bonus_1))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.speed));
+		}
+
+		imageView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				ViewHelper.makeViewTransition(activity, imageView);
+				myToast.setText(bonusUsed + System.getProperty("line.separator") + "Duration : " + bonusDuration + " + " + currBoughtDurantion);
 				myToast.show();
 				return true;
 			}

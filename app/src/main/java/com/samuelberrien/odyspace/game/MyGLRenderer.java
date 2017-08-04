@@ -15,7 +15,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
-import com.samuelberrien.odyspace.objects.baseitem.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Level;
 
@@ -77,7 +77,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 			this.gamePad.initGraphics(this.context);
 
 			this.ship = Ship.makeShip(this.context, this.gamePad);
-			this.ship.move();
+			this.ship.update();
 
 			this.mCameraPosition = new float[]{0f, 0f, -10f};
 			this.mCameraUpVec = new float[]{0f, 1f, 0f};

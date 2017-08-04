@@ -18,7 +18,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.Base;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
-import com.samuelberrien.odyspace.objects.baseitem.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.objects.baseitem.SuperIcosahedron;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
@@ -65,9 +65,11 @@ public class TestProtectionLevel implements Level {
 
 	private boolean isInit = false;
 
-	private long startTime;
+	//private long startTime;
 
 	private ProgressBar currLevelProgression;
+	private static int maxLevelTime = 1 << 14;
+	private int currLevelTime;
 
 	private Random rand;
 
@@ -75,7 +77,7 @@ public class TestProtectionLevel implements Level {
 	private int simpleBoomSoundId;
 	private int bigBoomSoundId;
 
-	private long levelTime = 1000L * 60L * 3L;
+	//private long levelTime = 1000L * 60L * 3L;
 
 	@Override
 	public void init(Context context, Ship ship, float levelLimitSize) {
@@ -102,9 +104,9 @@ public class TestProtectionLevel implements Level {
 		this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		this.directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
 
-		this.startTime = System.currentTimeMillis();
+		//this.startTime = System.currentTimeMillis();
 
-		this.rand = new Random(this.startTime);
+		this.rand = new Random(System.currentTimeMillis());
 
 		this.base = new ObjModelMtlVBO(this.context, "base.obj", "base.mtl", 1f, 0f, false);
 		for (int i = 0; i < this.nbBase; i++) {
@@ -118,12 +120,12 @@ public class TestProtectionLevel implements Level {
 			float[] pos = new float[]{x, moy + 5f, z};
 
 			Base tmpBase = new Base(this.base, 1, pos, 25f);
-			tmpBase.move();
+			tmpBase.update();
 			tmpBase.makeExplosion();
 			this.bases.add(tmpBase);
 		}
 
-		this.currLevelProgression = new ProgressBar(this.context, (int) this.levelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		this.currLevelProgression = new ProgressBar(this.context, maxLevelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
 		if (Build.VERSION.SDK_INT >= 21) {
 			this.mSounds = new SoundPool.Builder().setMaxStreams(20)
@@ -181,11 +183,11 @@ public class TestProtectionLevel implements Level {
 
 	@Override
 	public void update() {
-		this.ship.move();
+		this.ship.update();
 
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
 		for (BaseItem r : tmpArr)
-			r.move();
+			r.update();
 		ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
 		for (Explosion e : tmpArr2)
 			e.move();
@@ -193,9 +195,9 @@ public class TestProtectionLevel implements Level {
 		tmpArr.clear();
 		tmpArr.addAll(this.icosahedrons);
 		for (BaseItem i : tmpArr)
-			i.move();
+			i.update();
 
-		this.currLevelProgression.updateProgress((int) (System.currentTimeMillis() - this.startTime));
+		this.currLevelProgression.updateProgress(this.currLevelTime++);
 	}
 
 	@Override
@@ -264,7 +266,7 @@ public class TestProtectionLevel implements Level {
 		List<BaseItem> targets = new ArrayList<>(this.bases);
 		if (this.rand.nextFloat() < 4e-2f) {
 			Icosahedron tmp = new SuperIcosahedron(this.icosahedron, (int) Math.ceil(this.rand.nextDouble() * 3), this.randomIcoPosition(), this.randomIcoSpeed(this.rand.nextFloat() * 0.1f + 0.2f), this.rand.nextFloat() * 10f + 10f);
-			tmp.move();
+			tmp.update();
 			tmp.makeExplosion(this.particule);
 			tmp.computeDanger(targets);
 			this.icosahedrons.add(tmp);
@@ -299,6 +301,6 @@ public class TestProtectionLevel implements Level {
 
 	@Override
 	public boolean isWinner() {
-		return System.currentTimeMillis() - this.startTime > this.levelTime;
+		return currLevelTime >= maxLevelTime;
 	}
 }

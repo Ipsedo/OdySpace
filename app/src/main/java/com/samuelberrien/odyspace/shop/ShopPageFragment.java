@@ -18,16 +18,16 @@ import com.samuelberrien.odyspace.R;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class PageFragment extends Fragment {
+public class ShopPageFragment extends Fragment {
 
 	public static final String ARG_PAGE = "ARG_PAGE";
 
 	private int mPage;
 
-	public static PageFragment newInstance(int page) {
+	public static ShopPageFragment newInstance(int page) {
 		Bundle args = new Bundle();
 		args.putInt(ARG_PAGE, page);
-		PageFragment fragment = new PageFragment();
+		ShopPageFragment fragment = new ShopPageFragment();
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -43,20 +43,20 @@ public class PageFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_page, container, false);
 
 		ListView listView = (ListView) view;
-		if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.FIRE_TAB) == 0) {
+		if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
 			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.fire_shop_list_item)));
-		} else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.SHIP_TAB) == 0) {
+		} else if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
 			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.ship_shop_list_item)));
-		} else if (SampleFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(SampleFragmentPagerAdapter.BONUS_TAB) == 0) {
-
+		} else if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
+			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.bonus_shop_list_item)));
 		}
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-				PageFragment.this.getActivity().runOnUiThread(new Runnable() {
+				ShopPageFragment.this.getActivity().runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						((ShopActivity) PageFragment.this.getActivity()).setItemChosen(PageFragment.this.mPage - 1, i);
+						((ShopActivity) ShopPageFragment.this.getActivity()).setItemChosen(ShopPageFragment.this.mPage - 1, i);
 					}
 				});
 			}

@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
 		final String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
 
+		final String bonusUsed = this.savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1));
+		final int currBonusDuration = this.savedShip.getInt(getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.bonus_2_duration));
+		final int currBoughtDuration = this.savedShop.getInt(getString(R.string.bought_duration), 0);
+
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_main);
 		ItemImageViewMaker.makeFireTypeImage(this, this.myToast, imageView, currFireType);
@@ -119,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
 		imageView = (ImageView) findViewById(R.id.ship_image_main);
 		ItemImageViewMaker.makeShipImage(this, this.myToast, imageView, shipUsed, currShipLife, currBoughtLife);
 
+		imageView = (ImageView) findViewById(R.id.bonus_image_main);
+		ItemImageViewMaker.makeBonusImage(this, this.myToast, imageView, bonusUsed, currBonusDuration, currBoughtDuration);
 
 		TextView textView = (TextView) findViewById(R.id.curr_money_main);
 		textView.setText(Integer.toString(currMoney).concat(" $"));

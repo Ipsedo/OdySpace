@@ -31,7 +31,7 @@
         android:textSize="@dimen/shop_text_size"/>
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
+        android:id="@+id/shop_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/components_height_main"
         android:layout_below="@id/buy_button"
@@ -41,11 +41,11 @@
         app:tabGravity="fill"/>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/shop_view_pager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/shop_curr_money_text_view"
-        android:layout_below="@id/tab_layout"
+        android:layout_below="@id/shop_tab_layout"
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"

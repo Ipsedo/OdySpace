@@ -33,11 +33,11 @@ public class Base extends BaseItem {
 	}
 
 	public void makeExplosion() {
-		this.mExplosion = new Explosion(super.context, super.mPosition.clone(), super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+		this.mExplosion = new Explosion(super.context, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
 	}
 
 	public void makeExplosion(ObjModel particule) {
-		this.mExplosion = new Explosion(particule, super.mPosition.clone(), super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+		this.mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
 	}
 
 	public void addExplosion(List<Explosion> explosions) {

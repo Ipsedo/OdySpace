@@ -391,13 +391,13 @@ public class Stretch implements Item, GLItemDrawable {
 	}
 
 	@Override
-	public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
 		return this.areCollided(this.vertex.clone(), this.identityMatrix.clone(), triangleArray, modelMatrix);
 	}
 
 	@Override
 	public boolean isCollided(Item other) {
-		return other.collideTest(this.vertex.clone(), this.identityMatrix.clone());
+		return other.collideTest(this.vertex.clone(), this.identityMatrix.clone(), this.getBox());
 	}
 
 	@Override

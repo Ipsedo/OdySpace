@@ -1,11 +1,10 @@
-package com.samuelberrien.odyspace.objects.baseitem.boss;
+package com.samuelberrien.odyspace.objects.baseitem.shooters.boss;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -25,7 +24,6 @@ public class FstBoss extends Boss {
 	private float phi;
 	private float theta;
 	private Random rand;
-	private ObjModelMtlVBO ammo;
 
 	public FstBoss(Context context, float[] mPosition, Ship ship, List<BaseItem> rockets) {
 		super(context, "skull.obj", "skull.mtl", 20, mPosition, 3f, FireType.SIMPLE_FIRE, rockets);
@@ -33,7 +31,6 @@ public class FstBoss extends Boss {
 		this.phi = 0f;
 		this.theta = 0f;
 		this.rand = new Random(System.currentTimeMillis());
-		this.ammo = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 	}
 
 	@Override
@@ -50,7 +47,7 @@ public class FstBoss extends Boss {
 	}
 
 	@Override
-	protected float[] getModelMatrix() {
+	protected float[] computeModelMatrix() {
 		float[] vecToShip = Vector.normalize3f(super.vector3fTo(this.ship));
 		float[] originaleVec = new float[]{0f, 0f, 1f};
 		float angle;

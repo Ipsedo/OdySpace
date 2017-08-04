@@ -9,16 +9,18 @@ import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
  * Created by samuel on 03/08/17.
  */
 
-public class Ammos extends BaseItem {
+class Ammos extends BaseItem {
+
 	protected float maxSpeed;
-	public Ammos(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
+
+	Ammos(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
 		super(objModelMtl, life, mPosition, mSpeed, mAcceleration, scale);
 		super.mRotationMatrix = mRotationMatrix;
 		this.maxSpeed = maxSpeed;
 	}
 
 	@Override
-	public void move() {
+	public void update() {
 		float[] realSpeed = new float[]{super.mSpeed[0] += super.mAcceleration[0], super.mSpeed[1] += super.mAcceleration[1], super.mSpeed[2] += super.mAcceleration[2], 0f};
 
 		Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, realSpeed.clone(), 0);

@@ -77,7 +77,7 @@ public class BaseItemWithoutModel implements Item {
 	}
 
 	@Override
-	public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box box) {
 		return false;
 	}
 

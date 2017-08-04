@@ -14,8 +14,8 @@ import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.Ship;
-import com.samuelberrien.odyspace.objects.baseitem.Turret;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
+import com.samuelberrien.odyspace.objects.baseitem.shooters.Turret;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -101,7 +101,7 @@ public class TestTurrets implements Level {
 
 			FireType fireType = FireType.SIMPLE_FIRE;
 			Turret tmp = new Turret(tmpTurret, new float[]{x, moy + 3f, z}, fireType, this.ship, this.rocketsTurret);
-			tmp.move();
+			tmp.update();
 			tmp.makeExplosion(this.context);
 			this.turrets.add(tmp);
 		}
@@ -164,19 +164,19 @@ public class TestTurrets implements Level {
 
 	@Override
 	public void update() {
-		this.ship.move();
+		this.ship.update();
 
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rocketsShip);
 		for (BaseItem r : tmpArr)
-			r.move();
+			r.update();
 		tmpArr.clear();
 		tmpArr.addAll(this.rocketsTurret);
 		for (BaseItem r : tmpArr)
-			r.move();
+			r.update();
 		tmpArr.clear();
 		tmpArr.addAll(this.turrets);
 		for (BaseItem t : tmpArr) {
-			t.move();
+			t.update();
 		}
 		ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
 		for (Explosion e : tmpArr2)

@@ -1,9 +1,8 @@
-package com.samuelberrien.odyspace.objects.baseitem.boss;
+package com.samuelberrien.odyspace.objects.baseitem.shooters.boss;
 
 import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.ProgressBar;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Shooter;
@@ -22,7 +21,6 @@ public abstract class Boss extends BaseItem implements Shooter {
 	private final int MAX_COUNT = 200;
 	private int counter;
 
-	protected ObjModelMtlVBO rocket;
 	protected FireType fireType;
 	protected List<BaseItem> rockets;
 
@@ -32,7 +30,6 @@ public abstract class Boss extends BaseItem implements Shooter {
 	public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, float scale, FireType fireType, List<BaseItem> rockets) {
 		super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
 		this.counter = 0;
-		this.rocket = new ObjModelMtlVBO(this.context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
 		this.fireType = fireType;
 		this.colorCounter = 0;
 		this.changingColor = false;
@@ -120,10 +117,10 @@ public abstract class Boss extends BaseItem implements Shooter {
 	public abstract void fire();
 
 	@Override
-	public void move() {
-		super.mModelMatrix = this.getModelMatrix();
+	public void update() {
+		super.mModelMatrix = this.computeModelMatrix();
 		this.count();
 	}
 
-	protected abstract float[] getModelMatrix();
+	protected abstract float[] computeModelMatrix();
 }

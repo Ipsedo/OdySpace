@@ -68,6 +68,8 @@ public class NoiseMap implements Item, Map {
 
 	private float[] color;
 
+	private Box box;
+
 	public NoiseMap(Context context, float[] color, float lightCoeff, float distanceCoeff, int coeffNoise, float scale, float limitHeight, float coeffHeight) {
 		this.context = context;
 		this.lightCoeff = lightCoeff;
@@ -92,6 +94,8 @@ public class NoiseMap implements Item, Map {
 		this.initPlan();
 
 		this.bindBuffer();
+
+		this.makeBox();;
 	}
 
 	private void initPlan() {
@@ -310,7 +314,8 @@ public class NoiseMap implements Item, Map {
 	}
 
 	@Override
-	public boolean collideTest(float[] triangleArray, float[] modelMatrix) {
+	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box container) {
+		//TODO use container to get restreint area ?
 		float[] position = new float[]{0f, 0f, 0f, 1f};
 		Matrix.multiplyMV(position, 0, modelMatrix, 0, position.clone(), 0);
 		return this.areCollided(this.getRestreintArea(new float[]{position[0], position[1], position[2]}), this.mModelMatrix.clone(), triangleArray, modelMatrix);
@@ -319,12 +324,15 @@ public class NoiseMap implements Item, Map {
 
 	@Override
 	public boolean isCollided(Item other) {
-		return other.collideTest(this.getRestreintArea(other.getPosition()), this.mModelMatrix.clone());
+		return other.collideTest(this.getRestreintArea(other.getPosition()), this.mModelMatrix.clone(), box);
+	}
+
+	private void makeBox() {
+		box = new Box(-this.scale, this.limitHeight - this.coeffHeight * this.scale, -this.scale, this.scale * 2f, 2f * this.coeffHeight * this.scale, this.scale * 2f);
 	}
 
 	@Override
 	public boolean isInside(Box otherBox) {
-		Box box = new Box(-this.scale, this.limitHeight - this.coeffHeight * this.scale, -this.scale, this.scale * 2f, 2f * this.coeffHeight * this.scale, this.scale * 2f);
 		return box.isInside(otherBox);
 	}
 
