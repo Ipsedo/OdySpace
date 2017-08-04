@@ -7,8 +7,6 @@ import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.UpdatableItem;
 
-import java.util.ArrayList;
-
 /**
  * Created by samuel on 04/08/17.
  */
