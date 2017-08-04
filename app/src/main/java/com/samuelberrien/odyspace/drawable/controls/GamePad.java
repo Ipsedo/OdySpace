@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 
 import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
 
+import java.util.ArrayList;
+
 /**
  * Created by samuel on 09/07/17.
  * Copyright samuel, 2016 - 2017.
@@ -15,12 +17,13 @@ import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
 public class GamePad implements GLInfoDrawable {
 
 	private Joystick joystick;
-	private Controls controls;
+	private Fire fire;
 	private Remote remote;
-	private int remotePointerID;
-	private int joystickPointerID;
+	private Boost boost;
 
-	private float limitScreen = 0.8f;
+	private ArrayList<Control> controls;
+
+	static float limitScreen = -0.2f;
 
 	private boolean isPitchInversed;
 
@@ -31,12 +34,18 @@ public class GamePad implements GLInfoDrawable {
 	 */
 	public GamePad() {
 		this.joystick = new Joystick();
-		this.controls = new Controls();
+		this.fire = new Fire();
 		this.remote = new Remote();
+		this.boost = new Boost();
+		this.controls = new ArrayList<>();
+
+		//Important order of adding !
+		this.controls.add(this.fire);
+		this.controls.add(this.boost);
+		this.controls.add(this.joystick);
+		this.controls.add(this.remote);
 		this.isPitchInversed = true;
 		this.isRollAndYawInversed = false;
-		this.remotePointerID = -1;
-		this.joystickPointerID = -1;
 	}
 
 	/**
@@ -46,8 +55,9 @@ public class GamePad implements GLInfoDrawable {
 	 */
 	public void initGraphics(Context context) {
 		this.joystick.initGraphics(context);
-		this.controls.initGraphics(context);
+		this.fire.initGraphics(context);
 		this.remote.initGraphics(context);
+		this.boost.initGraphics(context);
 	}
 
 	/**
@@ -109,7 +119,7 @@ public class GamePad implements GLInfoDrawable {
 	 * @return boost value between -1 and 1
 	 */
 	public float getBoost() {
-		return this.controls.getBoost();
+		return this.boost.getBoost();
 	}
 
 	/**
@@ -118,8 +128,8 @@ public class GamePad implements GLInfoDrawable {
 	 * @return true if there is a fire
 	 */
 	public boolean fire() {
-		if (this.controls.isFire()) {
-			this.controls.turnOffFire();
+		if (this.fire.isFire()) {
+			this.fire.turnOffFire();
 			return true;
 		}
 		return false;
@@ -139,62 +149,55 @@ public class GamePad implements GLInfoDrawable {
 		float ratio = screenWidth / screenHeight;
 		switch (e.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
-				if (e.getX(pointerIndex) / screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
-					this.remotePointerID = pointerIndex;
-					this.remote.setVisible(true);
-					this.remote.updatePosition(x, y, ratio);
-				} else if (e.getX(pointerIndex) / screenHeight < this.limitScreen) {
-					this.joystickPointerID = pointerIndex;
-					this.joystick.setVisible(true);
-					this.joystick.updatePosition(x, y, ratio);
-				}
+				for (Control c : controls)
+					if (c.isTouching(x, y, ratio)) {
+						c.setPointerID(pointerIndex);
+						c.updatePosition(x, y, ratio);
+						break;
+					}
 				break;
 			case MotionEvent.ACTION_UP:
-				if (this.remotePointerID == pointerIndex) {
-					this.remote.setVisible(false);
-					this.remotePointerID = -1;
-				} else if (this.joystickPointerID == pointerIndex) {
-					this.joystick.setVisible(false);
-					this.joystickPointerID = -1;
-				}
+				for (Control c : controls)
+					if (c.isCurrentTouched(pointerIndex)) {
+						c.clear();
+						break;
+					}
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (e.getPointerCount() > 1) {
-					if (!this.controls.isTouchBoost(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio) && this.remotePointerID == 1) {
-						this.remote.updateStickPosition(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio);
-					} else if (this.joystickPointerID == 1) {
-						this.joystick.updateStickPosition(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio);
+					for (Control c : controls)
+						if (c.isCurrentTouched(1)) {
+							c.updateStick(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio);
+							break;
+						}
+				}
+				for (Control c : controls)
+					if (c.isCurrentTouched(0)) {
+						c.updateStick(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio);
+						break;
 					}
-				}
-				if (!this.controls.isTouchBoost(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio) && this.remotePointerID == 0) {
-					this.remote.updateStickPosition(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio);
-				} else if (this.joystickPointerID == 0) {
-					this.joystick.updateStickPosition(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio);
-				}
 				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
-				if (e.getX(pointerIndex) / screenHeight > this.limitScreen && !this.controls.isTouchFireButton(x, y, ratio) && !this.controls.isTouchBoost(x, y, ratio)) {
-					this.remotePointerID = pointerIndex;
-					this.joystickPointerID = pointerIndex == 1 ? 0 : 1;
-					this.remote.setVisible(true);
-					this.remote.updatePosition(x, y, ratio);
-				} else if (e.getX(pointerIndex) / screenHeight < this.limitScreen) {
-					this.joystickPointerID = pointerIndex;
-					this.remotePointerID = pointerIndex == 1 ? 0 : 1;
-					this.joystick.setVisible(true);
-					this.joystick.updatePosition(x, y, ratio);
-				}
+				if (e.getPointerCount() == 2)
+					for (Control c1 : controls)
+						if (c1.isTouching(x, y, ratio)) {
+							for (Control c2 : controls)
+								if (!c2.equals(c1))
+									c2.switchPointerID(pointerIndex);
+							c1.setPointerID(pointerIndex);
+							c1.updatePosition(x, y, ratio);
+							break;
+						}
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				if (this.remotePointerID == pointerIndex) {
-					this.remote.setVisible(false);
-					this.joystickPointerID = 0;
-					this.remotePointerID = -1;
-				} else if (this.joystickPointerID == pointerIndex) {
-					this.joystick.setVisible(false);
-					this.remotePointerID = 0;
-					this.joystickPointerID = -1;
-				}
+				for (Control c1 : controls)
+					if (c1.isCurrentTouched(pointerIndex)) {
+						c1.clear();
+						for (Control c2 : controls)
+							if (!c2.equals(c1))
+								c2.redoPointerID();
+						break;
+					}
 				break;
 		}
 	}
@@ -202,7 +205,8 @@ public class GamePad implements GLInfoDrawable {
 	@Override
 	public void draw(float ratio) {
 		this.joystick.draw(ratio);
-		this.controls.draw(ratio);
+		this.fire.draw(ratio);
 		this.remote.draw(ratio);
+		this.boost.draw(ratio);
 	}
 }

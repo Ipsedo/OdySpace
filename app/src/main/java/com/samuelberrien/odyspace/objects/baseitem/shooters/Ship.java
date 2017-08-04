@@ -37,7 +37,7 @@ public class Ship extends BaseItem implements Shooter {
 	private final float[] originalUpVec = new float[]{0f, 1f, 0f, 0f};
 
 	/*private Joystick joystick;
-	private Controls controls;*/
+	private Fire controls;*/
 	private GamePad gamePad;
 
 	private int maxLife;

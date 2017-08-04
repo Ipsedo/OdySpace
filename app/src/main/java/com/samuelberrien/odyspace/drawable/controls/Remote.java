@@ -13,6 +13,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import static com.samuelberrien.odyspace.drawable.controls.GamePad.limitScreen;
+
 /**
  * Created by samuel on 10/07/17.
  * Copyright samuel, 2016 - 2017.
@@ -20,7 +22,7 @@ import java.nio.FloatBuffer;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Remote implements GLInfoDrawable {
+class Remote extends Control {
 
 	private boolean isVisible;
 	private float width = 1f;
@@ -39,11 +41,12 @@ public class Remote implements GLInfoDrawable {
 
 	private float color[] = Color.ControlsColor;
 
-	public Remote() {
+	Remote() {
 		this.isVisible = false;
 	}
 
-	public void initGraphics(Context context) {
+	@Override
+	void initGraphics(Context context) {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
@@ -111,18 +114,37 @@ public class Remote implements GLInfoDrawable {
 				.position(0);
 	}
 
-	public void setVisible(boolean isRemoteVisible) {
+	@Override
+	void setPointerID(int pointerID) {
+		this.setVisible(true);
+		super.setPointerID(pointerID);
+	}
+
+	@Override
+	void clear() {
+		this.setVisible(false);
+		super.clear();
+	}
+
+	@Override
+	boolean isTouching(float x, float y, float ratio) {
+		return x < limitScreen;
+	}
+
+	private void setVisible(boolean isRemoteVisible) {
 		this.isVisible = isRemoteVisible;
 	}
 
-	public void updatePosition(float x, float y, float ratio) {
+	@Override
+	void updatePosition(float x, float y, float ratio) {
 		this.mRemotePosition[0] = x * ratio;
 		this.mRemotePosition[1] = y;
 		this.mRemotePosition[2] = 0f;
 		this.mRemoteStickPosition = this.mRemotePosition.clone();
 	}
 
-	public void updateStickPosition(float x, float y, float ratio) {
+	@Override
+	void updateStick(float x, float y, float ratio) {
 		x *= ratio;
 		if (x - this.mRemotePosition[0] > this.width * 0.5f - this.height * 0.5f) {
 			this.mRemoteStickPosition[0] = this.mRemotePosition[0] + this.width * 0.5f - this.height * 0.5f;
@@ -134,7 +156,7 @@ public class Remote implements GLInfoDrawable {
 
 	}
 
-	public float getRemoteLevel() {
+	float getRemoteLevel() {
 		return this.isVisible ? (this.mRemoteStickPosition[0] - this.mRemotePosition[0]) / (0.5f * (this.width - this.height)) : 0f;
 	}
 

@@ -6,7 +6,6 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
-import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
@@ -14,16 +13,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import static com.samuelberrien.odyspace.drawable.controls.Fire.FireButtonRay;
+
 /**
- * Created by samuel on 23/04/17.
- * Copyright samuel, 2016 - 2017.
- * Toute reproduction ou utilisation sans l'autorisation
- * de l'auteur engendrera des poursuites judiciaires.
+ * Created by samuel on 04/08/17.
  */
 
-public class Controls implements GLInfoDrawable {
+class Boost extends Control {
 
-	//private boolean isBoostVisible;
 
 	private float boostWidth = 0.3f;
 	private float boostHeight = 1f;
@@ -34,14 +31,6 @@ public class Controls implements GLInfoDrawable {
 	private FloatBuffer boostStickVertexBuffer;
 	private float[] mBoostStickPosition = new float[3];
 
-	private int nbPoint = 64;
-	private float fireButtonRay = 0.3f;
-	private float[] fireButtonPoints = new float[this.nbPoint * 3];
-	private FloatBuffer fireButtonVertexBuffer;
-	private float[] mFireButtonPosition = new float[]{-1f + 1e-2f, -1f + this.fireButtonRay + 1e-2f, 0f};
-	private ObjModel fireLogo;
-	private boolean isFire;
-
 	private int mPositionHandle;
 	private int mColorHandle;
 	private int mMVPMatrixHandle;
@@ -49,15 +38,15 @@ public class Controls implements GLInfoDrawable {
 
 	private float color[] = Color.ControlsColor;
 
-	public Controls() {
+	Boost() {
 		this.mBoostPosition[0] = -1f + 1e-2f;
 		this.mBoostPosition[1] = 1.5e-1f;
 		this.mBoostPosition[2] = 0f;
 		this.mBoostStickPosition = this.mBoostPosition.clone();
-		this.isFire = false;
 	}
 
-	public void initGraphics(Context context) {
+	@Override
+	void initGraphics(Context context) {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
@@ -68,9 +57,7 @@ public class Controls implements GLInfoDrawable {
 
 		this.bind();
 		this.makeBoost();
-		this.makeFireButton();
 		this.makeBoostStick();
-		this.fireLogo = new ObjModel(context, "bullet.obj", this.color[0], this.color[1], this.color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {
@@ -127,54 +114,30 @@ public class Controls implements GLInfoDrawable {
 		this.boostStickVertexBuffer.position(0);
 	}
 
-
-	private void makeFireButton() {
-		for (int i = 0; i < this.nbPoint; i++) {
-			double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
-			this.fireButtonPoints[i * 3 + 0] = (float) (this.fireButtonRay * Math.cos(mTmpAngle));
-			this.fireButtonPoints[i * 3 + 1] = (float) (this.fireButtonRay * Math.sin(mTmpAngle));
-			this.fireButtonPoints[i * 3 + 2] = 0f;
-		}
-		ByteBuffer bb = ByteBuffer.allocateDirect(this.fireButtonPoints.length * 4);
-		bb.order(ByteOrder.nativeOrder());
-		this.fireButtonVertexBuffer = bb.asFloatBuffer();
-		this.fireButtonVertexBuffer.put(this.fireButtonPoints);
-		this.fireButtonVertexBuffer.position(0);
-	}
-
-	public boolean isTouchBoost(float x, float y, float ratio) {
-		if (x * ratio < this.mBoostPosition[0] * ratio - this.boostWidth * 0.5f + this.fireButtonRay) {
+	@Override
+	boolean isTouching(float x, float y, float ratio) {
+		if (x * ratio < this.mBoostPosition[0] * ratio - this.boostWidth * 0.5f + FireButtonRay) {
 			return false;
-		} else if (x * ratio > this.mBoostPosition[0] * ratio + this.boostWidth * 0.5f + this.fireButtonRay) {
+		} else if (x * ratio > this.mBoostPosition[0] * ratio + this.boostWidth * 0.5f + FireButtonRay) {
 			return false;
 		} else if (y < this.mBoostPosition[1] - this.boostHeight * 0.5f + this.boostWidth * 0.5f) {
 			return false;
 		} else if (y > this.mBoostPosition[1] + this.boostHeight * 0.5f - this.boostWidth * 0.5f) {
 			return false;
 		} else {
+			return true;
+		}
+	}
+
+	@Override
+	void updatePosition(float unused1, float unused2, float unused3) {
+
+	}
+
+	@Override
+	void updateStick(float unused1, float y, float unused2) {
+		if (y >= this.mBoostPosition[1] - this.boostHeight * 0.5f + this.boostWidth * 0.5f && y <= this.mBoostPosition[1] + this.boostHeight * 0.5f - this.boostWidth * 0.5f)
 			this.mBoostStickPosition[1] = y;
-			return true;
-		}
-	}
-
-	public boolean isTouchFireButton(float x, float y, float ratio) {
-		float xRef = x * ratio - (this.mFireButtonPosition[0] * ratio + this.fireButtonRay);
-		float yRef = y - this.mFireButtonPosition[1];
-		if (xRef * xRef + yRef * yRef < this.fireButtonRay * this.fireButtonRay) {
-			this.isFire = true;
-			return true;
-		} else {
-			this.isFire = false;
-			return false;
-		}
-	}
-
-	public boolean isFire() {
-		return this.isFire;
-	}
-
-	public void turnOffFire() {
-		this.isFire = false;
 	}
 
 	/**
@@ -182,7 +145,7 @@ public class Controls implements GLInfoDrawable {
 	 *
 	 * @return a float between -1 (min) to 1 (max)
 	 */
-	public float getBoost() {
+	float getBoost() {
 		return (this.mBoostStickPosition[1] - this.mBoostPosition[1]) / (0.5f * (this.boostHeight - this.boostWidth));
 	}
 
@@ -202,7 +165,7 @@ public class Controls implements GLInfoDrawable {
 
 		float[] mMMatrix = new float[16];
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mBoostPosition[0] * ratio + this.fireButtonRay, this.mBoostPosition[1], this.mBoostPosition[2]);
+		Matrix.translateM(mMMatrix, 0, this.mBoostPosition[0] * ratio + FireButtonRay, this.mBoostPosition[1], this.mBoostPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -212,7 +175,7 @@ public class Controls implements GLInfoDrawable {
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostPoint.length / 3);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mBoostStickPosition[0] * ratio + this.fireButtonRay, this.mBoostStickPosition[1], this.mBoostStickPosition[2]);
+		Matrix.translateM(mMMatrix, 0, this.mBoostStickPosition[0] * ratio + FireButtonRay, this.mBoostStickPosition[1], this.mBoostStickPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -220,26 +183,5 @@ public class Controls implements GLInfoDrawable {
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostStickPoint.length / 3);
-
-		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
-		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
-
-		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.fireButtonVertexBuffer);
-		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
-		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.fireButtonPoints.length / 3);
-
-		GLES20.glDisableVertexAttribArray(mPositionHandle);
-
-		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mFireButtonPosition[0] * ratio + this.fireButtonRay, this.mFireButtonPosition[1], this.mFireButtonPosition[2]);
-		Matrix.scaleM(mMMatrix, 0, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f, this.fireButtonRay / 1.2f);
-		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
-
-		GLES20.glLineWidth(1f);
-
-		this.fireLogo.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);
 	}
 }
