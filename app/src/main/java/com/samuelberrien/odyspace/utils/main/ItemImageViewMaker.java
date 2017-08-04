@@ -64,6 +64,8 @@ public final class ItemImageViewMaker {
 	public static void makeBonusImage(final Activity activity, final Toast myToast, final ImageView imageView, final String bonusUsed, final int bonusDuration, final int currBoughtDurantion) {
 		if (bonusUsed.equals(activity.getString(R.string.bonus_1))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.speed));
+		} else if(bonusUsed.equals(activity.getString(R.string.bonus_2))) {
+			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.shield));
 		}
 
 		imageView.setOnLongClickListener(new View.OnLongClickListener() {

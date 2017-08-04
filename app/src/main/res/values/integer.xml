@@ -13,5 +13,7 @@
     <integer name="saved_ship_life_default">20</integer>
     <integer name="saved_ship_life_shop_default">0</integer>
     <integer name="life_coeff_cost">1</integer>
-    <integer name="bonus_2_duration">99999</integer>
+    <integer name="bonus_1_duration">300</integer>
+    <integer name="bonus_2_cost">5000</integer>
+    <integer name="bonus_2_duration">500</integer>
 </resources>

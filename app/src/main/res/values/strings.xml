@@ -24,6 +24,7 @@
     <string name="saved_money">SavedMoney</string>
     <string name="bought_duration">Duration</string>
     <string name="bonus_1">Speed</string>
+    <string name="bonus_2">Shield</string>
     <string name="current_bonus_used">CurrentBonusUsed</string>
     <string name="current_bonus_duration">CurrentBonusDuration</string>
     <string-array name="fire_shop_list_item">
@@ -43,6 +44,7 @@
     <string-array name="bonus_shop_list_item">
         <item>@string/bought_duration</item>
         <item>@string/bonus_1</item>
+        <item>@string/bonus_2</item>
     </string-array>
     <string name="game_preferences">Game</string>
     <string name="saved_joystick_inversed">JoystickInversed</string>

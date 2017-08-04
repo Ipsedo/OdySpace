@@ -114,7 +114,7 @@ public class ShopActivity extends AppCompatActivity {
 		final String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
 
 		final String bonusUsed = this.savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1));
-		final int currBonusDuration = this.savedShip.getInt(getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.bonus_2_duration));
+		final int currBonusDuration = this.savedShip.getInt(getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.bonus_1_duration));
 		final int currBoughtDuration = this.savedShop.getInt(getString(R.string.bought_duration), 0);
 
 		ImageView imageView = (ImageView) findViewById(R.id.fire_image_shop);
@@ -198,15 +198,14 @@ public class ShopActivity extends AppCompatActivity {
 		int boolResBought = R.bool.faux;
 
 		if (!this.currFireItem.equals("")) {
-			if (this.currFireItem.equals(getString(R.string.fire_1))) {
+			if (this.currFireItem.equals(getString(R.string.fire_1)))
 				boolResBought = R.bool.vrai;
-			}
 		} else if (!this.currShipItem.equals("")) {
-			if (this.currShipItem.equals(getString(R.string.ship_simple))) {
+			if (this.currShipItem.equals(getString(R.string.ship_simple)))
 				boolResBought = R.bool.vrai;
-			}
 		} else if (!this.currBonusItem.equals("")) {
-
+			if (this.currBonusItem.equals(getString(R.string.bonus_1)))
+				boolResBought = R.bool.vrai;
 		}
 
 		if (!this.currFireItem.equals("") && this.savedShop.getBoolean(this.currFireItem, getResources().getBoolean(boolResBought))) {
@@ -214,19 +213,19 @@ public class ShopActivity extends AppCompatActivity {
 			editor.apply();
 		} else if (!this.currShipItem.equals("") && this.savedShop.getBoolean(this.currShipItem, getResources().getBoolean(boolResBought))) {
 			editor.putString(getString(R.string.current_ship_used), this.currShipItem);
-			if (this.currShipItem.equals(getString(R.string.ship_bird))) {
+			if (this.currShipItem.equals(getString(R.string.ship_bird)))
 				editor.putInt(getString(R.string.current_life_number), 50);
-			} else if (this.currShipItem.equals(getString(R.string.ship_supreme))) {
+			else if (this.currShipItem.equals(getString(R.string.ship_supreme)))
 				editor.putInt(getString(R.string.current_life_number), 200);
-			} else {
+			else
 				editor.putInt(getString(R.string.current_life_number), 20);
-			}
 			editor.commit();
 		} else if (!this.currBonusItem.equals("") && this.savedShop.getBoolean(this.currBonusItem, getResources().getBoolean(boolResBought))) {
 			editor.putString(getString(R.string.current_bonus_used), this.currBonusItem);
-			if (this.currBonusItem.equals(getString(R.string.bonus_1))) {
+			if (this.currBonusItem.equals(getString(R.string.bonus_1)))
+				editor.putInt(getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.bonus_1_duration));
+			else if (this.currBonusItem.equals(getString(R.string.bonus_2)))
 				editor.putInt(getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.bonus_2_duration));
-			}
 			editor.commit();
 		} else {
 			this.myToast.setText("Can't use it !");
@@ -351,12 +350,13 @@ public class ShopActivity extends AppCompatActivity {
 			int itemCostResId;
 
 			if (this.bonusItem[id].equals(getString(R.string.bonus_1))) {
-
+				defaultItemResId = R.bool.vrai;
+				itemResId = R.string.bonus_1;
+				itemCostResId = R.integer.zero;
+			} else {
+				itemResId = R.string.bonus_2;
+				itemCostResId = R.integer.bonus_2_cost;
 			}
-
-			defaultItemResId = R.bool.vrai;
-			itemResId = R.string.bonus_1;
-			itemCostResId = R.integer.zero;
 
 			boolean defaultValue = getResources().getBoolean(defaultItemResId);
 			boolean currentPurchase = this.savedShop.getBoolean(getString(itemResId), defaultValue);

@@ -145,9 +145,9 @@ public class LevelActivity extends AppCompatActivity {
 						fireTypeEnum = FireType.QUINT_FIRE;
 					} else if (fire.equals(getString(R.string.fire_3))) {
 						fireTypeEnum = FireType.SIMPLE_BOMB;
-					} else if(fire.equals(getString(R.string.fire_5))) {
+					} else if (fire.equals(getString(R.string.fire_5))) {
 						fireTypeEnum = FireType.LASER;
-					} else if(fire.equals(getString(R.string.fire_6))) {
+					} else if (fire.equals(getString(R.string.fire_6))) {
 						fireTypeEnum = FireType.TORUS;
 					} else {
 						rBool = R.bool.vrai;
@@ -175,11 +175,35 @@ public class LevelActivity extends AppCompatActivity {
 				radioGroup = (RadioGroup) layout.findViewById(R.id.select_bonus_radio_group);
 				String[] bonus = LevelActivity.this.getResources().getStringArray(R.array.bonus_shop_list_item);
 				for (final String item : bonus) {
-					RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
-					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-					radioGroup.addView(tmpRadioButton);
+					if (!item.equals(getString(R.string.bought_duration))) {
+						RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+						radioGroup.addView(tmpRadioButton);
 
-					tmpRadioButton.setText(item);
+						tmpRadioButton.setText(item);
+
+						int rBool = R.bool.faux;
+						if (item.equals(getString(R.string.bonus_1))) {
+							rBool = R.bool.vrai;
+						}
+
+						if (savedShop.getBoolean(item, getResources().getBoolean(rBool))) {
+							tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+								@Override
+								public void onClick(View view) {
+									//LevelActivity.this.mSurfaceView.setShipFireType(fireTypeEnum);
+									savedShip.edit()
+											.putString(getString(R.string.current_bonus_used), item)
+											.apply();
+								}
+							});
+						} else {
+							tmpRadioButton.setClickable(false);
+						}
+						if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(item)) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
 				}
 
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)

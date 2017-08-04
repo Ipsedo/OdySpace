@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 		final String shipUsed = this.savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
 
 		final String bonusUsed = this.savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1));
-		final int currBonusDuration = this.savedShip.getInt(getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.bonus_2_duration));
+		final int currBonusDuration = this.savedShip.getInt(getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.bonus_1_duration));
 		final int currBoughtDuration = this.savedShop.getInt(getString(R.string.bought_duration), 0);
 
 
