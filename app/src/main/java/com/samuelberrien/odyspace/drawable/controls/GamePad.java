@@ -204,9 +204,7 @@ public class GamePad implements GLInfoDrawable {
 
 	@Override
 	public void draw(float ratio) {
-		this.joystick.draw(ratio);
-		this.fire.draw(ratio);
-		this.remote.draw(ratio);
-		this.boost.draw(ratio);
+		for (Control c : controls)
+			c.draw(ratio);
 	}
 }
