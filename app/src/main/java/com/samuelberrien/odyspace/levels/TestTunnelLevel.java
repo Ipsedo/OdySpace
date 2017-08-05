@@ -1,13 +1,8 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.os.Build;
 
-import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
@@ -17,6 +12,7 @@ import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.maths.Vector;
+import com.samuelberrien.odyspace.utils.sounds.SoundPoolBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,8 +43,7 @@ public class TestTunnelLevel implements Level {
 	private float levelLimitSize;
 	private float sizeCollideBox = 100f;
 
-	private SoundPool mSounds;
-	private int soundId;
+	private SoundPoolBuilder soundPoolBuilder;
 
 	@Override
 	public void init(Context context, Ship ship, float levelLimitSize) {
@@ -66,18 +61,7 @@ public class TestTunnelLevel implements Level {
 
 		this.tunnel.putIcoAtCircleCenter(this.context, this.icos, 0.1f);
 
-		if (Build.VERSION.SDK_INT >= 21) {
-			this.mSounds = new SoundPool.Builder().setMaxStreams(20)
-					.setAudioAttributes(new AudioAttributes.Builder()
-							.setUsage(AudioAttributes.USAGE_GAME)
-							.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-							.build())
-					.build();
-		} else {
-			this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 1);
-		}
-
-		this.soundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
+		this.soundPoolBuilder = new SoundPoolBuilder(this.context);
 
 		this.isInit = true;
 	}
@@ -168,7 +152,7 @@ public class TestTunnelLevel implements Level {
 			if (!this.icos.get(i).isAlive()) {
 				Icosahedron ico = this.icos.get(i);
 				ico.addExplosion(this.explosions);
-				this.mSounds.play(this.soundId, this.getSoundLevel(ico), this.getSoundLevel(ico), 1, 0, 1f);
+				this.soundPoolBuilder.playSimpleBoom(this.getSoundLevel(ico), this.getSoundLevel(ico));
 				this.icos.remove(i);
 			}
 

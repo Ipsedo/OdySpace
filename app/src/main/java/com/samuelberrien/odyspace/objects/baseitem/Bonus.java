@@ -2,6 +2,9 @@ package com.samuelberrien.odyspace.objects.baseitem;
 
 import android.content.Context;
 
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+
 /**
  * Created by samuel on 03/05/17.
  * Copyright samuel, 2016 - 2017.
@@ -17,5 +20,15 @@ public class Bonus extends BaseItem {
 	@Override
 	public int getDamage() {
 		return 0;
+	}
+
+	@Override
+	protected Explosion getExplosion() {
+		return null;
+	}
+
+	@Override
+	protected Explosion getExplosion(ObjModel particule) {
+		return null;
 	}
 }

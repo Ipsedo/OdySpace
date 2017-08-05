@@ -2,6 +2,8 @@ package com.samuelberrien.odyspace.objects.baseitem.ammos;
 
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 
@@ -36,5 +38,27 @@ public class Ammos extends BaseItem {
 		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
 		super.mModelMatrix = mModelMatrix;
+	}
+
+	@Override
+	protected Explosion getExplosion() {
+		return new Explosion.ExplosionBuilder().setNbParticules(3)
+				.setLimitSpeedAlife(0.1f)
+				.setLimitScale(0.3f)
+				.setMaxScale(0.8f)
+				.setLimitSpeed(0.4f)
+				.setMaxSpeed(0.8f)
+				.makeExplosion(context, diffColorBuffer);
+	}
+
+	@Override
+	protected Explosion getExplosion(ObjModel particule) {
+		return new Explosion.ExplosionBuilder().setNbParticules(3)
+				.setLimitSpeedAlife(0.1f)
+				.setLimitScale(0.3f)
+				.setMaxScale(0.8f)
+				.setLimitSpeed(0.4f)
+				.setMaxSpeed(0.8f)
+				.makeExplosion(particule, diffColorBuffer);
 	}
 }

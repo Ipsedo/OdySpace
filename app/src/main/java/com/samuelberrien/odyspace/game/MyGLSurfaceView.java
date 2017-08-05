@@ -38,7 +38,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private UpdateThread updateThread;
 	private RemoveThread removeThread;
 	private EndGameThread endGameThread;
-	private boolean threadRunning;
 
 	/**
 	 * @param context
@@ -53,8 +52,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		this.gamePad = new GamePad();
 
 		this.currentLevel = this.getCurrentLevel(levelID);
-
-		this.threadRunning = false;
 
 		this.renderer = new MyGLRenderer(this.context, this.currentLevel, this.gamePad);
 		this.setRenderer(this.renderer);
@@ -101,34 +98,36 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	}
 
 	private void initThreads() {
-		if (!this.threadRunning) {
+		if (this.collisionThread == null || this.collisionThread.isCanceled()) {
 			this.collisionThread = new CollisionThread(this.currentLevel);
-			this.updateThread = new UpdateThread(this.currentLevel);
-			this.removeThread = new RemoveThread(this.currentLevel);
-			this.endGameThread = new EndGameThread(this.currentLevel, this.levelActivity);
 			this.collisionThread.start();
+		}
+		if (this.updateThread == null || this.updateThread.isCanceled()) {
+			this.updateThread = new UpdateThread(this.currentLevel);
 			this.updateThread.start();
+		}
+		if (this.removeThread == null || this.removeThread.isCanceled()) {
+			this.removeThread = new RemoveThread(this.currentLevel);
 			this.removeThread.start();
+		}
+		if (this.endGameThread == null || this.endGameThread.isCanceled()) {
+			this.endGameThread = new EndGameThread(this.currentLevel, this.levelActivity);
 			this.endGameThread.start();
-			this.threadRunning = true;
 		}
 	}
 
 	private void killThread() {
-		if (this.threadRunning) {
-			this.collisionThread.setCanceled(true);
-			this.updateThread.setCanceled(true);
-			this.removeThread.setCanceled(true);
-			this.endGameThread.setCanceled(true);
-			try {
-				this.collisionThread.join();
-				this.updateThread.join();
-				this.removeThread.join();
-				this.endGameThread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.threadRunning = false;
+		this.collisionThread.cancel();
+		this.updateThread.cancel();
+		this.removeThread.cancel();
+		this.endGameThread.cancel();
+		try {
+			this.collisionThread.join();
+			this.updateThread.join();
+			this.removeThread.join();
+			this.endGameThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 

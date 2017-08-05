@@ -3,7 +3,8 @@ package com.samuelberrien.odyspace.objects.baseitem.shooters;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -48,22 +49,36 @@ public class Turret extends BaseItem implements Shooter {
 		this.rockets = rockets;
 	}
 
-	public void makeExplosion(Context context) {
-		this.explosion = new Explosion(context, super.diffColorBuffer, 10, 0.05f, 1f, 2f, 1.0f, 1.5f);
+	@Override
+	protected Explosion getExplosion() {
+		return new Explosion.ExplosionBuilder().setNbParticules(10)
+				.setLimitSpeedAlife(0.05f)
+				.setLimitScale(1f)
+				.setMaxScale(2f)
+				.setLimitSpeed(1f)
+				.setMaxSpeed(1.5f)
+				.makeExplosion(context, super.diffColorBuffer);
 	}
 
-	public void addExplosion(List<Explosion> explosions) {
-		this.explosion.setPosition(super.mPosition.clone());
-		explosions.add(this.explosion);
+	@Override
+	protected Explosion getExplosion(ObjModel particule) {
+		return new Explosion.ExplosionBuilder().setNbParticules(10)
+				.setLimitSpeedAlife(0.05f)
+				.setLimitScale(1f)
+				.setMaxScale(2f)
+				.setLimitSpeed(1f)
+				.setMaxSpeed(1.5f)
+				.makeExplosion(particule, diffColorBuffer);
 	}
 
 	@Override
 	public void fire() {
-		if (this.rand.nextFloat() < 1e-2f) {
-			float[] speedVec = Vector.normalize3f(super.vector3fTo(this.ship));
+		float[] vectorTo = super.vector3fTo(this.ship);
+		if (Vector.length3f(vectorTo) < 200f && this.rand.nextFloat() < 1e-2f) {
+			float[] speedVec = Vector.normalize3f(vectorTo);
 			float[] originaleVec = new float[]{0f, 0f, 1f};
-			float[] rotAxis = new float[3];
-			float angle = Vector.computeRotationAngle(originaleVec, speedVec, Vector.originalUp3f, rotAxis);
+			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
+			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
 			this.fireType.fire(this.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f, ship);
@@ -76,7 +91,7 @@ public class Turret extends BaseItem implements Shooter {
 		float[] u = new float[]{shipPos[0] - super.mPosition[0], 0f, shipPos[2] - super.mPosition[2]};
 		float[] v = new float[]{0f, 0f, 1f};
 
-		float[] cross = Vector.normalize3f(Vector.cross3f(Vector.normalize3f(u), Vector.normalize3f(v)));
+		float[] cross = Vector.normalize3f(Vector.cross3f(Vector.normalize3f(v), Vector.normalize3f(u)));
 		double angle = Math.acos(Vector.dot3f(Vector.normalize3f(u), Vector.normalize3f(v)));
 
 		Matrix.setRotateM(super.mRotationMatrix, 0, (float) Math.toDegrees(angle), cross[0], cross[1], cross[2]);

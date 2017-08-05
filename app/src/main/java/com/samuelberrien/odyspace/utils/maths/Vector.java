@@ -11,6 +11,10 @@ import android.opengl.Matrix;
 
 public final class Vector {
 
+	/**
+	 * Float functions
+	 */
+
 	public final static float[] originalUp3f = new float[]{0f, 1f, 0f};
 	public final static float[] originalUp4f = new float[]{0f, 1f, 0f, 0f};
 
@@ -74,23 +78,6 @@ public final class Vector {
 		return new float[]{to[0] - from[0], to[1] - from[1], to[2] - from[2]};
 	}
 
-	public static float computeRotationAngle(float[] from, float[] to, float[] n, float[] rotAxisSource) {
-		Vector.checkBound(from, 3);
-		Vector.checkBound(to, 3);
-		Vector.checkBound(n, 3);
-		Vector.checkBound(rotAxisSource, 3);
-
-		float[] cross = Vector.cross3f(from, to);
-		for (int i = 0; i < rotAxisSource.length; i++) {
-			rotAxisSource[i] = cross[i];
-		}
-		/**
-		 * You need to come up with a fixed normal vector, n, specifying the plane in in which a and b will always lie. Then, you modify your formula as follows
-		 * theta = atan2 ( abs( cross (a, b) ), dot (a, b) ) * sign( dot( cross(a,b), n) )
-		 */
-		return (float)  Math.toDegrees(Math.atan2(Vector.length3f(cross), Vector.dot3f(from, to)) * Math.signum(Vector.dot3f(cross, n))); //Math.toDegrees(Math.atan2(Vector.dot3f(cross, new float[]{0f, 1f, 0f}), Vector.dot3f(from, to)));
-	}
-
 	/**
 	 * Double functions
 	 */
@@ -146,7 +133,7 @@ public final class Vector {
 
 	public static double length3d(double[] u) {
 		Vector.checkBound(u, 3);
-		return (double) Math.sqrt(Math.pow(u[0], 2d) + Math.pow(u[1], 2d) + Math.pow(u[2], 2d));
+		return Math.sqrt(Math.pow(u[0], 2d) + Math.pow(u[1], 2d) + Math.pow(u[2], 2d));
 	}
 
 	public static double[] make3d(double[] from, double[] to) {

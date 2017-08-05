@@ -3,6 +3,8 @@ package com.samuelberrien.odyspace.objects.baseitem.shooters.boss;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -79,5 +81,15 @@ public class FstBoss extends Boss {
 		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
 		return mModelMatrix;
+	}
+
+	@Override
+	protected Explosion getExplosion() {
+		throw new UnsupportedOperationException("FstBoss.getExplosion()");
+	}
+
+	@Override
+	protected Explosion getExplosion(ObjModel particule) {
+		throw new UnsupportedOperationException("FstBoss.getExplosion(ObjModel particule)");
 	}
 }

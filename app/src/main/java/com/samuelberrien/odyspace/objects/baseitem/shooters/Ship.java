@@ -5,9 +5,10 @@ import android.content.SharedPreferences;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.GamePad;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Shooter;
@@ -40,9 +41,6 @@ public class Ship extends BaseItem implements Shooter {
 
 	private int maxLife;
 	private ProgressBar lifeDraw;
-
-	private Explosion mExplosion;
-	private boolean exploded;
 
 	private List<BaseItem> rockets;
 
@@ -89,7 +87,6 @@ public class Ship extends BaseItem implements Shooter {
 		this.maxLife = life;
 		this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
 		this.fireType = fireType;
-		this.exploded = false;
 		this.mBoostSpeed = 0f;
 		this.gamePad = gamePad;
 	}
@@ -100,18 +97,6 @@ public class Ship extends BaseItem implements Shooter {
 
 	public void setFireType(FireType newFireType) {
 		this.fireType = newFireType;
-	}
-
-	public void addExplosion(List<Explosion> explosions) {
-		if (!this.exploded) {
-			this.mExplosion.setPosition(this.mPosition.clone());
-			explosions.add(this.mExplosion);
-			this.exploded = true;
-		}
-	}
-
-	public void makeExplosion() {
-		this.mExplosion = new Explosion(context, super.diffColorBuffer, 10, 0.16f, 1f, 1f, 0.4f, 0.6f);
 	}
 
 	@Override
@@ -156,6 +141,16 @@ public class Ship extends BaseItem implements Shooter {
 
 			super.mModelMatrix = mModelMatrix;
 		}
+	}
+
+	@Override
+	protected Explosion getExplosion() {
+		return new Explosion.ExplosionBuilder().makeExplosion(context, super.diffColorBuffer);
+	}
+
+	@Override
+	protected Explosion getExplosion(ObjModel particule) {
+		return new Explosion.ExplosionBuilder().makeExplosion(particule, super.diffColorBuffer);
 	}
 
 	@Override

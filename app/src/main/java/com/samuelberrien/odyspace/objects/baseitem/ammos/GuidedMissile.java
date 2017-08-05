@@ -12,39 +12,61 @@ import com.samuelberrien.odyspace.utils.maths.Vector;
 
 public class GuidedMissile extends Ammos {
 
-	private static int Life = 1;
-	private static float Scale = 1f;
-	private static int Max_Duration = 900;
-	private static float coefAngle = 180f;
+	private final static int Life = 1;
+	private final static float Scale = 1f;
+	private final static double AngleLimitInit = 50d;
+	private final static float LimitLength = 20f;
+	private final static int Auto_Destruction_Max_Duration = 200;
 
 	private Item target;
 	private int currentDuration;
-
+	private double angle;
+	private boolean willAutoDestruct;
+	private boolean willReduceAngle;
 
 	public GuidedMissile(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed, Item target) {
 		super(objModelMtl, mPosition, mSpeed, new float[3], mRotationMatrix, maxSpeed, Scale, Life);
 		this.target = target;
 		this.currentDuration = 0;
+		this.angle = AngleLimitInit;
+		this.willAutoDestruct = false;
+		this.willReduceAngle = false;
 	}
 
 
 	@Override
 	public void update() {
-		float[] toTargetVec = Vector.normalize3f(Vector.make3f(super.clonePosition(), target.clonePosition()));
-		float[] realSpeed = new float[]{super.mSpeed[0], super.mSpeed[1], super.mSpeed[2], 0f};
-		float[] realUp = new float[4];
-		Matrix.multiplyMV(realUp, 0, super.mRotationMatrix, 0, Vector.originalUp4f, 0);
-		Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, realSpeed.clone(), 0);
-		realSpeed = Vector.normalize3f(new float[]{realSpeed[0], realSpeed[1], realSpeed[2]});
-		realUp = Vector.normalize3f(new float[]{realUp[0], realUp[1], realUp[2]});
+		float[] speedVec = Vector.normalize3f(Vector.make3f(super.clonePosition(), target.clonePosition()));
+		float[] originaleVec = new float[]{0f, 0f, 1f};
 
-		float[] rotAxis = new float[3];
-		float angle = Vector.computeRotationAngle(realSpeed, toTargetVec, realUp, rotAxis); //Math.toDegrees(Math.atan2(Vector.dot3f(cross, new float[]{0f, 1f, 0f}), Vector.dot3f(toTargetVec, realSpeed)));
-		if (Vector.length3f(Vector.make3f(super.mPosition, target.clonePosition())) > 10f) {
+		float[] vecRepereMissile = new float[]{0f, 0f, 1f, 0f};
+		Matrix.multiplyMV(vecRepereMissile, 0, super.mRotationMatrix, 0, vecRepereMissile.clone(), 0);
+
+		float length = Vector.length3f(Vector.make3f(super.clonePosition(), target.clonePosition()));
+		if(length < LimitLength) {
+			this.willReduceAngle = true;
+		}
+		if (this.willReduceAngle) {
+			this.angle -= length * AngleLimitInit / LimitLength;
+			this.angle = this.angle <= 0d ? 0d : this.angle;
+		}
+
+		double angleWithTarget = Math.acos(Vector.dot3f(speedVec, new float[]{vecRepereMissile[0], vecRepereMissile[1], vecRepereMissile[2]})) * 360d / (Math.PI * 2d);
+		if (this.angle > angleWithTarget) {
+			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
+			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
-			Matrix.setRotateM(tmpMat, 0, /*angle < coefAngle && angle > -coefAngle ? angle : Math.signum(angle) * coefAngle*/ angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			Matrix.multiplyMM(tmpMat, 0, super.mRotationMatrix, 0, tmpMat.clone(), 0);
+			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
 			super.mRotationMatrix = tmpMat;
+		} else {
+			this.willAutoDestruct = true;
+		}
+
+		if (this.willAutoDestruct) {
+			this.currentDuration++;
+			if (this.currentDuration > Auto_Destruction_Max_Duration) {
+				super.life = 0;
+			}
 		}
 
 		super.update();

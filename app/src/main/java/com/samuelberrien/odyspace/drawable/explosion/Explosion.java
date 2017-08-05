@@ -1,9 +1,10 @@
-package com.samuelberrien.odyspace.drawable;
+package com.samuelberrien.odyspace.drawable.explosion;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -20,30 +21,80 @@ import java.util.Random;
 
 public class Explosion implements GLItemDrawable {
 
+	public static class ExplosionBuilder {
+		private int nbParticules = 3;
+		private float limitSpeedAlife = 0.16f;
+		private float limitScale = 0.8f;
+		private float maxScale = 1.2f;
+		private float limitSpeed = 0.4f;
+		private float maxSpeed = 0.6f;
+
+		public ExplosionBuilder() {
+		}
+
+		public ExplosionBuilder setNbParticules(int nbParticules) {
+			this.nbParticules = nbParticules;
+			return this;
+		}
+
+		public ExplosionBuilder setLimitSpeedAlife(float limitSpeedAlife) {
+			this.limitSpeedAlife = limitSpeedAlife;
+			return this;
+		}
+
+		public ExplosionBuilder setLimitScale(float limitScale) {
+			this.limitScale = limitScale;
+			return this;
+		}
+
+		public ExplosionBuilder setMaxScale(float maxScale) {
+			this.maxScale = maxScale;
+			return this;
+		}
+
+		public ExplosionBuilder setLimitSpeed(float limitSpeed) {
+			this.limitSpeed = limitSpeed;
+			return this;
+		}
+
+		public ExplosionBuilder setMaxSpeed(float maxSpeed) {
+			this.maxSpeed = maxSpeed;
+			return this;
+		}
+
+		public Explosion makeExplosion(Context context, FloatBuffer mDiffColor) {
+			return new Explosion(context, mDiffColor, this);
+		}
+
+		public Explosion makeExplosion(ObjModel particule, FloatBuffer mDiffColor) {
+			return new Explosion(particule, mDiffColor, this);
+		}
+	}
+
 	private ArrayList<Particule> particules;
 	private ObjModel particule;
 	private final float limitSpeedAlife;
 	private float[] initialPos;
 
-	public Explosion(Context context, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
-		this.limitSpeedAlife = limitSpeedAlife;
+	private Explosion(Context context, FloatBuffer mDiffColor, /*int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed*/ExplosionBuilder explosionBuilder) {
+		this.limitSpeedAlife = explosionBuilder.limitSpeedAlife;
 		this.particules = new ArrayList<>();
 		Random rand = new Random(System.currentTimeMillis());
 		this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
 		this.particule.setColor(mDiffColor);
-		for (int i = 0; i < nbParticule; i++) {
-			this.particules.add(new Particule(rand, limitScale, maxScale, limitSpeed, maxSpeed));
+		for (int i = 0; i < explosionBuilder.nbParticules; i++) {
+			this.particules.add(new Particule(rand, explosionBuilder.limitScale, explosionBuilder.maxScale, explosionBuilder.limitSpeed, explosionBuilder.maxSpeed));
 		}
 	}
 
-	public Explosion(ObjModel particule, FloatBuffer mDiffColor, int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
-		this.limitSpeedAlife = limitSpeedAlife;
+	private Explosion(ObjModel particule, FloatBuffer mDiffColor, /*int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed*/ExplosionBuilder explosionBuilder) {
+		this.limitSpeedAlife = explosionBuilder.limitSpeedAlife;
 		this.particules = new ArrayList<>();
 		Random rand = new Random(System.currentTimeMillis());
 		this.particule = particule;
 		this.particule.setColor(mDiffColor);
-		for (int i = 0; i < nbParticule; i++) {
-			this.particules.add(new Particule(rand, limitScale, maxScale, limitSpeed, maxSpeed));
+		for (int i = 0; i < explosionBuilder.nbParticules; i++) {
+			this.particules.add(new Particule(rand, explosionBuilder.limitScale, explosionBuilder.maxScale, explosionBuilder.limitSpeed, explosionBuilder.maxSpeed));
 		}
 	}
 

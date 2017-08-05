@@ -3,7 +3,9 @@ package com.samuelberrien.odyspace.objects.baseitem;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.GLItemDrawable;
+import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Ray;
@@ -21,7 +23,7 @@ import java.util.List;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, UpdatableItem {
+public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, UpdatableItem {
 
 	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
@@ -46,6 +48,9 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, Up
 
 	private static float RayMaxRand = Float.MAX_VALUE * 0.5f;
 	private boolean isDanger;
+
+	private Explosion mExplosion;
+	private boolean exploded;
 
 	public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
@@ -169,4 +174,24 @@ public class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, Up
 		Matrix.multiplyMM(mvpMatrix, 0, pMatrix, 0, mvMatrix, 0);
 		super.draw(mvpMatrix, mvMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
+
+	public final void addExplosion(List<Explosion> explosions) {
+		if (!this.exploded) {
+			this.mExplosion.setPosition(this.mPosition.clone());
+			explosions.add(this.mExplosion);
+			this.exploded = true;
+		}
+	}
+
+	public final void makeExplosion() {
+		this.mExplosion = this.getExplosion();
+	}
+
+	public final void makeExplosion(ObjModel particule) {
+		this.mExplosion = this.getExplosion(particule);
+	}
+
+	protected abstract Explosion getExplosion();
+
+	protected abstract Explosion getExplosion(ObjModel particule);
 }

@@ -2,7 +2,7 @@ package com.samuelberrien.odyspace.objects.baseitem;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
@@ -32,16 +32,29 @@ public class Base extends BaseItem {
 		return Integer.MAX_VALUE - 1;
 	}
 
-	public void makeExplosion() {
-		this.mExplosion = new Explosion(super.context, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+	@Override
+	protected Explosion getExplosion() {
+		return new Explosion.ExplosionBuilder().setNbParticules(40)
+				.setLimitSpeedAlife(0.16f)
+				.setLimitScale(5f)
+				.setMaxScale(7f)
+				.setLimitSpeed(6f)
+				.setMaxSpeed(10f)
+				.makeExplosion(context, diffColorBuffer);
 	}
 
-	public void makeExplosion(ObjModel particule) {
-		this.mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+	@Override
+	protected Explosion getExplosion(ObjModel particule) {
+		return new Explosion.ExplosionBuilder().setNbParticules(40)
+				.setLimitSpeedAlife(0.16f)
+				.setLimitScale(5f)
+				.setMaxScale(7f)
+				.setLimitSpeed(6f)
+				.setMaxSpeed(10f)
+				.makeExplosion(particule, diffColorBuffer);
 	}
 
-	public void addExplosion(List<Explosion> explosions) {
-		this.mExplosion.setPosition(this.mPosition.clone());
-		explosions.add(this.mExplosion);
-	}
+
+	//this.mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+
 }

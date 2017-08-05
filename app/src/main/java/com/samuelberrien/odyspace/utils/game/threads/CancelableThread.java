@@ -16,14 +16,18 @@ public abstract class CancelableThread extends Thread {
 	private boolean isCanceled;
 	protected Level level;
 
-	public CancelableThread(String threadName, Level level) {
+	CancelableThread(String threadName, Level level) {
 		super(threadName);
 		this.isCanceled = false;
 		this.level = level;
 	}
 
-	public void setCanceled(boolean canceled) {
-		this.isCanceled = canceled;
+	public void cancel() {
+		this.isCanceled = true;
+	}
+
+	public boolean isCanceled() {
+		return this.isCanceled;
 	}
 
 	public abstract void afterInit();
@@ -32,8 +36,6 @@ public abstract class CancelableThread extends Thread {
 
 	protected void waitRequiredTime(long t1) {
 		try {
-			/*long waitTime = this.TIME_TO_WAIT - (System.currentTimeMillis() - t1);
-			Thread.sleep(waitTime >= 0 ? waitTime : 0);*/
 			Thread.sleep(TIME_TO_WAIT);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
@@ -52,7 +54,7 @@ public abstract class CancelableThread extends Thread {
 		while (!this.isCanceled) {
 			long t1 = System.currentTimeMillis();
 			this.work();
-			this.waitRequiredTime(t1);
+			this.waitRequiredTime(System.currentTimeMillis() - t1);
 		}
 	}
 }

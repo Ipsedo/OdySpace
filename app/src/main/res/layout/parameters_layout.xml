@@ -8,12 +8,17 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5">
+        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/drawable_corner"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -21,11 +26,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Set volume :"
+                android:text="Device volume : "
                 android:textAlignment="textStart"/>
 
             <SeekBar
-                android:id="@+id/volume_seek_bar"
+                android:id="@+id/device_volume_seek_bar"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/set_effect_volume_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Effect volume : "
+                android:textAlignment="textStart"/>
+
+            <SeekBar
+                android:id="@+id/effect_volume_seek_bar"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -53,7 +72,9 @@
         android:layout_height="@dimen/size_scroll_view_pause"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_corner">
+        android:background="@drawable/drawable_corner"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +102,9 @@
         android:layout_height="@dimen/size_scroll_view_pause"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_corner">
+        android:background="@drawable/drawable_corner"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,14 +1,9 @@
 package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.os.Build;
 
-import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.Compass;
-import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
@@ -27,6 +22,7 @@ import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Triangle;
 import com.samuelberrien.odyspace.utils.maths.Vector;
+import com.samuelberrien.odyspace.utils.sounds.SoundPoolBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,19 +61,13 @@ public class TestProtectionLevel implements Level {
 
 	private boolean isInit = false;
 
-	//private long startTime;
-
 	private ProgressBar currLevelProgression;
 	private static int maxLevelTime = 1 << 14;
 	private int currLevelTime;
 
 	private Random rand;
 
-	private SoundPool mSounds;
-	private int simpleBoomSoundId;
-	private int bigBoomSoundId;
-
-	//private long levelTime = 1000L * 60L * 3L;
+	private SoundPoolBuilder soundPoolBuilder;
 
 	@Override
 	public void init(Context context, Ship ship, float levelLimitSize) {
@@ -104,7 +94,6 @@ public class TestProtectionLevel implements Level {
 		this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		this.directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
 
-		//this.startTime = System.currentTimeMillis();
 
 		this.rand = new Random(System.currentTimeMillis());
 
@@ -127,19 +116,7 @@ public class TestProtectionLevel implements Level {
 
 		this.currLevelProgression = new ProgressBar(this.context, maxLevelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
-		if (Build.VERSION.SDK_INT >= 21) {
-			this.mSounds = new SoundPool.Builder().setMaxStreams(20)
-					.setAudioAttributes(new AudioAttributes.Builder()
-							.setUsage(AudioAttributes.USAGE_GAME)
-							.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-							.build())
-					.build();
-		} else {
-			this.mSounds = new SoundPool(20, AudioManager.STREAM_MUSIC, 1);
-		}
-
-		this.simpleBoomSoundId = this.mSounds.load(this.context, R.raw.simple_boom, 1);
-		this.bigBoomSoundId = this.mSounds.load(this.context, R.raw.big_boom, 1);
+		this.soundPoolBuilder = new SoundPoolBuilder(this.context);
 
 		this.ship.makeExplosion();
 
@@ -257,7 +234,7 @@ public class TestProtectionLevel implements Level {
 			if (!this.icosahedrons.get(i).isAlive()) {
 				Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
 				ico.addExplosion(this.explosions);
-				this.mSounds.play(this.simpleBoomSoundId, this.getSoundLevel(ico), this.getSoundLevel(ico), 1, 0, 1f);
+				this.soundPoolBuilder.playSimpleBoom(this.getSoundLevel(ico), this.getSoundLevel(ico));
 				this.icosahedrons.remove(i);
 			} else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
 				this.icosahedrons.remove(i);
@@ -281,7 +258,7 @@ public class TestProtectionLevel implements Level {
 
 		for (int i = this.bases.size() - 1; i >= 0; i--)
 			if (!this.bases.get(i).isAlive()) {
-				this.mSounds.play(this.bigBoomSoundId, this.getSoundLevel(this.bases.get(i)), this.getSoundLevel(this.bases.get(i)), 1, 0, 1f);
+				this.soundPoolBuilder.playBigBoom(this.getSoundLevel(this.bases.get(i)), this.getSoundLevel(this.bases.get(i)));
 				((Base) this.bases.get(i)).addExplosion(this.explosions);
 				this.bases.remove(i);
 			}

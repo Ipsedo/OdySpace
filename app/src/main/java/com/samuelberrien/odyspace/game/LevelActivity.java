@@ -76,13 +76,32 @@ public class LevelActivity extends AppCompatActivity {
 				LayoutInflater inflater = LevelActivity.this.getLayoutInflater();
 				View layout = inflater.inflate(R.layout.parameters_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
 
-				SeekBar sb = (SeekBar) layout.findViewById(R.id.volume_seek_bar);
+				SeekBar sb = (SeekBar) layout.findViewById(R.id.device_volume_seek_bar);
 				final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 				sb.setMax(tmp.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
 				sb.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
 				sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 						tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);
+					}
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+					}
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+					}
+				});
+
+				sb = (SeekBar) layout.findViewById(R.id.effect_volume_seek_bar);
+				sb.setMax(100);
+				sb.setProgress(gamePreferences.getInt(getString(R.string.saved_sound_effect_volume), 100));
+				sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+						gamePreferences.edit()
+								.putInt(getString(R.string.saved_sound_effect_volume), progress)
+								.apply();
 					}
 
 					@Override
