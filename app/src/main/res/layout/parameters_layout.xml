@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/parameters_layout_id"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              android:baselineAligned="false">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
 
             <SeekBar
                 android:id="@+id/effect_volume_seek_bar"
-                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                style="@style/Widget.AppCompat.SeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

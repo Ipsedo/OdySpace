@@ -1,12 +1,23 @@
 package com.samuelberrien.odyspace.utils.main;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.main.MainActivity;
+import com.samuelberrien.odyspace.utils.game.Purchases;
 
 /**
  * Created by samuel on 05/07/17.
@@ -77,5 +88,107 @@ public final class ItemImageViewMaker {
 				return true;
 			}
 		});
+	}
+
+	public static View makeSelectItemView(final Activity activity, Purchases type) {
+		final SharedPreferences savedShop = activity.getApplicationContext().getSharedPreferences(activity.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
+		final SharedPreferences savedShip = activity.getApplicationContext().getSharedPreferences(activity.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+		View v = activity.getLayoutInflater().inflate(R.layout.select_item_layout, (LinearLayout) activity.findViewById(R.id.select_item_layout));
+		TextView textView = (TextView) v.findViewById(R.id.select_item_text);
+		final String[] items;
+		RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.select_item_radio_group);
+		switch (type) {
+			case SHIP:
+				textView.setText("Bought ships");
+				items = activity.getResources().getStringArray(R.array.ship_shop_list_item);
+				final int[] lifeList = activity.getResources().getIntArray(R.array.ship_life_shop_list_item);
+				for (int i = 1; i < items.length; i++) {
+					int rBool = items[i].equals(activity.getString(R.string.ship_simple)) ? R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(items[i], activity.getResources().getBoolean(rBool))) {
+						RadioButton tmpRadioButton = new RadioButton(activity);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+						radioGroup.addView(tmpRadioButton);
+						tmpRadioButton.setText(items[i]);
+
+						final int index = i;
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								savedShip.edit()
+										.putString(activity.getString(R.string.current_ship_used), items[index])
+										.putInt(activity.getString(R.string.current_life_number), lifeList[index - 1])
+										.apply();
+							}
+						});
+
+						if (savedShip.getString(activity.getString(R.string.current_ship_used), activity.getString(R.string.saved_ship_used_default)).equals(items[index])) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
+				}
+				break;
+			case FIRE:
+				textView.setText("Bought fires");
+				items = activity.getResources().getStringArray(R.array.fire_shop_list_item);
+				for (int i = 0; i < items.length; i++) {
+					int rBool = items[i].equals(activity.getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(items[i], activity.getResources().getBoolean(rBool))) {
+						RadioButton tmpRadioButton = new RadioButton(activity);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+						radioGroup.addView(tmpRadioButton);
+						tmpRadioButton.setText(items[i]);
+
+						final int index = i;
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								savedShip.edit()
+										.putString(activity.getString(R.string.current_fire_type), items[index])
+										.apply();
+							}
+						});
+
+						if (savedShip.getString(activity.getString(R.string.current_fire_type), activity.getString(R.string.saved_fire_type_default)).equals(items[index])) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
+				}
+				break;
+			case BONUS:
+				textView.setText("Bought bonus");
+				items = activity.getResources().getStringArray(R.array.bonus_shop_list_item);
+				final int[] durationList = activity.getResources().getIntArray(R.array.bonus_duration_shop_list_item);
+				for (int i = 1; i < items.length; i++) {
+					int rBool = items[i].equals(activity.getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
+					boolean bool = activity.getResources().getBoolean(rBool);
+					if (savedShop.getBoolean(items[i], bool)) {
+						RadioButton tmpRadioButton = new RadioButton(activity);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+						radioGroup.addView(tmpRadioButton);
+						tmpRadioButton.setText(items[i]);
+
+						final int index = i;
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								savedShip.edit()
+										.putString(activity.getString(R.string.current_bonus_used), items[index])
+										.putInt(activity.getString(R.string.current_bonus_duration), durationList[index - 1])
+										.apply();
+							}
+						});
+
+						if (savedShip.getString(activity.getString(R.string.current_bonus_used), activity.getString(R.string.bonus_1)).equals(items[index])) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
+				}
+				break;
+		}
+
+		return v;
 	}
 }

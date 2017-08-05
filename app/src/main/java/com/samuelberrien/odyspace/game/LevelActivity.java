@@ -28,6 +28,7 @@ import android.widget.SeekBar;
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.utils.main.ViewHelper;
 
 public class LevelActivity extends AppCompatActivity {
 
@@ -63,7 +64,7 @@ public class LevelActivity extends AppCompatActivity {
 
 		this.pauseButton = new Button(this);
 		this.pauseButton.setVisibility(View.GONE);
-		this.pauseButton.setBackground(ContextCompat.getDrawable(this, R.drawable.button_pause_game));
+		this.pauseButton.setBackground(ContextCompat.getDrawable(this, R.drawable.transition_pause_button));
 		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(this.getScreenHeight() / 15, this.getScreenHeight() / 15);
 		tmp.setMargins(0, this.getScreenHeight() / 50, 0, 0);
 		this.pauseButton.setLayoutParams(tmp);
@@ -71,163 +72,13 @@ public class LevelActivity extends AppCompatActivity {
 		this.pauseButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				ViewHelper.makeViewTransition(LevelActivity.this, pauseButton);
 				LevelActivity.this.mSurfaceView.pauseGame();
-
-				LayoutInflater inflater = LevelActivity.this.getLayoutInflater();
-				View layout = inflater.inflate(R.layout.parameters_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
-
-				SeekBar sb = (SeekBar) layout.findViewById(R.id.device_volume_seek_bar);
-				final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-				sb.setMax(tmp.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-				sb.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
-				sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-						tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);
-					}
-
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-					}
-
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-					}
-				});
-
-				sb = (SeekBar) layout.findViewById(R.id.effect_volume_seek_bar);
-				sb.setMax(100);
-				sb.setProgress(gamePreferences.getInt(getString(R.string.saved_sound_effect_volume), 100));
-				sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-						gamePreferences.edit()
-								.putInt(getString(R.string.saved_sound_effect_volume), progress)
-								.apply();
-					}
-
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-					}
-
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-					}
-				});
-
-				final CheckBox inverseJoystickCheckBox = (CheckBox) layout.findViewById(R.id.inverse_joystick_checkbox);
-				inverseJoystickCheckBox.setChecked(LevelActivity.this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
-				inverseJoystickCheckBox.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						LevelActivity.this.gamePreferences.edit()
-								.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
-								.apply();
-						LevelActivity.this.mSurfaceView.inversePitchJoystick(inverseJoystickCheckBox.isChecked());
-					}
-				});
-
-				final CheckBox switchYawRollCheckBox = (CheckBox) layout.findViewById(R.id.switch_yaw_roll_checkbox);
-				switchYawRollCheckBox.setChecked(LevelActivity.this.gamePreferences.getBoolean(getString(R.string.saved_yaw_roll_switched), getResources().getBoolean(R.bool.saved_yaw_roll_switched_default)));
-				switchYawRollCheckBox.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						LevelActivity.this.gamePreferences.edit()
-								.putBoolean(getString(R.string.saved_yaw_roll_switched), switchYawRollCheckBox.isChecked())
-								.apply();
-						LevelActivity.this.mSurfaceView.inverseYawRoll(switchYawRollCheckBox.isChecked());
-					}
-				});
-
-				/*ViewPager viewPager = (ViewPager) layout.findViewById(R.id.pause_view_pager);
-				viewPager.setAdapter(new PauseFragmentPagerAdapter(getSupportFragmentManager()));
-
-				TabLayout tabLayout = (TabLayout) layout.findViewById(R.id.pause_tab_layout);
-				tabLayout.setupWithViewPager(viewPager);*/
-
-				SharedPreferences savedShop = LevelActivity.this.getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
-				final SharedPreferences savedShip = LevelActivity.this.getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
-
-				RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.select_weapon_radio_group);
-				String[] fireType = LevelActivity.this.getResources().getStringArray(R.array.fire_shop_list_item);
-				for (final String fire : fireType) {
-					RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
-					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-					radioGroup.addView(tmpRadioButton);
-
-					tmpRadioButton.setText(fire);
-
-					int rBool = R.bool.faux;
-					final FireType fireTypeEnum;
-					if (fire.equals(getString(R.string.fire_4))) {
-						fireTypeEnum = FireType.TRIPLE_FIRE;
-					} else if (fire.equals(getString(R.string.fire_2))) {
-						fireTypeEnum = FireType.QUINT_FIRE;
-					} else if (fire.equals(getString(R.string.fire_3))) {
-						fireTypeEnum = FireType.SIMPLE_BOMB;
-					} else if (fire.equals(getString(R.string.fire_5))) {
-						fireTypeEnum = FireType.LASER;
-					} else if (fire.equals(getString(R.string.fire_6))) {
-						fireTypeEnum = FireType.TORUS;
-					} else {
-						rBool = R.bool.vrai;
-						fireTypeEnum = FireType.SIMPLE_FIRE;
-					}
-
-					if (savedShop.getBoolean(fire, getResources().getBoolean(rBool))) {
-						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								LevelActivity.this.mSurfaceView.setShipFireType(fireTypeEnum);
-								savedShip.edit()
-										.putString(getString(R.string.current_fire_type), fire)
-										.apply();
-							}
-						});
-					} else {
-						tmpRadioButton.setClickable(false);
-					}
-					if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(fire)) {
-						tmpRadioButton.setChecked(true);
-					}
-				}
-
-				radioGroup = (RadioGroup) layout.findViewById(R.id.select_bonus_radio_group);
-				String[] bonus = LevelActivity.this.getResources().getStringArray(R.array.bonus_shop_list_item);
-				for (final String item : bonus) {
-					if (!item.equals(getString(R.string.bought_duration))) {
-						RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
-						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-						radioGroup.addView(tmpRadioButton);
-
-						tmpRadioButton.setText(item);
-
-						int rBool = R.bool.faux;
-						if (item.equals(getString(R.string.bonus_1))) {
-							rBool = R.bool.vrai;
-						}
-
-						if (savedShop.getBoolean(item, getResources().getBoolean(rBool))) {
-							tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-								@Override
-								public void onClick(View view) {
-									//LevelActivity.this.mSurfaceView.setShipFireType(fireTypeEnum);
-									savedShip.edit()
-											.putString(getString(R.string.current_bonus_used), item)
-											.apply();
-								}
-							});
-						} else {
-							tmpRadioButton.setClickable(false);
-						}
-						if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(item)) {
-							tmpRadioButton.setChecked(true);
-						}
-					}
-				}
 
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
 						.setTitle("Pause menu")
-						.setView(layout)
-						.setNegativeButton("Quit level", new DialogInterface.OnClickListener() {
+						.setView(getPauseView())
+						.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 								LevelActivity.this.finish();
@@ -236,7 +87,6 @@ public class LevelActivity extends AppCompatActivity {
 						.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
-								LevelActivity.this.mSurfaceView.resumeGame();
 							}
 						})
 						.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -263,6 +113,160 @@ public class LevelActivity extends AppCompatActivity {
 
 		this.addContentView(this.progressBar, params);
 		this.addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+	}
+
+	private View getPauseView() {
+		LayoutInflater inflater = LevelActivity.this.getLayoutInflater();
+		View layout = inflater.inflate(R.layout.parameters_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
+
+		SeekBar sb = (SeekBar) layout.findViewById(R.id.device_volume_seek_bar);
+		final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		sb.setMax(tmp.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+		sb.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
+		sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
+
+		sb = (SeekBar) layout.findViewById(R.id.effect_volume_seek_bar);
+		sb.setMax(100);
+		sb.setProgress(gamePreferences.getInt(getString(R.string.saved_sound_effect_volume), 100));
+		sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				gamePreferences.edit()
+						.putInt(getString(R.string.saved_sound_effect_volume), progress)
+						.apply();
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
+
+		final CheckBox inverseJoystickCheckBox = (CheckBox) layout.findViewById(R.id.inverse_joystick_checkbox);
+		inverseJoystickCheckBox.setChecked(LevelActivity.this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
+		inverseJoystickCheckBox.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				LevelActivity.this.gamePreferences.edit()
+						.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
+						.apply();
+				LevelActivity.this.mSurfaceView.inversePitchJoystick(inverseJoystickCheckBox.isChecked());
+			}
+		});
+
+		final CheckBox switchYawRollCheckBox = (CheckBox) layout.findViewById(R.id.switch_yaw_roll_checkbox);
+		switchYawRollCheckBox.setChecked(LevelActivity.this.gamePreferences.getBoolean(getString(R.string.saved_yaw_roll_switched), getResources().getBoolean(R.bool.saved_yaw_roll_switched_default)));
+		switchYawRollCheckBox.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				gamePreferences.edit()
+						.putBoolean(getString(R.string.saved_yaw_roll_switched), switchYawRollCheckBox.isChecked())
+						.apply();
+				mSurfaceView.inverseYawRoll(switchYawRollCheckBox.isChecked());
+			}
+		});
+
+				/*ViewPager viewPager = (ViewPager) layout.findViewById(R.id.pause_view_pager);
+				viewPager.setAdapter(new PauseFragmentPagerAdapter(getSupportFragmentManager()));
+
+				TabLayout tabLayout = (TabLayout) layout.findViewById(R.id.pause_tab_layout);
+				tabLayout.setupWithViewPager(viewPager);*/
+
+		SharedPreferences savedShop = LevelActivity.this.getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
+		final SharedPreferences savedShip = LevelActivity.this.getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+
+		RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.select_weapon_radio_group);
+		String[] fireType = LevelActivity.this.getResources().getStringArray(R.array.fire_shop_list_item);
+		for (final String fire : fireType) {
+			RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
+			tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+			radioGroup.addView(tmpRadioButton);
+
+			tmpRadioButton.setText(fire);
+
+			int rBool = R.bool.faux;
+			final FireType fireTypeEnum;
+			if (fire.equals(getString(R.string.fire_4))) {
+				fireTypeEnum = FireType.TRIPLE_FIRE;
+			} else if (fire.equals(getString(R.string.fire_2))) {
+				fireTypeEnum = FireType.QUINT_FIRE;
+			} else if (fire.equals(getString(R.string.fire_3))) {
+				fireTypeEnum = FireType.SIMPLE_BOMB;
+			} else if (fire.equals(getString(R.string.fire_5))) {
+				fireTypeEnum = FireType.LASER;
+			} else if (fire.equals(getString(R.string.fire_6))) {
+				fireTypeEnum = FireType.TORUS;
+			} else {
+				rBool = R.bool.vrai;
+				fireTypeEnum = FireType.SIMPLE_FIRE;
+			}
+
+			if (savedShop.getBoolean(fire, getResources().getBoolean(rBool))) {
+				tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						mSurfaceView.setShipFireType(fireTypeEnum);
+						savedShip.edit()
+								.putString(getString(R.string.current_fire_type), fire)
+								.apply();
+					}
+				});
+			} else {
+				tmpRadioButton.setClickable(false);
+			}
+			if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(fire)) {
+				tmpRadioButton.setChecked(true);
+			}
+		}
+
+		radioGroup = (RadioGroup) layout.findViewById(R.id.select_bonus_radio_group);
+		String[] bonus = LevelActivity.this.getResources().getStringArray(R.array.bonus_shop_list_item);
+		for (final String item : bonus) {
+			if (!item.equals(getString(R.string.bought_duration))) {
+				RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
+				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+				radioGroup.addView(tmpRadioButton);
+
+				tmpRadioButton.setText(item);
+
+				int rBool = R.bool.faux;
+				if (item.equals(getString(R.string.bonus_1))) {
+					rBool = R.bool.vrai;
+				}
+
+				if (savedShop.getBoolean(item, getResources().getBoolean(rBool))) {
+					tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							//LevelActivity.this.mSurfaceView.setShipFireType(fireTypeEnum);
+							savedShip.edit()
+									.putString(getString(R.string.current_bonus_used), item)
+									.apply();
+						}
+					});
+				} else {
+					tmpRadioButton.setClickable(false);
+				}
+				if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(item)) {
+					tmpRadioButton.setChecked(true);
+				}
+			}
+		}
+		return layout;
 	}
 
 	private int getScreenWidth() {

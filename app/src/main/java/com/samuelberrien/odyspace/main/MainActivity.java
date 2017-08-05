@@ -7,23 +7,31 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.shop.ShopActivity;
+import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.utils.game.Purchases;
 import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
 import com.samuelberrien.odyspace.utils.main.ViewHelper;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -117,17 +125,158 @@ public class MainActivity extends AppCompatActivity {
 		final int currBoughtDuration = this.savedShop.getInt(getString(R.string.bought_duration), 0);
 
 
-		ImageView imageView = (ImageView) findViewById(R.id.fire_image_main);
-		ItemImageViewMaker.makeFireTypeImage(this, this.myToast, imageView, currFireType);
+		final ImageView imageView1 = (ImageView) findViewById(R.id.fire_image_main);
+		ItemImageViewMaker.makeFireTypeImage(this, this.myToast, imageView1, currFireType);
+		imageView1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ViewHelper.makeViewTransition(MainActivity.this, imageView1);
+				showDialog(ItemImageViewMaker.makeSelectItemView(MainActivity.this, Purchases.FIRE));
+			}
+		});
 
-		imageView = (ImageView) findViewById(R.id.ship_image_main);
-		ItemImageViewMaker.makeShipImage(this, this.myToast, imageView, shipUsed, currShipLife, currBoughtLife);
+		final ImageView imageView2 = (ImageView) findViewById(R.id.ship_image_main);
+		ItemImageViewMaker.makeShipImage(this, this.myToast, imageView2, shipUsed, currShipLife, currBoughtLife);
+		imageView2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ViewHelper.makeViewTransition(MainActivity.this, imageView2);
+				showDialog(ItemImageViewMaker.makeSelectItemView(MainActivity.this, Purchases.SHIP));
+			}
+		});
 
-		imageView = (ImageView) findViewById(R.id.bonus_image_main);
-		ItemImageViewMaker.makeBonusImage(this, this.myToast, imageView, bonusUsed, currBonusDuration, currBoughtDuration);
+		final ImageView imageView3 = (ImageView) findViewById(R.id.bonus_image_main);
+		ItemImageViewMaker.makeBonusImage(this, this.myToast, imageView3, bonusUsed, currBonusDuration, currBoughtDuration);
+		imageView3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ViewHelper.makeViewTransition(MainActivity.this, imageView3);
+				showDialog(ItemImageViewMaker.makeSelectItemView(MainActivity.this, Purchases.BONUS));
+			}
+		});
 
 		TextView textView = (TextView) findViewById(R.id.curr_money_main);
 		textView.setText(Integer.toString(currMoney).concat(" $"));
+	}
+
+
+	/*private View makeSelectItemView(Purchases type) {
+		View v = this.getLayoutInflater().inflate(R.layout.select_item_layout, (LinearLayout) findViewById(R.id.select_item_layout));
+		TextView textView = (TextView) v.findViewById(R.id.select_item_text);
+		final String[] items;
+		RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.select_item_radio_group);
+		switch (type) {
+			case SHIP:
+				textView.setText("Bought ships");
+				items = getResources().getStringArray(R.array.ship_shop_list_item);
+				final int[] lifeList = getResources().getIntArray(R.array.ship_life_shop_list_item);
+				for (int i = 0; i < items.length; i++) {
+					int rBool = items[i].equals(getString(R.string.ship_simple)) ? R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
+						RadioButton tmpRadioButton = new RadioButton(this);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+						radioGroup.addView(tmpRadioButton);
+						tmpRadioButton.setText(items[i]);
+
+						final int index = i;
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								savedShip.edit()
+										.putString(getString(R.string.current_ship_used), items[index])
+										.putInt(getString(R.string.current_life_number), lifeList[index])
+										.apply();
+							}
+						});
+
+						if (savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default)).equals(items[index])) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
+				}
+				break;
+			case FIRE:
+				textView.setText("Bought fire");
+				items = getResources().getStringArray(R.array.fire_shop_list_item);
+				for (int i = 0; i < items.length; i++) {
+					int rBool = items[i].equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
+						RadioButton tmpRadioButton = new RadioButton(this);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+						radioGroup.addView(tmpRadioButton);
+						tmpRadioButton.setText(items[i]);
+
+						final int index = i;
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								savedShip.edit()
+										.putString(getString(R.string.current_fire_type), items[index])
+										.apply();
+							}
+						});
+
+						if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(items[index])) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
+				}
+				break;
+			case BONUS:
+				textView.setText("Bought bonus");
+				items = getResources().getStringArray(R.array.bonus_shop_list_item);
+				final int[] durationList = getResources().getIntArray(R.array.bonus_duration_shop_list_item);
+				for (int i = 0; i < items.length; i++) {
+					int rBool = items[i].equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
+						RadioButton tmpRadioButton = new RadioButton(this);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+						radioGroup.addView(tmpRadioButton);
+						tmpRadioButton.setText(items[i]);
+
+						final int index = i;
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								savedShip.edit()
+										.putString(getString(R.string.current_bonus_used), items[index])
+										.putInt(getString(R.string.current_bonus_duration), durationList[index])
+										.apply();
+							}
+						});
+
+						if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(items[index])) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
+				}
+				break;
+		}
+
+		return v;
+	}*/
+
+	private void showDialog(View v) {
+		AlertDialog pauseDialog = new AlertDialog.Builder(this)
+				.setTitle("Item chooser")
+				.setView(v)
+				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+					}
+				})
+				.setOnDismissListener(new DialogInterface.OnDismissListener() {
+					@Override
+					public void onDismiss(DialogInterface dialogInterface) {
+						initGameInfo();
+					}
+				})
+				.create();
+		pauseDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.button_main));
+		pauseDialog.show();
 	}
 
 	private void resetSharedPref() {

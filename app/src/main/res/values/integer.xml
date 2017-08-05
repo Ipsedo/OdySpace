@@ -16,4 +16,13 @@
     <integer name="bonus_1_duration">300</integer>
     <integer name="bonus_2_cost">5000</integer>
     <integer name="bonus_2_duration">500</integer>
+    <integer-array name="ship_life_shop_list_item">
+        <item>20</item>
+        <item>50</item>
+        <item>200</item>
+    </integer-array>
+    <integer-array name="bonus_duration_shop_list_item">
+        <item>@integer/bonus_1_duration</item>
+        <item>@integer/bonus_2_duration</item>
+    </integer-array>
 </resources>

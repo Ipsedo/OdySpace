@@ -9,21 +9,10 @@
                 tools:context="com.samuelberrien.odyspace.shop.ShopActivity">
 
     <Button
-        android:id="@+id/use_item_button"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/components_height_main"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/margin_shop"
-        android:layout_marginTop="@dimen/margin_shop"
-        android:background="@drawable/transition_drawable_shop"
-        android:textAllCaps="false"
-        android:textSize="@dimen/shop_text_size"/>
-
-    <Button
         android:id="@+id/buy_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/components_height_main"
-        android:layout_below="@id/use_item_button"
+        android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/transition_drawable_shop"

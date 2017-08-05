@@ -13,4 +13,5 @@
     <dimen name="main_text_size">17sp</dimen>
     <dimen name="shop_text_size">17sp</dimen>
     <dimen name="shop_list_view_text_size">26sp</dimen>
+    <dimen name="select_item_scroll_view_height">100dp</dimen>
 </resources>
