@@ -36,7 +36,6 @@ public class TestBossThread implements Level {
 
 	private Ship ship;
 	private Box levelLimits;
-	//private HeightMap heightMap;
 	private CubeMap cubeMap;
 	private NoiseMap noiseMap;
 	private Boss boss;

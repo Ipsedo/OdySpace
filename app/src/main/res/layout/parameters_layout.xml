@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:checked="false"
+                android:layout_marginTop="20dp"
                 android:text="Inverse joystick Y-axis"/>
 
             <CheckBox

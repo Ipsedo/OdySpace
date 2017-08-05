@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects.baseitem.shooters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.opengl.Matrix;
+import android.os.Vibrator;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
@@ -46,6 +47,8 @@ public class Ship extends BaseItem implements Shooter {
 
 	private FireType fireType;
 
+	private Vibrator vibrator;
+
 	public static Ship makeShip(Context context, GamePad gamePad) {
 		SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 		SharedPreferences savedShop = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
@@ -63,9 +66,9 @@ public class Ship extends BaseItem implements Shooter {
 			shipFireType = FireType.QUINT_FIRE;
 		} else if (fireType.equals(context.getString(R.string.fire_3))) {
 			shipFireType = FireType.SIMPLE_BOMB;
-		} else if(fireType.equals(context.getString(R.string.fire_4))){
+		} else if (fireType.equals(context.getString(R.string.fire_4))) {
 			shipFireType = FireType.TRIPLE_FIRE;
-		} else if(fireType.equals(context.getString(R.string.fire_5))){
+		} else if (fireType.equals(context.getString(R.string.fire_5))) {
 			shipFireType = FireType.LASER;
 		} else {
 			shipFireType = FireType.TORUS;
@@ -89,6 +92,7 @@ public class Ship extends BaseItem implements Shooter {
 		this.fireType = fireType;
 		this.mBoostSpeed = 0f;
 		this.gamePad = gamePad;
+		this.vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	public void setRockets(List<BaseItem> rockets) {
@@ -158,6 +162,13 @@ public class Ship extends BaseItem implements Shooter {
 		if (super.isAlive() && this.gamePad.fire()) {
 			this.fireType.fire(this.rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
 		}
+	}
+
+	@Override
+	public void decrementLife(int minus) {
+		if (minus > 0 && super.life > 0)
+			vibrator.vibrate(50);
+		super.decrementLife(minus);
 	}
 
 	public float[] fromCamTo(BaseItem to) {

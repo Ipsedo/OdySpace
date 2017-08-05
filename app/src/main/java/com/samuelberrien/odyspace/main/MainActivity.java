@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 		this.continueButton = (Button) findViewById(R.id.continue_button);
 		this.shopButton = (Button) findViewById(R.id.shop_button);
 		this.myToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+		FireType.setNames(this);
 		this.initGameInfo();
 		this.initLevelChooser();
 	}
@@ -158,106 +159,6 @@ public class MainActivity extends AppCompatActivity {
 		TextView textView = (TextView) findViewById(R.id.curr_money_main);
 		textView.setText(Integer.toString(currMoney).concat(" $"));
 	}
-
-
-	/*private View makeSelectItemView(Purchases type) {
-		View v = this.getLayoutInflater().inflate(R.layout.select_item_layout, (LinearLayout) findViewById(R.id.select_item_layout));
-		TextView textView = (TextView) v.findViewById(R.id.select_item_text);
-		final String[] items;
-		RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.select_item_radio_group);
-		switch (type) {
-			case SHIP:
-				textView.setText("Bought ships");
-				items = getResources().getStringArray(R.array.ship_shop_list_item);
-				final int[] lifeList = getResources().getIntArray(R.array.ship_life_shop_list_item);
-				for (int i = 0; i < items.length; i++) {
-					int rBool = items[i].equals(getString(R.string.ship_simple)) ? R.bool.vrai : R.bool.faux;
-					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
-						RadioButton tmpRadioButton = new RadioButton(this);
-						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-						radioGroup.addView(tmpRadioButton);
-						tmpRadioButton.setText(items[i]);
-
-						final int index = i;
-						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								savedShip.edit()
-										.putString(getString(R.string.current_ship_used), items[index])
-										.putInt(getString(R.string.current_life_number), lifeList[index])
-										.apply();
-							}
-						});
-
-						if (savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default)).equals(items[index])) {
-							tmpRadioButton.setChecked(true);
-						}
-					}
-				}
-				break;
-			case FIRE:
-				textView.setText("Bought fire");
-				items = getResources().getStringArray(R.array.fire_shop_list_item);
-				for (int i = 0; i < items.length; i++) {
-					int rBool = items[i].equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
-					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
-						RadioButton tmpRadioButton = new RadioButton(this);
-						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-						radioGroup.addView(tmpRadioButton);
-						tmpRadioButton.setText(items[i]);
-
-						final int index = i;
-						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								savedShip.edit()
-										.putString(getString(R.string.current_fire_type), items[index])
-										.apply();
-							}
-						});
-
-						if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(items[index])) {
-							tmpRadioButton.setChecked(true);
-						}
-					}
-				}
-				break;
-			case BONUS:
-				textView.setText("Bought bonus");
-				items = getResources().getStringArray(R.array.bonus_shop_list_item);
-				final int[] durationList = getResources().getIntArray(R.array.bonus_duration_shop_list_item);
-				for (int i = 0; i < items.length; i++) {
-					int rBool = items[i].equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
-					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
-						RadioButton tmpRadioButton = new RadioButton(this);
-						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-						radioGroup.addView(tmpRadioButton);
-						tmpRadioButton.setText(items[i]);
-
-						final int index = i;
-						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								savedShip.edit()
-										.putString(getString(R.string.current_bonus_used), items[index])
-										.putInt(getString(R.string.current_bonus_duration), durationList[index])
-										.apply();
-							}
-						});
-
-						if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(items[index])) {
-							tmpRadioButton.setChecked(true);
-						}
-					}
-				}
-				break;
-		}
-
-		return v;
-	}*/
 
 	private void showDialog(View v) {
 		AlertDialog pauseDialog = new AlertDialog.Builder(this)

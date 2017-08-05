@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.utils.game;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.ammos.Bomb;
@@ -46,7 +47,40 @@ public enum FireType {
 		GUIDED_MISSILE.ammo = tmpRocket;
 	}
 
+	public static void setNames(Context context) {
+		SIMPLE_FIRE.name = context.getString(R.string.fire_1);
+		QUINT_FIRE.name = context.getString(R.string.fire_2);
+		SIMPLE_BOMB.name = context.getString(R.string.fire_3);
+		TRIPLE_FIRE.name = context.getString(R.string.fire_4);
+		LASER.name = context.getString(R.string.fire_5);
+		TORUS.name = context.getString(R.string.fire_6);
+		GUIDED_MISSILE.name = "GUIDED_MISSILE";
+	}
+
+	public static FireType getFireType(String name) {
+		if (name.equals(QUINT_FIRE.name)) {
+			return QUINT_FIRE;
+		} else if (name.equals(SIMPLE_BOMB.name)) {
+			return SIMPLE_BOMB;
+		} else if (name.equals(TRIPLE_FIRE.name)) {
+			return TRIPLE_FIRE;
+		} else if (name.equals(LASER.name)) {
+			return LASER;
+		} else if (name.equals(TORUS.name)) {
+			return TORUS;
+		} else if (name.equals(GUIDED_MISSILE.name)) {
+			return GUIDED_MISSILE;
+		} else {
+			return SIMPLE_FIRE;
+		}
+	}
+
+	private String name;
 	private ObjModelMtlVBO ammo;
+
+	private String getName() {
+		return this.name;
+	}
 
 	public void fire(List<BaseItem> rockets, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed, Item... targets) {
 		float[] tmpMat;

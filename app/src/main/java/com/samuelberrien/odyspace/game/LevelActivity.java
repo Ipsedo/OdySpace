@@ -125,7 +125,7 @@ public class LevelActivity extends AppCompatActivity {
 		sb.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
 		sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);
+				tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_VIBRATE);
 			}
 
 			@Override
@@ -180,42 +180,21 @@ public class LevelActivity extends AppCompatActivity {
 			}
 		});
 
-				/*ViewPager viewPager = (ViewPager) layout.findViewById(R.id.pause_view_pager);
-				viewPager.setAdapter(new PauseFragmentPagerAdapter(getSupportFragmentManager()));
-
-				TabLayout tabLayout = (TabLayout) layout.findViewById(R.id.pause_tab_layout);
-				tabLayout.setupWithViewPager(viewPager);*/
-
 		SharedPreferences savedShop = LevelActivity.this.getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		final SharedPreferences savedShip = LevelActivity.this.getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
 		RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.select_weapon_radio_group);
 		String[] fireType = LevelActivity.this.getResources().getStringArray(R.array.fire_shop_list_item);
 		for (final String fire : fireType) {
-			RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
-			tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-			radioGroup.addView(tmpRadioButton);
-
-			tmpRadioButton.setText(fire);
-
-			int rBool = R.bool.faux;
-			final FireType fireTypeEnum;
-			if (fire.equals(getString(R.string.fire_4))) {
-				fireTypeEnum = FireType.TRIPLE_FIRE;
-			} else if (fire.equals(getString(R.string.fire_2))) {
-				fireTypeEnum = FireType.QUINT_FIRE;
-			} else if (fire.equals(getString(R.string.fire_3))) {
-				fireTypeEnum = FireType.SIMPLE_BOMB;
-			} else if (fire.equals(getString(R.string.fire_5))) {
-				fireTypeEnum = FireType.LASER;
-			} else if (fire.equals(getString(R.string.fire_6))) {
-				fireTypeEnum = FireType.TORUS;
-			} else {
-				rBool = R.bool.vrai;
-				fireTypeEnum = FireType.SIMPLE_FIRE;
-			}
-
+			int rBool = fire.equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
 			if (savedShop.getBoolean(fire, getResources().getBoolean(rBool))) {
+				RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
+				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+				radioGroup.addView(tmpRadioButton);
+				tmpRadioButton.setText(fire);
+
+				final FireType fireTypeEnum = FireType.getFireType(fire);
+
 				tmpRadioButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
@@ -225,11 +204,9 @@ public class LevelActivity extends AppCompatActivity {
 								.apply();
 					}
 				});
-			} else {
-				tmpRadioButton.setClickable(false);
-			}
-			if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(fire)) {
-				tmpRadioButton.setChecked(true);
+				if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(fire)) {
+					tmpRadioButton.setChecked(true);
+				}
 			}
 		}
 
@@ -237,32 +214,27 @@ public class LevelActivity extends AppCompatActivity {
 		String[] bonus = LevelActivity.this.getResources().getStringArray(R.array.bonus_shop_list_item);
 		for (final String item : bonus) {
 			if (!item.equals(getString(R.string.bought_duration))) {
-				RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
-				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-				radioGroup.addView(tmpRadioButton);
-
-				tmpRadioButton.setText(item);
-
-				int rBool = R.bool.faux;
-				if (item.equals(getString(R.string.bonus_1))) {
-					rBool = R.bool.vrai;
-				}
-
+				int rBool = item.equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
 				if (savedShop.getBoolean(item, getResources().getBoolean(rBool))) {
+					RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
+					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					radioGroup.addView(tmpRadioButton);
+
+					tmpRadioButton.setText(item);
+
+					//TODO save duration...
+
 					tmpRadioButton.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							//LevelActivity.this.mSurfaceView.setShipFireType(fireTypeEnum);
 							savedShip.edit()
 									.putString(getString(R.string.current_bonus_used), item)
 									.apply();
 						}
 					});
-				} else {
-					tmpRadioButton.setClickable(false);
-				}
-				if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(item)) {
-					tmpRadioButton.setChecked(true);
+					if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(item)) {
+						tmpRadioButton.setChecked(true);
+					}
 				}
 			}
 		}
