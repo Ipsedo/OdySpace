@@ -182,5 +182,7 @@ class Boost extends Control {
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mBoostStickPoint.length / 3);
+
+		GLES20.glLineWidth(1f);
 	}
 }
