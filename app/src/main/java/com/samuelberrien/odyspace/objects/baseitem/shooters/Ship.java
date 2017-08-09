@@ -11,6 +11,7 @@ import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
+import com.samuelberrien.odyspace.utils.game.Bonus;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Shooter;
 import com.samuelberrien.odyspace.utils.graphics.Color;
@@ -46,6 +47,9 @@ public class Ship extends BaseItem implements Shooter {
 	private List<BaseItem> rockets;
 
 	private FireType fireType;
+	private Bonus bonus;
+	private int bonusDuration;
+	private int bonusDurationBought;
 
 	private Vibrator vibrator;
 
@@ -74,18 +78,29 @@ public class Ship extends BaseItem implements Shooter {
 			shipFireType = FireType.TORUS;
 		}
 
+		Bonus bonus;
+		String savedBonus = savedShip.getString(context.getString(R.string.current_bonus_used), context.getString(R.string.bonus_1));
+		int currBonusDur = savedShip.getInt(context.getString(R.string.current_bonus_duration), context.getResources().getInteger(R.integer.bonus_1_duration));
+		int bonusDurationBought = savedShop.getInt(context.getString(R.string.bought_duration), context.getResources().getInteger(R.integer.zero));
+
+		if (savedBonus.equals(context.getString(R.string.bonus_1))) {
+			bonus = Bonus.SPEED;
+		} else {
+			bonus = Bonus.SHIELD;
+		}
+
 		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
 
 		if (shipUsed.equals(context.getString(R.string.ship_bird))) {
-			return new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType, gamePad);
+			return new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		} else if (shipUsed.equals(context.getString(R.string.ship_supreme))) {
-			return new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType, gamePad);
+			return new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		} else {
-			return new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType, gamePad);
+			return new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		}
 	}
 
-	private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType, GamePad gamePad) {
+	private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType, GamePad gamePad, Bonus bonus, int bonusDuration, int bonusDurationBought) {
 		super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
 		this.maxLife = life;
 		this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
@@ -93,6 +108,9 @@ public class Ship extends BaseItem implements Shooter {
 		this.mBoostSpeed = 0f;
 		this.gamePad = gamePad;
 		this.vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+		this.bonus = bonus;
+		this.bonusDuration = bonusDuration;
+		this.bonusDurationBought = bonusDurationBought;
 	}
 
 	public void setRockets(List<BaseItem> rockets) {
@@ -101,6 +119,11 @@ public class Ship extends BaseItem implements Shooter {
 
 	public void setFireType(FireType newFireType) {
 		this.fireType = newFireType;
+	}
+
+	public void setBonus(Bonus bonus, int bonusDuration) {
+		this.bonus = bonus;
+		this.bonusDuration = bonusDuration;
 	}
 
 	@Override

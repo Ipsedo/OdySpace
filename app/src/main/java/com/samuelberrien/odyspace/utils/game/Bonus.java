@@ -7,8 +7,9 @@ package com.samuelberrien.odyspace.utils.game;
 public enum Bonus {
 
 	SPEED,
+	SHIELD,
 	PROTECTOR,
-	SHIELD;
+	REGEN;
 
 	private boolean isActive;
 }
