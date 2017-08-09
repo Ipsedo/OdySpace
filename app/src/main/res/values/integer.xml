@@ -25,4 +25,12 @@
         <item>@integer/bonus_1_duration</item>
         <item>@integer/bonus_2_duration</item>
     </integer-array>
+    <integer-array name="fire_shop_price">
+        <item>@integer/zero</item>
+        <item>@integer/quint_fire_cost</item>
+        <item>@integer/simple_bomb_cost</item>
+        <integer>@integer/triple_fire_cost</integer>
+        <integer>@integer/laser_cost</integer>
+        <integer>@integer/torus_cost</integer>
+    </integer-array>
 </resources>

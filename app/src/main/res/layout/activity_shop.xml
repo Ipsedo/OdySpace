@@ -8,7 +8,7 @@
     android:background="@color/colorMainLayout"
     tools:context="com.samuelberrien.odyspace.shop.ShopActivity">
 
-    <Button
+   <!-- <Button
         android:id="@+id/buy_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/components_height_main"
@@ -17,13 +17,13 @@
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/transition_drawable_shop"
         android:textAllCaps="false"
-        android:textSize="@dimen/shop_text_size" />
+        android:textSize="@dimen/shop_text_size" />-->
 
     <android.support.design.widget.TabLayout
         android:id="@+id/shop_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/components_height_main"
-        android:layout_below="@id/buy_button"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
         app:tabIndicatorColor="@color/pumpkin"

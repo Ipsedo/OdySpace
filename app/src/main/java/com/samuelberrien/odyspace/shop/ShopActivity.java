@@ -9,10 +9,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,10 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.utils.game.Purchases;
 import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
 import com.samuelberrien.odyspace.utils.main.ViewHelper;
+
+import java.util.ArrayList;
+
+import static android.view.View.GONE;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -32,7 +39,7 @@ public class ShopActivity extends AppCompatActivity {
 	private String currBonusItem;
 	private int currPrice;
 
-	private Button buyButton;
+	//private Button buyButton;
 
 	private TextView currMoneyTextView;
 
@@ -61,7 +68,7 @@ public class ShopActivity extends AppCompatActivity {
 		ViewPager viewPager = (ViewPager) findViewById(R.id.shop_view_pager);
 		viewPager.setAdapter(new ShopFragmentPagerAdapter(getSupportFragmentManager()));
 
-		this.buyButton = (Button) findViewById(R.id.buy_button);
+		/*this.buyButton = (Button) findViewById(R.id.buy_button);
 		this.buyButton.setVisibility(View.GONE);
 		this.buyButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -74,7 +81,7 @@ public class ShopActivity extends AppCompatActivity {
 					}
 				});
 			}
-		});
+		});*/
 
 		this.currMoneyTextView = (TextView) findViewById(R.id.shop_curr_money_text_view);
 		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
@@ -166,7 +173,7 @@ public class ShopActivity extends AppCompatActivity {
 			editor.putBoolean(this.currFireItem, true);
 			editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
 			editor.apply();
-			this.buyButton.setVisibility(View.GONE);
+			//this.buyButton.setVisibility(View.GONE);
 		} else if (!this.currShipItem.equals("") && currMoney >= this.currPrice) {
 			if (this.currShipItem.equals(getString(R.string.bought_life))) {
 				this.buyLife(editor, currMoney);
@@ -174,7 +181,7 @@ public class ShopActivity extends AppCompatActivity {
 				editor.putBoolean(this.currShipItem, true);
 				editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
 				editor.commit();
-				this.buyButton.setVisibility(View.GONE);
+				//this.buyButton.setVisibility(View.GONE);
 			}
 		} else if (!this.currBonusItem.equals("") && currMoney >= this.currPrice) {
 			if (this.currBonusItem.equals(getString(R.string.bought_duration))) {
@@ -183,7 +190,7 @@ public class ShopActivity extends AppCompatActivity {
 				editor.putBoolean(this.currBonusItem, true);
 				editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
 				editor.commit();
-				this.buyButton.setVisibility(View.GONE);
+				//this.buyButton.setVisibility(View.GONE);
 			}
 		} else {
 			this.myToast.setText("Can't buy it !");
@@ -217,7 +224,7 @@ public class ShopActivity extends AppCompatActivity {
 	}
 
 	public void setItemChosen(int page, int id) {
-		this.buyButton.setVisibility(View.GONE);
+		//this.buyButton.setVisibility(View.GONE);
 
 		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
 			this.fireTypeChosen(id);
@@ -228,11 +235,45 @@ public class ShopActivity extends AppCompatActivity {
 		}
 	}
 
-	public View setPageChosen(int page) {
-		this.buyButton.setVisibility(View.GONE);
+	public View setPageChosen(int page, LayoutInflater inflater, ViewGroup container) {
+		//this.buyButton.setVisibility(View.GONE);
+		LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.purchase_list, container, false).findViewById(R.id.layout_list_purchase);
+
+		final ArrayList<Button> buttonArrayList = new ArrayList<>();
+		final ArrayList<TextView> textViewArrayList = new ArrayList<>();
 
 		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
-			return null;
+			String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
+			int[] cost = getResources().getIntArray(R.array.fire_shop_price);
+			for(int i = 0; i < fires.length; i++) {
+				LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, (LinearLayout) findViewById(R.id.button_shop_layout));
+				TextView fireName = (TextView) buttons.findViewById(R.id.text_purchase);
+				fireName.setText(fires[i]);
+				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
+				buy.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				});
+				final TextView price = (TextView) buttons.findViewById(R.id.text_purchase_price);
+				price.setText(cost[i]);
+				buttonArrayList.add(buy);
+				textViewArrayList.add(price);
+				fireName.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						for(Button b : buttonArrayList)
+							b.setVisibility(View.GONE);
+						for(TextView t : textViewArrayList)
+							t.setVisibility(View.GONE);
+						buy.setVisibility(View.VISIBLE);
+						price.setVisibility(View.VISIBLE);
+					}
+				});
+				linearLayout.addView(buttons);
+			}
+			return linearLayout;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
 			return null;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
@@ -270,8 +311,8 @@ public class ShopActivity extends AppCompatActivity {
 		boolean currentPurchase = this.savedShop.getBoolean(getString(fireResId), defaultValue);
 		if (!currentPurchase) {
 			this.currPrice = getResources().getInteger(fireCostResId);
-			this.buyButton.setText("BUY IT (" + this.fireItem[indexFire] + " " + this.currPrice + "$)");
-			this.buyButton.setVisibility(View.VISIBLE);
+			/*this.buyButton.setText("BUY IT (" + this.fireItem[indexFire] + " " + this.currPrice + "$)");
+			this.buyButton.setVisibility(View.VISIBLE);*/
 		}
 
 		this.currFireItem = this.fireItem[indexFire];
@@ -283,8 +324,8 @@ public class ShopActivity extends AppCompatActivity {
 		int defaultValue = getResources().getInteger(R.integer.zero);
 		int currentValue = this.savedShop.getInt(getString(R.string.bought_life), defaultValue);
 		this.currPrice = (int) Math.pow(currentValue, 2d) * getResources().getInteger(R.integer.life_coeff_cost);
-		this.buyButton.setText("BUY IT (" + getString(R.string.bought_life) + " " + this.currPrice + "$)");
-		this.buyButton.setVisibility(View.VISIBLE);
+		/*this.buyButton.setText("BUY IT (" + getString(R.string.bought_life) + " " + this.currPrice + "$)");
+		this.buyButton.setVisibility(View.VISIBLE);*/
 	}
 
 	private void shipItemChosen(int id) {
@@ -311,8 +352,8 @@ public class ShopActivity extends AppCompatActivity {
 
 			if (!currentPurchase) {
 				this.currPrice = getResources().getInteger(itemCostResId);
-				this.buyButton.setText("BUY IT (" + this.shipItem[id] + " " + this.currPrice + "$)");
-				this.buyButton.setVisibility(View.VISIBLE);
+				/*this.buyButton.setText("BUY IT (" + this.shipItem[id] + " " + this.currPrice + "$)");
+				this.buyButton.setVisibility(View.VISIBLE);*/
 			}
 		}
 		this.currShipItem = this.shipItem[id];
@@ -324,8 +365,8 @@ public class ShopActivity extends AppCompatActivity {
 		int defaultValue = getResources().getInteger(R.integer.zero);
 		int currentValue = this.savedShop.getInt(getString(R.string.bought_duration), defaultValue);
 		this.currPrice = (int) Math.pow(currentValue, 2d) * getResources().getInteger(R.integer.life_coeff_cost);
-		this.buyButton.setText("BUY IT (" + getString(R.string.bought_duration) + " " + this.currPrice + "$)");
-		this.buyButton.setVisibility(View.VISIBLE);
+		/*this.buyButton.setText("BUY IT (" + getString(R.string.bought_duration) + " " + this.currPrice + "$)");
+		this.buyButton.setVisibility(View.VISIBLE);*/
 	}
 
 	private void bonusItemChosen(int id) {
@@ -350,8 +391,8 @@ public class ShopActivity extends AppCompatActivity {
 
 			if (!currentPurchase) {
 				this.currPrice = getResources().getInteger(itemCostResId);
-				this.buyButton.setText("BUY IT (" + this.bonusItem[id] + " " + this.currPrice + "$)");
-				this.buyButton.setVisibility(View.VISIBLE);
+				/*this.buyButton.setText("BUY IT (" + this.bonusItem[id] + " " + this.currPrice + "$)");
+				this.buyButton.setVisibility(View.VISIBLE);*/
 			}
 		}
 
