@@ -228,6 +228,19 @@ public class ShopActivity extends AppCompatActivity {
 		}
 	}
 
+	public View setPageChosen(int page) {
+		this.buyButton.setVisibility(View.GONE);
+
+		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
+			return null;
+		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
+			return null;
+		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
+			return null;
+		}
+		return null;
+	}
+
 	private void fireTypeChosen(int indexFire) {
 		int defaultFireResId = R.bool.faux;
 		int fireResId;
