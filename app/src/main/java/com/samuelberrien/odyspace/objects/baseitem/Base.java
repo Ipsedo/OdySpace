@@ -6,8 +6,6 @@ import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
-import java.util.List;
-
 /**
  * Created by samuel on 23/06/17.
  * Copyright samuel, 2016 - 2017.

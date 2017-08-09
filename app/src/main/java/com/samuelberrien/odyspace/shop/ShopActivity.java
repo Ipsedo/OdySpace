@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.utils.game.Purchases;
 import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
 import com.samuelberrien.odyspace.utils.main.ViewHelper;

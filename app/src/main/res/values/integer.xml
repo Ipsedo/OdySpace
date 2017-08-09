@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="saved_max_level_default">0</integer>
+    <integer name="saved_max_level_default">5</integer>
     <integer name="zero">0</integer>
     <integer name="quint_fire_cost">1000</integer>
     <integer name="triple_fire_cost">500</integer>

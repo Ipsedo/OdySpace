@@ -95,7 +95,8 @@ public class NoiseMap implements Item, Map {
 
 		this.bindBuffer();
 
-		this.makeBox();;
+		this.makeBox();
+		;
 	}
 
 	private void initPlan() {

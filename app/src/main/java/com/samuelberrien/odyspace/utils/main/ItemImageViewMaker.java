@@ -2,10 +2,8 @@ package com.samuelberrien.odyspace.utils.main;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.utils.game.Purchases;
 
 /**
@@ -37,9 +34,9 @@ public final class ItemImageViewMaker {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_bomb));
 		} else if (currFireType.equals(activity.getString(R.string.fire_4))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.triple_fire));
-		} else if(currFireType.equals(activity.getString(R.string.fire_5))) {
+		} else if (currFireType.equals(activity.getString(R.string.fire_5))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.laser));
-		} else if(currFireType.equals(activity.getString(R.string.fire_6))) {
+		} else if (currFireType.equals(activity.getString(R.string.fire_6))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.torus));
 		}
 		imageView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -75,7 +72,7 @@ public final class ItemImageViewMaker {
 	public static void makeBonusImage(final Activity activity, final Toast myToast, final ImageView imageView, final String bonusUsed, final int bonusDuration, final int currBoughtDurantion) {
 		if (bonusUsed.equals(activity.getString(R.string.bonus_1))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.speed));
-		} else if(bonusUsed.equals(activity.getString(R.string.bonus_2))) {
+		} else if (bonusUsed.equals(activity.getString(R.string.bonus_2))) {
 			imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.shield));
 		}
 

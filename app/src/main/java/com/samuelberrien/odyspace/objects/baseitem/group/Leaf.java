@@ -37,6 +37,7 @@ public abstract class Leaf extends BaseItem {
 
 	/**
 	 * Must modifiy BaseItem.mPosition, BaseItem.mSpeed, BaseItem.mAcceleration and not touch BaseItem.mModelMatrix
+	 *
 	 * @return the leaf modelMatrix
 	 */
 	protected abstract float[] computeLeafModelMatrix();

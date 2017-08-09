@@ -6,8 +6,6 @@ import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
-import java.util.List;
-
 /**
  * Created by samuel on 24/04/17.
  * Copyright samuel, 2016 - 2017.
@@ -51,8 +49,6 @@ public class Icosahedron extends BaseItem {
 
 
 	//this.mExplosion = new Explosion(super.context, super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);
-
-
 
 
 }

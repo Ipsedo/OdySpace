@@ -21,7 +21,7 @@ abstract class Control implements GLInfoDrawable {
 	}
 
 	void switchPointerID(int pointerID) {
-		if(this.pointerID >= 0)
+		if (this.pointerID >= 0)
 			this.pointerID = pointerID == 1 ? 0 : 1;
 	}
 

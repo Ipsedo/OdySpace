@@ -1,7 +1,5 @@
 package com.samuelberrien.odyspace.utils.maths;
 
-import android.opengl.Matrix;
-
 /**
  * Created by samuel on 19/04/17.
  * Copyright samuel, 2016 - 2017.

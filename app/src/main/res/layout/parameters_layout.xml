@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/parameters_layout_id"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal"
-              android:baselineAligned="false">
+    android:id="@+id/parameters_layout_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,13 +27,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Device volume : "
-                android:textAlignment="textStart"/>
+                android:textAlignment="textStart" />
 
             <SeekBar
                 android:id="@+id/device_volume_seek_bar"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/set_effect_volume_text"
@@ -41,13 +41,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Effect volume : "
-                android:textAlignment="textStart"/>
+                android:textAlignment="textStart" />
 
             <SeekBar
                 android:id="@+id/effect_volume_seek_bar"
                 style="@style/Widget.AppCompat.SeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <CheckBox
                 android:id="@+id/inverse_joystick_checkbox"
@@ -56,7 +56,7 @@
                 android:layout_marginStart="5dp"
                 android:checked="false"
                 android:layout_marginTop="20dp"
-                android:text="Inverse joystick Y-axis"/>
+                android:text="Inverse joystick Y-axis" />
 
             <CheckBox
                 android:id="@+id/switch_yaw_roll_checkbox"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:checked="false"
-                android:text="Switch Yaw and Roll"/>
+                android:text="Switch Yaw and Roll" />
         </LinearLayout>
     </ScrollView>
 
@@ -87,14 +87,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Fire"
-                android:textStyle="italic"/>
+                android:textStyle="italic" />
 
             <RadioGroup
                 android:id="@+id/select_weapon_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
 
@@ -117,13 +117,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Bonus"
-                android:textStyle="italic"/>
+                android:textStyle="italic" />
 
             <RadioGroup
                 android:id="@+id/select_bonus_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

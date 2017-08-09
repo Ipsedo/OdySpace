@@ -43,7 +43,7 @@ public class GuidedMissile extends Ammos {
 		Matrix.multiplyMV(vecRepereMissile, 0, super.mRotationMatrix, 0, vecRepereMissile.clone(), 0);
 
 		float length = Vector.length3f(Vector.make3f(super.clonePosition(), target.clonePosition()));
-		if(length < LimitLength) {
+		if (length < LimitLength) {
 			this.willReduceAngle = true;
 		}
 		if (this.willReduceAngle) {
