@@ -239,6 +239,7 @@ public class ShopActivity extends AppCompatActivity {
 	public View setPageChosen(int page, LayoutInflater inflater, ViewGroup container) {
 		//this.buyButton.setVisibility(View.GONE);
 		LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.purchase_list, container, false).findViewById(R.id.layout_list_purchase);
+		LinearLayout subLayout = (LinearLayout) linearLayout.findViewById(R.id.layout_list_purchase_scroll);
 
 		final ArrayList<Button> buttonArrayList = new ArrayList<>();
 		final ArrayList<TextView> textViewArrayList = new ArrayList<>();
@@ -271,7 +272,11 @@ public class ShopActivity extends AppCompatActivity {
 						buy.setVisibility(View.VISIBLE);
 					}
 				});
-				linearLayout.addView(buttons);
+				subLayout.addView(buttons);
+				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+				int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+				layoutParams.setMargins(margin, margin, margin, 0);
+				buttons.setLayoutParams(layoutParams);
 			}
 			return linearLayout;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
