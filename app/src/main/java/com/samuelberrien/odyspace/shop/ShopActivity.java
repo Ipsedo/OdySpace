@@ -27,8 +27,6 @@ import com.samuelberrien.odyspace.utils.main.ViewHelper;
 
 import java.util.ArrayList;
 
-import static android.view.View.GONE;
-
 public class ShopActivity extends AppCompatActivity {
 
 	private String[] fireItem;
@@ -244,34 +242,53 @@ public class ShopActivity extends AppCompatActivity {
 		final ArrayList<Button> buttonArrayList = new ArrayList<>();
 		final ArrayList<TextView> textViewArrayList = new ArrayList<>();
 
+		final SharedPreferences.Editor editor = this.savedShop.edit();
+
+
 		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
-			String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
-			int[] cost = getResources().getIntArray(R.array.fire_shop_price);
-			for(int i = 0; i < fires.length; i++) {
+			final String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
+			final int[] cost = getResources().getIntArray(R.array.fire_shop_price);
+			for (int i = 0; i < fires.length; i++) {
 				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, (LinearLayout) findViewById(R.id.button_shop_layout));
-				TextView fireName = (TextView) buttons.findViewById(R.id.text_purchase);
+				final TextView fireName = (TextView) buttons.findViewById(R.id.text_purchase);
 				fireName.setText(fires[i]);
 				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
+				final int index = i;
 				buy.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-
+						int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+						int currMoney = savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+						if (currMoney >= cost[index]) {
+							editor.putBoolean(fires[index], true);
+							editor.putInt(getString(R.string.saved_money), currMoney - cost[index]);
+							editor.apply();
+							fireName.setClickable(false);
+							buy.setVisibility(View.GONE);
+							currMoneyTextView.setText(Integer.toString(currMoney).concat(" $"));
+						}
 					}
 				});
-				/*final TextView price = (TextView) buttons.findViewById(R.id.text_purchase_price);
-				price.setText(Integer.toString(cost[i]));*/
 				buttonArrayList.add(buy);
-				//textViewArrayList.add(price);
+
 				fireName.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						for(Button b : buttonArrayList)
+						for (Button b : buttonArrayList)
 							b.setVisibility(View.GONE);
-						for(TextView t : textViewArrayList)
+						for (TextView t : textViewArrayList)
 							t.setVisibility(View.GONE);
 						buy.setVisibility(View.VISIBLE);
 					}
 				});
+
+				int rBool = fires[i].equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
+				if(savedShop.getBoolean(fires[i], getResources().getBoolean(rBool))){
+					fireName.setClickable(false);
+				} else {
+					fireName.setClickable(true);
+				}
+
 				subLayout.addView(buttons);
 				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 				int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
