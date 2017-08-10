@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,7 +247,7 @@ public class ShopActivity extends AppCompatActivity {
 			String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
 			int[] cost = getResources().getIntArray(R.array.fire_shop_price);
 			for(int i = 0; i < fires.length; i++) {
-				LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, (LinearLayout) findViewById(R.id.button_shop_layout));
+				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, (LinearLayout) findViewById(R.id.button_shop_layout));
 				TextView fireName = (TextView) buttons.findViewById(R.id.text_purchase);
 				fireName.setText(fires[i]);
 				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
@@ -256,10 +257,10 @@ public class ShopActivity extends AppCompatActivity {
 
 					}
 				});
-				final TextView price = (TextView) buttons.findViewById(R.id.text_purchase_price);
-				price.setText(cost[i]);
+				/*final TextView price = (TextView) buttons.findViewById(R.id.text_purchase_price);
+				price.setText(Integer.toString(cost[i]));*/
 				buttonArrayList.add(buy);
-				textViewArrayList.add(price);
+				//textViewArrayList.add(price);
 				fireName.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -268,13 +269,11 @@ public class ShopActivity extends AppCompatActivity {
 						for(TextView t : textViewArrayList)
 							t.setVisibility(View.GONE);
 						buy.setVisibility(View.VISIBLE);
-						price.setVisibility(View.VISIBLE);
 					}
 				});
 				linearLayout.addView(buttons);
 			}
 			return linearLayout;
-			//ooiijjjj
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
 			return null;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {

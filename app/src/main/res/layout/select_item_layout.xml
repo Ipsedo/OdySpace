@@ -8,7 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/select_item_scroll_view_height"
-        android:background="@drawable/drawable_corner"
+        android:background="@drawable/drawable_grey_corner"
         android:layout_margin="5dp"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">

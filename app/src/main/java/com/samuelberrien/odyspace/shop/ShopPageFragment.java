@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.drawable.maps.Map;
 
 /**
  * Created by samuel on 04/05/17.
@@ -44,13 +45,14 @@ public class ShopPageFragment extends Fragment {
 
 		ListView listView = (ListView) view;
 		if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
-			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.fire_shop_list_item)));
+			//listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.fire_shop_list_item)));
+			view = ((ShopActivity) getActivity()).setPageChosen(this.mPage - 1, inflater, container);
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
-			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.ship_shop_list_item)));
+			//listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.ship_shop_list_item)));
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
-			listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.bonus_shop_list_item)));
+			//listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.bonus_shop_list_item)));
 		}
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		/*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 				ShopPageFragment.this.getActivity().runOnUiThread(new Runnable() {
@@ -61,7 +63,7 @@ public class ShopPageFragment extends Fragment {
 				});
 			}
 		});
-		listView.setClickable(true);
+		listView.setClickable(true);*/
 
 		return view;
 	}

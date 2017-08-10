@@ -29,8 +29,8 @@
         <item>@integer/zero</item>
         <item>@integer/quint_fire_cost</item>
         <item>@integer/simple_bomb_cost</item>
-        <integer>@integer/triple_fire_cost</integer>
-        <integer>@integer/laser_cost</integer>
-        <integer>@integer/torus_cost</integer>
+        <item>@integer/triple_fire_cost</item>
+        <item>@integer/laser_cost</item>
+        <item>@integer/torus_cost</item>
     </integer-array>
 </resources>

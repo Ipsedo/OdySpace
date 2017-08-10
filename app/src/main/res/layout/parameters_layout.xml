@@ -12,7 +12,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_weight="0.5"
-        android:background="@drawable/drawable_corner"
+        android:background="@drawable/drawable_grey_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
@@ -73,7 +73,7 @@
         android:layout_height="@dimen/size_scroll_view_pause"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_corner"
+        android:background="@drawable/drawable_grey_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
@@ -103,7 +103,7 @@
         android:layout_height="@dimen/size_scroll_view_pause"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_corner"
+        android:background="@drawable/drawable_grey_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
