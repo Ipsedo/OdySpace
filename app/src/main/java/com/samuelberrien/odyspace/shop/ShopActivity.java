@@ -29,17 +29,6 @@ import java.util.ArrayList;
 
 public class ShopActivity extends AppCompatActivity {
 
-	private String[] fireItem;
-	private String[] shipItem;
-	private String[] bonusItem;
-
-	private String currFireItem;
-	private String currShipItem;
-	private String currBonusItem;
-	private int currPrice;
-
-	//private Button buyButton;
-
 	private TextView currMoneyTextView;
 
 	private SharedPreferences savedShop;
@@ -51,36 +40,12 @@ public class ShopActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.fireItem = getResources().getStringArray(R.array.fire_shop_list_item);
-		this.shipItem = getResources().getStringArray(R.array.ship_shop_list_item);
-		this.bonusItem = getResources().getStringArray(R.array.bonus_shop_list_item);
-
-		this.currFireItem = "";
-		this.currShipItem = "";
-		this.currBonusItem = "";
-		this.currPrice = 0;
-
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.activity_shop);
 
 		ViewPager viewPager = (ViewPager) findViewById(R.id.shop_view_pager);
 		viewPager.setAdapter(new ShopFragmentPagerAdapter(getSupportFragmentManager()));
-
-		/*this.buyButton = (Button) findViewById(R.id.buy_button);
-		this.buyButton.setVisibility(View.GONE);
-		this.buyButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				ViewHelper.makeViewTransition(ShopActivity.this, ShopActivity.this.buyButton);
-				ShopActivity.this.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						ShopActivity.this.buy();
-					}
-				});
-			}
-		});*/
 
 		this.currMoneyTextView = (TextView) findViewById(R.id.shop_curr_money_text_view);
 		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
@@ -162,66 +127,6 @@ public class ShopActivity extends AppCompatActivity {
 		pauseDialog.show();
 	}
 
-	public void buy() {
-		SharedPreferences.Editor editor = this.savedShop.edit();
-
-		int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
-
-		if (!this.currFireItem.equals("") && currMoney >= this.currPrice) {
-			editor.putBoolean(this.currFireItem, true);
-			editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
-			editor.apply();
-			//this.buyButton.setVisibility(View.GONE);
-		} else if (!this.currShipItem.equals("") && currMoney >= this.currPrice) {
-			if (this.currShipItem.equals(getString(R.string.bought_life))) {
-				this.buyLife(editor, currMoney);
-			} else {
-				editor.putBoolean(this.currShipItem, true);
-				editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
-				editor.commit();
-				//this.buyButton.setVisibility(View.GONE);
-			}
-		} else if (!this.currBonusItem.equals("") && currMoney >= this.currPrice) {
-			if (this.currBonusItem.equals(getString(R.string.bought_duration))) {
-				this.buyDuration(editor, currMoney);
-			} else {
-				editor.putBoolean(this.currBonusItem, true);
-				editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
-				editor.commit();
-				//this.buyButton.setVisibility(View.GONE);
-			}
-		} else {
-			this.myToast.setText("Can't buy it !");
-			this.myToast.show();
-		}
-
-		currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
-		this.currMoneyTextView.setText(Integer.toString(currMoney).concat(" $"));
-
-		this.updateShipInfo();
-	}
-
-	private void buyLife(SharedPreferences.Editor editor, int currMoney) {
-		int defaultValue = getResources().getInteger(R.integer.zero);
-		int currentValue = this.savedShop.getInt(getString(R.string.bought_life), defaultValue);
-		editor.putInt(getString(R.string.bought_life), currentValue + 1);
-		editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
-		editor.commit();
-
-		this.updateLifePrice();
-	}
-
-	private void buyDuration(SharedPreferences.Editor editor, int currMoney) {
-		int defaultValue = getResources().getInteger(R.integer.zero);
-		int currentValue = this.savedShop.getInt(getString(R.string.bought_duration), defaultValue);
-		editor.putInt(getString(R.string.bought_duration), currentValue + 10);
-		editor.putInt(getString(R.string.saved_money), currMoney - this.currPrice);
-		editor.commit();
-
-		this.updateDurationPrice();
-	}
-
 	private void insertPrice(int price) {
 		int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
 		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
@@ -233,9 +138,12 @@ public class ShopActivity extends AppCompatActivity {
 		LinearLayout subLayout = (LinearLayout) linearLayout.findViewById(R.id.layout_list_purchase_scroll);
 
 		final ArrayList<Button> buttonArrayList = new ArrayList<>();
-		final ArrayList<TextView> textViewArrayList = new ArrayList<>();
 
 		final SharedPreferences.Editor editor = this.savedShop.edit();
+
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+		layoutParams.setMargins(margin, margin, margin, 0);
 
 		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
 			final String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
@@ -249,8 +157,7 @@ public class ShopActivity extends AppCompatActivity {
 				buy.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-						int currMoney = savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+						int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 						if (currMoney >= cost[index]) {
 							editor.putBoolean(fires[index], true);
 							editor.putInt(getString(R.string.saved_money), currMoney - cost[index]);
@@ -262,14 +169,11 @@ public class ShopActivity extends AppCompatActivity {
 					}
 				});
 				buttonArrayList.add(buy);
-
 				fireName.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						for (Button b : buttonArrayList)
 							b.setVisibility(View.GONE);
-						for (TextView t : textViewArrayList)
-							t.setVisibility(View.GONE);
 						insertPrice(cost[index]);
 						buy.setVisibility(View.VISIBLE);
 					}
@@ -283,12 +187,8 @@ public class ShopActivity extends AppCompatActivity {
 					buy.setClickable(true);
 				}
 				subLayout.addView(buttons);
-				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-				int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
-				layoutParams.setMargins(margin, margin, margin, 0);
 				buttons.setLayoutParams(layoutParams);
 			}
-			return linearLayout;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
 			final String[] shipsItem = getResources().getStringArray(R.array.ship_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.ship_shop_price);
@@ -298,18 +198,18 @@ public class ShopActivity extends AppCompatActivity {
 				shipItemName.setText(shipsItem[i]);
 				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
 				final int index = i;
-				if(index == 0) {
+				if (index == 0) {
 					buy.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-							int currMoney = savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+							int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 							int currentBoughtLife = savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.zero));
 							int lifeCost = (int) Math.pow(currentBoughtLife, 2d) * cost[index];
 							if (currMoney >= lifeCost) {
 								editor.putInt(getString(R.string.bought_life), currentBoughtLife + 1);
 								editor.putInt(getString(R.string.saved_money), currMoney - lifeCost);
 								editor.apply();
+								lifeCost = (int) Math.pow(savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.zero)), 2d) * cost[index];
 								insertPrice(lifeCost);
 								updateShipInfo();
 							}
@@ -321,8 +221,6 @@ public class ShopActivity extends AppCompatActivity {
 						public void onClick(View v) {
 							for (Button b : buttonArrayList)
 								b.setVisibility(View.GONE);
-							for (TextView t : textViewArrayList)
-								t.setVisibility(View.GONE);
 							int currentBoughtLife = savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.zero));
 							int lifeCost = (int) Math.pow(currentBoughtLife, 2d) * cost[index];
 							insertPrice(lifeCost);
@@ -333,8 +231,7 @@ public class ShopActivity extends AppCompatActivity {
 					buy.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-							int currMoney = savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+							int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 							if (currMoney >= cost[index]) {
 								editor.putBoolean(shipsItem[index], true);
 								editor.putInt(getString(R.string.saved_money), currMoney - cost[index]);
@@ -351,14 +248,12 @@ public class ShopActivity extends AppCompatActivity {
 						public void onClick(View v) {
 							for (Button b : buttonArrayList)
 								b.setVisibility(View.GONE);
-							for (TextView t : textViewArrayList)
-								t.setVisibility(View.GONE);
 							insertPrice(cost[index]);
 							buy.setVisibility(View.VISIBLE);
 						}
 					});
 
-					int rBool = shipsItem[i].equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
+					int rBool = shipsItem[i].equals(getString(R.string.ship_simple)) ? R.bool.vrai : R.bool.faux;
 					if (savedShop.getBoolean(shipsItem[i], getResources().getBoolean(rBool))) {
 						buy.setClickable(false);
 						buy.setBackground(ContextCompat.getDrawable(this, R.drawable.drawable_already_buy_button));
@@ -367,96 +262,83 @@ public class ShopActivity extends AppCompatActivity {
 					}
 				}
 				subLayout.addView(buttons);
-				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-				int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
-				layoutParams.setMargins(margin, margin, margin, 0);
 				buttons.setLayoutParams(layoutParams);
 			}
-			return linearLayout;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
-			return linearLayout;
-		}
-		return null;
-	}
+			final String[] bonusItem = getResources().getStringArray(R.array.bonus_shop_list_item);
+			final int[] cost = getResources().getIntArray(R.array.bonus_shop_price);
+			for (int i = 0; i < bonusItem.length; i++) {
+				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, null);
+				final TextView bonusItemName = (TextView) buttons.findViewById(R.id.text_purchase);
+				bonusItemName.setText(bonusItem[i]);
+				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
+				final int index = i;
+				if (index == 0) {
+					buy.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							int currentBoughtDuration = savedShop.getInt(getString(R.string.bought_duration), getResources().getInteger(R.integer.zero));
+							int currentPrice = (int) Math.pow(currentBoughtDuration / 10, 2d) * cost[index];
+							int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
+							if(currMoney >= currentPrice) {
+								editor.putInt(getString(R.string.bought_duration), currentBoughtDuration + 10);
+								editor.putInt(getString(R.string.saved_money), currMoney - currentPrice);
+								editor.commit();
+								insertPrice((int) Math.pow(savedShop.getInt(getString(R.string.bought_duration), getResources().getInteger(R.integer.zero)) / 10, 2d) * getResources().getInteger(R.integer.life_coeff_cost));
+								updateShipInfo();
+							}
+						}
+					});
+					buttonArrayList.add(buy);
+					bonusItemName.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							for (Button b : buttonArrayList)
+								b.setVisibility(View.GONE);
+							int currentBoughtDuration = savedShop.getInt(getString(R.string.bought_duration), getResources().getInteger(R.integer.zero));
+							int lifeCost = (int) Math.pow(currentBoughtDuration / 10, 2d) * cost[index];
+							insertPrice(lifeCost);
+							buy.setVisibility(View.VISIBLE);
+						}
+					});
+				} else {
+					buy.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
+							if (currMoney >= cost[index]) {
+								editor.putBoolean(bonusItem[index], true);
+								editor.putInt(getString(R.string.saved_money), currMoney - cost[index]);
+								editor.apply();
+								buy.setClickable(false);
+								buy.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.drawable_already_buy_button));
+								insertPrice(cost[index]);
+							}
+						}
+					});
+					buttonArrayList.add(buy);
+					bonusItemName.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							for (Button b : buttonArrayList)
+								b.setVisibility(View.GONE);
+							insertPrice(cost[index]);
+							buy.setVisibility(View.VISIBLE);
+						}
+					});
 
-
-
-	private void updateLifePrice() {
-
-		/*this.buyButton.setText("BUY IT (" + getString(R.string.bought_life) + " " + this.currPrice + "$)");
-		this.buyButton.setVisibility(View.VISIBLE);*/
-	}
-
-	private void shipItemChosen(int id) {
-		if (this.shipItem[id].equals(getString(R.string.bought_life))) {
-			this.updateLifePrice();
-		} else {
-			int defaultItemResId = R.bool.faux;
-			int itemResId;
-			int itemCostResId;
-			if (this.shipItem[id].equals(getString(R.string.ship_bird))) {
-				itemResId = R.string.ship_bird;
-				itemCostResId = R.integer.ship_bird_cost;
-			} else if (this.shipItem[id].equals(getString(R.string.ship_supreme))) {
-				itemResId = R.string.ship_supreme;
-				itemCostResId = R.integer.ship_supreme_cost;
-			} else {
-				defaultItemResId = R.bool.vrai;
-				itemResId = R.string.ship_simple;
-				itemCostResId = R.integer.zero;
-			}
-
-			boolean defaultValue = getResources().getBoolean(defaultItemResId);
-			boolean currentPurchase = this.savedShop.getBoolean(getString(itemResId), defaultValue);
-
-			if (!currentPurchase) {
-				this.currPrice = getResources().getInteger(itemCostResId);
-				/*this.buyButton.setText("BUY IT (" + this.shipItem[id] + " " + this.currPrice + "$)");
-				this.buyButton.setVisibility(View.VISIBLE);*/
-			}
-		}
-		this.currShipItem = this.shipItem[id];
-		this.currBonusItem = "";
-		this.currFireItem = "";
-	}
-
-	private void updateDurationPrice() {
-		int defaultValue = getResources().getInteger(R.integer.zero);
-		int currentValue = this.savedShop.getInt(getString(R.string.bought_duration), defaultValue);
-		this.currPrice = (int) Math.pow(currentValue, 2d) * getResources().getInteger(R.integer.life_coeff_cost);
-		/*this.buyButton.setText("BUY IT (" + getString(R.string.bought_duration) + " " + this.currPrice + "$)");
-		this.buyButton.setVisibility(View.VISIBLE);*/
-	}
-
-	private void bonusItemChosen(int id) {
-		if (this.bonusItem[id].equals(getString(R.string.bought_duration))) {
-			this.updateDurationPrice();
-		} else {
-			int defaultItemResId = R.bool.faux;
-			int itemResId;
-			int itemCostResId;
-
-			if (this.bonusItem[id].equals(getString(R.string.bonus_1))) {
-				defaultItemResId = R.bool.vrai;
-				itemResId = R.string.bonus_1;
-				itemCostResId = R.integer.zero;
-			} else {
-				itemResId = R.string.bonus_2;
-				itemCostResId = R.integer.bonus_2_cost;
-			}
-
-			boolean defaultValue = getResources().getBoolean(defaultItemResId);
-			boolean currentPurchase = this.savedShop.getBoolean(getString(itemResId), defaultValue);
-
-			if (!currentPurchase) {
-				this.currPrice = getResources().getInteger(itemCostResId);
-				/*this.buyButton.setText("BUY IT (" + this.bonusItem[id] + " " + this.currPrice + "$)");
-				this.buyButton.setVisibility(View.VISIBLE);*/
+					int rBool = bonusItem[i].equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(bonusItem[i], getResources().getBoolean(rBool))) {
+						buy.setClickable(false);
+						buy.setBackground(ContextCompat.getDrawable(this, R.drawable.drawable_already_buy_button));
+					} else {
+						buy.setClickable(true);
+					}
+				}
+				subLayout.addView(buttons);
+				buttons.setLayoutParams(layoutParams);
 			}
 		}
-
-		this.currShipItem = "";
-		this.currBonusItem = this.bonusItem[id];
-		this.currFireItem = "";
+		return linearLayout;
 	}
 }
