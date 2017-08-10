@@ -274,6 +274,7 @@ public class ShopActivity extends AppCompatActivity {
 				linearLayout.addView(buttons);
 			}
 			return linearLayout;
+			//ooiijjjj
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
 			return null;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
