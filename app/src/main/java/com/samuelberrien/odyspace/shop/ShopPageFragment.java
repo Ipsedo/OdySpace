@@ -5,12 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.maps.Map;
 
 /**
  * Created by samuel on 04/05/17.
@@ -42,29 +38,6 @@ public class ShopPageFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_page, container, false);
-
-		ListView listView = (ListView) view;
-		if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
-			//listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.fire_shop_list_item)));
-			view = ((ShopActivity) getActivity()).setPageChosen(this.mPage - 1, inflater, container);
-		} else if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
-			//listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.ship_shop_list_item)));
-		} else if (ShopFragmentPagerAdapter.TAB_TITLES[this.mPage - 1].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
-			//listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.shop_text_view, getResources().getStringArray(R.array.bonus_shop_list_item)));
-		}
-		/*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-				ShopPageFragment.this.getActivity().runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						((ShopActivity) ShopPageFragment.this.getActivity()).setItemChosen(ShopPageFragment.this.mPage - 1, i);
-					}
-				});
-			}
-		});
-		listView.setClickable(true);*/
-
-		return view;
+		return ((ShopActivity) getActivity()).setPageChosen(this.mPage - 1, inflater, container);
 	}
 }

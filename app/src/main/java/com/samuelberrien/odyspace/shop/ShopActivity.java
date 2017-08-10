@@ -222,20 +222,13 @@ public class ShopActivity extends AppCompatActivity {
 		this.updateDurationPrice();
 	}
 
-	public void setItemChosen(int page, int id) {
-		//this.buyButton.setVisibility(View.GONE);
-
-		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
-			this.fireTypeChosen(id);
-		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
-			this.shipItemChosen(id);
-		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
-			this.bonusItemChosen(id);
-		}
+	private void insertPrice(int price) {
+		int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+		int currMoney = this.savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+		this.currMoneyTextView.setText(Integer.toString(currMoney).concat(" (-" + price + ") $"));
 	}
 
 	public View setPageChosen(int page, LayoutInflater inflater, ViewGroup container) {
-		//this.buyButton.setVisibility(View.GONE);
 		LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.purchase_list, container, false).findViewById(R.id.layout_list_purchase);
 		LinearLayout subLayout = (LinearLayout) linearLayout.findViewById(R.id.layout_list_purchase_scroll);
 
@@ -244,12 +237,11 @@ public class ShopActivity extends AppCompatActivity {
 
 		final SharedPreferences.Editor editor = this.savedShop.edit();
 
-
 		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
 			final String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.fire_shop_price);
 			for (int i = 0; i < fires.length; i++) {
-				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, (LinearLayout) findViewById(R.id.button_shop_layout));
+				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, null);
 				final TextView fireName = (TextView) buttons.findViewById(R.id.text_purchase);
 				fireName.setText(fires[i]);
 				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
@@ -263,9 +255,9 @@ public class ShopActivity extends AppCompatActivity {
 							editor.putBoolean(fires[index], true);
 							editor.putInt(getString(R.string.saved_money), currMoney - cost[index]);
 							editor.apply();
-							fireName.setClickable(false);
-							buy.setVisibility(View.GONE);
-							currMoneyTextView.setText(Integer.toString(currMoney).concat(" $"));
+							buy.setClickable(false);
+							buy.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.drawable_already_buy_button));
+							insertPrice(cost[index]);
 						}
 					}
 				});
@@ -278,17 +270,18 @@ public class ShopActivity extends AppCompatActivity {
 							b.setVisibility(View.GONE);
 						for (TextView t : textViewArrayList)
 							t.setVisibility(View.GONE);
+						insertPrice(cost[index]);
 						buy.setVisibility(View.VISIBLE);
 					}
 				});
 
-				int rBool = fires[i].equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
-				if(savedShop.getBoolean(fires[i], getResources().getBoolean(rBool))){
-					fireName.setClickable(false);
+				int rBool = fires[i].equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
+				if (savedShop.getBoolean(fires[i], getResources().getBoolean(rBool))) {
+					buy.setClickable(false);
+					buy.setBackground(ContextCompat.getDrawable(this, R.drawable.drawable_already_buy_button));
 				} else {
-					fireName.setClickable(true);
+					buy.setClickable(true);
 				}
-
 				subLayout.addView(buttons);
 				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 				int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
@@ -297,55 +290,99 @@ public class ShopActivity extends AppCompatActivity {
 			}
 			return linearLayout;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
-			return null;
+			final String[] shipsItem = getResources().getStringArray(R.array.ship_shop_list_item);
+			final int[] cost = getResources().getIntArray(R.array.ship_shop_price);
+			for (int i = 0; i < shipsItem.length; i++) {
+				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, null);
+				final TextView shipItemName = (TextView) buttons.findViewById(R.id.text_purchase);
+				shipItemName.setText(shipsItem[i]);
+				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
+				final int index = i;
+				if(index == 0) {
+					buy.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+							int currMoney = savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+							int currentBoughtLife = savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.zero));
+							int lifeCost = (int) Math.pow(currentBoughtLife, 2d) * cost[index];
+							if (currMoney >= lifeCost) {
+								editor.putInt(getString(R.string.bought_life), currentBoughtLife + 1);
+								editor.putInt(getString(R.string.saved_money), currMoney - lifeCost);
+								editor.apply();
+								insertPrice(lifeCost);
+								updateShipInfo();
+							}
+						}
+					});
+					buttonArrayList.add(buy);
+					shipItemName.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							for (Button b : buttonArrayList)
+								b.setVisibility(View.GONE);
+							for (TextView t : textViewArrayList)
+								t.setVisibility(View.GONE);
+							int currentBoughtLife = savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.zero));
+							int lifeCost = (int) Math.pow(currentBoughtLife, 2d) * cost[index];
+							insertPrice(lifeCost);
+							buy.setVisibility(View.VISIBLE);
+						}
+					});
+				} else {
+					buy.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+							int currMoney = savedShop.getInt(getString(R.string.saved_money), defaultMoney);
+							if (currMoney >= cost[index]) {
+								editor.putBoolean(shipsItem[index], true);
+								editor.putInt(getString(R.string.saved_money), currMoney - cost[index]);
+								editor.apply();
+								buy.setClickable(false);
+								buy.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.drawable_already_buy_button));
+								insertPrice(cost[index]);
+							}
+						}
+					});
+					buttonArrayList.add(buy);
+					shipItemName.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							for (Button b : buttonArrayList)
+								b.setVisibility(View.GONE);
+							for (TextView t : textViewArrayList)
+								t.setVisibility(View.GONE);
+							insertPrice(cost[index]);
+							buy.setVisibility(View.VISIBLE);
+						}
+					});
+
+					int rBool = shipsItem[i].equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(shipsItem[i], getResources().getBoolean(rBool))) {
+						buy.setClickable(false);
+						buy.setBackground(ContextCompat.getDrawable(this, R.drawable.drawable_already_buy_button));
+					} else {
+						buy.setClickable(true);
+					}
+				}
+				subLayout.addView(buttons);
+				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+				int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+				layoutParams.setMargins(margin, margin, margin, 0);
+				buttons.setLayoutParams(layoutParams);
+			}
+			return linearLayout;
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
-			return null;
+			return linearLayout;
 		}
 		return null;
 	}
 
-	private void fireTypeChosen(int indexFire) {
-		int defaultFireResId = R.bool.faux;
-		int fireResId;
-		int fireCostResId;
-		if (this.fireItem[indexFire].equals(getString(R.string.fire_1))) {
-			defaultFireResId = R.bool.vrai;
-			fireResId = R.string.fire_1;
-			fireCostResId = R.integer.zero;
-		} else if (this.fireItem[indexFire].equals(getString(R.string.fire_2))) {
-			fireResId = R.string.fire_2;
-			fireCostResId = R.integer.quint_fire_cost;
-		} else if (this.fireItem[indexFire].equals(getString(R.string.fire_3))) {
-			fireResId = R.string.fire_3;
-			fireCostResId = R.integer.simple_bomb_cost;
-		} else if (this.fireItem[indexFire].equals(getString(R.string.fire_4))) {
-			fireResId = R.string.fire_4;
-			fireCostResId = R.integer.triple_fire_cost;
-		} else if (this.fireItem[indexFire].equals(getString(R.string.fire_5))) {
-			fireResId = R.string.fire_5;
-			fireCostResId = R.integer.laser_cost;
-		} else {
-			fireResId = R.string.fire_6;
-			fireCostResId = R.integer.torus_cost;
-		}
 
-		boolean defaultValue = getResources().getBoolean(defaultFireResId);
-		boolean currentPurchase = this.savedShop.getBoolean(getString(fireResId), defaultValue);
-		if (!currentPurchase) {
-			this.currPrice = getResources().getInteger(fireCostResId);
-			/*this.buyButton.setText("BUY IT (" + this.fireItem[indexFire] + " " + this.currPrice + "$)");
-			this.buyButton.setVisibility(View.VISIBLE);*/
-		}
-
-		this.currFireItem = this.fireItem[indexFire];
-		this.currShipItem = "";
-		this.currBonusItem = "";
-	}
 
 	private void updateLifePrice() {
-		int defaultValue = getResources().getInteger(R.integer.zero);
-		int currentValue = this.savedShop.getInt(getString(R.string.bought_life), defaultValue);
-		this.currPrice = (int) Math.pow(currentValue, 2d) * getResources().getInteger(R.integer.life_coeff_cost);
+
 		/*this.buyButton.setText("BUY IT (" + getString(R.string.bought_life) + " " + this.currPrice + "$)");
 		this.buyButton.setVisibility(View.VISIBLE);*/
 	}

@@ -33,4 +33,10 @@
         <item>@integer/laser_cost</item>
         <item>@integer/torus_cost</item>
     </integer-array>
+    <integer-array name="ship_shop_price">
+        <item>1</item>
+        <item>@integer/zero</item>
+        <item>@integer/ship_bird_cost</item>
+        <item>@integer/ship_supreme_cost</item>
+    </integer-array>
 </resources>
