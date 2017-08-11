@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.samuelberrien.odyspace.R;
-
 /**
  * Created by samuel on 04/05/17.
  * Copyright samuel, 2016 - 2017.

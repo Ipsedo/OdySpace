@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorMainLayout"
-    android:orientation="horizontal"
-    tools:context="com.samuelberrien.odyspace.main.MainActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/activity_main"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorMainLayout"
+              android:orientation="horizontal"
+              tools:context="com.samuelberrien.odyspace.main.MainActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
             android:layout_below="@+id/fire_image_main"
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/padding_top_text_main"
-            android:textSize="@dimen/main_text_size" />
+            android:textSize="@dimen/main_text_size"/>
 
         <Button
             android:id="@+id/start_button"
@@ -31,7 +31,7 @@
             android:layout_marginTop="@dimen/margin_top_main_buttons"
             android:background="@drawable/transition_button_main"
             android:onClick="start"
-            android:textSize="@dimen/main_text_size" />
+            android:textSize="@dimen/main_text_size"/>
 
         <ImageView
             android:id="@+id/fire_image_main"
@@ -41,7 +41,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_separator_main"
             android:background="@drawable/transition_button_main"
-            android:padding="@dimen/padding_main" />
+            android:padding="@dimen/padding_main"/>
 
         <ImageView
             android:id="@+id/bonus_image_main"
@@ -51,7 +51,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/margin_separator_main"
             android:background="@drawable/transition_button_main"
-            android:padding="@dimen/padding_main" />
+            android:padding="@dimen/padding_main"/>
 
         <ImageView
             android:id="@+id/ship_image_main"
@@ -61,7 +61,7 @@
             android:layout_alignStart="@id/start_button"
             android:layout_marginTop="@dimen/margin_separator_main"
             android:background="@drawable/transition_button_main"
-            android:padding="@dimen/padding_main" />
+            android:padding="@dimen/padding_main"/>
 
         <Button
             android:id="@+id/continue_button"
@@ -74,7 +74,7 @@
             android:background="@drawable/transition_button_main"
             android:onClick="continueStory"
             android:textSize="@dimen/main_text_size"
-            android:text="Continue Story" />
+            android:text="Continue Story"/>
 
         <Button
             android:id="@+id/shop_button"
@@ -87,7 +87,7 @@
             android:background="@drawable/transition_button_main"
             android:textSize="@dimen/main_text_size"
             android:onClick="shop"
-            android:text="Shop" />
+            android:text="Shop"/>
 
 
         <Button
@@ -96,9 +96,10 @@
             android:layout_height="25dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/button_reset_skull"
+            android:background="@drawable/transition_button_main"
             android:onClick="reset"
-            android:layout_margin="@dimen/strokes_width" />
+            android:text="☠"
+            android:layout_margin="@dimen/strokes_width"/>
 
     </RelativeLayout>
 
@@ -120,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/padding_main" />
+            android:padding="@dimen/padding_main"/>
     </ScrollView>
 
 </LinearLayout>

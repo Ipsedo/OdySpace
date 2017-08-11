@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+       android:shape="rectangle"
+       android:layout_height="wrap_content"
+       android:layout_width="wrap_content">
     <gradient
         android:startColor="@color/colorFstButton"
         android:centerColor="@color/colorMainLayout"
         android:endColor="@color/colorFstButton"
-        android:angle="270" />
+        android:angle="270"/>
     <stroke
         android:width="@dimen/strokes_width"
-        android:color="@color/black" />
+        android:color="@color/black"/>
 </shape>

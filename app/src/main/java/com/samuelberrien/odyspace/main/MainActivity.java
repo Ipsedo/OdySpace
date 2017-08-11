@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 		this.continueButton = (Button) findViewById(R.id.continue_button);
 		this.shopButton = (Button) findViewById(R.id.shop_button);
 		this.myToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
-		((Button) findViewById(R.id.reset_button)).setText("\uD83D\uDC80");
+		//((Button) findViewById(R.id.reset_button)).setText("\uD83D\uDC80");
 		FireType.setNames(this);
 		this.initGameInfo();
 		this.initLevelChooser();
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 					MainActivity.this.currLevel = currLvl;
 					MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
 
-					for(Button b : playButtons)
+					for (Button b : playButtons)
 						b.setVisibility(View.GONE);
 					play.setVisibility(View.VISIBLE);
 				}
@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void reset(View v) {
+		ViewHelper.makeViewTransition(this, findViewById(R.id.reset_button));
 		AlertDialog dialog = new AlertDialog.Builder(this)
 				.setTitle("Reset all game ?")
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

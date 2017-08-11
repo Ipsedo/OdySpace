@@ -283,7 +283,7 @@ public class ShopActivity extends AppCompatActivity {
 							int currentBoughtDuration = savedShop.getInt(getString(R.string.bought_duration), getResources().getInteger(R.integer.zero));
 							int currentPrice = (int) Math.pow(currentBoughtDuration / 10, 2d) * cost[index];
 							int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
-							if(currMoney >= currentPrice) {
+							if (currMoney >= currentPrice) {
 								editor.putInt(getString(R.string.bought_duration), currentBoughtDuration + 10);
 								editor.putInt(getString(R.string.saved_money), currMoney - currentPrice);
 								editor.commit();
