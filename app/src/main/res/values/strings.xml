@@ -50,4 +50,5 @@
     <string name="saved_joystick_inversed">JoystickInversed</string>
     <string name="saved_yaw_roll_switched">YawRollSwitched</string>
     <string name="saved_sound_effect_volume">SavedSoundEffectVolume</string>
+    <string name="pause">⏸</string>
 </resources>

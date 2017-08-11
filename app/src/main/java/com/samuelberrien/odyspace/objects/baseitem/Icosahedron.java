@@ -15,8 +15,6 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
 public class Icosahedron extends BaseItem {
 
-	private Explosion mExplosion;
-
 	public Icosahedron(Context context, int life, float[] mPosition, float scale) {
 		super(context, "icosahedron.obj", "icosahedron.mtl", 0.7f, 0f, true, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
 	}

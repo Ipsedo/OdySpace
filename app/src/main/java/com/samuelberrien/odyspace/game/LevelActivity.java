@@ -62,12 +62,13 @@ public class LevelActivity extends AppCompatActivity {
 		this.progressBar.setVisibility(View.VISIBLE);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 
-		this.pauseButton = new Button(this);
+		this.pauseButton = (Button) getLayoutInflater().inflate(R.layout.button_pause, null); //new Button(this);
 		this.pauseButton.setVisibility(View.GONE);
-		this.pauseButton.setBackground(ContextCompat.getDrawable(this, R.drawable.transition_pause_button));
+		//this.pauseButton.setBackground(ContextCompat.getDrawable(this, R.drawable.transition_button_main));
 		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(this.getScreenHeight() / 15, this.getScreenHeight() / 15);
 		tmp.setMargins(0, this.getScreenHeight() / 50, 0, 0);
 		this.pauseButton.setLayoutParams(tmp);
+		//this.pauseButton.setText("❚❚");
 
 		this.pauseButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -78,13 +79,13 @@ public class LevelActivity extends AppCompatActivity {
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
 						.setTitle("Pause menu")
 						.setView(getPauseView())
-						.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+						.setNegativeButton("✖", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 								LevelActivity.this.finish();
 							}
 						})
-						.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+						.setPositiveButton("▶", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 							}

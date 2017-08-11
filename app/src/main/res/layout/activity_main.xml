@@ -91,7 +91,9 @@
         android:layout_marginTop="@dimen/margin_separator_main"
         android:background="@drawable/drawable_shop"
         android:paddingBottom="@dimen/strokes_width"
-        android:paddingTop="@dimen/strokes_width">
+        android:paddingTop="@dimen/strokes_width"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
 
         <LinearLayout
             android:id="@+id/level_chooser_layout"
@@ -107,7 +109,7 @@
         android:layout_height="25dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/button_reset_skull"
+        android:background="@drawable/transition_button_main"
         android:onClick="reset"
         android:layout_margin="@dimen/strokes_width" />
 

@@ -111,7 +111,9 @@
         android:paddingBottom="@dimen/strokes_width"
         android:paddingTop="@dimen/strokes_width"
         android:layout_margin="@dimen/strokes_width"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
 
         <LinearLayout
             android:id="@+id/level_chooser_layout"

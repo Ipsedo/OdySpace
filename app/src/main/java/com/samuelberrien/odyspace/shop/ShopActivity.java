@@ -149,11 +149,12 @@ public class ShopActivity extends AppCompatActivity {
 			final String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.fire_shop_price);
 			for (int i = 0; i < fires.length; i++) {
-				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, null);
-				final TextView fireName = (TextView) buttons.findViewById(R.id.text_purchase);
+				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
+				final TextView fireName = (TextView) buttons.findViewById(R.id.expand_text);
 				fireName.setText(fires[i]);
-				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
+				final Button buy = (Button) buttons.findViewById(R.id.expand_button);
 				final int index = i;
+				buy.setText("$");
 				buy.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -193,10 +194,11 @@ public class ShopActivity extends AppCompatActivity {
 			final String[] shipsItem = getResources().getStringArray(R.array.ship_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.ship_shop_price);
 			for (int i = 0; i < shipsItem.length; i++) {
-				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, null);
-				final TextView shipItemName = (TextView) buttons.findViewById(R.id.text_purchase);
+				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
+				final TextView shipItemName = (TextView) buttons.findViewById(R.id.expand_text);
 				shipItemName.setText(shipsItem[i]);
-				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
+				final Button buy = (Button) buttons.findViewById(R.id.expand_button);
+				buy.setText("$");
 				final int index = i;
 				if (index == 0) {
 					buy.setOnClickListener(new View.OnClickListener() {
@@ -268,10 +270,11 @@ public class ShopActivity extends AppCompatActivity {
 			final String[] bonusItem = getResources().getStringArray(R.array.bonus_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.bonus_shop_price);
 			for (int i = 0; i < bonusItem.length; i++) {
-				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.button_shop, null);
-				final TextView bonusItemName = (TextView) buttons.findViewById(R.id.text_purchase);
+				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
+				final TextView bonusItemName = (TextView) buttons.findViewById(R.id.expand_text);
 				bonusItemName.setText(bonusItem[i]);
-				final Button buy = (Button) buttons.findViewById(R.id.buy_button);
+				final Button buy = (Button) buttons.findViewById(R.id.expand_button);
+				buy.setText("$");
 				final int index = i;
 				if (index == 0) {
 					buy.setOnClickListener(new View.OnClickListener() {

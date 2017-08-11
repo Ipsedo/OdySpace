@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -27,6 +28,8 @@ import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.Purchases;
 import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
 import com.samuelberrien.odyspace.utils.main.ViewHelper;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 		this.continueButton = (Button) findViewById(R.id.continue_button);
 		this.shopButton = (Button) findViewById(R.id.shop_button);
 		this.myToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+		((Button) findViewById(R.id.reset_button)).setText("\uD83D\uDC80");
 		FireType.setNames(this);
 		this.initGameInfo();
 		this.initLevelChooser();
@@ -85,23 +89,41 @@ public class MainActivity extends AppCompatActivity {
 		);
 		params.setMargins(0, this.getScreenWidth() / 100, 0, 0);
 
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+		layoutParams.setMargins(margin, margin, margin, 0);
+
+		final ArrayList<Button> playButtons = new ArrayList<>();
 		for (int i = 0; i < maxLevel; i++) {
 			final int currLvl = i;
-			final Button levelItem = new Button(this);
-			levelItem.setAllCaps(false);
-			levelItem.setText((i + 1) + " - " + Level.LEVELS[i]);
-			levelItem.setOnClickListener(new View.OnClickListener() {
+			LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.expand_button, null);
+			TextView level = (TextView) linearLayout.findViewById(R.id.expand_text);
+			level.setText((i + 1) + " - " + Level.LEVELS[i]);
+
+			final Button play = (Button) linearLayout.findViewById(R.id.expand_button);
+			play.setText("▶");
+			playButtons.add(play);
+			level.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onClick(View view) {
-					ViewHelper.makeViewTransition(MainActivity.this, levelItem);
+				public void onClick(View v) {
 					MainActivity.this.currLevel = currLvl;
 					MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
+
+					for(Button b : playButtons)
+						b.setVisibility(View.GONE);
+					play.setVisibility(View.VISIBLE);
 				}
 			});
-			levelItem.setClickable(true);
-			levelItem.setBackgroundResource(R.drawable.transition_button_main);
-			levelItem.setLayoutParams(params);
-			levelChooser.addView(levelItem);
+			play.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(MainActivity.this, LevelActivity.class);
+					intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(currLevel));
+					startActivityForResult(intent, MainActivity.RESULT_VALUE);
+				}
+			});
+			linearLayout.setLayoutParams(layoutParams);
+			levelChooser.addView(linearLayout);
 		}
 	}
 
