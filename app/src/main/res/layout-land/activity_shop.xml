@@ -14,17 +14,6 @@
         android:layout_height="match_parent"
         android:layout_weight="0.5">
 
-        <!--<Button
-            android:id="@+id/buy_button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/components_height_main"
-            android:layout_alignParentTop="true"
-            android:layout_margin="@dimen/margin_shop"
-            android:background="@drawable/transition_button_main"
-            android:textAllCaps="false"
-            android:textSize="@dimen/shop_text_size" />-->
-
-
         <TextView
             android:id="@+id/shop_curr_money_text_view"
             android:layout_width="match_parent"
@@ -102,6 +91,7 @@
             android:layout_margin="@dimen/margin_shop"
             android:background="@drawable/button_main"
             android:orientation="vertical"
+            android:padding="@dimen/strokes_width"
             android:textSize="@dimen/shop_text_size"/>
     </RelativeLayout>
 

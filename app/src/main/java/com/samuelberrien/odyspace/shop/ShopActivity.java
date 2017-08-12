@@ -111,7 +111,7 @@ public class ShopActivity extends AppCompatActivity {
 		AlertDialog pauseDialog = new AlertDialog.Builder(this)
 				.setTitle("Item chooser")
 				.setView(v)
-				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				.setPositiveButton("▼", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 					}

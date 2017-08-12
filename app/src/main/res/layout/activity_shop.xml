@@ -15,8 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
-        app:tabIndicatorColor="@color/pumpkin"
-        app:tabGravity="fill"/>
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/pumpkin"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/shop_view_pager"
@@ -27,8 +27,9 @@
         android:layout_marginBottom="@dimen/margin_shop"
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
-        android:textSize="@dimen/shop_text_size"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        android:padding="@dimen/strokes_width"
+        android:textSize="@dimen/shop_text_size"/>
 
     <RelativeLayout
         android:id="@+id/image_shop_layout"

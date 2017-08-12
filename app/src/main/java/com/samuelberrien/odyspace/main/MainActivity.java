@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 		AlertDialog pauseDialog = new AlertDialog.Builder(this)
 				.setTitle("Item chooser")
 				.setView(v)
-				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				.setPositiveButton("▼", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 					}
@@ -297,12 +298,12 @@ public class MainActivity extends AppCompatActivity {
 
 						builder = builder.setTitle("Level Done")
 								.setMessage("Score : " + score)
-								.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+								.setNeutralButton("▼", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int id) {
 
 									}
 								})
-								.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+								.setPositiveButton("❱❱", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 										MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
@@ -314,13 +315,13 @@ public class MainActivity extends AppCompatActivity {
 					} else {
 						builder = builder.setTitle("Game Over")
 								.setMessage("Score : " + score)
-								.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+								.setNeutralButton("▼", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 
 									}
 								})
-								.setNegativeButton("Restart", new DialogInterface.OnClickListener() {
+								.setNegativeButton("▲" + System.getProperty ("line.separator") + "▔", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 										Intent intent = new Intent(MainActivity.this, LevelActivity.class);
