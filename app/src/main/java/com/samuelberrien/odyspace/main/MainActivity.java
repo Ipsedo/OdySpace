@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
 
 						builder = builder.setTitle("Level Done")
 								.setMessage("Score : " + score)
-								.setNeutralButton("▼", new DialogInterface.OnClickListener() {
+								.setNegativeButton("▼", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int id) {
 
 									}
@@ -314,13 +314,13 @@ public class MainActivity extends AppCompatActivity {
 					} else {
 						builder = builder.setTitle("Game Over")
 								.setMessage("Score : " + score)
-								.setNeutralButton("▼", new DialogInterface.OnClickListener() {
+								.setNegativeButton("▼", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 
 									}
 								})
-								.setNegativeButton("▲" + System.getProperty("line.separator") + "▔", new DialogInterface.OnClickListener() {
+								.setPositiveButton("✚", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 										Intent intent = new Intent(MainActivity.this, LevelActivity.class);

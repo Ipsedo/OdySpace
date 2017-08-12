@@ -12,8 +12,7 @@
         android:layout_height="@dimen/components_height_main"
         android:layout_weight="0.25"
         android:background="@drawable/drawable_corner"
-        android:gravity="center"
-        />
+        android:gravity="center"/>
 
     <Button
         android:id="@+id/expand_button"
