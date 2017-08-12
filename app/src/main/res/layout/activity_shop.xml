@@ -28,7 +28,6 @@
         android:layout_marginTop="@dimen/margin_shop"
         android:background="@drawable/drawable_shop"
         android:orientation="vertical"
-        android:padding="@dimen/strokes_width"
         android:textSize="@dimen/shop_text_size"/>
 
     <RelativeLayout

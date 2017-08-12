@@ -94,7 +94,7 @@ public class Button extends Control {
 	}
 
 	public boolean isTouching() {
-		if(isTouching){
+		if (isTouching) {
 			isTouching = false;
 			return true;
 		} else {

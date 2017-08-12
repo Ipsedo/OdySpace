@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -321,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
 
 									}
 								})
-								.setNegativeButton("▲" + System.getProperty ("line.separator") + "▔", new DialogInterface.OnClickListener() {
+								.setNegativeButton("▲" + System.getProperty("line.separator") + "▔", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 										Intent intent = new Intent(MainActivity.this, LevelActivity.class);
