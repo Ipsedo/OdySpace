@@ -95,10 +95,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		}
 	}
 
-	public void setShipFireType(FireType fireType) {
-		this.ship.setFireType(fireType);
-	}
-
 	/**
 	 * Update the camera look at vector (normalized)
 	 *

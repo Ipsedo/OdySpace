@@ -63,14 +63,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		return this.currentLevel.isInit();
 	}
 
-	public void inversePitchJoystick(boolean isInversed) {
-		this.gamePad.inversePitch(isInversed);
-	}
-
-	public void inverseYawRoll(boolean isInversed) {
-		this.gamePad.inverseRollAndYaw(isInversed);
-	}
-
 	private Level getCurrentLevel(int currLevelId) {
 		if (currLevelId == 0) {
 			return new TestThread();
@@ -157,10 +149,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	public void onPause() {
 		this.killThread();
 		super.onPause();
-	}
-
-	public void setShipFireType(FireType fireType) {
-		this.renderer.setShipFireType(fireType);
 	}
 
 	public String getScore() {

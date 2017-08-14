@@ -25,7 +25,7 @@ import java.util.List;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Ship extends BaseItem implements Shooter {
+public class Ship extends BaseItem implements Shooter, SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private static float SHIP_MAX_SPEED = 0.0125f;
 	private float mMaxSpeed = Ship.SHIP_MAX_SPEED;
@@ -91,13 +91,17 @@ public class Ship extends BaseItem implements Shooter {
 
 		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
 
+		Ship resShip;
+
 		if (shipUsed.equals(context.getString(R.string.ship_bird))) {
-			return new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
+			resShip = new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		} else if (shipUsed.equals(context.getString(R.string.ship_supreme))) {
-			return new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
+			resShip = new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		} else {
-			return new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
+			resShip = new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		}
+		savedShip.registerOnSharedPreferenceChangeListener(resShip);
+		return resShip;
 	}
 
 	private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType, GamePad gamePad, Bonus bonus, int bonusDuration, int bonusDurationBought) {
@@ -115,15 +119,6 @@ public class Ship extends BaseItem implements Shooter {
 
 	public void setRockets(List<BaseItem> rockets) {
 		this.rockets = rockets;
-	}
-
-	public void setFireType(FireType newFireType) {
-		this.fireType = newFireType;
-	}
-
-	public void setBonus(Bonus bonus, int bonusDuration) {
-		this.bonus = bonus;
-		this.bonusDuration = bonusDuration;
 	}
 
 	@Override
@@ -267,5 +262,35 @@ public class Ship extends BaseItem implements Shooter {
 	public void drawLife(float ratio) {
 		this.lifeDraw.updateProgress(this.life);
 		this.lifeDraw.draw(ratio);
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		if (key.equals(context.getString(R.string.current_fire_type))) {
+			String defaultValue = context.getString(R.string.saved_fire_type_default);
+			String fireType = sharedPreferences.getString(key, defaultValue);
+			if (fireType.equals(context.getString(R.string.fire_1))) {
+				this.fireType = FireType.SIMPLE_FIRE;
+			} else if (fireType.equals(context.getString(R.string.fire_2))) {
+				this.fireType = FireType.QUINT_FIRE;
+			} else if (fireType.equals(context.getString(R.string.fire_3))) {
+				this.fireType = FireType.SIMPLE_BOMB;
+			} else if (fireType.equals(context.getString(R.string.fire_4))) {
+				this.fireType = FireType.TRIPLE_FIRE;
+			} else if (fireType.equals(context.getString(R.string.fire_5))) {
+				this.fireType = FireType.LASER;
+			} else {
+				this.fireType = FireType.TORUS;
+			}
+		} else if (key.equals(context.getString(R.string.current_bonus_used))) {
+			String savedBonus = sharedPreferences.getString(context.getString(R.string.current_bonus_used), context.getString(R.string.bonus_1));
+			if (savedBonus.equals(context.getString(R.string.bonus_1))) {
+				bonus = Bonus.SPEED;
+			} else {
+				bonus = Bonus.SHIELD;
+			}
+		} else if (key.equals(context.getString(R.string.current_bonus_duration))) {
+			this.bonusDuration = sharedPreferences.getInt(key, context.getResources().getInteger(R.integer.bonus_1_duration));
+		}
 	}
 }

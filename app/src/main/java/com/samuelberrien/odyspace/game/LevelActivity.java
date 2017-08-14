@@ -51,8 +51,6 @@ public class LevelActivity extends AppCompatActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		this.gamePreferences = this.getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE);
-		this.mSurfaceView.inversePitchJoystick(this.gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
-		this.mSurfaceView.inverseYawRoll(this.gamePreferences.getBoolean(getString(R.string.saved_yaw_roll_switched), getResources().getBoolean(R.bool.saved_yaw_roll_switched_default)));
 
 		this.progressBar = new ProgressBar(this);
 		this.progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.pumpkin), PorterDuff.Mode.SRC_IN);
@@ -65,7 +63,7 @@ public class LevelActivity extends AppCompatActivity {
 		this.pauseButton = (Button) getLayoutInflater().inflate(R.layout.button_pause, null); //new Button(this);
 		this.pauseButton.setVisibility(View.GONE);
 		//this.pauseButton.setBackground(ContextCompat.getDrawable(this, R.drawable.transition_button_main));
-		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(this.getScreenHeight() / 15, this.getScreenHeight() / 15);
+		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(this.getScreenHeight() / 13, this.getScreenHeight() / 13);
 		tmp.setMargins(0, this.getScreenHeight() / 50, 0, 0);
 		this.pauseButton.setLayoutParams(tmp);
 		//this.pauseButton.setText("❚❚");
@@ -165,7 +163,6 @@ public class LevelActivity extends AppCompatActivity {
 				LevelActivity.this.gamePreferences.edit()
 						.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
 						.apply();
-				LevelActivity.this.mSurfaceView.inversePitchJoystick(inverseJoystickCheckBox.isChecked());
 			}
 		});
 
@@ -177,7 +174,6 @@ public class LevelActivity extends AppCompatActivity {
 				gamePreferences.edit()
 						.putBoolean(getString(R.string.saved_yaw_roll_switched), switchYawRollCheckBox.isChecked())
 						.apply();
-				mSurfaceView.inverseYawRoll(switchYawRollCheckBox.isChecked());
 			}
 		});
 
@@ -199,7 +195,6 @@ public class LevelActivity extends AppCompatActivity {
 				tmpRadioButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						mSurfaceView.setShipFireType(fireTypeEnum);
 						savedShip.edit()
 								.putString(getString(R.string.current_fire_type), fire)
 								.apply();
@@ -254,10 +249,6 @@ public class LevelActivity extends AppCompatActivity {
 		Point size = new Point();
 		display.getSize(size);
 		return size.y;
-	}
-
-	public void setShipFireType(FireType fireType) {
-		this.mSurfaceView.setShipFireType(fireType);
 	}
 
 	public void loadingLevelFinished() {

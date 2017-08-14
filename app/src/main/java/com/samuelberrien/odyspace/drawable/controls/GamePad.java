@@ -1,8 +1,10 @@
 package com.samuelberrien.odyspace.drawable.controls;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.MotionEvent;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class GamePad implements GLInfoDrawable {
+public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private Joystick joystick;
 	private Fire fire;
@@ -28,6 +30,8 @@ public class GamePad implements GLInfoDrawable {
 	private boolean isPitchInversed;
 
 	private boolean isRollAndYawInversed;
+
+	private Context context;
 
 	/**
 	 * Create a new GamePad instance
@@ -58,24 +62,11 @@ public class GamePad implements GLInfoDrawable {
 		this.fire.initGraphics(context);
 		this.remote.initGraphics(context);
 		this.boost.initGraphics(context);
-	}
-
-	/**
-	 * Inverse pitch
-	 *
-	 * @param isInversed A boolean (true if inversed, false otherwise)
-	 */
-	public void inversePitch(boolean isInversed) {
-		this.isPitchInversed = isInversed;
-	}
-
-	/**
-	 * Inverse Roll and Yaw from joystick and remote
-	 *
-	 * @param isInversed A boolean (true if inversed, false otherwise)
-	 */
-	public void inverseRollAndYaw(boolean isInversed) {
-		this.isRollAndYawInversed = isInversed;
+		this.context = context;
+		SharedPreferences gamePreference = context.getSharedPreferences(context.getString(R.string.game_preferences), Context.MODE_PRIVATE);
+		isPitchInversed = gamePreference.getBoolean(context.getString(R.string.saved_joystick_inversed), context.getResources().getBoolean(R.bool.vrai));
+		isRollAndYawInversed = gamePreference.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.faux));
+		gamePreference.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	/**
@@ -206,5 +197,14 @@ public class GamePad implements GLInfoDrawable {
 	public void draw(float ratio) {
 		for (Control c : controls)
 			c.draw(ratio);
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		if(key.equals(context.getString(R.string.saved_joystick_inversed))) {
+			isPitchInversed = sharedPreferences.getBoolean(key, context.getResources().getBoolean(R.bool.vrai));
+		} else if (key.equals(context.getString(R.string.saved_yaw_roll_switched))) {
+			isRollAndYawInversed = sharedPreferences.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.faux));
+		}
 	}
 }
