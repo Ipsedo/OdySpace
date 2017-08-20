@@ -207,28 +207,29 @@ public class LevelActivity extends AppCompatActivity {
 		}
 
 		radioGroup = (RadioGroup) layout.findViewById(R.id.select_bonus_radio_group);
-		String[] bonus = LevelActivity.this.getResources().getStringArray(R.array.bonus_shop_list_item);
-		for (final String item : bonus) {
-			if (!item.equals(getString(R.string.bought_duration))) {
-				int rBool = item.equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
-				if (savedShop.getBoolean(item, getResources().getBoolean(rBool))) {
+		final String[] bonus = LevelActivity.this.getResources().getStringArray(R.array.bonus_shop_list_item);
+		final int[] duration = getResources().getIntArray(R.array.bonus_duration_shop_list_item);
+		for (int i = 0; i < bonus.length; i++) {
+			if (!bonus[i].equals(getString(R.string.bought_duration))) {
+				int rBool = bonus[i].equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
+				if (savedShop.getBoolean(bonus[i], getResources().getBoolean(rBool))) {
 					RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
 					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 					radioGroup.addView(tmpRadioButton);
 
-					tmpRadioButton.setText(item);
+					tmpRadioButton.setText(bonus[i]);
 
-					//TODO save duration...
-
+					final int index = i;
 					tmpRadioButton.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
 							savedShip.edit()
-									.putString(getString(R.string.current_bonus_used), item)
+									.putString(getString(R.string.current_bonus_used), bonus[index])
+									.putInt(getString(R.string.current_bonus_duration), duration[index - 1])
 									.apply();
 						}
 					});
-					if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(item)) {
+					if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(bonus[i])) {
 						tmpRadioButton.setChecked(true);
 					}
 				}
