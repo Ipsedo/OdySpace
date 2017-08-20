@@ -18,12 +18,12 @@ void main(){
     vec4 diffuse = diffuse_coeff * v_material_diffuse_Color;
 
     float specularCoefficient = 0.0;
-    if(diffuse_coeff > 0.0){
+    if(diffuse_coeff > 0.2){
         specularCoefficient = pow(max(0.0, dot(normalize(u_CameraPosition - v_Position), reflect(-lightVector, v_Normal))), v_material_shininess);
         specularCoefficient = specularCoefficient * (1.0 / (1.0 + (distance * distance)));
     }
     vec4 specular = specularCoefficient * v_material_specular_Color;
 
     vec4 ambient = 0.1 * v_material_ambient_Color;
-    gl_FragColor =  0.1 * ambient + 0.8 * diffuse + 0.01 * specular;
+    gl_FragColor =  0.1 * ambient + 0.8 * diffuse + 0.4 * specular;
 }
