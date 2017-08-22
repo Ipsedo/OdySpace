@@ -201,7 +201,7 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if(key.equals(context.getString(R.string.saved_joystick_inversed))) {
+		if (key.equals(context.getString(R.string.saved_joystick_inversed))) {
 			isPitchInversed = sharedPreferences.getBoolean(key, context.getResources().getBoolean(R.bool.vrai));
 		} else if (key.equals(context.getString(R.string.saved_yaw_roll_switched))) {
 			isRollAndYawInversed = sharedPreferences.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.faux));
