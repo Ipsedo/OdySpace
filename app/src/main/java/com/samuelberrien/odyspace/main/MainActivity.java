@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private int currLevel;
 
-	private Button startButton;
 	private Button continueButton;
 	private Button shopButton;
 
@@ -57,12 +56,9 @@ public class MainActivity extends AppCompatActivity {
 		this.savedShop = this.getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		this.savedLevelInfo = this.getApplicationContext().getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE);
 		this.savedShip = this.getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
-		this.startButton = (Button) findViewById(R.id.start_button);
-		this.startButton.setText("START (" + (this.currLevel + 1) + ")");
 		this.continueButton = (Button) findViewById(R.id.continue_button);
 		this.shopButton = (Button) findViewById(R.id.shop_button);
 		this.myToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
-		//((Button) findViewById(R.id.reset_button)).setText("\uD83D\uDC80");
 		FireType.setNames(this);
 		this.initGameInfo();
 		this.initLevelChooser();
@@ -107,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View v) {
 					MainActivity.this.currLevel = currLvl;
-					MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
 
 					for (Button b : playButtons)
 						b.setVisibility(View.GONE);
@@ -236,14 +231,6 @@ public class MainActivity extends AppCompatActivity {
 		dialog.show();
 	}
 
-
-	public void start(View v) {
-		ViewHelper.makeViewTransition(this, this.startButton);
-		Intent intent = new Intent(this, LevelActivity.class);
-		intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(this.currLevel));
-		startActivityForResult(intent, MainActivity.RESULT_VALUE);
-	}
-
 	public void continueStory(View v) {
 		ViewHelper.makeViewTransition(this, this.continueButton);
 		Intent intent = new Intent(this, LevelActivity.class);
@@ -287,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
 						final long maxLevel = MainActivity.this.savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
 						if (MainActivity.this.currLevel < Level.LEVELS.length)
 							MainActivity.this.currLevel++;
-						MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
 						if (MainActivity.this.currLevel > maxLevel) {
 							SharedPreferences.Editor editorLevel = MainActivity.this.savedLevelInfo.edit();
 							editorLevel.putInt(getString(R.string.saved_max_level), MainActivity.this.currLevel);
@@ -305,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
 								.setPositiveButton("❱❱", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
-										MainActivity.this.startButton.setText("START (" + (MainActivity.this.currLevel + 1) + ")");
 										Intent intent = new Intent(MainActivity.this, LevelActivity.class);
 										intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(MainActivity.this.currLevel));
 										startActivityForResult(intent, MainActivity.RESULT_VALUE);
