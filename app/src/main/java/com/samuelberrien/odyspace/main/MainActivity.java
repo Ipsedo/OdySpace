@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 		AlertDialog pauseDialog = new AlertDialog.Builder(this)
 				.setTitle("Item chooser")
 				.setView(v)
-				.setPositiveButton("▼", new DialogInterface.OnClickListener() {
+				.setPositiveButton(getString(R.string.check), new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 					}
@@ -283,12 +284,12 @@ public class MainActivity extends AppCompatActivity {
 
 						builder = builder.setTitle("Level Done")
 								.setMessage("Score : " + score)
-								.setNegativeButton("▼", new DialogInterface.OnClickListener() {
+								.setNegativeButton(getString(R.string.check), new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int id) {
 
 									}
 								})
-								.setPositiveButton("❱❱", new DialogInterface.OnClickListener() {
+								.setPositiveButton(getString(R.string.next), new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 										Intent intent = new Intent(MainActivity.this, LevelActivity.class);
@@ -299,13 +300,13 @@ public class MainActivity extends AppCompatActivity {
 					} else {
 						builder = builder.setTitle("Game Over")
 								.setMessage("Score : " + score)
-								.setNegativeButton("▼", new DialogInterface.OnClickListener() {
+								.setNegativeButton(getString(R.string.check), new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 
 									}
 								})
-								.setPositiveButton("✚", new DialogInterface.OnClickListener() {
+								.setPositiveButton(getString(R.string.retry), new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialogInterface, int i) {
 										Intent intent = new Intent(MainActivity.this, LevelActivity.class);

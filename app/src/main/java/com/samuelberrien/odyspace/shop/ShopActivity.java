@@ -111,7 +111,7 @@ public class ShopActivity extends AppCompatActivity {
 		AlertDialog pauseDialog = new AlertDialog.Builder(this)
 				.setTitle("Item chooser")
 				.setView(v)
-				.setPositiveButton("▼", new DialogInterface.OnClickListener() {
+				.setPositiveButton(getString(R.string.check), new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 					}
@@ -125,6 +125,7 @@ public class ShopActivity extends AppCompatActivity {
 				.create();
 		pauseDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.button_main));
 		pauseDialog.show();
+		//pauseDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize(TypedValue.COMPLEX_UNIT_SP, getResources().getDimension(R.dimen.dialog_button_text_size));
 	}
 
 	private void insertPrice(int price) {

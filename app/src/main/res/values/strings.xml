@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OdySpace</string>
     <string name="title_activity_level">LevelActivity</string>
@@ -51,4 +52,7 @@
     <string name="saved_yaw_roll_switched">YawRollSwitched</string>
     <string name="saved_sound_effect_volume">SavedSoundEffectVolume</string>
     <string name="pause">⏸</string>
+    <string name="check">✖</string>
+    <string name="next">▶</string>
+    <string name="retry">▲</string>
 </resources>
