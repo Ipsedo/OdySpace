@@ -77,13 +77,13 @@ public class LevelActivity extends AppCompatActivity {
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
 						.setTitle("Pause menu")
 						.setView(getPauseView())
-						.setNegativeButton("✖", new DialogInterface.OnClickListener() {
+						.setNegativeButton(getString(R.string.check), new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 								LevelActivity.this.finish();
 							}
 						})
-						.setPositiveButton("▶", new DialogInterface.OnClickListener() {
+						.setPositiveButton(getString(R.string.next), new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 							}
