@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.controls;
+package com.samuelberrien.odyspace.controls;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -81,7 +81,7 @@ public class Button extends Control {
 	}
 
 	@Override
-	boolean isTouching(float x, float y, float ratio) {
+	boolean canCatchID(float x, float y, float ratio) {
 		float xRef = x * ratio - (this.mPosition[0] * ratio + ray);
 		float yRef = y - this.mPosition[1];
 		if (xRef * xRef + yRef * yRef < ray * ray) {

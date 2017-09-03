@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.controls;
+package com.samuelberrien.odyspace.controls;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -89,7 +89,7 @@ class Fire extends Control {
 	}
 
 	@Override
-	boolean isTouching(float x, float y, float ratio) {
+	boolean canCatchID(float x, float y, float ratio) {
 		float xRef = x * ratio - (this.mFireButtonPosition[0] * ratio + FireButtonRay);
 		float yRef = y - this.mFireButtonPosition[1];
 		if (xRef * xRef + yRef * yRef < FireButtonRay * FireButtonRay) {

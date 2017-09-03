@@ -7,7 +7,7 @@ import android.os.Vibrator;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
-import com.samuelberrien.odyspace.drawable.controls.GamePad;
+import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;

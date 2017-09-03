@@ -110,7 +110,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 		this.lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+		this.makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
 		this.bindBuffer();
 	}
 
@@ -143,7 +143,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 		this.lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+		this.makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
 		this.bindBuffer();
 	}
 

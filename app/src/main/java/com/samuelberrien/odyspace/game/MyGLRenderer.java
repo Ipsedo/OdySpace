@@ -12,7 +12,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.controls.GamePad;
+import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;

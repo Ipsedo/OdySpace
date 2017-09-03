@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.controls;
+package com.samuelberrien.odyspace.controls;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -134,59 +134,45 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * @param screenHeight Px value in float precision
 	 */
 	public void update(MotionEvent e, float screenWidth, float screenHeight) {
-		int pointerIndex = e.getActionIndex();
-		float x = -(2f * e.getX(pointerIndex) / screenWidth - 1f);
-		float y = -(2f * e.getY(pointerIndex) / screenHeight - 1f);
+		int pointerID = e.getPointerId(e.getActionIndex());
+		float x = -(2f * e.getX(e.findPointerIndex(pointerID)) / screenWidth - 1f);
+		float y = -(2f * e.getY(e.findPointerIndex(pointerID)) / screenHeight - 1f);
 		float ratio = screenWidth / screenHeight;
 		switch (e.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
 				for (Control c : controls)
-					if (c.isTouching(x, y, ratio)) {
-						c.setPointerID(pointerIndex);
+					if (c.canCatchID(x, y, ratio)) {
+						c.setPointerID(pointerID);
 						c.updatePosition(x, y, ratio);
 						break;
 					}
 				break;
 			case MotionEvent.ACTION_UP:
 				for (Control c : controls)
-					if (c.isCurrentTouched(pointerIndex)) {
+					if (c.isCurrentTouched(pointerID)) {
 						c.clear();
 						break;
 					}
 				break;
 			case MotionEvent.ACTION_MOVE:
-				if (e.getPointerCount() > 1) {
+				for (int i = 0; i < e.getPointerCount(); i++)
 					for (Control c : controls)
-						if (c.isCurrentTouched(1)) {
-							c.updateStick(-(2f * e.getX(1) / screenWidth - 1f), -(2f * e.getY(1) / screenHeight - 1f), ratio);
-							break;
-						}
-				}
-				for (Control c : controls)
-					if (c.isCurrentTouched(0)) {
-						c.updateStick(-(2f * e.getX(0) / screenWidth - 1f), -(2f * e.getY(0) / screenHeight - 1f), ratio);
-						break;
-					}
+						if (c.isCurrentTouched(e.getPointerId(i)))
+							c.updateStick(-(2f * e.getX(i) / screenWidth - 1f), -(2f * e.getY(i) / screenHeight - 1f), ratio);
 				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
-				if (e.getPointerCount() == 2)
-					for (Control c1 : controls)
-						if (c1.isTouching(x, y, ratio)) {
-							for (Control c2 : controls)
-								if (!c2.equals(c1))
-									c2.switchPointerID(pointerIndex);
-							c1.setPointerID(pointerIndex);
-							c1.updatePosition(x, y, ratio);
-							break;
-						}
+				for (Control c : controls)
+					if (c.canCatchID(x, y, ratio) && !c.isActive()) {
+						c.setPointerID(pointerID);
+						c.updatePosition(x, y, ratio);
+						break;
+					}
+
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				for (Control c1 : controls)
-					if (c1.isCurrentTouched(pointerIndex)) {
-						c1.clear();
-						for (Control c2 : controls)
-							if (!c2.equals(c1))
-								c2.redoPointerID();
+				for (Control c : controls)
+					if (c.isCurrentTouched(pointerID)) {
+						c.clear();
 						break;
 					}
 				break;

@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.controls;
+package com.samuelberrien.odyspace.controls;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import static com.samuelberrien.odyspace.drawable.controls.Fire.FireButtonRay;
+import static com.samuelberrien.odyspace.controls.Fire.FireButtonRay;
 
 /**
  * Created by samuel on 04/08/17.
@@ -114,7 +114,7 @@ class Boost extends Control {
 	}
 
 	@Override
-	boolean isTouching(float x, float y, float ratio) {
+	boolean canCatchID(float x, float y, float ratio) {
 		if (x * ratio < this.mBoostPosition[0] * ratio - this.boostWidth * 0.5f + FireButtonRay) {
 			return false;
 		} else if (x * ratio > this.mBoostPosition[0] * ratio + this.boostWidth * 0.5f + FireButtonRay) {

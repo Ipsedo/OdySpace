@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.controls;
+package com.samuelberrien.odyspace.controls;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import static com.samuelberrien.odyspace.drawable.controls.GamePad.limitScreen;
+import static com.samuelberrien.odyspace.controls.GamePad.limitScreen;
 
 /**
  * Created by samuel on 17/04/17.
@@ -151,7 +151,7 @@ class Joystick extends Control {
 	}
 
 	@Override
-	boolean isTouching(float x, float y, float ratio) {
+	boolean canCatchID(float x, float y, float ratio) {
 		return x > limitScreen;
 	}
 

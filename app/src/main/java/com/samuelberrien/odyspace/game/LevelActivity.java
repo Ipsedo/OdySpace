@@ -3,10 +3,13 @@ package com.samuelberrien.odyspace.game;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.ContentObserver;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -118,11 +121,11 @@ public class LevelActivity extends AppCompatActivity {
 		LayoutInflater inflater = LevelActivity.this.getLayoutInflater();
 		View layout = inflater.inflate(R.layout.parameters_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
 
-		SeekBar sb = (SeekBar) layout.findViewById(R.id.device_volume_seek_bar);
+		final SeekBar sb1 = (SeekBar) layout.findViewById(R.id.device_volume_seek_bar);
 		final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		sb.setMax(tmp.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-		sb.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
-		sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+		sb1.setMax(tmp.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+		sb1.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
+		sb1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_VIBRATE);
 			}
@@ -136,10 +139,23 @@ public class LevelActivity extends AppCompatActivity {
 			}
 		});
 
-		sb = (SeekBar) layout.findViewById(R.id.effect_volume_seek_bar);
-		sb.setMax(100);
-		sb.setProgress(gamePreferences.getInt(getString(R.string.saved_sound_effect_volume), 100));
-		sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+		getApplicationContext().getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, new ContentObserver(new Handler()) {
+			@Override
+			public boolean deliverSelfNotifications() {
+				return super.deliverSelfNotifications();
+			}
+
+			@Override
+			public void onChange(boolean selfChange) {
+				super.onChange(selfChange);
+				sb1.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
+			}
+		});
+
+		SeekBar sb2 = (SeekBar) layout.findViewById(R.id.effect_volume_seek_bar);
+		sb2.setMax(100);
+		sb2.setProgress(gamePreferences.getInt(getString(R.string.saved_sound_effect_volume), 100));
+		sb2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				gamePreferences.edit()
 						.putInt(getString(R.string.saved_sound_effect_volume), progress)
@@ -189,8 +205,6 @@ public class LevelActivity extends AppCompatActivity {
 				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 				radioGroup.addView(tmpRadioButton);
 				tmpRadioButton.setText(fire);
-
-				final FireType fireTypeEnum = FireType.getFireType(fire);
 
 				tmpRadioButton.setOnClickListener(new View.OnClickListener() {
 					@Override

@@ -83,7 +83,7 @@ public class TestTurrets implements Level {
 
 		this.ship.setRockets(this.rocketsShip);
 
-		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "turret.obj", "turret.mtl", 1f, 0f, false);
+		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "bunker1.obj", "bunker1.mtl", 1f, 0f, false);
 		Random rand = new Random(System.currentTimeMillis());
 		for (int i = 0; i < this.nbTurret; i++) {
 			float x = rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f;

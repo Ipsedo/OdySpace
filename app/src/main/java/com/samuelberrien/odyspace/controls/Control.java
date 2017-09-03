@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.controls;
+package com.samuelberrien.odyspace.controls;
 
 import android.content.Context;
 
@@ -10,7 +10,9 @@ import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
 
 abstract class Control implements GLInfoDrawable {
 
-	private int pointerID = -1;
+	private final int INVALID_ID = -1;
+
+	private int pointerID = INVALID_ID;
 
 	void setPointerID(int pointerID) {
 		this.pointerID = pointerID;
@@ -20,21 +22,15 @@ abstract class Control implements GLInfoDrawable {
 		return this.pointerID == pointerID;
 	}
 
-	void switchPointerID(int pointerID) {
-		if (this.pointerID >= 0)
-			this.pointerID = pointerID == 1 ? 0 : 1;
-	}
-
-	void redoPointerID() {
-		if (this.pointerID == 1)
-			this.pointerID = 0;
+	boolean isActive() {
+		return pointerID != INVALID_ID;
 	}
 
 	void clear() {
-		this.pointerID = -1;
+		this.pointerID = INVALID_ID;
 	}
 
-	abstract boolean isTouching(float x, float y, float ratio);
+	abstract boolean canCatchID(float x, float y, float ratio);
 
 	abstract void updatePosition(float x, float y, float ratio);
 
