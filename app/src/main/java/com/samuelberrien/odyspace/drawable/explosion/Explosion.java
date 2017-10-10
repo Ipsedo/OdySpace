@@ -77,7 +77,7 @@ public class Explosion implements GLItemDrawable {
 	private float[] vertices = new float[]{
 			-1.0f, -1.0f, 0.0f,
 			1.0f, -1.0f, 0.0f,
-			0.0f,  1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
 	};
 	private FloatBuffer vertexBuffer;
 	private float[] color;

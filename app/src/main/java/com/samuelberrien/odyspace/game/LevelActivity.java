@@ -7,7 +7,6 @@ import android.database.ContentObserver;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -30,7 +29,6 @@ import android.widget.SeekBar;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.MainActivity;
-import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.main.ViewHelper;
 
 public class LevelActivity extends AppCompatActivity {

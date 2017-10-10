@@ -11,6 +11,14 @@ import com.samuelberrien.odyspace.utils.collision.Box;
 
 public interface Item {
 
+	/**
+	 * Make the collision test with the given triangle array and its model matrix in the box container
+	 *
+	 * @param triangleArray
+	 * @param modelMatrix
+	 * @param container
+	 * @return
+	 */
 	boolean collideTest(float[] triangleArray, float[] modelMatrix, Box container);
 
 	boolean isCollided(Item other);

@@ -5,7 +5,6 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
-import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 import com.samuelberrien.odyspace.utils.collision.Box;
@@ -183,7 +182,7 @@ public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 
 	@Override
 	public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		if(needMAkeExplosion) {
+		if (needMAkeExplosion) {
 			makeExplosion();
 			needMAkeExplosion = false;
 		}

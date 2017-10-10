@@ -235,29 +235,28 @@ public class NoiseMap implements Item, Map {
 	@Override
 	public float[] getRestreintArea(float[] position) {
 		if (position[0] >= -1f * this.scale && position[0] <= 1f * this.scale && position[2] >= -1f * this.scale && position[2] <= 1f * this.scale) {
-			float xNorm = (position[0] / this.scale + 1f) / 2f;
-			float zNorm = (position[2] / this.scale + 1f) / 2f;
+			float xNorm = (position[0] / this.scale + 1f) * 0.5f;
+			float zNorm = (position[2] / this.scale + 1f) * 0.5f;
 
-			float pas = 1f / (float) SIZE;
-
-			int i = (int) (xNorm / pas);
-			int j = (int) (zNorm / pas);
+			int i = (int) (xNorm * SIZE);
+			int j = (int) (zNorm * SIZE);
 
 			float[] res = new float[18];
 			int indRes = 0;
 			for (int a = j * 2 * SIZE; a <= j * 2 * SIZE; a++) {
 				for (int b = i * 2; b <= i * 2 + 1; b++) {
-					res[indRes + 0] = (this.points[(a + b) * 3 * 3 + 0]);
-					res[indRes + 1] = (this.points[(a + b) * 3 * 3 + 1]);
-					res[indRes + 2] = (this.points[(a + b) * 3 * 3 + 2]);
+					int tmp = (a + b) * 3 * 3;
+					res[indRes + 0] = this.points[tmp + 0];
+					res[indRes + 1] = this.points[tmp + 1];
+					res[indRes + 2] = this.points[tmp + 2];
 
-					res[indRes + 3] = (this.points[(a + b) * 3 * 3 + 3]);
-					res[indRes + 4] = (this.points[(a + b) * 3 * 3 + 4]);
-					res[indRes + 5] = (this.points[(a + b) * 3 * 3 + 5]);
+					res[indRes + 3] = this.points[tmp + 3];
+					res[indRes + 4] = this.points[tmp + 4];
+					res[indRes + 5] = this.points[tmp + 5];
 
-					res[indRes + 6] = (this.points[(a + b) * 3 * 3 + 6]);
-					res[indRes + 7] = (this.points[(a + b) * 3 * 3 + 7]);
-					res[indRes + 8] = (this.points[(a + b) * 3 * 3 + 8]);
+					res[indRes + 6] = this.points[tmp + 6];
+					res[indRes + 7] = this.points[tmp + 7];
+					res[indRes + 8] = this.points[tmp + 8];
 					indRes += 9;
 				}
 			}
