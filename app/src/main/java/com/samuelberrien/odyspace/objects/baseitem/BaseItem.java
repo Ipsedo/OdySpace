@@ -7,6 +7,7 @@ import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Ray;
 import com.samuelberrien.odyspace.utils.game.Item;
@@ -23,7 +24,7 @@ import java.util.List;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDrawable, UpdatableItem {
+public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 
 	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
@@ -52,8 +53,17 @@ public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDra
 	private Explosion mExplosion;
 	private boolean exploded;
 
-	public BaseItem(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
-		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
+	protected ObjModelMtlVBO objModelMtlVBO;
+
+	private CrashableMesh crashableMesh;
+
+	protected Context context;
+
+	private boolean needMAkeExplosion;
+
+	public BaseItem(Context context, String objFileName, String mtlFileName, String objCrashableMeshFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+		objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
+		this.context = context;
 		this.life = life;
 		this.maxLife = this.life;
 		this.mPosition = mPosition;
@@ -66,10 +76,13 @@ public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDra
 		this.scale = scale;
 		this.radius = this.scale * 2f;
 		this.isDanger = false;
+		crashableMesh = new CrashableMesh(context, objCrashableMeshFileName);
+		needMAkeExplosion = false;
 	}
 
-	public BaseItem(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
-		super(objModelMtl);
+	public BaseItem(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+		objModelMtlVBO = objModelMtl;
+		this.context = context;
 		this.life = life;
 		this.maxLife = this.life;
 		this.mPosition = mPosition;
@@ -82,6 +95,8 @@ public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDra
 		this.scale = scale;
 		this.radius = this.scale * 2f;
 		this.isDanger = false;
+		this.crashableMesh = crashableMesh;
+		needMAkeExplosion = false;
 	}
 
 	@Override
@@ -91,12 +106,12 @@ public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDra
 
 	@Override
 	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
-		return this.areCollided(this.allCoords.clone(), this.mModelMatrix.clone(), triangleArray, modelMatrix);
+		return areCollided(crashableMesh.cloneVertices(), mModelMatrix.clone(), triangleArray, modelMatrix);
 	}
 
 	@Override
 	public boolean isCollided(Item other) {
-		return other.collideTest(super.allCoords.clone(), this.mModelMatrix.clone(), this.makeBox());
+		return other.collideTest(crashableMesh.cloneVertices(), mModelMatrix.clone(), makeBox());
 	}
 
 	public Box makeBox() {
@@ -105,7 +120,7 @@ public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDra
 
 	@Override
 	public boolean isInside(Box box) {
-		return this.makeBox().isInside(box);
+		return makeBox().isInside(box);
 	}
 
 	@Override
@@ -168,11 +183,15 @@ public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDra
 
 	@Override
 	public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+		if(needMAkeExplosion) {
+			makeExplosion();
+			needMAkeExplosion = false;
+		}
 		float[] mvMatrix = new float[16];
 		Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);
 		float[] mvpMatrix = new float[16];
 		Matrix.multiplyMM(mvpMatrix, 0, pMatrix, 0, mvMatrix, 0);
-		super.draw(mvpMatrix, mvMatrix, mLightPosInEyeSpace, mCameraPosition);
+		objModelMtlVBO.draw(mvpMatrix, mvMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
 	public final void addExplosion(List<Explosion> explosions) {
@@ -183,15 +202,13 @@ public abstract class BaseItem extends ObjModelMtlVBO implements Item, GLItemDra
 		}
 	}
 
-	public final void makeExplosion() {
+	public void queueExplosion() {
+		needMAkeExplosion = true;
+	}
+
+	private void makeExplosion() {
 		this.mExplosion = this.getExplosion();
 	}
 
-	public final void makeExplosion(ObjModel particule) {
-		this.mExplosion = this.getExplosion(particule);
-	}
-
 	protected abstract Explosion getExplosion();
-
-	protected abstract Explosion getExplosion(ObjModel particule);
 }

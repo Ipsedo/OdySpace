@@ -87,9 +87,4 @@ public class FstBoss extends Boss {
 	protected Explosion getExplosion() {
 		throw new UnsupportedOperationException("FstBoss.getExplosion()");
 	}
-
-	@Override
-	protected Explosion getExplosion(ObjModel particule) {
-		throw new UnsupportedOperationException("FstBoss.getExplosion(ObjModel particule)");
-	}
 }

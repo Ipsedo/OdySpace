@@ -26,6 +26,9 @@ void main(){
         specularCoefficient = pow(cosAngle, v_material_shininess) * u_light_coef;
         specularCoefficient = specularCoefficient * (1.0 / (1.0 + (distance * distance)));
     }
+    if(specularCoefficient < 0.0) {
+        specularCoefficient = 0.0;
+    }
     vec4 specular = specularCoefficient * v_material_specular_Color;
 
     vec4 ambient = 0.1 * v_material_ambient_Color;

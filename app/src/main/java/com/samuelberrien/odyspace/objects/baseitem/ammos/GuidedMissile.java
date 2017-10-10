@@ -1,8 +1,10 @@
 package com.samuelberrien.odyspace.objects.baseitem.ammos;
 
+import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -24,8 +26,8 @@ public class GuidedMissile extends Ammos {
 	private boolean willAutoDestruct;
 	private boolean willReduceAngle;
 
-	public GuidedMissile(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed, Item target) {
-		super(objModelMtl, mPosition, mSpeed, new float[3], mRotationMatrix, maxSpeed, Scale, Life);
+	public GuidedMissile(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed, Item target) {
+		super(context, objModelMtl, crashableMesh, mPosition, mSpeed, new float[3], mRotationMatrix, maxSpeed, Scale, Life);
 		this.target = target;
 		this.currentDuration = 0;
 		this.angle = AngleLimitInit;

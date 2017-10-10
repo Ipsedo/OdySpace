@@ -104,14 +104,15 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 		return resShip;
 	}
 
+	//TODO modèles simplifiés pr crashable ?
 	private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType, GamePad gamePad, Bonus bonus, int bonusDuration, int bonusDurationBought) {
-		super(context, objFileName, mtlFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
+		super(context, objFileName, mtlFileName, objFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
 		this.maxLife = life;
-		this.lifeDraw = new ProgressBar(this.context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
+		this.lifeDraw = new ProgressBar(context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
 		this.fireType = fireType;
 		this.mBoostSpeed = 0f;
 		this.gamePad = gamePad;
-		this.vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+		this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 		this.bonus = bonus;
 		this.bonusDuration = bonusDuration;
 		this.bonusDurationBought = bonusDurationBought;
@@ -167,12 +168,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 	@Override
 	protected Explosion getExplosion() {
-		return new Explosion.ExplosionBuilder().makeExplosion(context, super.diffColorBuffer);
-	}
-
-	@Override
-	protected Explosion getExplosion(ObjModel particule) {
-		return new Explosion.ExplosionBuilder().makeExplosion(particule, super.diffColorBuffer);
+		return new Explosion.ExplosionBuilder().makeExplosion(context, super.objModelMtlVBO.getRandomMtlDiffRGBA());
 	}
 
 	@Override

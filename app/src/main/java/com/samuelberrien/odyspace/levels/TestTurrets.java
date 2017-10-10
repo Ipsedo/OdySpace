@@ -11,6 +11,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Turret;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.FireType;
@@ -63,7 +64,7 @@ public class TestTurrets implements Level {
 	public void init(Context context, Ship ship, float levelLimitSize) {
 		this.context = context;
 		this.ship = ship;
-		this.ship.makeExplosion();
+		this.ship.queueExplosion();
 
 		this.levelLimitSize = levelLimitSize;
 
@@ -84,6 +85,7 @@ public class TestTurrets implements Level {
 		this.ship.setRockets(this.rocketsShip);
 
 		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "bunker1.obj", "bunker1.mtl", 1f, 0f, false);
+		CrashableMesh crashableMesh = new CrashableMesh(context, "bunker1.obj");
 		Random rand = new Random(System.currentTimeMillis());
 		for (int i = 0; i < this.nbTurret; i++) {
 			float x = rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f;
@@ -94,9 +96,10 @@ public class TestTurrets implements Level {
 			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
 			FireType fireType = FireType.GUIDED_MISSILE;
-			Turret tmp = new Turret(tmpTurret, new float[]{x, moy + 3f, z}, fireType, this.ship, this.rocketsTurret);
+			//TODO modèles simplifiés pr crashable ?
+			Turret tmp = new Turret(context, tmpTurret, crashableMesh, new float[]{x, moy + 3f, z}, fireType, this.ship, this.rocketsTurret);
 			tmp.update();
-			tmp.makeExplosion();
+			tmp.queueExplosion();
 			this.turrets.add(tmp);
 		}
 

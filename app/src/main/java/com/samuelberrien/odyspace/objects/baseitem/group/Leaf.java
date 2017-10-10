@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 
 /**
  * Created by samuel on 04/08/17.
@@ -14,13 +15,16 @@ public abstract class Leaf extends BaseItem {
 
 	private float[] parentModelMatrix;
 
+	private float[] allCoords = new float[0];
+	//TODO
+
 	public Leaf(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
-		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, mSpeed, mAcceleration, scale);
+		super(context, objFileName, mtlFileName, objFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, mSpeed, mAcceleration, scale);
 		this.parentModelMatrix = parentModelMatrix;
 	}
 
-	public Leaf(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
-		super(objModelMtl, life, mPosition, mSpeed, mAcceleration, scale);
+	public Leaf(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+		super(context, objModelMtl, crashableMesh, life, mPosition, mSpeed, mAcceleration, scale);
 		this.parentModelMatrix = parentModelMatrix;
 	}
 
@@ -43,7 +47,7 @@ public abstract class Leaf extends BaseItem {
 	protected abstract float[] computeLeafModelMatrix();
 
 	public float[] cloneTriangleArray() {
-		return super.allCoords.clone();
+		return allCoords.clone();
 	}
 
 	public float[] cloneModelMatrix() {

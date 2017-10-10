@@ -27,8 +27,9 @@ public abstract class Boss extends BaseItem implements Shooter {
 	private int colorCounter;
 	private boolean changingColor;
 
+	//TODO modèles simplifiés pr crashable ?
 	public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, float scale, FireType fireType, List<BaseItem> rockets) {
-		super(context, objFileName, mtlFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
+		super(context, objFileName, mtlFileName, objFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
 		this.counter = 0;
 		this.fireType = fireType;
 		this.colorCounter = 0;
@@ -45,7 +46,7 @@ public abstract class Boss extends BaseItem implements Shooter {
 	public void decrementLife(int minus) {
 		if (minus > 0 && !this.changingColor) {
 			this.changingColor = true;
-			super.changeColor();
+			objModelMtlVBO.changeColor();
 		}
 		super.life = super.life - minus >= 0 ? super.life - minus : 0;
 	}
@@ -53,7 +54,7 @@ public abstract class Boss extends BaseItem implements Shooter {
 	private void count() {
 		this.counter = (this.counter > this.MAX_COUNT ? 0 : this.counter + 1);
 		if (this.changingColor && this.colorCounter > 75) {
-			super.changeColor();
+			objModelMtlVBO.changeColor();
 			this.changingColor = false;
 			this.colorCounter = 0;
 		} else if (this.changingColor) {

@@ -7,6 +7,7 @@ import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 import com.samuelberrien.odyspace.utils.game.FireType;
 import com.samuelberrien.odyspace.utils.game.Shooter;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -33,16 +34,17 @@ public class Turret extends BaseItem implements Shooter {
 
 	private List<BaseItem> rockets;
 
+	//TODO modèles simplifiés pr crashable ?
 	public Turret(Context context, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
-		super(context, "turret.obj", "turret.mtl", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
+		super(context, "turret.obj", "turret.mtl", "turret.obj", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
 		this.rand = new Random(System.currentTimeMillis());
 		this.fireType = fireType;
 		this.ship = ship;
 		this.rockets = rockets;
 	}
 
-	public Turret(ObjModelMtlVBO turret, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
-		super(turret, 1, mPosition, new float[3], new float[3], 4f);
+	public Turret(Context context, ObjModelMtlVBO turret, CrashableMesh crashableMesh, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
+		super(context, turret, crashableMesh, 1, mPosition, new float[3], new float[3], 4f);
 		this.rand = new Random(System.currentTimeMillis());
 		this.fireType = fireType;
 		this.ship = ship;
@@ -57,18 +59,7 @@ public class Turret extends BaseItem implements Shooter {
 				.setMaxScale(2f)
 				.setLimitSpeed(1f)
 				.setMaxSpeed(1.5f)
-				.makeExplosion(context, super.diffColorBuffer);
-	}
-
-	@Override
-	protected Explosion getExplosion(ObjModel particule) {
-		return new Explosion.ExplosionBuilder().setNbParticules(10)
-				.setLimitSpeedAlife(0.05f)
-				.setLimitScale(1f)
-				.setMaxScale(2f)
-				.setLimitSpeed(1f)
-				.setMaxSpeed(1.5f)
-				.makeExplosion(particule, diffColorBuffer);
+				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 
 /**
  * Created by samuel on 23/06/17.
@@ -17,12 +18,13 @@ public class Base extends BaseItem {
 
 	private Explosion mExplosion;
 
+	//TODO vrai Crashable ?
 	public Base(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float scale) {
-		super(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, new float[3], new float[3], scale);
+		super(context, objFileName, mtlFileName, objFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, new float[3], new float[3], scale);
 	}
 
-	public Base(ObjModelMtlVBO objModelMtl, int life, float[] mPosition, float scale) {
-		super(objModelMtl, life, mPosition, new float[3], new float[3], scale);
+	public Base(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, int life, float[] mPosition, float scale) {
+		super(context, objModelMtl, crashableMesh, life, mPosition, new float[3], new float[3], scale);
 	}
 
 	@Override
@@ -38,21 +40,7 @@ public class Base extends BaseItem {
 				.setMaxScale(7f)
 				.setLimitSpeed(6f)
 				.setMaxSpeed(10f)
-				.makeExplosion(context, diffColorBuffer);
+				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
 	}
-
-	@Override
-	protected Explosion getExplosion(ObjModel particule) {
-		return new Explosion.ExplosionBuilder().setNbParticules(40)
-				.setLimitSpeedAlife(0.16f)
-				.setLimitScale(5f)
-				.setMaxScale(7f)
-				.setLimitSpeed(6f)
-				.setMaxSpeed(10f)
-				.makeExplosion(particule, diffColorBuffer);
-	}
-
-
 	//this.mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
-
 }

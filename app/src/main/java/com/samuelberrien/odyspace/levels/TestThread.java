@@ -87,11 +87,11 @@ public class TestThread implements Level {
 		for (int i = 0; i < this.nbIcosahedron; i++) {
 			Icosahedron ico = new Icosahedron(this.context, 1, new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f}, rand.nextFloat() * 2f + 1f);
 			ico.update();
-			ico.makeExplosion();
+			ico.queueExplosion();
 			this.icosahedrons.add(ico);
 		}
 
-		this.ship.makeExplosion();
+		this.ship.queueExplosion();
 
 		this.soundPoolBuilder = new SoundPoolBuilder(this.context);
 

@@ -56,9 +56,11 @@ public class ObjModelMtlVBO implements GLDrawable {
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer normalsBuffer;
 	private FloatBuffer ambColorBuffer;
-	protected FloatBuffer diffColorBuffer;
+	private FloatBuffer diffColorBuffer;
 	private FloatBuffer specColorBuffer;
 	private FloatBuffer specShininess;
+
+	private float[] randomDiffRGBA = new float[4];
 
 	private int vertexBufferId;
 	private int normalsBufferId;
@@ -86,7 +88,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 
 	// number of coordinates per vertex in this array
 	private final int COORDS_PER_VERTEX = 3;
-	protected float[] allCoords;
+	private float[] allCoords;
 	private float[] allNormals;
 	private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
@@ -278,15 +280,15 @@ public class ObjModelMtlVBO implements GLDrawable {
 					currentMtl = line.split(" ")[1];
 				} else if (line.startsWith("Ka")) {
 					String[] tmp = line.split(" ");
-					this.mtlAmbColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlAmbColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Kd")) {
 					String[] tmp = line.split(" ");
-					this.mtlDiffColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlDiffColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Ks")) {
 					String[] tmp = line.split(" ");
-					this.mtlSpecColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlSpecColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Ns")) {
-					this.mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
+					mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
 				}
 			}
 			buffreader.close();
@@ -482,6 +484,12 @@ public class ObjModelMtlVBO implements GLDrawable {
 				.asFloatBuffer();
 		this.specShininess.put(allSpecShin)
 				.position(0);
+
+
+		randomDiffRGBA[0] = allDiffColor[0];
+		randomDiffRGBA[1] = allDiffColor[1];
+		randomDiffRGBA[2] = allDiffColor[2];
+		randomDiffRGBA[3] = allDiffColor[3];
 	}
 
 	@Override
@@ -506,20 +514,20 @@ public class ObjModelMtlVBO implements GLDrawable {
 
 		// Pass in the texture information
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.ambBufferId);
-		GLES20.glEnableVertexAttribArray(this.mAmbColorHandle);
-		GLES20.glVertexAttribPointer(this.mAmbColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glEnableVertexAttribArray(mAmbColorHandle);
+		GLES20.glVertexAttribPointer(mAmbColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.diffBufferId);
-		GLES20.glEnableVertexAttribArray(this.mDiffColorHandle);
-		GLES20.glVertexAttribPointer(this.mDiffColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glEnableVertexAttribArray(mDiffColorHandle);
+		GLES20.glVertexAttribPointer(mDiffColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.specBufferId);
-		GLES20.glEnableVertexAttribArray(this.mSpecColorHandle);
-		GLES20.glVertexAttribPointer(this.mSpecColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glEnableVertexAttribArray(mSpecColorHandle);
+		GLES20.glVertexAttribPointer(mSpecColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.shinBufferId);
-		GLES20.glEnableVertexAttribArray(this.mSpecShininessHandle);
-		GLES20.glVertexAttribPointer(this.mSpecShininessHandle, SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glEnableVertexAttribArray(mSpecShininessHandle);
+		GLES20.glVertexAttribPointer(mSpecShininessHandle, SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
@@ -540,4 +548,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 	}
 
+	public float[] getRandomMtlDiffRGBA() {
+		return randomDiffRGBA;
+	}
 }

@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.objects.baseitem;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 
 /**
  * Created by samuel on 30/06/17.
@@ -17,8 +18,8 @@ public class SuperIcosahedron extends Icosahedron {
 		super(context, life, mPosition, scale);
 	}
 
-	public SuperIcosahedron(ObjModelMtlVBO model, int life, float[] mPosition, float[] mSpeed, float scale) {
-		super(model, life, mPosition, mSpeed, scale);
+	public SuperIcosahedron(Context context, ObjModelMtlVBO model, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float scale) {
+		super(context, model, crashableMesh, life, mPosition, mSpeed, scale);
 	}
 
 	@Override

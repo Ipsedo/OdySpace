@@ -1,11 +1,13 @@
 package com.samuelberrien.odyspace.objects.baseitem.ammos;
 
+import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModel;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 
 /**
  * Created by samuel on 03/08/17.
@@ -15,8 +17,8 @@ public class Ammos extends BaseItem {
 
 	protected float maxSpeed;
 
-	Ammos(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-		super(objModelMtl, life, mPosition, mSpeed, mAcceleration, scale);
+	Ammos(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, float[] mPosition, float[] mSpeed, float[] mAcceleration, float[] mRotationMatrix, float maxSpeed, float scale, int life) {
+		super(context, objModelMtl, crashableMesh, life, mPosition, mSpeed, mAcceleration, scale);
 		super.mRotationMatrix = mRotationMatrix;
 		this.maxSpeed = maxSpeed;
 	}
@@ -48,17 +50,6 @@ public class Ammos extends BaseItem {
 				.setMaxScale(0.8f)
 				.setLimitSpeed(0.4f)
 				.setMaxSpeed(0.8f)
-				.makeExplosion(context, diffColorBuffer);
-	}
-
-	@Override
-	protected Explosion getExplosion(ObjModel particule) {
-		return new Explosion.ExplosionBuilder().setNbParticules(3)
-				.setLimitSpeedAlife(0.1f)
-				.setLimitScale(0.3f)
-				.setMaxScale(0.8f)
-				.setLimitSpeed(0.4f)
-				.setMaxSpeed(0.8f)
-				.makeExplosion(particule, diffColorBuffer);
+				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
 	}
 }

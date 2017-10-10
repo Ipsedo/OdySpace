@@ -15,6 +15,7 @@ import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
 import com.samuelberrien.odyspace.objects.baseitem.SuperIcosahedron;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.collision.Octree;
 import com.samuelberrien.odyspace.utils.game.Item;
@@ -43,6 +44,7 @@ public class TestProtectionLevel implements Level {
 
 	private Ship ship;
 	private ObjModelMtlVBO icosahedron;
+	private CrashableMesh crashableIco;
 	private List<BaseItem> icosahedrons;
 	private ObjModel particule;
 	private List<Explosion> explosions;
@@ -93,11 +95,15 @@ public class TestProtectionLevel implements Level {
 		this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
 		this.icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		this.directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
+		//TODO crashable
+		crashableIco = new CrashableMesh(context, "icosahedron.obj");
 
 
 		this.rand = new Random(System.currentTimeMillis());
 
-		this.base = new ObjModelMtlVBO(this.context, "base.obj", "base.mtl", 1f, 0f, false);
+		base = new ObjModelMtlVBO(this.context, "base.obj", "base.mtl", 1f, 0f, false);
+		//TODO faire vrai crashable?
+		CrashableMesh crashableMesh = new CrashableMesh(context, "base.obj");
 		for (int i = 0; i < this.nbBase; i++) {
 			float x = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
 			float z = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
@@ -108,17 +114,17 @@ public class TestProtectionLevel implements Level {
 
 			float[] pos = new float[]{x, moy + 5f, z};
 
-			Base tmpBase = new Base(this.base, 1, pos, 25f);
+			Base tmpBase = new Base(context, base, crashableMesh, 1, pos, 25f);
 			tmpBase.update();
-			tmpBase.makeExplosion();
-			this.bases.add(tmpBase);
+			tmpBase.queueExplosion();
+			bases.add(tmpBase);
 		}
 
 		this.currLevelProgression = new ProgressBar(this.context, maxLevelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
 		this.soundPoolBuilder = new SoundPoolBuilder(this.context);
 
-		this.ship.makeExplosion();
+		this.ship.queueExplosion();
 
 		this.isInit = true;
 	}
@@ -242,9 +248,9 @@ public class TestProtectionLevel implements Level {
 
 		List<BaseItem> targets = new ArrayList<>(this.bases);
 		if (this.rand.nextFloat() < 4e-2f) {
-			Icosahedron tmp = new SuperIcosahedron(this.icosahedron, (int) Math.ceil(this.rand.nextDouble() * 3), this.randomIcoPosition(), this.randomIcoSpeed(this.rand.nextFloat() * 0.1f + 0.2f), this.rand.nextFloat() * 10f + 10f);
+			Icosahedron tmp = new SuperIcosahedron(context, icosahedron, crashableIco, (int) Math.ceil(this.rand.nextDouble() * 3), this.randomIcoPosition(), this.randomIcoSpeed(this.rand.nextFloat() * 0.1f + 0.2f), this.rand.nextFloat() * 10f + 10f);
 			tmp.update();
-			tmp.makeExplosion(this.particule);
+			tmp.queueExplosion();
 			tmp.computeDanger(targets);
 			this.icosahedrons.add(tmp);
 		}
@@ -259,7 +265,7 @@ public class TestProtectionLevel implements Level {
 		for (int i = this.bases.size() - 1; i >= 0; i--)
 			if (!this.bases.get(i).isAlive()) {
 				this.soundPoolBuilder.playBigBoom(this.getSoundLevel(this.bases.get(i)), this.getSoundLevel(this.bases.get(i)));
-				((Base) this.bases.get(i)).addExplosion(this.explosions);
+				this.bases.get(i).addExplosion(this.explosions);
 				this.bases.remove(i);
 			}
 

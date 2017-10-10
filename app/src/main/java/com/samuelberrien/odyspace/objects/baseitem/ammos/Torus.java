@@ -1,6 +1,9 @@
 package com.samuelberrien.odyspace.objects.baseitem.ammos;
 
+import android.content.Context;
+
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 
 /**
  * Created by samuel on 02/08/17.
@@ -11,8 +14,8 @@ public class Torus extends Ammos {
 	private static double BaseLog = 1.3d;
 	private double accuScale;
 
-	public Torus(ObjModelMtlVBO objModelMtl, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed, double accuScale) {
-		super(objModelMtl, mPosition, mSpeed, new float[]{0f, 0f, 3e-2f}, mRotationMatrix, maxSpeed, 1f, Life);
+	public Torus(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMeshes, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed, double accuScale) {
+		super(context, objModelMtl, crashableMeshes, mPosition, mSpeed, new float[]{0f, 0f, 3e-2f}, mRotationMatrix, maxSpeed, 1f, Life);
 		this.accuScale = BaseLog + accuScale;
 	}
 

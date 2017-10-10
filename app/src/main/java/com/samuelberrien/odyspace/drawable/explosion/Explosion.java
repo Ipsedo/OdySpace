@@ -4,10 +4,13 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.GLItemDrawable;
-import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Random;
@@ -62,40 +65,61 @@ public class Explosion implements GLItemDrawable {
 			return this;
 		}
 
-		public Explosion makeExplosion(Context context, FloatBuffer mDiffColor) {
-			return new Explosion(context, mDiffColor, this);
-		}
-
-		public Explosion makeExplosion(ObjModel particule, FloatBuffer mDiffColor) {
-			return new Explosion(particule, mDiffColor, this);
+		public Explosion makeExplosion(Context context, float[] rgba) {
+			return new Explosion(context, rgba, this);
 		}
 	}
 
 	private ArrayList<Particule> particules;
-	private ObjModel particule;
 	private final float limitSpeedAlife;
 	private float[] initialPos;
 
-	private Explosion(Context context, FloatBuffer mDiffColor, /*int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed*/ExplosionBuilder explosionBuilder) {
+	private float[] vertices = new float[]{
+			-1.0f, -1.0f, 0.0f,
+			1.0f, -1.0f, 0.0f,
+			0.0f,  1.0f, 0.0f,
+	};
+	private FloatBuffer vertexBuffer;
+	private float[] color;
+
+	private int uMVPMatrixHandle;
+	private int uColorHandle;
+	private int vPositionHandle;
+	private int mProgram;
+
+	private Explosion(Context context, float[] rgba, ExplosionBuilder explosionBuilder) {
 		this.limitSpeedAlife = explosionBuilder.limitSpeedAlife;
 		this.particules = new ArrayList<>();
 		Random rand = new Random(System.currentTimeMillis());
-		this.particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
-		this.particule.setColor(mDiffColor);
+		color = rgba;
 		for (int i = 0; i < explosionBuilder.nbParticules; i++) {
 			this.particules.add(new Particule(rand, explosionBuilder.limitScale, explosionBuilder.maxScale, explosionBuilder.limitSpeed, explosionBuilder.maxSpeed));
 		}
+		makeProgram(context);
+
+		vertexBuffer = (FloatBuffer) ByteBuffer.allocateDirect(vertices.length * 4)
+				.order(ByteOrder.nativeOrder())
+				.asFloatBuffer()
+				.put(vertices)
+				.position(0);
 	}
 
-	private Explosion(ObjModel particule, FloatBuffer mDiffColor, /*int nbParticule, float limitSpeedAlife, float limitScale, float maxScale, float limitSpeed, float maxSpeed*/ExplosionBuilder explosionBuilder) {
-		this.limitSpeedAlife = explosionBuilder.limitSpeedAlife;
-		this.particules = new ArrayList<>();
-		Random rand = new Random(System.currentTimeMillis());
-		this.particule = particule;
-		this.particule.setColor(mDiffColor);
-		for (int i = 0; i < explosionBuilder.nbParticules; i++) {
-			this.particules.add(new Particule(rand, explosionBuilder.limitScale, explosionBuilder.maxScale, explosionBuilder.limitSpeed, explosionBuilder.maxSpeed));
-		}
+	private void makeProgram(Context context) {
+		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.exlosion_vs));
+		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.explosion_fs));
+
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
+
+		bind();
+	}
+
+	private void bind() {
+		uMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+		uColorHandle = GLES20.glGetUniformLocation(mProgram, "u_Color");
+		vPositionHandle = GLES20.glGetAttribLocation(mProgram, "v_Position");
 	}
 
 	public void move() {
@@ -114,7 +138,7 @@ public class Explosion implements GLItemDrawable {
 		float[] mVPMatrix = new float[16];
 		Matrix.multiplyMM(mVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 		for (Particule p : this.particules) {
-			p.draw(mVPMatrix, mViewMatrix, mLightPosInEyeSpace, this.particule);
+			p.draw(mVPMatrix, mViewMatrix);
 		}
 		GLES20.glEnable(GLES20.GL_CULL_FACE);
 	}
@@ -188,12 +212,33 @@ public class Explosion implements GLItemDrawable {
 			return Vector.length3f(this.mSpeed) > Explosion.this.limitSpeedAlife;
 		}
 
-		private void draw(float[] mVPMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, ObjModel object) {
+		private void draw(float[] mVPMatrix, float[] mViewMatrix) {
 			float[] mMVMatrix = new float[16];
 			Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, this.mModelMatrix, 0);
 			float[] mMVPMatrix = new float[16];
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, this.mModelMatrix, 0);
-			object.draw(mMVPMatrix, mMVMatrix, mLightPosInEyeSpace, new float[0]);
+
+			ShaderLoader.checkGlError("0");
+			GLES20.glUseProgram(mProgram);
+			ShaderLoader.checkGlError("1");
+
+			vertexBuffer.position(0);
+			GLES20.glEnableVertexAttribArray(vPositionHandle);
+			ShaderLoader.checkGlError("2");
+			GLES20.glVertexAttribPointer(vPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, vertexBuffer);
+			ShaderLoader.checkGlError("3");
+
+			GLES20.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+			ShaderLoader.checkGlError("4");
+
+			GLES20.glUniform4fv(uColorHandle, 1, color, 0);
+			ShaderLoader.checkGlError("5");
+
+			GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertices.length / 3);
+			ShaderLoader.checkGlError("6");
+
+			GLES20.glDisableVertexAttribArray(vPositionHandle);
+			ShaderLoader.checkGlError("7");
 		}
 	}
 }
