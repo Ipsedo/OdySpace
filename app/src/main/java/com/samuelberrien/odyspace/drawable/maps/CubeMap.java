@@ -85,28 +85,28 @@ public class CubeMap implements Map {
 	public CubeMap(Context context, float levelLimits, String assetsPathName) {
 		this.context = context;
 		this.levelLimits = levelLimits;
-		this.mModelMatrix = new float[16];
+		mModelMatrix = new float[16];
 
-		this.makeProgram();
-		this.bind();
-		this.loadCubeMaptexture(assetsPathName);
-		this.makeCube();
+		makeProgram();
+		bind();
+		loadCubeMaptexture(assetsPathName);
+		makeCube();
 	}
 
 	private void bind() {
-		this.texCoordHandle = GLES20.glGetAttribLocation(this.mProgram, "a_vp");
-		this.mvpMatrixHandle = GLES20.glGetUniformLocation(this.mProgram, "u_MVPMatrix");
-		this.samplerCubeHandle = GLES20.glGetUniformLocation(this.mProgram, "u_cube_map");
+		texCoordHandle = GLES20.glGetAttribLocation(mProgram, "a_vp");
+		mvpMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+		samplerCubeHandle = GLES20.glGetUniformLocation(mProgram, "u_cube_map");
 	}
 
 	private void makeProgram() {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.cube_map_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.cube_map_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 	}
 
 	private void loadCubeMaptexture(String assetsPathName) {
@@ -118,37 +118,37 @@ public class CubeMap implements Map {
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inScaled = false;
 
-		Bitmap bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "posx.jpg");
+		Bitmap bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "posx.jpg");
 		ByteBuffer b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
 		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
-		bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "negx.jpg");
+		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "negx.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
 		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
-		bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "posy.jpg");
+		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "posy.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
 		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
-		bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "negy.jpg");
+		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "negy.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
 		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
-		bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "posz.jpg");
+		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "posz.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
 		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
-		bitmap = BitmapLoader.getBitmapFromAsset(this.context, assetsPathName + "negz.jpg");
+		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "negz.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
@@ -161,10 +161,10 @@ public class CubeMap implements Map {
 	}
 
 	private void makeCube() {
-		this.vertexBuffer = ByteBuffer.allocateDirect(this.pointsCubeMap.length * 4)
+		vertexBuffer = ByteBuffer.allocateDirect(pointsCubeMap.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.vertexBuffer.put(this.pointsCubeMap)
+		vertexBuffer.put(pointsCubeMap)
 				.position(0);
 	}
 
@@ -172,23 +172,23 @@ public class CubeMap implements Map {
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] unused1, float[] unused2) {
 		float[] mvpMatrix = new float[16];
 		Matrix.multiplyMM(mvpMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-		Matrix.multiplyMM(mvpMatrix, 0, mvpMatrix.clone(), 0, this.mModelMatrix, 0);
+		Matrix.multiplyMM(mvpMatrix, 0, mvpMatrix.clone(), 0, mModelMatrix, 0);
 
-		GLES20.glUseProgram(this.mProgram);
+		GLES20.glUseProgram(mProgram);
 
-		GLES20.glUniformMatrix4fv(this.mvpMatrixHandle, 1, false, mvpMatrix, 0);
+		GLES20.glUniformMatrix4fv(mvpMatrixHandle, 1, false, mvpMatrix, 0);
 
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, textureCubeID[0]);
-		GLES20.glUniform1i(this.samplerCubeHandle, 0);
+		GLES20.glUniform1i(samplerCubeHandle, 0);
 
-		this.vertexBuffer.position(0);
-		GLES20.glVertexAttribPointer(this.texCoordHandle, 3, GLES20.GL_FLOAT, false, 0, this.vertexBuffer);
-		GLES20.glEnableVertexAttribArray(this.texCoordHandle);
+		vertexBuffer.position(0);
+		GLES20.glVertexAttribPointer(texCoordHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+		GLES20.glEnableVertexAttribArray(texCoordHandle);
 
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.pointsCubeMap.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, pointsCubeMap.length / 3);
 
-		GLES20.glDisableVertexAttribArray(this.texCoordHandle);
+		GLES20.glDisableVertexAttribArray(texCoordHandle);
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public class CubeMap implements Map {
 	public void update() {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.scaleM(mModelMatrix, 0, this.levelLimits, this.levelLimits, this.levelLimits);
+		Matrix.scaleM(mModelMatrix, 0, levelLimits, levelLimits, levelLimits);
 		this.mModelMatrix = mModelMatrix.clone();
 	}
 }

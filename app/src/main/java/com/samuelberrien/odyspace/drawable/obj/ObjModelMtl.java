@@ -70,14 +70,14 @@ public class ObjModelMtl implements GLDrawable {
 
 		InputStream inputStream;
 		inputStream = context.getResources().openRawResource(mtlResId);
-		this.parseMtl(inputStream);
+		parseMtl(inputStream);
 		inputStream = context.getResources().openRawResource(objResId);
-		this.parseObj(inputStream, randomColor);
+		parseObj(inputStream, randomColor);
 
-		this.lightCoef = lightAugmentation;
+		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+		makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
 	}
 
 	/**
@@ -92,67 +92,67 @@ public class ObjModelMtl implements GLDrawable {
 		InputStream inputStream;
 		try {
 			inputStream = context.getAssets().open(mtlFileName);
-			this.parseMtl(inputStream);
+			parseMtl(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		try {
 			inputStream = context.getAssets().open(objFileName);
-			this.parseObj(inputStream, randomColor);
+			parseObj(inputStream, randomColor);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		this.lightCoef = lightAugmentation;
+		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		this.makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
+		makeProgram(context, R.raw.specular_vs, R.raw.specular_fs);
 	}
 
 	public ObjModelMtl(ObjModelMtl objModelMtl) {
-		this.mtlAmbColor = objModelMtl.mtlAmbColor;
-		this.mtlDiffColor = objModelMtl.mtlDiffColor;
-		this.mtlSpecColor = objModelMtl.mtlSpecColor;
+		mtlAmbColor = objModelMtl.mtlAmbColor;
+		mtlDiffColor = objModelMtl.mtlDiffColor;
+		mtlSpecColor = objModelMtl.mtlSpecColor;
 
-		this.vertexBuffer = objModelMtl.vertexBuffer;
-		this.normalsBuffer = objModelMtl.normalsBuffer;
-		this.ambColorBuffer = objModelMtl.ambColorBuffer;
-		this.diffColorBuffer = objModelMtl.diffColorBuffer;
-		this.specColorBuffer = objModelMtl.specColorBuffer;
-		this.specShininess = objModelMtl.specShininess;
+		vertexBuffer = objModelMtl.vertexBuffer;
+		normalsBuffer = objModelMtl.normalsBuffer;
+		ambColorBuffer = objModelMtl.ambColorBuffer;
+		diffColorBuffer = objModelMtl.diffColorBuffer;
+		specColorBuffer = objModelMtl.specColorBuffer;
+		specShininess = objModelMtl.specShininess;
 
-		this.mProgram = objModelMtl.mProgram;
-		this.mPositionHandle = objModelMtl.mPositionHandle;
-		this.mNormalHandle = objModelMtl.mNormalHandle;
-		this.mAmbColorHandle = objModelMtl.mAmbColorHandle;
-		this.mDiffColorHandle = objModelMtl.mDiffColorHandle;
-		this.mSpecColorHandle = objModelMtl.mSpecColorHandle;
-		this.mSpecShininessHandle = objModelMtl.mSpecShininessHandle;
-		this.mCameraPosHandle = objModelMtl.mCameraPosHandle;
-		this.mMVPMatrixHandle = objModelMtl.mMVPMatrixHandle;
-		this.mLightPosHandle = objModelMtl.mLightPosHandle;
-		this.mMVMatrixHandle = objModelMtl.mMVMatrixHandle;
-		this.mDistanceCoefHandle = objModelMtl.mDistanceCoefHandle;
-		this.mLightCoefHandle = objModelMtl.mLightCoefHandle;
+		mProgram = objModelMtl.mProgram;
+		mPositionHandle = objModelMtl.mPositionHandle;
+		mNormalHandle = objModelMtl.mNormalHandle;
+		mAmbColorHandle = objModelMtl.mAmbColorHandle;
+		mDiffColorHandle = objModelMtl.mDiffColorHandle;
+		mSpecColorHandle = objModelMtl.mSpecColorHandle;
+		mSpecShininessHandle = objModelMtl.mSpecShininessHandle;
+		mCameraPosHandle = objModelMtl.mCameraPosHandle;
+		mMVPMatrixHandle = objModelMtl.mMVPMatrixHandle;
+		mLightPosHandle = objModelMtl.mLightPosHandle;
+		mMVMatrixHandle = objModelMtl.mMVMatrixHandle;
+		mDistanceCoefHandle = objModelMtl.mDistanceCoefHandle;
+		mLightCoefHandle = objModelMtl.mLightCoefHandle;
 
-		this.lightCoef = objModelMtl.lightCoef;
-		this.distanceCoef = objModelMtl.distanceCoef;
+		lightCoef = objModelMtl.lightCoef;
+		distanceCoef = objModelMtl.distanceCoef;
 
-		this.allCoords = objModelMtl.allCoords;
-		this.allNormals = objModelMtl.allNormals;
+		allCoords = objModelMtl.allCoords;
+		allNormals = objModelMtl.allNormals;
 	}
 
 	public void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, vertexShaderResId));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, fragmentShaderResId));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.bind();
+		bind();
 	}
 
 	/**
@@ -187,15 +187,15 @@ public class ObjModelMtl implements GLDrawable {
 					currentMtl = line.split(" ")[1];
 				} else if (line.startsWith("Ka")) {
 					String[] tmp = line.split(" ");
-					this.mtlAmbColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlAmbColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Kd")) {
 					String[] tmp = line.split(" ");
-					this.mtlDiffColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlDiffColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Ks")) {
 					String[] tmp = line.split(" ");
-					this.mtlSpecColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlSpecColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Ns")) {
-					this.mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
+					mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
 				}
 			}
 			buffreader.close();
@@ -299,17 +299,17 @@ public class ObjModelMtl implements GLDrawable {
 				specGreen = random.nextFloat();
 				specBlue = random.nextFloat();
 			} else {
-				ambRed = this.mtlAmbColor.get(mtlToUse.get(i))[0];
-				ambGreen = this.mtlAmbColor.get(mtlToUse.get(i))[1];
-				ambBlue = this.mtlAmbColor.get(mtlToUse.get(i))[2];
+				ambRed = mtlAmbColor.get(mtlToUse.get(i))[0];
+				ambGreen = mtlAmbColor.get(mtlToUse.get(i))[1];
+				ambBlue = mtlAmbColor.get(mtlToUse.get(i))[2];
 
-				diffRed = this.mtlDiffColor.get(mtlToUse.get(i))[0];
-				diffGreen = this.mtlDiffColor.get(mtlToUse.get(i))[1];
-				diffBlue = this.mtlDiffColor.get(mtlToUse.get(i))[2];
+				diffRed = mtlDiffColor.get(mtlToUse.get(i))[0];
+				diffGreen = mtlDiffColor.get(mtlToUse.get(i))[1];
+				diffBlue = mtlDiffColor.get(mtlToUse.get(i))[2];
 
-				specRed = this.mtlSpecColor.get(mtlToUse.get(i))[0];
-				specGreen = this.mtlSpecColor.get(mtlToUse.get(i))[1];
-				specBlue = this.mtlSpecColor.get(mtlToUse.get(i))[2];
+				specRed = mtlSpecColor.get(mtlToUse.get(i))[0];
+				specGreen = mtlSpecColor.get(mtlToUse.get(i))[1];
+				specBlue = mtlSpecColor.get(mtlToUse.get(i))[2];
 			}
 
 			for (int j = 0; j < allVertexDrawOrderList.get(i).size() * 4; j += 4) {
@@ -328,82 +328,82 @@ public class ObjModelMtl implements GLDrawable {
 				specColor.add(specBlue);
 				specColor.add(1f);
 
-				specShin.add(this.mtlSpecShininess.get(mtlToUse.get(i)));
+				specShin.add(mtlSpecShininess.get(mtlToUse.get(i)));
 			}
 		}
 
-		this.allCoords = new float[coords.size()];
+		allCoords = new float[coords.size()];
 		for (int i = 0; i < allCoords.length; i++) {
-			this.allCoords[i] = coords.get(i);
+			allCoords[i] = coords.get(i);
 		}
-		this.vertexBuffer = ByteBuffer.allocateDirect(this.allCoords.length * 4)
+		vertexBuffer = ByteBuffer.allocateDirect(allCoords.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.vertexBuffer.put(this.allCoords)
+		vertexBuffer.put(allCoords)
 				.position(0);
 
-		this.allNormals = new float[normals.size()];
-		for (int i = 0; i < this.allNormals.length; i++) {
-			this.allNormals[i] = normals.get(i);
+		allNormals = new float[normals.size()];
+		for (int i = 0; i < allNormals.length; i++) {
+			allNormals[i] = normals.get(i);
 		}
-		this.normalsBuffer = ByteBuffer.allocateDirect(this.allNormals.length * 4)
+		normalsBuffer = ByteBuffer.allocateDirect(allNormals.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.normalsBuffer.put(this.allNormals)
+		normalsBuffer.put(allNormals)
 				.position(0);
 
 		float[] allAmbColor = new float[ambColor.size()];
 		for (int i = 0; i < allAmbColor.length; i++) {
 			allAmbColor[i] = ambColor.get(i);
 		}
-		this.ambColorBuffer = ByteBuffer.allocateDirect(allAmbColor.length * 4)
+		ambColorBuffer = ByteBuffer.allocateDirect(allAmbColor.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.ambColorBuffer.put(allAmbColor)
+		ambColorBuffer.put(allAmbColor)
 				.position(0);
 
 		float[] allDiffColor = new float[diffColor.size()];
 		for (int i = 0; i < allDiffColor.length; i++) {
 			allDiffColor[i] = diffColor.get(i);
 		}
-		this.diffColorBuffer = ByteBuffer.allocateDirect(allDiffColor.length * 4)
+		diffColorBuffer = ByteBuffer.allocateDirect(allDiffColor.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.diffColorBuffer.put(allDiffColor)
+		diffColorBuffer.put(allDiffColor)
 				.position(0);
 
 		float[] allSpecColor = new float[specColor.size()];
 		for (int i = 0; i < allSpecColor.length; i++) {
 			allSpecColor[i] = specColor.get(i);
 		}
-		this.specColorBuffer = ByteBuffer.allocateDirect(allSpecColor.length * 4)
+		specColorBuffer = ByteBuffer.allocateDirect(allSpecColor.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.specColorBuffer.put(allSpecColor)
+		specColorBuffer.put(allSpecColor)
 				.position(0);
 
 		float[] allSpecShin = new float[specShin.size()];
 		for (int i = 0; i < allSpecShin.length; i++) {
 			allSpecShin[i] = specShin.get(i);
 		}
-		this.specShininess = ByteBuffer.allocateDirect(allSpecShin.length * 4)
+		specShininess = ByteBuffer.allocateDirect(allSpecShin.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.specShininess.put(allSpecShin)
+		specShininess.put(allSpecShin)
 				.position(0);
 	}
 
 	public void setColors(FloatBuffer mAmbColors, FloatBuffer mDiffColors, FloatBuffer mSpecColors) {
-		this.ambColorBuffer = mAmbColors;
-		this.diffColorBuffer = mDiffColors;
-		this.specColorBuffer = mSpecColors;
+		ambColorBuffer = mAmbColors;
+		diffColorBuffer = mDiffColors;
+		specColorBuffer = mSpecColors;
 	}
 
 	@Override
 	public void changeColor() {
-		FloatBuffer tmp = this.ambColorBuffer;
-		this.ambColorBuffer = this.diffColorBuffer;
-		this.diffColorBuffer = tmp;
+		FloatBuffer tmp = ambColorBuffer;
+		ambColorBuffer = diffColorBuffer;
+		diffColorBuffer = tmp;
 	}
 
 	@Override
@@ -411,22 +411,22 @@ public class ObjModelMtl implements GLDrawable {
 		GLES20.glUseProgram(mProgram);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.vertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
 
 		GLES20.glEnableVertexAttribArray(mAmbColorHandle);
-		GLES20.glVertexAttribPointer(mAmbColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.ambColorBuffer);
+		GLES20.glVertexAttribPointer(mAmbColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, ambColorBuffer);
 
 		GLES20.glEnableVertexAttribArray(mDiffColorHandle);
-		GLES20.glVertexAttribPointer(mDiffColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.diffColorBuffer);
+		GLES20.glVertexAttribPointer(mDiffColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, diffColorBuffer);
 
 		GLES20.glEnableVertexAttribArray(mSpecColorHandle);
-		GLES20.glVertexAttribPointer(mSpecColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.specColorBuffer);
+		GLES20.glVertexAttribPointer(mSpecColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, specColorBuffer);
 
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
-		GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.normalsBuffer);
+		GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, normalsBuffer);
 
 		GLES20.glEnableVertexAttribArray(mSpecShininessHandle);
-		GLES20.glVertexAttribPointer(mSpecShininessHandle, 1, GLES20.GL_FLOAT, false, 1 * 4, this.specShininess);
+		GLES20.glVertexAttribPointer(mSpecShininessHandle, 1, GLES20.GL_FLOAT, false, 1 * 4, specShininess);
 
 		GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
@@ -436,11 +436,11 @@ public class ObjModelMtl implements GLDrawable {
 
 		GLES20.glUniform3fv(mCameraPosHandle, 1, mCameraPosition, 0);
 
-		GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
+		GLES20.glUniform1f(mDistanceCoefHandle, distanceCoef);
 
-		GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
+		GLES20.glUniform1f(mLightCoefHandle, lightCoef);
 
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.allCoords.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, allCoords.length / 3);
 
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 	}

@@ -35,7 +35,7 @@ public class Text extends ObjModel implements GLInfoDrawable {
 		float[] mMMatrix = new float[16];
 		Matrix.setIdentityM(mMMatrix, 0);
 		Matrix.translateM(mMMatrix, 0, 0f, 0f, 0f);
-		Matrix.scaleM(mMMatrix, 0, this.scale, this.scale, this.scale);
+		Matrix.scaleM(mMMatrix, 0, scale, scale, scale);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		super.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);

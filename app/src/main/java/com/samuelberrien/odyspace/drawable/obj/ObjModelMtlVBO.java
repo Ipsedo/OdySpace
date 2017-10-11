@@ -105,15 +105,15 @@ public class ObjModelMtlVBO implements GLDrawable {
 
 		InputStream inputStream;
 		inputStream = context.getResources().openRawResource(mtlResId);
-		this.parseMtl(inputStream);
+		parseMtl(inputStream);
 		inputStream = context.getResources().openRawResource(objResId);
-		this.parseObj(inputStream, randomColor);
+		parseObj(inputStream, randomColor);
 
-		this.lightCoef = lightAugmentation;
+		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		this.makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
-		this.bindBuffer();
+		makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
+		bindBuffer();
 	}
 
 	/**
@@ -130,77 +130,77 @@ public class ObjModelMtlVBO implements GLDrawable {
 		InputStream inputStream;
 		try {
 			inputStream = context.getAssets().open(mtlFileName);
-			this.parseMtl(inputStream);
+			parseMtl(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		try {
 			inputStream = context.getAssets().open(objFileName);
-			this.parseObj(inputStream, randomColor);
+			parseObj(inputStream, randomColor);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		this.lightCoef = lightAugmentation;
+		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		this.makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
-		this.bindBuffer();
+		makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
+		bindBuffer();
 	}
 
 	public ObjModelMtlVBO(ObjModelMtlVBO objModelMtl) {
-		this.context = objModelMtl.context;
+		context = objModelMtl.context;
 
-		this.mtlAmbColor = objModelMtl.mtlAmbColor;
-		this.mtlDiffColor = objModelMtl.mtlDiffColor;
-		this.mtlSpecColor = objModelMtl.mtlSpecColor;
+		mtlAmbColor = objModelMtl.mtlAmbColor;
+		mtlDiffColor = objModelMtl.mtlDiffColor;
+		mtlSpecColor = objModelMtl.mtlSpecColor;
 
-		this.vertexBuffer = objModelMtl.vertexBuffer;
-		this.normalsBuffer = objModelMtl.normalsBuffer;
-		this.ambColorBuffer = objModelMtl.ambColorBuffer;
-		this.diffColorBuffer = objModelMtl.diffColorBuffer;
-		this.specColorBuffer = objModelMtl.specColorBuffer;
-		this.specShininess = objModelMtl.specShininess;
+		vertexBuffer = objModelMtl.vertexBuffer;
+		normalsBuffer = objModelMtl.normalsBuffer;
+		ambColorBuffer = objModelMtl.ambColorBuffer;
+		diffColorBuffer = objModelMtl.diffColorBuffer;
+		specColorBuffer = objModelMtl.specColorBuffer;
+		specShininess = objModelMtl.specShininess;
 
-		this.vertexBufferId = objModelMtl.vertexBufferId;
-		this.normalsBufferId = objModelMtl.normalsBufferId;
-		this.ambBufferId = objModelMtl.ambBufferId;
-		this.diffBufferId = objModelMtl.diffBufferId;
-		this.specBufferId = objModelMtl.specBufferId;
-		this.shinBufferId = objModelMtl.shinBufferId;
+		vertexBufferId = objModelMtl.vertexBufferId;
+		normalsBufferId = objModelMtl.normalsBufferId;
+		ambBufferId = objModelMtl.ambBufferId;
+		diffBufferId = objModelMtl.diffBufferId;
+		specBufferId = objModelMtl.specBufferId;
+		shinBufferId = objModelMtl.shinBufferId;
 
-		this.mProgram = objModelMtl.mProgram;
-		this.mPositionHandle = objModelMtl.mPositionHandle;
-		this.mNormalHandle = objModelMtl.mNormalHandle;
-		this.mAmbColorHandle = objModelMtl.mAmbColorHandle;
-		this.mDiffColorHandle = objModelMtl.mDiffColorHandle;
-		this.mSpecColorHandle = objModelMtl.mSpecColorHandle;
-		this.mSpecShininessHandle = objModelMtl.mSpecShininessHandle;
-		this.mCameraPosHandle = objModelMtl.mCameraPosHandle;
-		this.mMVPMatrixHandle = objModelMtl.mMVPMatrixHandle;
-		this.mLightPosHandle = objModelMtl.mLightPosHandle;
-		this.mMVMatrixHandle = objModelMtl.mMVMatrixHandle;
-		this.mDistanceCoefHandle = objModelMtl.mDistanceCoefHandle;
-		this.mLightCoefHandle = objModelMtl.mLightCoefHandle;
+		mProgram = objModelMtl.mProgram;
+		mPositionHandle = objModelMtl.mPositionHandle;
+		mNormalHandle = objModelMtl.mNormalHandle;
+		mAmbColorHandle = objModelMtl.mAmbColorHandle;
+		mDiffColorHandle = objModelMtl.mDiffColorHandle;
+		mSpecColorHandle = objModelMtl.mSpecColorHandle;
+		mSpecShininessHandle = objModelMtl.mSpecShininessHandle;
+		mCameraPosHandle = objModelMtl.mCameraPosHandle;
+		mMVPMatrixHandle = objModelMtl.mMVPMatrixHandle;
+		mLightPosHandle = objModelMtl.mLightPosHandle;
+		mMVMatrixHandle = objModelMtl.mMVMatrixHandle;
+		mDistanceCoefHandle = objModelMtl.mDistanceCoefHandle;
+		mLightCoefHandle = objModelMtl.mLightCoefHandle;
 
-		this.lightCoef = objModelMtl.lightCoef;
-		this.distanceCoef = objModelMtl.distanceCoef;
+		lightCoef = objModelMtl.lightCoef;
+		distanceCoef = objModelMtl.distanceCoef;
 
-		this.allCoords = objModelMtl.allCoords;
-		this.allNormals = objModelMtl.allNormals;
+		allCoords = objModelMtl.allCoords;
+		allNormals = objModelMtl.allNormals;
 	}
 
 	private void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, vertexShaderResId));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, fragmentShaderResId));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.bind();
+		bind();
 	}
 
 	/**
@@ -226,44 +226,44 @@ public class ObjModelMtlVBO implements GLDrawable {
 		GLES20.glGenBuffers(6, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.vertexBuffer.capacity() * BYTES_PER_FLOAT, this.vertexBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexBuffer.capacity() * BYTES_PER_FLOAT, vertexBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.normalsBuffer.capacity() * BYTES_PER_FLOAT, this.normalsBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, normalsBuffer.capacity() * BYTES_PER_FLOAT, normalsBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[2]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.ambColorBuffer.capacity() * BYTES_PER_FLOAT, this.ambColorBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, ambColorBuffer.capacity() * BYTES_PER_FLOAT, ambColorBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[3]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.diffColorBuffer.capacity() * BYTES_PER_FLOAT, this.diffColorBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, diffColorBuffer.capacity() * BYTES_PER_FLOAT, diffColorBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[4]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.specColorBuffer.capacity() * BYTES_PER_FLOAT, this.specColorBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, specColorBuffer.capacity() * BYTES_PER_FLOAT, specColorBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[5]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.specShininess.capacity() * BYTES_PER_FLOAT, this.specShininess, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, specShininess.capacity() * BYTES_PER_FLOAT, specShininess, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-		this.vertexBufferId = buffers[0];
-		this.normalsBufferId = buffers[1];
-		this.ambBufferId = buffers[2];
-		this.diffBufferId = buffers[3];
-		this.specBufferId = buffers[4];
-		this.shinBufferId = buffers[5];
+		vertexBufferId = buffers[0];
+		normalsBufferId = buffers[1];
+		ambBufferId = buffers[2];
+		diffBufferId = buffers[3];
+		specBufferId = buffers[4];
+		shinBufferId = buffers[5];
 
-		this.vertexBuffer.limit(0);
-		this.vertexBuffer = null;
-		this.normalsBuffer.limit(0);
-		this.normalsBuffer = null;
-		this.ambColorBuffer.limit(0);
-		this.ambColorBuffer = null;
+		vertexBuffer.limit(0);
+		vertexBuffer = null;
+		normalsBuffer.limit(0);
+		normalsBuffer = null;
+		ambColorBuffer.limit(0);
+		ambColorBuffer = null;
 		// Need to keeps diffColorBuffer for Explosion
 
-		this.specColorBuffer.limit(0);
-		this.specColorBuffer = null;
-		this.specShininess.limit(0);
-		this.specShininess = null;
+		specColorBuffer.limit(0);
+		specColorBuffer = null;
+		specShininess.limit(0);
+		specShininess = null;
 	}
 
 	/**
@@ -392,17 +392,17 @@ public class ObjModelMtlVBO implements GLDrawable {
 				specGreen = random.nextFloat();
 				specBlue = random.nextFloat();
 			} else {
-				ambRed = this.mtlAmbColor.get(mtlToUse.get(i))[0];
-				ambGreen = this.mtlAmbColor.get(mtlToUse.get(i))[1];
-				ambBlue = this.mtlAmbColor.get(mtlToUse.get(i))[2];
+				ambRed = mtlAmbColor.get(mtlToUse.get(i))[0];
+				ambGreen = mtlAmbColor.get(mtlToUse.get(i))[1];
+				ambBlue = mtlAmbColor.get(mtlToUse.get(i))[2];
 
-				diffRed = this.mtlDiffColor.get(mtlToUse.get(i))[0];
-				diffGreen = this.mtlDiffColor.get(mtlToUse.get(i))[1];
-				diffBlue = this.mtlDiffColor.get(mtlToUse.get(i))[2];
+				diffRed = mtlDiffColor.get(mtlToUse.get(i))[0];
+				diffGreen = mtlDiffColor.get(mtlToUse.get(i))[1];
+				diffBlue = mtlDiffColor.get(mtlToUse.get(i))[2];
 
-				specRed = this.mtlSpecColor.get(mtlToUse.get(i))[0];
-				specGreen = this.mtlSpecColor.get(mtlToUse.get(i))[1];
-				specBlue = this.mtlSpecColor.get(mtlToUse.get(i))[2];
+				specRed = mtlSpecColor.get(mtlToUse.get(i))[0];
+				specGreen = mtlSpecColor.get(mtlToUse.get(i))[1];
+				specBlue = mtlSpecColor.get(mtlToUse.get(i))[2];
 			}
 
 			for (int j = 0; j < allVertexDrawOrderList.get(i).size() * 4; j += 4) {
@@ -421,68 +421,68 @@ public class ObjModelMtlVBO implements GLDrawable {
 				specColor.add(specBlue);
 				specColor.add(1f);
 
-				specShin.add(this.mtlSpecShininess.get(mtlToUse.get(i)));
+				specShin.add(mtlSpecShininess.get(mtlToUse.get(i)));
 			}
 		}
 
-		this.allCoords = new float[coords.size()];
+		allCoords = new float[coords.size()];
 		for (int i = 0; i < allCoords.length; i++) {
-			this.allCoords[i] = coords.get(i);
+			allCoords[i] = coords.get(i);
 		}
-		this.vertexBuffer = ByteBuffer.allocateDirect(this.allCoords.length * 4)
+		vertexBuffer = ByteBuffer.allocateDirect(allCoords.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.vertexBuffer.put(this.allCoords)
+		vertexBuffer.put(allCoords)
 				.position(0);
 
-		this.allNormals = new float[normals.size()];
-		for (int i = 0; i < this.allNormals.length; i++) {
-			this.allNormals[i] = normals.get(i);
+		allNormals = new float[normals.size()];
+		for (int i = 0; i < allNormals.length; i++) {
+			allNormals[i] = normals.get(i);
 		}
-		this.normalsBuffer = ByteBuffer.allocateDirect(this.allNormals.length * 4)
+		normalsBuffer = ByteBuffer.allocateDirect(allNormals.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.normalsBuffer.put(this.allNormals)
+		normalsBuffer.put(allNormals)
 				.position(0);
 
 		float[] allAmbColor = new float[ambColor.size()];
 		for (int i = 0; i < allAmbColor.length; i++) {
 			allAmbColor[i] = ambColor.get(i);
 		}
-		this.ambColorBuffer = ByteBuffer.allocateDirect(allAmbColor.length * 4)
+		ambColorBuffer = ByteBuffer.allocateDirect(allAmbColor.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.ambColorBuffer.put(allAmbColor)
+		ambColorBuffer.put(allAmbColor)
 				.position(0);
 
 		float[] allDiffColor = new float[diffColor.size()];
 		for (int i = 0; i < allDiffColor.length; i++) {
 			allDiffColor[i] = diffColor.get(i);
 		}
-		this.diffColorBuffer = ByteBuffer.allocateDirect(allDiffColor.length * 4)
+		diffColorBuffer = ByteBuffer.allocateDirect(allDiffColor.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.diffColorBuffer.put(allDiffColor)
+		diffColorBuffer.put(allDiffColor)
 				.position(0);
 
 		float[] allSpecColor = new float[specColor.size()];
 		for (int i = 0; i < allSpecColor.length; i++) {
 			allSpecColor[i] = specColor.get(i);
 		}
-		this.specColorBuffer = ByteBuffer.allocateDirect(allSpecColor.length * 4)
+		specColorBuffer = ByteBuffer.allocateDirect(allSpecColor.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.specColorBuffer.put(allSpecColor)
+		specColorBuffer.put(allSpecColor)
 				.position(0);
 
 		float[] allSpecShin = new float[specShin.size()];
 		for (int i = 0; i < allSpecShin.length; i++) {
 			allSpecShin[i] = specShin.get(i);
 		}
-		this.specShininess = ByteBuffer.allocateDirect(allSpecShin.length * 4)
+		specShininess = ByteBuffer.allocateDirect(allSpecShin.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.specShininess.put(allSpecShin)
+		specShininess.put(allSpecShin)
 				.position(0);
 
 
@@ -494,38 +494,38 @@ public class ObjModelMtlVBO implements GLDrawable {
 
 	@Override
 	public void changeColor() {
-		int tmpSpecColor = this.specBufferId;
-		this.specBufferId = this.diffBufferId;
-		this.diffBufferId = tmpSpecColor;
+		int tmpSpecColor = specBufferId;
+		specBufferId = diffBufferId;
+		diffBufferId = tmpSpecColor;
 	}
 
 	@Override
 	public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		GLES20.glUseProgram(mProgram);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.vertexBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
 		GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		// Pass in the normal information
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.normalsBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, normalsBufferId);
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
 		GLES20.glVertexAttribPointer(mNormalHandle, NORMAL_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		// Pass in the texture information
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.ambBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ambBufferId);
 		GLES20.glEnableVertexAttribArray(mAmbColorHandle);
 		GLES20.glVertexAttribPointer(mAmbColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.diffBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, diffBufferId);
 		GLES20.glEnableVertexAttribArray(mDiffColorHandle);
 		GLES20.glVertexAttribPointer(mDiffColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.specBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, specBufferId);
 		GLES20.glEnableVertexAttribArray(mSpecColorHandle);
 		GLES20.glVertexAttribPointer(mSpecColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.shinBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, shinBufferId);
 		GLES20.glEnableVertexAttribArray(mSpecShininessHandle);
 		GLES20.glVertexAttribPointer(mSpecShininessHandle, SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
@@ -539,11 +539,11 @@ public class ObjModelMtlVBO implements GLDrawable {
 
 		GLES20.glUniform3fv(mCameraPosHandle, 1, mCameraPosition, 0);
 
-		GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
+		GLES20.glUniform1f(mDistanceCoefHandle, distanceCoef);
 
-		GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
+		GLES20.glUniform1f(mLightCoefHandle, lightCoef);
 
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.allCoords.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, allCoords.length / 3);
 
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 	}

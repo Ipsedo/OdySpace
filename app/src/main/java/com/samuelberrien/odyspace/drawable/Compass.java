@@ -49,25 +49,25 @@ public class Compass implements GLInfoDrawable {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
-		this.bind();
-		this.makeTriangle();
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
+		bind();
+		makeTriangle();
 
-		this.mModelMatrix = new float[16];
-		this.angleWithFrontVec = 0f;
-		this.maxLength = maxDistance;
-		this.isAccent = false;
+		mModelMatrix = new float[16];
+		angleWithFrontVec = 0f;
+		maxLength = maxDistance;
+		isAccent = false;
 	}
 
 	private void makeTriangle() {
-		ByteBuffer bb = ByteBuffer.allocateDirect(this.triangle.length * 4);
+		ByteBuffer bb = ByteBuffer.allocateDirect(triangle.length * 4);
 		bb.order(ByteOrder.nativeOrder());
-		this.triangleBuffer = bb.asFloatBuffer();
-		this.triangleBuffer.put(this.triangle);
-		this.triangleBuffer.position(0);
+		triangleBuffer = bb.asFloatBuffer();
+		triangleBuffer.put(triangle);
+		triangleBuffer.position(0);
 	}
 
 	private void bind() {
@@ -79,12 +79,12 @@ public class Compass implements GLInfoDrawable {
 	public void update(Ship from, BaseItem to, boolean isAccent) {
 		float[] vecShipToOther = from.vector3fTo(to);
 		float length3f = Vector.length3f(vecShipToOther);
-		if (this.maxLength > length3f) {
+		if (maxLength > length3f) {
 			float[] vecUpShip = from.getCamUpVec();
 			float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
 
-			this.angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
-			if (this.angleWithFrontVec < Math.toRadians(30d)) {
+			angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
+			if (angleWithFrontVec < Math.toRadians(30d)) {
 				willDraw = false;
 				return;
 			}
@@ -123,13 +123,13 @@ public class Compass implements GLInfoDrawable {
 			Matrix.orthoM(mPMatrix, 0, -1f * ratio, 1f * ratio, -1f, 1f, -1f, 1f);
 			Matrix.multiplyMM(mVPMatrix, 0, mPMatrix, 0, mViewMatrix, 0);
 			float[] mMVPMatrix = new float[16];
-			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, this.mModelMatrix, 0);
+			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mModelMatrix, 0);
 
-			GLES20.glEnableVertexAttribArray(this.mPositionHandle);
-			GLES20.glVertexAttribPointer(this.mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.triangleBuffer);
-			GLES20.glUniform4fv(this.mColorHandle, 1, this.isAccent ? this.colorAccent : this.color, 0);
-			GLES20.glUniformMatrix4fv(this.mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.triangle.length / 3);
+			GLES20.glEnableVertexAttribArray(mPositionHandle);
+			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, triangleBuffer);
+			GLES20.glUniform4fv(mColorHandle, 1, isAccent ? colorAccent : color, 0);
+			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+			GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, triangle.length / 3);
 		}
 	}
 }

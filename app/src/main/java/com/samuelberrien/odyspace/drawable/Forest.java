@@ -27,15 +27,15 @@ public class Forest implements GLItemDrawable {
 
 	public Forest(Context context, String treeObjFileName, String treeMtlFileName, int nbTree, Map map, float areaSize) {
 		this.context = context;
-		this.tree = new ObjModelMtlVBO(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
+		tree = new ObjModelMtlVBO(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
 		this.nbTree = nbTree;
-		this.mModelsMatrix = new float[this.nbTree][16];
-		this.initTrees(map, areaSize);
+		mModelsMatrix = new float[this.nbTree][16];
+		initTrees(map, areaSize);
 	}
 
 	private void initTrees(Map map, float areaSize) {
 		Random rand = new Random(System.currentTimeMillis());
-		for (int i = 0; i < this.nbTree; i++) {
+		for (int i = 0; i < nbTree; i++) {
 			float x = rand.nextFloat() * areaSize - areaSize * 0.5f;
 			float y;
 			float z = rand.nextFloat() * areaSize - areaSize * 0.5f;
@@ -57,7 +57,7 @@ public class Forest implements GLItemDrawable {
 
 			Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, mRotMatrix, 0);
 
-			this.mModelsMatrix[i] = mModelMatrix.clone();
+			mModelsMatrix[i] = mModelMatrix.clone();
 		}
 	}
 
@@ -65,10 +65,10 @@ public class Forest implements GLItemDrawable {
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] tmpMVMatrix = new float[16];
 		float[] tmpMVPMatrix = new float[16];
-		for (int i = 0; i < this.nbTree; i++) {
-			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mModelsMatrix[i], 0);
+		for (int i = 0; i < nbTree; i++) {
+			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mModelsMatrix[i], 0);
 			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-			this.tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
+			tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 		}
 	}
 }

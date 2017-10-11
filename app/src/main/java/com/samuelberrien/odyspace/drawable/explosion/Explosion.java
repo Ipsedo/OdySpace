@@ -88,12 +88,12 @@ public class Explosion implements GLItemDrawable {
 	private int mProgram;
 
 	private Explosion(Context context, float[] rgba, ExplosionBuilder explosionBuilder) {
-		this.limitSpeedAlife = explosionBuilder.limitSpeedAlife;
-		this.particules = new ArrayList<>();
+		limitSpeedAlife = explosionBuilder.limitSpeedAlife;
+		particules = new ArrayList<>();
 		Random rand = new Random(System.currentTimeMillis());
 		color = rgba;
 		for (int i = 0; i < explosionBuilder.nbParticules; i++) {
-			this.particules.add(new Particule(rand, explosionBuilder.limitScale, explosionBuilder.maxScale, explosionBuilder.limitSpeed, explosionBuilder.maxSpeed));
+			particules.add(new Particule(rand, explosionBuilder.limitScale, explosionBuilder.maxScale, explosionBuilder.limitSpeed, explosionBuilder.maxSpeed));
 		}
 		makeProgram(context);
 
@@ -123,13 +123,13 @@ public class Explosion implements GLItemDrawable {
 	}
 
 	public void move() {
-		for (Particule p : this.particules) {
+		for (Particule p : particules) {
 			p.move();
 		}
 	}
 
 	public void setPosition(float[] mPosition) {
-		this.initialPos = mPosition;
+		initialPos = mPosition;
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class Explosion implements GLItemDrawable {
 		GLES20.glDisable(GLES20.GL_CULL_FACE);
 		float[] mVPMatrix = new float[16];
 		Matrix.multiplyMM(mVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-		for (Particule p : this.particules) {
+		for (Particule p : particules) {
 			p.draw(mVPMatrix, mViewMatrix);
 		}
 		GLES20.glEnable(GLES20.GL_CULL_FACE);
@@ -145,7 +145,7 @@ public class Explosion implements GLItemDrawable {
 
 	public boolean isAlive() {
 		boolean res = false;
-		for (Particule p : this.particules) {
+		for (Particule p : particules) {
 			res |= p.isAlive();
 		}
 		return res;
@@ -164,59 +164,59 @@ public class Explosion implements GLItemDrawable {
 		private boolean fstMove;
 
 		private Particule(Random rand, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
-			this.mPosition = new float[3];
-			this.mSpeed = new float[3];
-			this.fstMove = true;
+			mPosition = new float[3];
+			mSpeed = new float[3];
+			fstMove = true;
 			double phi = rand.nextDouble() * Math.PI * 2d;
 			double theta = rand.nextDouble() * Math.PI * 2d;
-			this.mSpeed[0] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.sin(theta));
-			this.mSpeed[1] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) Math.sin(phi);
-			this.mSpeed[2] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.cos(theta));
-			this.mModelMatrix = new float[16];
+			mSpeed[0] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.sin(theta));
+			mSpeed[1] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) Math.sin(phi);
+			mSpeed[2] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.cos(theta));
+			mModelMatrix = new float[16];
 			float mAngle = rand.nextFloat() * 360f;
 			float[] mRotAxis = new float[3];
 			mRotAxis[0] = rand.nextFloat() * 2f - 1f;
 			mRotAxis[1] = rand.nextFloat() * 2f - 1f;
 			mRotAxis[2] = rand.nextFloat() * 2f - 1f;
-			this.mRotMatrix = new float[16];
-			Matrix.setRotateM(this.mRotMatrix, 0, mAngle, mRotAxis[0], mRotAxis[1], mRotAxis[2]);
-			this.scale = limitScale + (maxScale - limitScale) * rand.nextFloat();
+			mRotMatrix = new float[16];
+			Matrix.setRotateM(mRotMatrix, 0, mAngle, mRotAxis[0], mRotAxis[1], mRotAxis[2]);
+			scale = limitScale + (maxScale - limitScale) * rand.nextFloat();
 		}
 
 		private void move() {
-			if (this.fstMove) {
-				this.mPosition = Explosion.this.initialPos.clone();
-				this.fstMove = false;
+			if (fstMove) {
+				mPosition = initialPos.clone();
+				fstMove = false;
 			}
-			this.mPosition[0] += this.mSpeed[0];
-			this.mPosition[1] += this.mSpeed[1];
-			this.mPosition[2] += this.mSpeed[2];
+			mPosition[0] += mSpeed[0];
+			mPosition[1] += mSpeed[1];
+			mPosition[2] += mSpeed[2];
 
-			this.mSpeed[0] *= 0.9f;
-			this.mSpeed[1] *= 0.9f;
-			this.mSpeed[2] *= 0.9f;
+			mSpeed[0] *= 0.9f;
+			mSpeed[1] *= 0.9f;
+			mSpeed[2] *= 0.9f;
 
 			float[] mModelMatrix = new float[16];
 			Matrix.setIdentityM(mModelMatrix, 0);
-			Matrix.translateM(mModelMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
+			Matrix.translateM(mModelMatrix, 0, mPosition[0], mPosition[1], mPosition[2]);
 
 			float[] tmpMat = mModelMatrix.clone();
-			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, this.mRotMatrix, 0);
+			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotMatrix, 0);
 
-			Matrix.scaleM(mModelMatrix, 0, this.scale, this.scale, this.scale);
+			Matrix.scaleM(mModelMatrix, 0, scale, scale, scale);
 
 			this.mModelMatrix = mModelMatrix.clone();
 		}
 
 		private boolean isAlive() {
-			return Vector.length3f(this.mSpeed) > Explosion.this.limitSpeedAlife;
+			return Vector.length3f(mSpeed) > limitSpeedAlife;
 		}
 
 		private void draw(float[] mVPMatrix, float[] mViewMatrix) {
 			float[] mMVMatrix = new float[16];
-			Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, this.mModelMatrix, 0);
+			Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
 			float[] mMVPMatrix = new float[16];
-			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, this.mModelMatrix, 0);
+			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mModelMatrix, 0);
 
 			ShaderLoader.checkGlError("0");
 			GLES20.glUseProgram(mProgram);

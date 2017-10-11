@@ -59,13 +59,13 @@ public class ObjModel implements GLDrawable {
 	 */
 	public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
-		this.lightCoef = lightAugmentation;
+		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 		this.ambColorCoef = ambColorCoef;
 
 		InputStream inputStream = context.getResources().openRawResource(resId);
 		InputStreamReader inputreader = new InputStreamReader(inputStream);
-		this.parseObj(inputreader, red, green, blue);
+		parseObj(inputreader, red, green, blue);
 		try {
 			inputreader.close();
 			inputStream.close();
@@ -77,24 +77,24 @@ public class ObjModel implements GLDrawable {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.bind();
+		bind();
 	}
 
 	public ObjModel(Context context, String fileName, float red, float green, float blue, float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
-		this.lightCoef = lightAugmentation;
+		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 		this.ambColorCoef = ambColorCoef;
 
 		try {
 			InputStream inputStream = context.getAssets().open(fileName);
 			InputStreamReader inputreader = new InputStreamReader(inputStream);
-			this.parseObj(inputreader, red, green, blue);
+			parseObj(inputreader, red, green, blue);
 			inputreader.close();
 			inputStream.close();
 		} catch (IOException ioe) {
@@ -104,12 +104,12 @@ public class ObjModel implements GLDrawable {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.bind();
+		bind();
 	}
 
 	private void bind() {
@@ -162,44 +162,44 @@ public class ObjModel implements GLDrawable {
 			e.printStackTrace();
 		}
 
-		this.coords = new float[3 * vertexDrawOrderList.size()];
+		coords = new float[3 * vertexDrawOrderList.size()];
 		for (int i = 0; i < vertexDrawOrderList.size(); i++) {
-			this.coords[i * 3] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3);
-			this.coords[i * 3 + 1] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 1);
-			this.coords[i * 3 + 2] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 2);
+			coords[i * 3] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3);
+			coords[i * 3 + 1] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 1);
+			coords[i * 3 + 2] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 2);
 		}
 
-		this.normal = new float[this.coords.length];
+		normal = new float[coords.length];
 		for (int i = 0; i < normalDrawOrderList.size(); i++) {
-			this.normal[i * 3] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3);
-			this.normal[i * 3 + 1] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 1);
-			this.normal[i * 3 + 2] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 2);
+			normal[i * 3] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3);
+			normal[i * 3 + 1] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 1);
+			normal[i * 3 + 2] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 2);
 		}
 
-		this.color = new float[this.coords.length * 4 / 3];
-		for (int i = 0; i < this.color.length; i += 4) {
-			this.color[i] = red;
-			this.color[i + 1] = green;
-			this.color[i + 2] = blue;
-			this.color[i + 3] = 1f;
+		color = new float[coords.length * 4 / 3];
+		for (int i = 0; i < color.length; i += 4) {
+			color[i] = red;
+			color[i + 1] = green;
+			color[i + 2] = blue;
+			color[i + 3] = 1f;
 		}
 
-		this.vertexBuffer = ByteBuffer.allocateDirect(this.coords.length * 4)
+		vertexBuffer = ByteBuffer.allocateDirect(coords.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.vertexBuffer.put(this.coords)
+		vertexBuffer.put(coords)
 				.position(0);
 
-		this.normalsBuffer = ByteBuffer.allocateDirect(this.normal.length * 4)
+		normalsBuffer = ByteBuffer.allocateDirect(normal.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.normalsBuffer.put(this.normal)
+		normalsBuffer.put(normal)
 				.position(0);
 
-		this.colorBuffer = ByteBuffer.allocateDirect(this.color.length * 4)
+		colorBuffer = ByteBuffer.allocateDirect(color.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.colorBuffer.put(this.color)
+		colorBuffer.put(color)
 				.position(0);
 	}
 
@@ -214,7 +214,7 @@ public class ObjModel implements GLDrawable {
 	 * @return the vertex draw list length of the obj 3D model
 	 */
 	public int getVertexDrawListLength() {
-		return this.coords.length;
+		return coords.length;
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class ObjModel implements GLDrawable {
 	 * @return A new color FloatBuffer for the ObjModel instance
 	 */
 	public FloatBuffer makeColor(float[] color) {
-		float[] tmp = new float[this.coords.length * 4 / 3];
+		float[] tmp = new float[coords.length * 4 / 3];
 		for (int i = 0; i < tmp.length; i += 4) {
 			tmp[i] = color[0];
 			tmp[i + 1] = color[1];
@@ -252,9 +252,9 @@ public class ObjModel implements GLDrawable {
 		// Add program to OpenGL environment
 		GLES20.glUseProgram(mProgram);
 
-		this.vertexBuffer.position(0);
-		this.colorBuffer.position(0);
-		this.normalsBuffer.position(0);
+		vertexBuffer.position(0);
+		colorBuffer.position(0);
+		normalsBuffer.position(0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
 		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
@@ -273,14 +273,14 @@ public class ObjModel implements GLDrawable {
 
 		GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
 
-		GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
+		GLES20.glUniform1f(mDistanceCoefHandle, distanceCoef);
 
-		GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
+		GLES20.glUniform1f(mLightCoefHandle, lightCoef);
 
-		GLES20.glUniform1f(mAmbColorCoefHandle, this.ambColorCoef);
+		GLES20.glUniform1f(mAmbColorCoefHandle, ambColorCoef);
 
 		// Draw the polygon
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.coords.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, coords.length / 3);
 
 		// Disable vertex array
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
