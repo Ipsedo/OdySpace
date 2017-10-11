@@ -47,19 +47,19 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		super(context);
 		this.context = context;
 		this.levelActivity = levelActivity;
-		this.setEGLContextClientVersion(2);
-		this.gamePad = new GamePad();
+		setEGLContextClientVersion(2);
+		gamePad = new GamePad();
 
-		this.currentLevel = this.getCurrentLevel(levelID);
+		currentLevel = getCurrentLevel(levelID);
 
-		this.renderer = new MyGLRenderer(this.context, this.currentLevel, this.gamePad);
-		this.setRenderer(this.renderer);
+		renderer = new MyGLRenderer(this.context, currentLevel, gamePad);
+		setRenderer(renderer);
 
-		this.setPreserveEGLContextOnPause(true);
+		setPreserveEGLContextOnPause(true);
 	}
 
 	public boolean isInit() {
-		return this.currentLevel.isInit();
+		return currentLevel.isInit();
 	}
 
 	private Level getCurrentLevel(int currLevelId) {
@@ -79,78 +79,78 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
-		this.initThreads();
+		initThreads();
 	}
 
 	@Override
 	public void onDetachedFromWindow() {
-		this.killThread();
+		killThread();
 		super.onDetachedFromWindow();
 	}
 
 	private void initThreads() {
-		if (this.collisionThread == null || this.collisionThread.isCanceled()) {
-			this.collisionThread = new CollisionThread(this.currentLevel);
-			this.collisionThread.start();
+		if (collisionThread == null || collisionThread.isCanceled()) {
+			collisionThread = new CollisionThread(currentLevel);
+			collisionThread.start();
 		}
-		if (this.updateThread == null || this.updateThread.isCanceled()) {
-			this.updateThread = new UpdateThread(this.currentLevel);
-			this.updateThread.start();
+		if (updateThread == null || updateThread.isCanceled()) {
+			updateThread = new UpdateThread(currentLevel);
+			updateThread.start();
 		}
-		if (this.removeThread == null || this.removeThread.isCanceled()) {
-			this.removeThread = new RemoveThread(this.currentLevel);
-			this.removeThread.start();
+		if (removeThread == null || removeThread.isCanceled()) {
+			removeThread = new RemoveThread(currentLevel);
+			removeThread.start();
 		}
-		if (this.endGameThread == null || this.endGameThread.isCanceled()) {
-			this.endGameThread = new EndGameThread(this.currentLevel, this.levelActivity);
-			this.endGameThread.start();
+		if (endGameThread == null || endGameThread.isCanceled()) {
+			endGameThread = new EndGameThread(currentLevel, levelActivity);
+			endGameThread.start();
 		}
 	}
 
 	private void killThread() {
-		this.collisionThread.cancel();
-		this.updateThread.cancel();
-		this.removeThread.cancel();
-		this.endGameThread.cancel();
+		collisionThread.cancel();
+		updateThread.cancel();
+		removeThread.cancel();
+		endGameThread.cancel();
 		try {
-			this.collisionThread.join();
-			this.updateThread.join();
-			this.removeThread.join();
-			this.endGameThread.join();
+			collisionThread.join();
+			updateThread.join();
+			removeThread.join();
+			endGameThread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void resumeGame() {
-		this.initThreads();
-		this.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+		initThreads();
+		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 	}
 
 	public void pauseGame() {
-		this.killThread();
-		this.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+		killThread();
+		setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
-		this.gamePad.update(e, this.getWidth(), this.getHeight());
+		gamePad.update(e, getWidth(), getHeight());
 		return true;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		this.initThreads();
+		initThreads();
 	}
 
 	@Override
 	public void onPause() {
-		this.killThread();
+		killThread();
 		super.onPause();
 	}
 
 	public String getScore() {
-		return Integer.toString(this.currentLevel.getScore());
+		return Integer.toString(currentLevel.getScore());
 	}
 }

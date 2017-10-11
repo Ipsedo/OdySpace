@@ -69,29 +69,29 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
 
-		FireType.initAmmos(this.context);
+		FireType.initAmmos(context);
 
-		if (!this.isInit) {
-			this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
+		if (!isInit) {
+			mCameraDirection = new float[]{mCameraPosition[0], mCameraPosition[1], mCameraPosition[2] + 1f};
 
-			this.gamePad.initGraphics(this.context);
+			gamePad.initGraphics(context);
 
-			this.ship = Ship.makeShip(this.context, this.gamePad);
-			this.ship.update();
+			ship = Ship.makeShip(context, gamePad);
+			ship.update();
 
-			this.mCameraPosition = new float[]{0f, 0f, -10f};
-			this.mCameraUpVec = new float[]{0f, 1f, 0f};
+			mCameraPosition = new float[]{0f, 0f, -10f};
+			mCameraUpVec = new float[]{0f, 1f, 0f};
 
-			this.currentLevel.init(this.context, this.ship, 500f);
+			currentLevel.init(context, ship, 500f);
 
-			this.updateCameraPosition(this.ship.getCamPosition());
-			this.updateCamLookVec(this.ship.getCamLookAtVec());
-			this.updateCamUpVec(this.ship.getCamUpVec());
+			updateCameraPosition(ship.getCamPosition());
+			updateCamLookVec(ship.getCamLookAtVec());
+			updateCamUpVec(ship.getCamUpVec());
 
-			this.gameOver = new GameOver(this.context);
-			this.levelDone = new LevelDone(this.context);
+			gameOver = new GameOver(context);
+			levelDone = new LevelDone(context);
 
-			this.isInit = true;
+			isInit = true;
 		}
 	}
 
@@ -101,9 +101,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	 * @param xyz The x y z vector
 	 */
 	private void updateCamLookVec(float[] xyz) {
-		this.mCameraDirection[0] = this.maxRange * xyz[0] + this.mCameraPosition[0];
-		this.mCameraDirection[1] = this.maxRange * xyz[1] + this.mCameraPosition[1];
-		this.mCameraDirection[2] = this.maxRange * xyz[2] + this.mCameraPosition[2];
+		mCameraDirection[0] = maxRange * xyz[0] + mCameraPosition[0];
+		mCameraDirection[1] = maxRange * xyz[1] + mCameraPosition[1];
+		mCameraDirection[2] = maxRange * xyz[2] + mCameraPosition[2];
 	}
 
 	/**
@@ -112,9 +112,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	 * @param xyz The x y z vector
 	 */
 	private void updateCamUpVec(float[] xyz) {
-		this.mCameraUpVec[0] = xyz[0];
-		this.mCameraUpVec[1] = xyz[1];
-		this.mCameraUpVec[2] = xyz[2];
+		mCameraUpVec[0] = xyz[0];
+		mCameraUpVec[1] = xyz[1];
+		mCameraUpVec[2] = xyz[2];
 	}
 
 	/**
@@ -128,50 +128,50 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
 	private void updateLight(float[] pos) {
-		Matrix.setIdentityM(this.mLightModelMatrix, 0);
-		Matrix.translateM(this.mLightModelMatrix, 0, pos[0], pos[1], pos[2]);
-		Matrix.multiplyMV(this.mLightPosInWorldSpace, 0, this.mLightModelMatrix, 0, this.mLightPosInModelSpace, 0);
-		Matrix.multiplyMV(this.mLightPosInEyeSpace, 0, this.mViewMatrix, 0, this.mLightPosInWorldSpace, 0);
+		Matrix.setIdentityM(mLightModelMatrix, 0);
+		Matrix.translateM(mLightModelMatrix, 0, pos[0], pos[1], pos[2]);
+		Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
+		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 	}
 
 	@Override
 	public void onDrawFrame(GL10 unused) {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-		this.updateCameraPosition(this.ship.getCamPosition());
-		this.updateCamLookVec(this.ship.getCamLookAtVec());
-		this.updateCamUpVec(this.ship.getCamUpVec());
+		updateCameraPosition(ship.getCamPosition());
+		updateCamLookVec(ship.getCamLookAtVec());
+		updateCamUpVec(ship.getCamUpVec());
 
-		Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
-		Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], this.mCameraUpVec[0], this.mCameraUpVec[1], this.mCameraUpVec[2]);
+		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, maxProjDist);
+		Matrix.setLookAtM(mViewMatrix, 0, mCameraPosition[0], mCameraPosition[1], mCameraPosition[2], mCameraDirection[0], mCameraDirection[1], mCameraDirection[2], mCameraUpVec[0], mCameraUpVec[1], mCameraUpVec[2]);
 
-		this.updateLight(this.currentLevel.getLightPos());
+		updateLight(currentLevel.getLightPos());
 
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-		this.currentLevel.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, this.mCameraPosition);
+		currentLevel.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 
 		GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-		this.gamePad.draw(ratio);
-		this.ship.drawLife(this.ratio);
-		this.currentLevel.drawLevelInfo(this.ratio);
+		gamePad.draw(ratio);
+		ship.drawLife(ratio);
+		currentLevel.drawLevelInfo(ratio);
 
-		if (this.currentLevel.isDead()) {
-			this.gameOver.draw(this.ratio);
-		} else if (this.currentLevel.isWinner()) {
-			this.levelDone.draw(this.ratio);
+		if (currentLevel.isDead()) {
+			gameOver.draw(ratio);
+		} else if (currentLevel.isWinner()) {
+			levelDone.draw(ratio);
 		}
 
-		System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - this.currTime));
-		this.currTime = System.currentTimeMillis();
+		System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - currTime));
+		currTime = System.currentTimeMillis();
 	}
 
 	@Override
 	public void onSurfaceChanged(GL10 unused, int width, int height) {
 		GLES20.glViewport(0, 0, width, height);
 
-		this.ratio = (float) width / height;
+		ratio = (float) width / height;
 
-		//Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
-		Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, this.maxProjDist);
+		//Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 50f);
+		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, maxProjDist);
 	}
 }
