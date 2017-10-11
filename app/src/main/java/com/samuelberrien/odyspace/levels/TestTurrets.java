@@ -64,50 +64,50 @@ public class TestTurrets implements Level {
 	public void init(Context context, Ship ship, float levelLimitSize) {
 		this.context = context;
 		this.ship = ship;
-		this.ship.queueExplosion();
+		ship.queueExplosion();
 
 		this.levelLimitSize = levelLimitSize;
 
-		this.currLevelProgression = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		currLevelProgression = new ProgressBar(context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
 		float limitDown = -100f;
-		this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 6, this.levelLimitSize, limitDown, 0.03f);
-		this.noiseMap.update();
-		this.levelLimits = new Box(-this.levelLimitSize, limitDown - 0.03f * this.levelLimitSize, -this.levelLimitSize, this.levelLimitSize * 2f, this.levelLimitSize, this.levelLimitSize * 2f);
-		this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_2/");
-		this.cubeMap.update();
+		noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 6, levelLimitSize, limitDown, 0.03f);
+		noiseMap.update();
+		levelLimits = new Box(-levelLimitSize, limitDown - 0.03f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
+		cubeMap = new CubeMap(context, levelLimitSize, "cube_map/ciel_2/");
+		cubeMap.update();
 
-		this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
-		this.rocketsTurret = Collections.synchronizedList(new ArrayList<BaseItem>());
-		this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
-		this.turrets = Collections.synchronizedList(new ArrayList<Turret>());
+		rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
+		rocketsTurret = Collections.synchronizedList(new ArrayList<BaseItem>());
+		explosions = Collections.synchronizedList(new ArrayList<Explosion>());
+		turrets = Collections.synchronizedList(new ArrayList<Turret>());
 
-		this.ship.setRockets(this.rocketsShip);
+		ship.setRockets(rocketsShip);
 
 		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "turret.obj", "turret.mtl", 1f, 0f, false);
 		CrashableMesh crashableMesh = new CrashableMesh(context, "turret.obj");
 		Random rand = new Random(System.currentTimeMillis());
-		for (int i = 0; i < this.nbTurret; i++) {
-			float x = rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f;
-			float z = rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f;
+		for (int i = 0; i < nbTurret; i++) {
+			float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
+			float z = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
 
-			float[] triangles = this.noiseMap.passToModelMatrix(this.noiseMap.getRestreintArea(new float[]{x, 0f, z}));
+			float[] triangles = noiseMap.passToModelMatrix(noiseMap.getRestreintArea(new float[]{x, 0f, z}));
 			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
 			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
 			FireType fireType = FireType.GUIDED_MISSILE;
 			//TODO modèles simplifiés pr crashable ?
-			Turret tmp = new Turret(context, tmpTurret, crashableMesh, new float[]{x, moy + 3f, z}, fireType, this.ship, this.rocketsTurret);
+			Turret tmp = new Turret(context, tmpTurret, crashableMesh, new float[]{x, moy + 3f, z}, fireType, ship, rocketsTurret);
 			tmp.update();
 			tmp.queueExplosion();
-			this.turrets.add(tmp);
+			turrets.add(tmp);
 		}
 
-		this.soundPoolBuilder = new SoundPoolBuilder(this.context);
+		soundPoolBuilder = new SoundPoolBuilder(context);
 
-		this.compass = new Compass(this.context, this.levelLimitSize / 12f);
+		compass = new Compass(context, levelLimitSize / 12f);
 
-		this.isInit = true;
+		isInit = true;
 	}
 
 	@Override
@@ -117,22 +117,22 @@ public class TestTurrets implements Level {
 
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
-		this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		this.cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
+		noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
+		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
 		ArrayList<BaseItem> tmp = new ArrayList<>();
-		tmp.addAll(this.rocketsShip);
+		tmp.addAll(rocketsShip);
 		for (BaseItem r : tmp)
 			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		tmp.clear();
-		tmp.addAll(this.rocketsTurret);
+		tmp.addAll(rocketsTurret);
 		for (BaseItem r : tmp)
 			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		tmp.clear();
-		tmp.addAll(this.turrets);
+		tmp.addAll(turrets);
 		for (BaseItem t : tmp)
 			t.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		ArrayList<Explosion> tmp2 = new ArrayList<>(this.explosions);
+		ArrayList<Explosion> tmp2 = new ArrayList<>(explosions);
 		for (Explosion e : tmp2)
 			e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
@@ -140,99 +140,99 @@ public class TestTurrets implements Level {
 	@Override
 	public void drawLevelInfo(float ratio) {
 		ArrayList<BaseItem> turrets = new ArrayList<>();
-		turrets.addAll(this.turrets);
+		turrets.addAll(turrets);
 		for (BaseItem t : turrets) {
-			this.compass.update(this.ship, t, t.isDanger());
-			this.compass.draw(ratio);
+			compass.update(ship, t, t.isDanger());
+			compass.draw(ratio);
 		}
-		this.currLevelProgression.draw(ratio);
+		currLevelProgression.draw(ratio);
 	}
 
 	@Override
 	public void update() {
-		this.ship.update();
+		ship.update();
 
-		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rocketsShip);
+		ArrayList<BaseItem> tmpArr = new ArrayList<>(rocketsShip);
 		for (BaseItem r : tmpArr)
 			r.update();
 		tmpArr.clear();
-		tmpArr.addAll(this.rocketsTurret);
+		tmpArr.addAll(rocketsTurret);
 		for (BaseItem r : tmpArr)
 			r.update();
 		tmpArr.clear();
-		tmpArr.addAll(this.turrets);
+		tmpArr.addAll(turrets);
 		for (BaseItem t : tmpArr) {
 			t.update();
 		}
-		ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
+		ArrayList<Explosion> tmpArr2 = new ArrayList<>(explosions);
 		for (Explosion e : tmpArr2)
 			e.move();
 
-		this.currLevelProgression.updateProgress(this.nbTurret - this.turrets.size());
+		currLevelProgression.updateProgress(nbTurret - turrets.size());
 	}
 
 	@Override
 	public void collide() {
 		ArrayList<Item> ami = new ArrayList<>();
-		ami.addAll(this.rocketsShip);
-		ami.add(this.ship);
+		ami.addAll(rocketsShip);
+		ami.add(ship);
 		ArrayList<Item> ennemi = new ArrayList<>();
-		ennemi.addAll(this.rocketsTurret);
-		ennemi.addAll(this.turrets);
-		ennemi.add(this.noiseMap);
-		Octree octree = new Octree(this.levelLimits, ami, ennemi, 3f);
+		ennemi.addAll(rocketsTurret);
+		ennemi.addAll(turrets);
+		ennemi.add(noiseMap);
+		Octree octree = new Octree(levelLimits, ami, ennemi, 3f);
 		octree.computeOctree();
 	}
 
 	@Override
 	public boolean isInit() {
-		return this.isInit;
+		return isInit;
 	}
 
 
 	private float getSoundLevel(BaseItem from) {
-		return 1f - Vector.length3f(from.vector3fTo(this.ship)) / this.levelLimitSize;
+		return 1f - Vector.length3f(from.vector3fTo(ship)) / levelLimitSize;
 	}
 
 	@Override
 	public void removeAddObjects() {
-		for (int i = this.explosions.size() - 1; i >= 0; i--)
-			if (!this.explosions.get(i).isAlive())
-				this.explosions.remove(i);
-		for (int i = this.turrets.size() - 1; i >= 0; i--)
-			if (!this.turrets.get(i).isAlive()) {
-				this.turrets.get(i).addExplosion(this.explosions);
-				this.soundPoolBuilder.playSimpleBoom(this.getSoundLevel(this.turrets.get(i)), this.getSoundLevel(this.turrets.get(i)));
-				this.turrets.remove(i);
+		for (int i = explosions.size() - 1; i >= 0; i--)
+			if (!explosions.get(i).isAlive())
+				explosions.remove(i);
+		for (int i = turrets.size() - 1; i >= 0; i--)
+			if (!turrets.get(i).isAlive()) {
+				turrets.get(i).addExplosion(explosions);
+				soundPoolBuilder.playSimpleBoom(getSoundLevel(turrets.get(i)), getSoundLevel(turrets.get(i)));
+				turrets.remove(i);
 			}
-		for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
-			if (!this.rocketsShip.get(i).isAlive() || !this.rocketsShip.get(i).isInside(this.levelLimits))
-				this.rocketsShip.remove(i);
-		for (int i = this.rocketsTurret.size() - 1; i >= 0; i--)
-			if (!this.rocketsTurret.get(i).isAlive() || !this.rocketsTurret.get(i).isInside(this.levelLimits))
-				this.rocketsTurret.remove(i);
-		if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
-			this.ship.addExplosion(this.explosions);
+		for (int i = rocketsShip.size() - 1; i >= 0; i--)
+			if (!rocketsShip.get(i).isAlive() || !rocketsShip.get(i).isInside(levelLimits))
+				rocketsShip.remove(i);
+		for (int i = rocketsTurret.size() - 1; i >= 0; i--)
+			if (!rocketsTurret.get(i).isAlive() || !rocketsTurret.get(i).isInside(levelLimits))
+				rocketsTurret.remove(i);
+		if (!ship.isAlive() || !ship.isInside(levelLimits))
+			ship.addExplosion(explosions);
 
 		ArrayList<Shooter> shooters = new ArrayList<>();
-		shooters.addAll(this.turrets);
-		shooters.add(this.ship);
+		shooters.addAll(turrets);
+		shooters.add(ship);
 		for (Shooter s : shooters)
 			s.fire();
 	}
 
 	@Override
 	public int getScore() {
-		return (this.nbTurret - this.turrets.size()) * 10;
+		return (nbTurret - turrets.size()) * 10;
 	}
 
 	@Override
 	public boolean isDead() {
-		return !this.ship.isAlive() || !this.ship.isInside(this.levelLimits);
+		return !ship.isAlive() || !ship.isInside(levelLimits);
 	}
 
 	@Override
 	public boolean isWinner() {
-		return this.nbTurret - this.turrets.size() > 19;
+		return nbTurret - turrets.size() > 19;
 	}
 }

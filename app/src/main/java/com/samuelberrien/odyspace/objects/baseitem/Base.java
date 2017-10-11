@@ -41,5 +41,5 @@ public class Base extends BaseItem {
 				.setMaxSpeed(10f)
 				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
 	}
-	//this.mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
+	//mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
 }

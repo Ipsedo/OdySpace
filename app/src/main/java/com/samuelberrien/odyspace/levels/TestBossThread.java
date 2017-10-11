@@ -49,26 +49,26 @@ public class TestBossThread implements Level {
 	@Override
 	public void init(Context context, Ship currShip, float levelLimitSize) {
 		this.context = context;
-		this.ship = currShip;
+		ship = currShip;
 		float limitDown = -100f;
-		//this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
-		this.noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
-		this.noiseMap.update();
-		this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, levelLimitSize);
-		this.levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
-		this.cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
-		this.cubeMap.update();
+		//heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
+		noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
+		noiseMap.update();
+		forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, noiseMap, levelLimitSize);
+		levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
+		cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
+		cubeMap.update();
 
-		this.progressBar = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		progressBar = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
-		this.rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
-		this.rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
+		rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
+		rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
 
-		this.boss = new FstBoss(context, new float[]{0f, 0f, 50f}, this.ship, this.rocketsBoss);
-		this.ship.setRockets(this.rocketsShip);
+		boss = new FstBoss(context, new float[]{0f, 0f, 50f}, ship, rocketsBoss);
+		ship.setRockets(rocketsShip);
 
-		this.compass = new Compass(this.context, Float.MAX_VALUE - 10.0f);
-		this.isInit = true;
+		compass = new Compass(this.context, Float.MAX_VALUE - 10.0f);
+		isInit = true;
 	}
 
 	@Override
@@ -78,88 +78,88 @@ public class TestBossThread implements Level {
 
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		ArrayList<BaseItem> tmp = new ArrayList<>();
-		tmp.addAll(this.rocketsShip);
+		tmp.addAll(rocketsShip);
 		for (BaseItem r : tmp)
 			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		tmp.clear();
-		tmp.addAll(this.rocketsBoss);
+		tmp.addAll(rocketsBoss);
 		for (BaseItem r : tmp)
 			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		this.boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
-		this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		this.cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
-		//this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
+		boss.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
+		forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
+		//heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
 	}
 
 	@Override
 	public void drawLevelInfo(float ratio) {
-		this.progressBar.draw(ratio);
-		this.compass.draw(ratio);
+		progressBar.draw(ratio);
+		compass.draw(ratio);
 	}
 
 	@Override
 	public void update() {
-		this.ship.update();
+		ship.update();
 
 		ArrayList<BaseItem> tmpArr = new ArrayList<>();
-		tmpArr.addAll(this.rocketsShip);
+		tmpArr.addAll(rocketsShip);
 		for (BaseItem r : tmpArr)
 			r.update();
 		tmpArr.clear();
-		tmpArr.addAll(this.rocketsBoss);
+		tmpArr.addAll(rocketsBoss);
 		for (BaseItem r : tmpArr)
 			r.update();
-		this.boss.update();
-		this.compass.update(this.ship, this.boss, this.boss.isDanger());
-		this.boss.updateLifeProgress(this.progressBar);
+		boss.update();
+		compass.update(ship, boss, boss.isDanger());
+		boss.updateLifeProgress(progressBar);
 	}
 
 	@Override
 	public void collide() {
 		ArrayList<Item> ami = new ArrayList<>();
-		ami.addAll(this.rocketsShip);
-		ami.add(this.ship);
+		ami.addAll(rocketsShip);
+		ami.add(ship);
 		ArrayList<Item> ennemi = new ArrayList<>();
-		ennemi.addAll(this.rocketsBoss);
-		ennemi.add(this.boss);
-		ennemi.add(this.noiseMap);
-		Octree octree = new Octree(this.levelLimits, ami, ennemi, 3f);
+		ennemi.addAll(rocketsBoss);
+		ennemi.add(boss);
+		ennemi.add(noiseMap);
+		Octree octree = new Octree(levelLimits, ami, ennemi, 3f);
 		octree.computeOctree();
 	}
 
 	@Override
 	public boolean isInit() {
-		return this.isInit;
+		return isInit;
 	}
 
 	@Override
 	public void removeAddObjects() {
-		for (int i = this.rocketsShip.size() - 1; i >= 0; i--)
-			if (!this.rocketsShip.get(i).isAlive() || !this.rocketsShip.get(i).isInside(this.levelLimits))
-				this.rocketsShip.remove(i);
-		for (int i = this.rocketsBoss.size() - 1; i >= 0; i--)
-			if (!this.rocketsBoss.get(i).isAlive() || !this.rocketsBoss.get(i).isInside(this.levelLimits))
-				this.rocketsBoss.remove(i);
+		for (int i = rocketsShip.size() - 1; i >= 0; i--)
+			if (!rocketsShip.get(i).isAlive() || !rocketsShip.get(i).isInside(levelLimits))
+				rocketsShip.remove(i);
+		for (int i = rocketsBoss.size() - 1; i >= 0; i--)
+			if (!rocketsBoss.get(i).isAlive() || !rocketsBoss.get(i).isInside(levelLimits))
+				rocketsBoss.remove(i);
 
-		this.boss.fire();
-		this.ship.fire();
+		boss.fire();
+		ship.fire();
 	}
 
 	@Override
 	public int getScore() {
-		return this.boss.isAlive() ? 0 : 500;
+		return boss.isAlive() ? 0 : 500;
 	}
 
 	@Override
 	public boolean isDead() {
-		return !this.ship.isAlive() || !this.ship.isInside(this.levelLimits);
+		return !ship.isAlive() || !ship.isInside(levelLimits);
 	}
 
 	@Override
 	public boolean isWinner() {
-		return !this.boss.isAlive();
+		return !boss.isAlive();
 	}
 }

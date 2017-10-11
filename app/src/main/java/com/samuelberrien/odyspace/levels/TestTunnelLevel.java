@@ -30,8 +30,6 @@ public class TestTunnelLevel implements Level {
 
 	public static String NAME = "Tunnel Test";
 
-	private Context context;
-
 	private boolean isInit = false;
 
 	private Ship ship;
@@ -47,27 +45,26 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public void init(Context context, Ship ship, float levelLimitSize) {
-		this.context = context;
 		this.ship = ship;
 		this.levelLimitSize = levelLimitSize;
 
-		this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
-		this.icos = Collections.synchronizedList(new ArrayList<Icosahedron>());
-		this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
+		rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
+		icos = Collections.synchronizedList(new ArrayList<Icosahedron>());
+		explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
-		this.ship.setRockets(this.rockets);
+		ship.setRockets(rockets);
 
-		this.tunnel = new Tunnel(this.context, new Random(System.currentTimeMillis()), 200, new float[]{0f, 0f, -250f});
+		tunnel = new Tunnel(context, new Random(System.currentTimeMillis()), 200, new float[]{0f, 0f, -250f});
 
-		this.tunnel.putIcoAtCircleCenter(this.context, this.icos, 0.1f);
+		tunnel.putIcoAtCircleCenter(context, icos, 0.1f);
 
-		this.soundPoolBuilder = new SoundPoolBuilder(this.context);
+		soundPoolBuilder = new SoundPoolBuilder(context);
 
-		this.isInit = true;
+		isInit = true;
 	}
 
 	private Box makeBoundingBox(float sizeCollideBox) {
-		float[] shipPos = this.ship.clonePosition();
+		float[] shipPos = ship.clonePosition();
 		return new Box(shipPos[0] - sizeCollideBox * 0.5f,
 				shipPos[1] - sizeCollideBox * 0.5f,
 				shipPos[2] - sizeCollideBox * 0.5f,
@@ -78,27 +75,27 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public float[] getLightPos() {
-		return this.ship.getCamPosition();
+		return ship.getCamPosition();
 	}
 
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 
-		ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
+		ArrayList<BaseItem> tmp = new ArrayList<>(rockets);
 		for (BaseItem r : tmp)
 			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 
 		tmp.clear();
-		tmp.addAll(this.icos);
+		tmp.addAll(icos);
 		for (BaseItem i : tmp)
 			i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 
-		ArrayList<Explosion> tmp2 = new ArrayList<>(this.explosions);
+		ArrayList<Explosion> tmp2 = new ArrayList<>(explosions);
 		for (Explosion e : tmp2)
 			e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 
-		this.tunnel.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		tunnel.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
 	@Override
@@ -108,13 +105,13 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public void update() {
-		this.ship.update();
+		ship.update();
 
-		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
+		ArrayList<BaseItem> tmpArr = new ArrayList<>(rockets);
 		for (BaseItem r : tmpArr)
 			r.update();
 
-		ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
+		ArrayList<Explosion> tmpArr2 = new ArrayList<>(explosions);
 		for (Explosion e : tmpArr2)
 			e.move();
 	}
@@ -122,63 +119,63 @@ public class TestTunnelLevel implements Level {
 	@Override
 	public void collide() {
 		ArrayList<Item> amis = new ArrayList<>();
-		amis.add(this.ship);
+		amis.add(ship);
 		ArrayList<Item> ennemis = new ArrayList<>();
-		ennemis.addAll(this.tunnel.getItemsInBox(this.makeBoundingBox(2f)));
-		ennemis.addAll(this.icos);
-		Octree octree = new Octree(this.makeBoundingBox(this.sizeCollideBox), amis, ennemis, 4f);
+		ennemis.addAll(tunnel.getItemsInBox(makeBoundingBox(2f)));
+		ennemis.addAll(icos);
+		Octree octree = new Octree(makeBoundingBox(sizeCollideBox), amis, ennemis, 4f);
 		octree.computeOctree();
 
 		amis.clear();
 		ennemis.clear();
-		amis.addAll(this.rockets);
-		ennemis.addAll(this.icos);
-		octree = new Octree(this.makeBoundingBox(this.levelLimitSize), amis, ennemis, 2f);
+		amis.addAll(rockets);
+		ennemis.addAll(icos);
+		octree = new Octree(makeBoundingBox(levelLimitSize), amis, ennemis, 2f);
 		octree.computeOctree();
 	}
 
 	@Override
 	public boolean isInit() {
-		return this.isInit;
+		return isInit;
 	}
 
 	private float getSoundLevel(BaseItem from) {
-		return 1f - Vector.length3f(from.vector3fTo(this.ship)) / this.levelLimitSize;
+		return 1f - Vector.length3f(from.vector3fTo(ship)) / levelLimitSize;
 	}
 
 	@Override
 	public void removeAddObjects() {
-		for (int i = this.icos.size() - 1; i >= 0; i--)
-			if (!this.icos.get(i).isAlive()) {
-				Icosahedron ico = this.icos.get(i);
-				ico.addExplosion(this.explosions);
-				this.soundPoolBuilder.playSimpleBoom(this.getSoundLevel(ico), this.getSoundLevel(ico));
-				this.icos.remove(i);
+		for (int i = icos.size() - 1; i >= 0; i--)
+			if (!icos.get(i).isAlive()) {
+				Icosahedron ico = icos.get(i);
+				ico.addExplosion(explosions);
+				soundPoolBuilder.playSimpleBoom(getSoundLevel(ico), getSoundLevel(ico));
+				icos.remove(i);
 			}
 
-		for (int i = this.explosions.size() - 1; i >= 0; i--)
-			if (!this.explosions.get(i).isAlive())
-				this.explosions.remove(i);
+		for (int i = explosions.size() - 1; i >= 0; i--)
+			if (!explosions.get(i).isAlive())
+				explosions.remove(i);
 
-		for (int i = this.rockets.size() - 1; i >= 0; i--)
-			if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.makeBoundingBox(this.levelLimitSize * 2f)))
-				this.rockets.remove(i);
+		for (int i = rockets.size() - 1; i >= 0; i--)
+			if (!rockets.get(i).isAlive() || !rockets.get(i).isInside(makeBoundingBox(levelLimitSize * 2f)))
+				rockets.remove(i);
 
-		this.ship.fire();
+		ship.fire();
 	}
 
 	@Override
 	public int getScore() {
-		return this.tunnel.isInLastStretch(this.ship) ? 1000 : 0;
+		return tunnel.isInLastStretch(ship) ? 1000 : 0;
 	}
 
 	@Override
 	public boolean isDead() {
-		return !this.ship.isAlive();
+		return !ship.isAlive();
 	}
 
 	@Override
 	public boolean isWinner() {
-		return this.tunnel.isInLastStretch(this.ship);
+		return tunnel.isInLastStretch(ship);
 	}
 }

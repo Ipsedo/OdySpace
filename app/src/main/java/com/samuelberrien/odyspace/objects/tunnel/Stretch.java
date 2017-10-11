@@ -101,22 +101,22 @@ public class Stretch implements Item, GLItemDrawable {
 		this.lightCoef = lightCoef;
 		this.colorCoef = colorCoef;
 
-		this.makeCircleOriented();
-		this.makeTriangleStretch();
-		this.makeBoundingBox();
-		this.identityMatrix = new float[16];
-		Matrix.setIdentityM(this.identityMatrix, 0);
+		makeCircleOriented();
+		makeTriangleStretch();
+		makeBoundingBox();
+		identityMatrix = new float[16];
+		Matrix.setIdentityM(identityMatrix, 0);
 
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.bind();
-		this.bindBuffer();
+		bind();
+		bindBuffer();
 	}
 
 	private void bind() {
@@ -132,45 +132,45 @@ public class Stretch implements Item, GLItemDrawable {
 	}
 
 	private void makeCircleOriented() {
-		this.circle1 = new float[3 * this.nbPointsCircle];
-		this.circle2 = new float[3 * this.nbPointsCircle];
+		circle1 = new float[3 * nbPointsCircle];
+		circle2 = new float[3 * nbPointsCircle];
 
-		double pas = Math.PI * 2 / (double) this.nbPointsCircle;
+		double pas = Math.PI * 2 / (double) nbPointsCircle;
 
-		for (int i = 0; i < this.nbPointsCircle; i++) {
+		for (int i = 0; i < nbPointsCircle; i++) {
 			float[] tmp = new float[]{(float) Math.cos(pas * (double) i), (float) Math.sin(pas * (double) i), 0f, 1f};
-			Matrix.multiplyMV(tmp, 0, this.mCircle1ModelMatrix, 0, tmp.clone(), 0);
-			this.circle1[i * 3 + 0] = tmp[0];
-			this.circle1[i * 3 + 1] = tmp[1];
-			this.circle1[i * 3 + 2] = tmp[2];
+			Matrix.multiplyMV(tmp, 0, mCircle1ModelMatrix, 0, tmp.clone(), 0);
+			circle1[i * 3 + 0] = tmp[0];
+			circle1[i * 3 + 1] = tmp[1];
+			circle1[i * 3 + 2] = tmp[2];
 
 			tmp = new float[]{(float) Math.cos(pas * (double) i), (float) Math.sin(pas * (double) i), 0f, 1f};
-			Matrix.multiplyMV(tmp, 0, this.mCircle2ModelMatrix, 0, tmp.clone(), 0);
-			this.circle2[i * 3 + 0] = tmp[0];
-			this.circle2[i * 3 + 1] = tmp[1];
-			this.circle2[i * 3 + 2] = tmp[2];
+			Matrix.multiplyMV(tmp, 0, mCircle2ModelMatrix, 0, tmp.clone(), 0);
+			circle2[i * 3 + 0] = tmp[0];
+			circle2[i * 3 + 1] = tmp[1];
+			circle2[i * 3 + 2] = tmp[2];
 		}
 	}
 
 	private void makeTriangleStretch() {
 		ArrayList<Float> vertex = new ArrayList<>();
 		ArrayList<Float> normals = new ArrayList<>();
-		for (int i = 0; i < this.circle1.length - 3; i += 3) {
-			vertex.add(this.circle1[i]);
-			vertex.add(this.circle1[i + 1]);
-			vertex.add(this.circle1[i + 2]);
+		for (int i = 0; i < circle1.length - 3; i += 3) {
+			vertex.add(circle1[i]);
+			vertex.add(circle1[i + 1]);
+			vertex.add(circle1[i + 2]);
 
-			vertex.add(this.circle2[i]);
-			vertex.add(this.circle2[i + 1]);
-			vertex.add(this.circle2[i + 2]);
+			vertex.add(circle2[i]);
+			vertex.add(circle2[i + 1]);
+			vertex.add(circle2[i + 2]);
 
-			vertex.add(this.circle1[i + 3]);
-			vertex.add(this.circle1[i + 4]);
-			vertex.add(this.circle1[i + 5]);
+			vertex.add(circle1[i + 3]);
+			vertex.add(circle1[i + 4]);
+			vertex.add(circle1[i + 5]);
 
 			float[] tmpN = Vector.cross3f(
-					Vector.normalize3f(new float[]{this.circle2[i] - this.circle1[i], this.circle2[i + 1] - this.circle1[i + 1], this.circle2[i + 2] - this.circle1[i + 2]}),
-					Vector.normalize3f(new float[]{this.circle1[i + 3] - this.circle1[i], this.circle1[i + 4] - this.circle1[i + 1], this.circle1[i + 5] - this.circle1[i + 2]}));
+					Vector.normalize3f(new float[]{circle2[i] - circle1[i], circle2[i + 1] - circle1[i + 1], circle2[i + 2] - circle1[i + 2]}),
+					Vector.normalize3f(new float[]{circle1[i + 3] - circle1[i], circle1[i + 4] - circle1[i + 1], circle1[i + 5] - circle1[i + 2]}));
 
 			normals.add(tmpN[0]);
 			normals.add(tmpN[1]);
@@ -185,21 +185,21 @@ public class Stretch implements Item, GLItemDrawable {
 			normals.add(tmpN[2]);
 
 
-			vertex.add(this.circle1[i + 3]);
-			vertex.add(this.circle1[i + 4]);
-			vertex.add(this.circle1[i + 5]);
+			vertex.add(circle1[i + 3]);
+			vertex.add(circle1[i + 4]);
+			vertex.add(circle1[i + 5]);
 
-			vertex.add(this.circle2[i]);
-			vertex.add(this.circle2[i + 1]);
-			vertex.add(this.circle2[i + 2]);
+			vertex.add(circle2[i]);
+			vertex.add(circle2[i + 1]);
+			vertex.add(circle2[i + 2]);
 
-			vertex.add(this.circle2[i + 3]);
-			vertex.add(this.circle2[i + 4]);
-			vertex.add(this.circle2[i + 5]);
+			vertex.add(circle2[i + 3]);
+			vertex.add(circle2[i + 4]);
+			vertex.add(circle2[i + 5]);
 
 			tmpN = Vector.cross3f(
-					Vector.normalize3f(new float[]{this.circle1[i + 3] - this.circle2[i + 3], this.circle1[i + 4] - this.circle2[i + 4], this.circle1[i + 5] - this.circle2[i + 5]}),
-					Vector.normalize3f(new float[]{this.circle2[i] - this.circle2[i + 3], this.circle2[i + 1] - this.circle2[i + 4], this.circle2[i + 2] - this.circle2[i + 5]}));
+					Vector.normalize3f(new float[]{circle1[i + 3] - circle2[i + 3], circle1[i + 4] - circle2[i + 4], circle1[i + 5] - circle2[i + 5]}),
+					Vector.normalize3f(new float[]{circle2[i] - circle2[i + 3], circle2[i + 1] - circle2[i + 4], circle2[i + 2] - circle2[i + 5]}));
 
 			normals.add(tmpN[0]);
 			normals.add(tmpN[1]);
@@ -215,21 +215,21 @@ public class Stretch implements Item, GLItemDrawable {
 
 		}
 
-		vertex.add(this.circle1[this.circle1.length - 3]);
-		vertex.add(this.circle1[this.circle1.length - 2]);
-		vertex.add(this.circle1[this.circle1.length - 1]);
+		vertex.add(circle1[circle1.length - 3]);
+		vertex.add(circle1[circle1.length - 2]);
+		vertex.add(circle1[circle1.length - 1]);
 
-		vertex.add(this.circle2[this.circle1.length - 3]);
-		vertex.add(this.circle2[this.circle1.length - 2]);
-		vertex.add(this.circle2[this.circle1.length - 1]);
+		vertex.add(circle2[circle1.length - 3]);
+		vertex.add(circle2[circle1.length - 2]);
+		vertex.add(circle2[circle1.length - 1]);
 
-		vertex.add(this.circle1[0]);
-		vertex.add(this.circle1[1]);
-		vertex.add(this.circle1[2]);
+		vertex.add(circle1[0]);
+		vertex.add(circle1[1]);
+		vertex.add(circle1[2]);
 
 		float[] tmpN = Vector.cross3f(
-				Vector.normalize3f(new float[]{this.circle2[this.circle1.length - 3] - this.circle1[this.circle1.length - 3], this.circle2[this.circle1.length - 2] - this.circle1[this.circle1.length - 2], this.circle2[this.circle1.length - 1] - this.circle1[this.circle1.length - 1]}),
-				Vector.normalize3f(new float[]{this.circle1[0] - this.circle1[this.circle1.length - 3], this.circle1[1] - this.circle1[this.circle1.length - 1], this.circle1[2] - this.circle1[this.circle1.length - 1]}));
+				Vector.normalize3f(new float[]{circle2[circle1.length - 3] - circle1[circle1.length - 3], circle2[circle1.length - 2] - circle1[circle1.length - 2], circle2[circle1.length - 1] - circle1[circle1.length - 1]}),
+				Vector.normalize3f(new float[]{circle1[0] - circle1[circle1.length - 3], circle1[1] - circle1[circle1.length - 1], circle1[2] - circle1[circle1.length - 1]}));
 
 		normals.add(tmpN[0]);
 		normals.add(tmpN[1]);
@@ -244,21 +244,21 @@ public class Stretch implements Item, GLItemDrawable {
 		normals.add(tmpN[2]);
 
 
-		vertex.add(this.circle1[0]);
-		vertex.add(this.circle1[1]);
-		vertex.add(this.circle1[2]);
+		vertex.add(circle1[0]);
+		vertex.add(circle1[1]);
+		vertex.add(circle1[2]);
 
-		vertex.add(this.circle2[this.circle1.length - 3]);
-		vertex.add(this.circle2[this.circle1.length - 2]);
-		vertex.add(this.circle2[this.circle1.length - 1]);
+		vertex.add(circle2[circle1.length - 3]);
+		vertex.add(circle2[circle1.length - 2]);
+		vertex.add(circle2[circle1.length - 1]);
 
-		vertex.add(this.circle2[0]);
-		vertex.add(this.circle2[1]);
-		vertex.add(this.circle2[2]);
+		vertex.add(circle2[0]);
+		vertex.add(circle2[1]);
+		vertex.add(circle2[2]);
 
 		tmpN = Vector.cross3f(
-				Vector.normalize3f(new float[]{this.circle1[0] - this.circle2[0], this.circle1[1] - this.circle2[1], this.circle1[2] - this.circle2[2]}),
-				Vector.normalize3f(new float[]{this.circle2[this.circle1.length - 3] - this.circle2[0], this.circle2[this.circle1.length - 2] - this.circle2[1], this.circle2[this.circle1.length - 1] - this.circle2[2]}));
+				Vector.normalize3f(new float[]{circle1[0] - circle2[0], circle1[1] - circle2[1], circle1[2] - circle2[2]}),
+				Vector.normalize3f(new float[]{circle2[circle1.length - 3] - circle2[0], circle2[circle1.length - 2] - circle2[1], circle2[circle1.length - 1] - circle2[2]}));
 
 		normals.add(tmpN[0]);
 		normals.add(tmpN[1]);
@@ -288,22 +288,22 @@ public class Stretch implements Item, GLItemDrawable {
 			this.normals[i] = normals.get(i);
 
 
-		this.vertexBuffer = ByteBuffer.allocateDirect(this.vertex.length * 4)
+		vertexBuffer = ByteBuffer.allocateDirect(this.vertex.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.vertexBuffer.put(this.vertex)
+		vertexBuffer.put(this.vertex)
 				.position(0);
 
-		this.normalsBuffer = ByteBuffer.allocateDirect(this.normals.length * 4)
+		normalsBuffer = ByteBuffer.allocateDirect(this.normals.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.normalsBuffer.put(this.normals)
+		normalsBuffer.put(this.normals)
 				.position(0);
 
-		this.colorBuffer = ByteBuffer.allocateDirect(color.length * 4)
+		colorBuffer = ByteBuffer.allocateDirect(color.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		this.colorBuffer.put(color)
+		colorBuffer.put(color)
 				.position(0);
 	}
 
@@ -312,26 +312,26 @@ public class Stretch implements Item, GLItemDrawable {
 		GLES20.glGenBuffers(3, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.vertexBuffer.capacity() * BYTES_PER_FLOAT, this.vertexBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexBuffer.capacity() * BYTES_PER_FLOAT, vertexBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.normalsBuffer.capacity() * BYTES_PER_FLOAT, this.normalsBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, normalsBuffer.capacity() * BYTES_PER_FLOAT, normalsBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[2]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.colorBuffer.capacity() * BYTES_PER_FLOAT, this.colorBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, colorBuffer.capacity() * BYTES_PER_FLOAT, colorBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-		this.vertexBufferId = buffers[0];
-		this.normalsBufferId = buffers[1];
-		this.ambBufferId = buffers[2];
+		vertexBufferId = buffers[0];
+		normalsBufferId = buffers[1];
+		ambBufferId = buffers[2];
 
-		this.vertexBuffer.limit(0);
-		this.vertexBuffer = null;
-		this.normalsBuffer.limit(0);
-		this.normalsBuffer = null;
-		this.colorBuffer.limit(0);
-		this.colorBuffer = null;
+		vertexBuffer.limit(0);
+		vertexBuffer = null;
+		normalsBuffer.limit(0);
+		normalsBuffer = null;
+		colorBuffer.limit(0);
+		colorBuffer = null;
 	}
 
 	private void makeBoundingBox() {
@@ -343,66 +343,66 @@ public class Stretch implements Item, GLItemDrawable {
 		float minY = Float.MAX_VALUE;
 		float minZ = Float.MAX_VALUE;
 
-		for (int i = 0; i < this.circle1.length; i += 3) {
-			if (maxX < this.circle1[i]) {
-				maxX = this.circle1[i];
+		for (int i = 0; i < circle1.length; i += 3) {
+			if (maxX < circle1[i]) {
+				maxX = circle1[i];
 			}
-			if (maxX < this.circle2[i]) {
-				maxX = this.circle2[i];
+			if (maxX < circle2[i]) {
+				maxX = circle2[i];
 			}
-			if (minX > this.circle1[i]) {
-				minX = this.circle1[i];
+			if (minX > circle1[i]) {
+				minX = circle1[i];
 			}
-			if (minX > this.circle2[i]) {
-				minX = this.circle2[i];
-			}
-
-			if (maxY < this.circle1[i + 1]) {
-				maxY = this.circle1[i + 1];
-			}
-			if (maxY < this.circle2[i + 1]) {
-				maxY = this.circle2[i + 1];
-			}
-			if (minY > this.circle1[i + 1]) {
-				minY = this.circle1[i + 1];
-			}
-			if (minY > this.circle2[i + 1]) {
-				minY = this.circle2[i + 1];
+			if (minX > circle2[i]) {
+				minX = circle2[i];
 			}
 
-			if (maxZ < this.circle1[i + 2]) {
-				maxZ = this.circle1[i + 2];
+			if (maxY < circle1[i + 1]) {
+				maxY = circle1[i + 1];
 			}
-			if (maxZ < this.circle2[i + 2]) {
-				maxZ = this.circle2[i + 2];
+			if (maxY < circle2[i + 1]) {
+				maxY = circle2[i + 1];
 			}
-			if (minZ > this.circle1[i + 2]) {
-				minZ = this.circle1[i + 2];
+			if (minY > circle1[i + 1]) {
+				minY = circle1[i + 1];
 			}
-			if (minZ > this.circle2[i + 2]) {
-				minZ = this.circle2[i + 2];
+			if (minY > circle2[i + 1]) {
+				minY = circle2[i + 1];
+			}
+
+			if (maxZ < circle1[i + 2]) {
+				maxZ = circle1[i + 2];
+			}
+			if (maxZ < circle2[i + 2]) {
+				maxZ = circle2[i + 2];
+			}
+			if (minZ > circle1[i + 2]) {
+				minZ = circle1[i + 2];
+			}
+			if (minZ > circle2[i + 2]) {
+				minZ = circle2[i + 2];
 			}
 		}
-		this.box = new Box(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
+		box = new Box(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
 	}
 
 	public Box getBox() {
-		return this.box;
+		return box;
 	}
 
 	@Override
 	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
-		return this.areCollided(this.vertex.clone(), this.identityMatrix.clone(), triangleArray, modelMatrix);
+		return areCollided(vertex.clone(), identityMatrix.clone(), triangleArray, modelMatrix);
 	}
 
 	@Override
 	public boolean isCollided(Item other) {
-		return other.collideTest(this.vertex.clone(), this.identityMatrix.clone(), this.getBox());
+		return other.collideTest(vertex.clone(), identityMatrix.clone(), getBox());
 	}
 
 	@Override
 	public boolean isInside(Box box) {
-		return this.box.isInside(box);
+		return box.isInside(box);
 	}
 
 	@Override
@@ -422,32 +422,32 @@ public class Stretch implements Item, GLItemDrawable {
 
 	@Override
 	public float[] clonePosition() {
-		return this.box.getPos();
+		return box.getPos();
 	}
 
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] mMVPMatrix = new float[16];
 		float[] mMVMatrix = new float[16];
-		Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix.clone(), 0, this.identityMatrix, 0);
+		Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix.clone(), 0, identityMatrix, 0);
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix.clone(), 0, mMVMatrix, 0);
 
 
 		GLES20.glUseProgram(mProgram);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.vertexBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
 		GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		// Pass in the normal information
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.normalsBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, normalsBufferId);
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
 		GLES20.glVertexAttribPointer(mNormalHandle, NORMAL_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		// Pass in the texture information
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.ambBufferId);
-		GLES20.glEnableVertexAttribArray(this.mColorHandle);
-		GLES20.glVertexAttribPointer(this.mColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ambBufferId);
+		GLES20.glEnableVertexAttribArray(mColorHandle);
+		GLES20.glVertexAttribPointer(mColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
@@ -459,13 +459,13 @@ public class Stretch implements Item, GLItemDrawable {
 
 		GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
 
-		GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
+		GLES20.glUniform1f(mDistanceCoefHandle, distanceCoef);
 
-		GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
+		GLES20.glUniform1f(mLightCoefHandle, lightCoef);
 
-		GLES20.glUniform1f(mAmbColorCoefHandle, this.colorCoef);
+		GLES20.glUniform1f(mAmbColorCoefHandle, colorCoef);
 
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.vertex.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertex.length / 3);
 
 		// Disable vertex array
 		GLES20.glDisableVertexAttribArray(mPositionHandle);

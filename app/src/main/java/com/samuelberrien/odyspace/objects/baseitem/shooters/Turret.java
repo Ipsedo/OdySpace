@@ -36,7 +36,7 @@ public class Turret extends BaseItem implements Shooter {
 	//TODO modèles simplifiés pr crashable ?
 	public Turret(Context context, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
 		super(context, "turret.obj", "turret.mtl", "turret.obj", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
-		this.rand = new Random(System.currentTimeMillis());
+		rand = new Random(System.currentTimeMillis());
 		this.fireType = fireType;
 		this.ship = ship;
 		this.rockets = rockets;
@@ -44,7 +44,7 @@ public class Turret extends BaseItem implements Shooter {
 
 	public Turret(Context context, ObjModelMtlVBO turret, CrashableMesh crashableMesh, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
 		super(context, turret, crashableMesh, 1, mPosition, new float[3], new float[3], 4f);
-		this.rand = new Random(System.currentTimeMillis());
+		rand = new Random(System.currentTimeMillis());
 		this.fireType = fireType;
 		this.ship = ship;
 		this.rockets = rockets;
@@ -63,21 +63,21 @@ public class Turret extends BaseItem implements Shooter {
 
 	@Override
 	public void fire() {
-		float[] vectorTo = super.vector3fTo(this.ship);
-		if (Vector.length3f(vectorTo) < 200f && this.rand.nextFloat() < 1e-2f) {
+		float[] vectorTo = super.vector3fTo(ship);
+		if (Vector.length3f(vectorTo) < 200f && rand.nextFloat() < 1e-2f) {
 			float[] speedVec = Vector.normalize3f(vectorTo);
 			float[] originaleVec = new float[]{0f, 0f, 1f};
 			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			this.fireType.fire(this.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f, ship);
+			fireType.fire(rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f, ship);
 		}
 	}
 
 	@Override
 	public void update() {
-		float[] shipPos = this.ship.clonePosition();
+		float[] shipPos = ship.clonePosition();
 		float[] u = new float[]{shipPos[0] - super.mPosition[0], 0f, shipPos[2] - super.mPosition[2]};
 		float[] v = new float[]{0f, 0f, 1f};
 

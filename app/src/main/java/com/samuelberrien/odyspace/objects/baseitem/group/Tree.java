@@ -23,12 +23,12 @@ public class Tree implements UpdatableItem, GLItemDrawable {
 	private ArrayList<Tree> sons;
 
 	public Tree(Leaf leaf) {
-		this.isLeaf = true;
+		isLeaf = true;
 		this.leaf = leaf;
 	}
 
 	public Tree(ArrayList<Tree> sons, float[] nodeModelMatrix) {
-		this.isLeaf = false;
+		isLeaf = false;
 		this.nodeModelMatrix = nodeModelMatrix;
 		this.modelMatrixToPass = nodeModelMatrix;
 	}

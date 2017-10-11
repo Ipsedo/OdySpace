@@ -29,40 +29,40 @@ public class FstBoss extends Boss {
 	public FstBoss(Context context, float[] mPosition, Ship ship, List<BaseItem> rockets) {
 		super(context, "skull.obj", "skull.mtl", 20, mPosition, 3f, FireType.SIMPLE_FIRE, rockets);
 		this.ship = ship;
-		this.phi = 0f;
-		this.theta = 0f;
-		this.rand = new Random(System.currentTimeMillis());
+		phi = 0f;
+		theta = 0f;
+		rand = new Random(System.currentTimeMillis());
 	}
 
 	@Override
 	public void fire() {
-		if (this.rand.nextFloat() < 1e-1f) {
-			float[] speedVec = Vector.normalize3f(super.vector3fTo(this.ship));
+		if (rand.nextFloat() < 1e-1f) {
+			float[] speedVec = Vector.normalize3f(super.vector3fTo(ship));
 			float[] originaleVec = new float[]{0f, 0f, 1f};
 			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			this.fireType.fire(super.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.3f);
+			fireType.fire(super.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.3f);
 		}
 	}
 
 	@Override
 	protected float[] computeModelMatrix() {
-		float[] vecToShip = Vector.normalize3f(super.vector3fTo(this.ship));
+		float[] vecToShip = Vector.normalize3f(super.vector3fTo(ship));
 		float[] originaleVec = new float[]{0f, 0f, 1f};
 		float angle;
 
-		if (this.rand.nextFloat() < 1e-2f) {
+		if (rand.nextFloat() < 1e-2f) {
 			super.mSpeed[0] = 0.1f * vecToShip[0];
 			super.mSpeed[1] = 0.1f * vecToShip[1];
 			super.mSpeed[2] = 0.1f * vecToShip[2];
 		} else {
-			this.phi += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
-			this.theta += (this.rand.nextDouble() * 2d - 1d) / Math.PI;
-			super.mSpeed[0] = 0.1f * (float) (Math.cos(this.phi) * Math.sin(this.theta));
-			super.mSpeed[1] = 0.1f * (float) Math.sin(this.phi);
-			super.mSpeed[2] = 0.1f * (float) (Math.cos(this.phi) * Math.cos(this.theta));
+			phi += (rand.nextDouble() * 2d - 1d) / Math.PI;
+			theta += (rand.nextDouble() * 2d - 1d) / Math.PI;
+			super.mSpeed[0] = 0.1f * (float) (Math.cos(phi) * Math.sin(theta));
+			super.mSpeed[1] = 0.1f * (float) Math.sin(phi);
+			super.mSpeed[2] = 0.1f * (float) (Math.cos(phi) * Math.cos(theta));
 		}
 
 		super.mPosition[0] += super.mSpeed[0];

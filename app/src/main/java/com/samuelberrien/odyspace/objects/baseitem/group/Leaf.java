@@ -20,12 +20,10 @@ public abstract class Leaf extends BaseItem {
 
 	public Leaf(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		super(context, objFileName, mtlFileName, objFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, mSpeed, mAcceleration, scale);
-		this.parentModelMatrix = parentModelMatrix;
 	}
 
 	public Leaf(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		super(context, objModelMtl, crashableMesh, life, mPosition, mSpeed, mAcceleration, scale);
-		this.parentModelMatrix = parentModelMatrix;
 	}
 
 	public void setParentModelMatrix(float[] parentModelMatrix) {
@@ -35,7 +33,7 @@ public abstract class Leaf extends BaseItem {
 	@Override
 	public void update() {
 		float[] mModelMatrix = new float[16];
-		Matrix.multiplyMM(mModelMatrix, 0, this.parentModelMatrix, 0, this.computeLeafModelMatrix(), 0);
+		Matrix.multiplyMM(mModelMatrix, 0, parentModelMatrix, 0, computeLeafModelMatrix(), 0);
 		super.mModelMatrix = mModelMatrix;
 	}
 

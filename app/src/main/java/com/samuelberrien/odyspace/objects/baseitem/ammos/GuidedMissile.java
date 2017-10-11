@@ -29,10 +29,10 @@ public class GuidedMissile extends Ammos {
 	public GuidedMissile(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed, Item target) {
 		super(context, objModelMtl, crashableMesh, mPosition, mSpeed, new float[3], mRotationMatrix, maxSpeed, Scale, Life);
 		this.target = target;
-		this.currentDuration = 0;
-		this.angle = AngleLimitInit;
-		this.willAutoDestruct = false;
-		this.willReduceAngle = false;
+		currentDuration = 0;
+		angle = AngleLimitInit;
+		willAutoDestruct = false;
+		willReduceAngle = false;
 	}
 
 
@@ -46,27 +46,27 @@ public class GuidedMissile extends Ammos {
 
 		float length = Vector.length3f(Vector.make3f(super.clonePosition(), target.clonePosition()));
 		if (length < LimitLength) {
-			this.willReduceAngle = true;
+			willReduceAngle = true;
 		}
-		if (this.willReduceAngle) {
-			this.angle -= length * AngleLimitInit / LimitLength;
-			this.angle = this.angle <= 0d ? 0d : this.angle;
+		if (willReduceAngle) {
+			angle -= length * AngleLimitInit / LimitLength;
+			angle = angle <= 0d ? 0d : angle;
 		}
 
 		double angleWithTarget = Math.acos(Vector.dot3f(speedVec, new float[]{vecRepereMissile[0], vecRepereMissile[1], vecRepereMissile[2]})) * 360d / (Math.PI * 2d);
-		if (this.angle > angleWithTarget) {
+		if (angle > angleWithTarget) {
 			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
 			super.mRotationMatrix = tmpMat;
 		} else {
-			this.willAutoDestruct = true;
+			willAutoDestruct = true;
 		}
 
-		if (this.willAutoDestruct) {
-			this.currentDuration++;
-			if (this.currentDuration > Auto_Destruction_Max_Duration) {
+		if (willAutoDestruct) {
+			currentDuration++;
+			if (currentDuration > Auto_Destruction_Max_Duration) {
 				super.life = 0;
 			}
 		}

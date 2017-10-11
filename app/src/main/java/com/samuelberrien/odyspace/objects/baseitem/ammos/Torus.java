@@ -22,11 +22,11 @@ public class Torus extends Ammos {
 	@Override
 	public void update() {
 		super.update();
-		this.udpadeScale();
+		udpadeScale();
 	}
 
 	private void udpadeScale() {
-		this.accuScale += 1e-2d;
-		super.scale = (float) (Math.log(this.accuScale) / Math.log(BaseLog));
+		accuScale += 1e-2d;
+		scale = (float) (Math.log(accuScale) / Math.log(BaseLog));
 	}
 }

@@ -106,12 +106,12 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	//TODO modèles simplifiés pr crashable ?
 	private Ship(Context context, String objFileName, String mtlFileName, int life, FireType fireType, GamePad gamePad, Bonus bonus, int bonusDuration, int bonusDurationBought) {
 		super(context, objFileName, mtlFileName, objFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
-		this.maxLife = life;
-		this.lifeDraw = new ProgressBar(context, this.maxLife, 0.9f, 0.9f, Color.LifeRed);
+		maxLife = life;
+		lifeDraw = new ProgressBar(context, maxLife, 0.9f, 0.9f, Color.LifeRed);
 		this.fireType = fireType;
-		this.mBoostSpeed = 0f;
+		mBoostSpeed = 0f;
 		this.gamePad = gamePad;
-		this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 		this.bonus = bonus;
 		this.bonusDuration = bonusDuration;
 		this.bonusDurationBought = bonusDurationBought;
@@ -124,25 +124,25 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	@Override
 	public void update() {
 		if (super.isAlive()) {
-			this.mBoostSpeed = (float) Math.exp(this.gamePad.getBoost() + 2f) * this.boostCoeff;
-			this.mMaxSpeed = Ship.SHIP_MAX_SPEED * this.mBoostSpeed;
+			mBoostSpeed = (float) Math.exp(gamePad.getBoost() + 2f) * boostCoeff;
+			mMaxSpeed = Ship.SHIP_MAX_SPEED * mBoostSpeed;
 
 			float[] pitchMatrix = new float[16];
 			float[] rollMatrix = new float[16];
 			float[] yawMatrix = new float[16];
-			float roll = this.gamePad.getRoll();
-			float pitch = this.gamePad.getPitch();
-			float yaw = this.gamePad.getYaw();
-			Matrix.setRotateM(rollMatrix, 0, (roll >= 0 ? (float) Math.exp(roll) - 1f : (float) -Math.exp(Math.abs(roll)) + 1f) * this.rollCoeff, 0f, 0f, 1f);
-			Matrix.setRotateM(pitchMatrix, 0, (pitch >= 0 ? (float) Math.exp(pitch) - 1f : (float) -Math.exp(Math.abs(pitch)) + 1f) * this.pitchCoeff, 1f, 0f, 0f);
-			Matrix.setRotateM(yawMatrix, 0, (yaw >= 0 ? (float) Math.exp(yaw) - 1f : (float) -Math.exp(Math.abs(yaw)) + 1f) * this.yawCoeff, 0f, 1f, 0f);
+			float roll = gamePad.getRoll();
+			float pitch = gamePad.getPitch();
+			float yaw = gamePad.getYaw();
+			Matrix.setRotateM(rollMatrix, 0, (roll >= 0 ? (float) Math.exp(roll) - 1f : (float) -Math.exp(Math.abs(roll)) + 1f) * rollCoeff, 0f, 0f, 1f);
+			Matrix.setRotateM(pitchMatrix, 0, (pitch >= 0 ? (float) Math.exp(pitch) - 1f : (float) -Math.exp(Math.abs(pitch)) + 1f) * pitchCoeff, 1f, 0f, 0f);
+			Matrix.setRotateM(yawMatrix, 0, (yaw >= 0 ? (float) Math.exp(yaw) - 1f : (float) -Math.exp(Math.abs(yaw)) + 1f) * yawCoeff, 0f, 1f, 0f);
 
 			float[] currRotMatrix = new float[16];
 			Matrix.multiplyMM(currRotMatrix, 0, pitchMatrix, 0, rollMatrix, 0);
 			Matrix.multiplyMM(currRotMatrix, 0, currRotMatrix.clone(), 0, yawMatrix, 0);
 
 			float[] currSpeed = new float[4];
-			Matrix.multiplyMV(currSpeed, 0, currRotMatrix, 0, this.originalSpeedVec, 0);
+			Matrix.multiplyMV(currSpeed, 0, currRotMatrix, 0, originalSpeedVec, 0);
 
 			float[] realSpeed = new float[4];
 			Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, currSpeed, 0);
@@ -150,9 +150,9 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 			float[] tmpMat = super.mRotationMatrix.clone();
 			Matrix.multiplyMM(super.mRotationMatrix, 0, tmpMat, 0, currRotMatrix, 0);
 
-			super.mPosition[0] += this.mMaxSpeed * realSpeed[0];
-			super.mPosition[1] += this.mMaxSpeed * realSpeed[1];
-			super.mPosition[2] += this.mMaxSpeed * realSpeed[2];
+			super.mPosition[0] += mMaxSpeed * realSpeed[0];
+			super.mPosition[1] += mMaxSpeed * realSpeed[1];
+			super.mPosition[2] += mMaxSpeed * realSpeed[2];
 
 			float[] mModelMatrix = new float[16];
 			Matrix.setIdentityM(mModelMatrix, 0);
@@ -172,8 +172,8 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 	@Override
 	public void fire() {
-		if (super.isAlive() && this.gamePad.fire()) {
-			this.fireType.fire(this.rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (this.mBoostSpeed >= 32f ? this.mBoostSpeed : 32f) * this.ROCKET_MAX_SPEED);
+		if (super.isAlive() && gamePad.fire()) {
+			fireType.fire(rockets, super.mPosition.clone(), super.mSpeed.clone(), super.mRotationMatrix.clone(), (mBoostSpeed >= 32f ? mBoostSpeed : 32f) * ROCKET_MAX_SPEED);
 		}
 	}
 
@@ -185,7 +185,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	}
 
 	public float[] fromCamTo(BaseItem to) {
-		float[] camPos = this.getCamPosition();
+		float[] camPos = getCamPosition();
 		float[] toPos = to.clonePosition();
 		return new float[]{toPos[0] - camPos[0], toPos[1] - camPos[1], toPos[2] - camPos[2]};
 	}
@@ -193,13 +193,13 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	public float[] getCamFrontVec() {
 		float[] lookAtPos = new float[3];
 		float[] u = new float[4];
-		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
+		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, originalSpeedVec, 0);
 
-		lookAtPos[0] = u[0] + this.mPosition[0];
-		lookAtPos[1] = u[1] + this.mPosition[1];
-		lookAtPos[2] = u[2] + this.mPosition[2];
+		lookAtPos[0] = u[0] + mPosition[0];
+		lookAtPos[1] = u[1] + mPosition[1];
+		lookAtPos[2] = u[2] + mPosition[2];
 
-		float[] camPos = this.getCamPosition();
+		float[] camPos = getCamPosition();
 
 		return new float[]{lookAtPos[0] - camPos[0], lookAtPos[1] - camPos[1], lookAtPos[2] - camPos[2]};
 	}
@@ -207,10 +207,10 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	public float[] getCamPosition() {
 		float[] res = new float[3];
 		float[] u = new float[4];
-		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
+		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, originalSpeedVec, 0);
 
 		float[] v = new float[4];
-		Matrix.multiplyMV(v, 0, super.mRotationMatrix, 0, this.originalUpVec, 0);
+		Matrix.multiplyMV(v, 0, super.mRotationMatrix, 0, originalUpVec, 0);
 
 		res[0] = -10f * u[0] + super.mPosition[0] + 1f * v[0];
 		res[1] = -10f * u[1] + super.mPosition[1] + 1f * v[1];
@@ -222,7 +222,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	public float[] getCamLookAtVec() {
 		float[] res = new float[3];
 		float[] u = new float[4];
-		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalSpeedVec, 0);
+		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, originalSpeedVec, 0);
 
 		res[0] = u[0];
 		res[1] = u[1];
@@ -234,7 +234,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	public float[] getCamUpVec() {
 		float[] res = new float[3];
 		float[] u = new float[4];
-		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, this.originalUpVec, 0);
+		Matrix.multiplyMV(u, 0, super.mRotationMatrix, 0, originalUpVec, 0);
 
 		res[0] = u[0];
 		res[1] = u[1];
@@ -246,7 +246,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	public float[] invVecWithRotMatrix(float[] vec) {
 		float[] tmp = new float[]{vec[0], vec[1], vec[2], 0f};
 		float[] invModel = new float[16];
-		Matrix.invertM(invModel, 0, this.mRotationMatrix, 0);
+		Matrix.invertM(invModel, 0, mRotationMatrix, 0);
 
 		float[] tmpRes = new float[4];
 		Matrix.multiplyMV(tmpRes, 0, invModel, 0, tmp, 0);
@@ -255,8 +255,8 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 	}
 
 	public void drawLife(float ratio) {
-		this.lifeDraw.updateProgress(this.life);
-		this.lifeDraw.draw(ratio);
+		lifeDraw.updateProgress(life);
+		lifeDraw.draw(ratio);
 	}
 
 	@Override
@@ -285,7 +285,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 				bonus = Bonus.SHIELD;
 			}
 		} else if (key.equals(context.getString(R.string.current_bonus_duration))) {
-			this.bonusDuration = sharedPreferences.getInt(key, context.getResources().getInteger(R.integer.bonus_1_duration));
+			bonusDuration = sharedPreferences.getInt(key, context.getResources().getInteger(R.integer.bonus_1_duration));
 		}
 	}
 }

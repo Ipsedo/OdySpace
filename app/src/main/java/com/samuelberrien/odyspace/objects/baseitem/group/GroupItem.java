@@ -47,22 +47,22 @@ public class GroupItem implements Item, GLItemDrawable, UpdatableItem {
 
 	@Override
 	public boolean isAlive() {
-		return this.life > 0;
+		return life > 0;
 	}
 
 	@Override
 	public int getDamage() {
-		return this.life;
+		return life;
 	}
 
 	@Override
 	public void decrementLife(int minus) {
-		this.life = this.life - minus >= 0 ? this.life - minus : 0;
+		life = life - minus >= 0 ? life - minus : 0;
 	}
 
 	@Override
 	public float[] clonePosition() {
-		return this.mPosition.clone();
+		return mPosition.clone();
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class GroupItem implements Item, GLItemDrawable, UpdatableItem {
 
 	@Override
 	public void update() {
-		root.setParentModelMatrix(this.mModelMatrix);
+		root.setParentModelMatrix(mModelMatrix);
 		root.update();
 	}
 }

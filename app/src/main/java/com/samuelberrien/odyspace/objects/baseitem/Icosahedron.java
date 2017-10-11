@@ -35,7 +35,7 @@ public class Icosahedron extends BaseItem {
 				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
 	}
 
-	//this.mExplosion = new Explosion(super.context, super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);
+	//mExplosion = new Explosion(super.context, super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);
 
 
 }

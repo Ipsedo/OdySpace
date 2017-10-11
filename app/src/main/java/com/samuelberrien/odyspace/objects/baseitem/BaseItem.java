@@ -64,17 +64,17 @@ public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 		objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
 		this.context = context;
 		this.life = life;
-		this.maxLife = this.life;
+		maxLife = this.life;
 		this.mPosition = mPosition;
 		this.mSpeed = mSpeed;
 		this.mAcceleration = mAcceleration;
-		this.mRotationMatrix = new float[16];
-		Matrix.setIdentityM(this.mRotationMatrix, 0);
-		this.mModelMatrix = new float[16];
-		Matrix.setIdentityM(this.mModelMatrix, 0);
+		mRotationMatrix = new float[16];
+		Matrix.setIdentityM(mRotationMatrix, 0);
+		mModelMatrix = new float[16];
+		Matrix.setIdentityM(mModelMatrix, 0);
 		this.scale = scale;
-		this.radius = this.scale * 2f;
-		this.isDanger = false;
+		radius = scale * 2f;
+		isDanger = false;
 		crashableMesh = new CrashableMesh(context, objCrashableMeshFileName);
 		needMAkeExplosion = false;
 	}
@@ -83,24 +83,24 @@ public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 		objModelMtlVBO = objModelMtl;
 		this.context = context;
 		this.life = life;
-		this.maxLife = this.life;
+		maxLife = this.life;
 		this.mPosition = mPosition;
 		this.mSpeed = mSpeed;
 		this.mAcceleration = mAcceleration;
-		this.mRotationMatrix = new float[16];
-		Matrix.setIdentityM(this.mRotationMatrix, 0);
-		this.mModelMatrix = new float[16];
-		Matrix.setIdentityM(this.mModelMatrix, 0);
+		mRotationMatrix = new float[16];
+		Matrix.setIdentityM(mRotationMatrix, 0);
+		mModelMatrix = new float[16];
+		Matrix.setIdentityM(mModelMatrix, 0);
 		this.scale = scale;
-		this.radius = this.scale * 2f;
-		this.isDanger = false;
+		radius = this.scale * 2f;
+		isDanger = false;
 		this.crashableMesh = crashableMesh;
 		needMAkeExplosion = false;
 	}
 
 	@Override
 	public boolean isAlive() {
-		return this.life > 0;
+		return life > 0;
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 	}
 
 	public Box makeBox() {
-		return new Box(this.mPosition[0] - this.radius * 0.5f, this.mPosition[1] - this.radius * 0.5f, this.mPosition[2] - this.radius * 0.5f, this.radius, this.radius, this.radius);
+		return new Box(mPosition[0] - radius * 0.5f, mPosition[1] - radius * 0.5f, mPosition[2] - radius * 0.5f, radius, radius, radius);
 	}
 
 	@Override
@@ -124,60 +124,60 @@ public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 
 	@Override
 	public int getDamage() {
-		return this.life;
+		return life;
 	}
 
 	@Override
 	public void decrementLife(int minus) {
-		this.life = this.life - minus >= 0 ? this.life - minus : 0;
+		life = life - minus >= 0 ? life - minus : 0;
 	}
 
 	@Override
 	public float[] clonePosition() {
-		return this.mPosition.clone();
+		return mPosition.clone();
 	}
 
 	private boolean willIntersect(BaseItem target) {
-		float[] normSpeed = Vector.normalize3f(this.mSpeed);
+		float[] normSpeed = Vector.normalize3f(mSpeed);
 		float[] maxSpeed = Vector.mul3f(normSpeed, BaseItem.RayMaxRand);
-		float[] dir = Vector.add3f(maxSpeed, this.mPosition);
-		return target.makeBox().rayIntersect(new Ray(this.mPosition, dir));
+		float[] dir = Vector.add3f(maxSpeed, mPosition);
+		return target.makeBox().rayIntersect(new Ray(mPosition, dir));
 	}
 
 	private boolean willIntersectOne(List<BaseItem> targets) {
 		for (BaseItem t : targets)
-			if (this.willIntersect(t))
+			if (willIntersect(t))
 				return true;
 		return false;
 	}
 
 	public boolean isDanger() {
-		return this.isDanger;
+		return isDanger;
 	}
 
 	public void computeDanger(List<BaseItem> targets) {
-		this.isDanger = this.willIntersectOne(targets);
+		isDanger = willIntersectOne(targets);
 	}
 
 	public float[] vector3fTo(BaseItem to) {
-		return new float[]{to.mPosition[0] - this.mPosition[0], to.mPosition[1] - this.mPosition[1], to.mPosition[2] - this.mPosition[2]};
+		return new float[]{to.mPosition[0] - mPosition[0], to.mPosition[1] - mPosition[1], to.mPosition[2] - mPosition[2]};
 	}
 
 	@Override
 	public void update() {
-		this.mSpeed[0] += this.mAcceleration[0];
-		this.mSpeed[1] += this.mAcceleration[1];
-		this.mSpeed[2] += this.mAcceleration[2];
+		mSpeed[0] += mAcceleration[0];
+		mSpeed[1] += mAcceleration[1];
+		mSpeed[2] += mAcceleration[2];
 
-		this.mPosition[0] += this.mSpeed[0];
-		this.mPosition[1] += this.mSpeed[1];
-		this.mPosition[2] += this.mSpeed[2];
+		mPosition[0] += mSpeed[0];
+		mPosition[1] += mSpeed[1];
+		mPosition[2] += mSpeed[2];
 
 		float[] tmp = new float[16];
 		Matrix.setIdentityM(tmp, 0);
-		Matrix.translateM(tmp, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
-		Matrix.scaleM(tmp, 0, this.scale, this.scale, this.scale);
-		this.mModelMatrix = tmp.clone();
+		Matrix.translateM(tmp, 0, mPosition[0], mPosition[1], mPosition[2]);
+		Matrix.scaleM(tmp, 0, scale, scale, scale);
+		mModelMatrix = tmp.clone();
 	}
 
 	@Override
@@ -187,17 +187,17 @@ public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 			needMAkeExplosion = false;
 		}
 		float[] mvMatrix = new float[16];
-		Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);
+		Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, mModelMatrix, 0);
 		float[] mvpMatrix = new float[16];
 		Matrix.multiplyMM(mvpMatrix, 0, pMatrix, 0, mvMatrix, 0);
 		objModelMtlVBO.draw(mvpMatrix, mvMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
 	public final void addExplosion(List<Explosion> explosions) {
-		if (!this.exploded) {
-			this.mExplosion.setPosition(this.mPosition.clone());
-			explosions.add(this.mExplosion);
-			this.exploded = true;
+		if (!exploded) {
+			mExplosion.setPosition(mPosition.clone());
+			explosions.add(mExplosion);
+			exploded = true;
 		}
 	}
 
@@ -206,7 +206,7 @@ public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
 	}
 
 	private void makeExplosion() {
-		this.mExplosion = this.getExplosion();
+		mExplosion = getExplosion();
 	}
 
 	protected abstract Explosion getExplosion();

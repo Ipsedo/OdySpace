@@ -35,8 +35,6 @@ public class TestThread implements Level {
 
 	public static String NAME = "Practice";
 
-	private Context context;
-
 	private float levelLimitSize;
 	private Box levelLimits;
 
@@ -61,43 +59,42 @@ public class TestThread implements Level {
 
 	@Override
 	public void init(Context context, Ship ship, float levelLimitSize) {
-		this.context = context;
 		this.ship = ship;
 		this.levelLimitSize = levelLimitSize;
 
-		this.currLevelProgression = new ProgressBar(this.context, 50, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		currLevelProgression = new ProgressBar(context, 50, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
 		float limitDown = -100f;
-		//this.heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
-		this.noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, this.levelLimitSize, limitDown, 0.02f);
-		this.noiseMap.update();
-		this.forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, this.noiseMap, this.levelLimitSize);
-		this.levelLimits = new Box(-this.levelLimitSize, limitDown - 0.02f * this.levelLimitSize, -this.levelLimitSize, this.levelLimitSize * 2f, this.levelLimitSize, this.levelLimitSize * 2f);
-		this.cubeMap = new CubeMap(this.context, this.levelLimitSize, "cube_map/ciel_1/");
-		this.cubeMap.update();
+		//heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
+		noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, this.levelLimitSize, limitDown, 0.02f);
+		noiseMap.update();
+		forest = new Forest(context, "dead_tree.obj", "dead_tree.mtl", 100, noiseMap, this.levelLimitSize);
+		levelLimits = new Box(-this.levelLimitSize, limitDown - 0.02f * this.levelLimitSize, -this.levelLimitSize, this.levelLimitSize * 2f, this.levelLimitSize, this.levelLimitSize * 2f);
+		cubeMap = new CubeMap(context, this.levelLimitSize, "cube_map/ciel_1/");
+		cubeMap.update();
 
-		this.rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
-		this.icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
-		this.explosions = Collections.synchronizedList(new ArrayList<Explosion>());
+		rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
+		icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
+		explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
-		this.ship.setRockets(this.rockets);
+		this.ship.setRockets(rockets);
 
 		Random rand = new Random(System.currentTimeMillis());
-		//ObjModelMtlVBO modelIco = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
-		for (int i = 0; i < this.nbIcosahedron; i++) {
-			Icosahedron ico = new Icosahedron(this.context, 1, new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f}, rand.nextFloat() * 2f + 1f);
+		//ObjModelMtlVBO modelIco = new ObjModelMtlVBO(context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
+		for (int i = 0; i < nbIcosahedron; i++) {
+			Icosahedron ico = new Icosahedron(context, 1, new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f}, rand.nextFloat() * 2f + 1f);
 			ico.update();
 			ico.queueExplosion();
-			this.icosahedrons.add(ico);
+			icosahedrons.add(ico);
 		}
 
 		this.ship.queueExplosion();
 
-		this.soundPoolBuilder = new SoundPoolBuilder(this.context);
+		soundPoolBuilder = new SoundPoolBuilder(context);
 
-		this.compass = new Compass(this.context, this.levelLimitSize / 12f);
+		compass = new Compass(context, this.levelLimitSize / 12f);
 
-		this.isInit = true;
+		isInit = true;
 	}
 
 	@Override
@@ -107,105 +104,105 @@ public class TestThread implements Level {
 
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		this.ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		//this.heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
-		this.noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
-		this.forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		this.cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
-		ArrayList<BaseItem> tmp = new ArrayList<>(this.rockets);
+		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		//heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
+		noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
+		forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
+		ArrayList<BaseItem> tmp = new ArrayList<>(rockets);
 		for (BaseItem r : tmp)
 			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		tmp = new ArrayList<>(this.icosahedrons);
+		tmp = new ArrayList<>(icosahedrons);
 		for (BaseItem i : tmp)
 			i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		ArrayList<Explosion> tmp2 = new ArrayList<>(this.explosions);
+		ArrayList<Explosion> tmp2 = new ArrayList<>(explosions);
 		for (Explosion e : tmp2)
 			e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
 	@Override
 	public void drawLevelInfo(float ratio) {
-		this.currLevelProgression.draw(ratio);
-		ArrayList<BaseItem> icos = new ArrayList<>(this.icosahedrons);
+		currLevelProgression.draw(ratio);
+		ArrayList<BaseItem> icos = new ArrayList<>(icosahedrons);
 		for (BaseItem ico : icos) {
-			this.compass.update(this.ship, ico, ico.isDanger());
-			this.compass.draw(ratio);
+			compass.update(ship, ico, ico.isDanger());
+			compass.draw(ratio);
 		}
 	}
 
 	@Override
 	public void update() {
-		this.ship.update();
+		ship.update();
 
-		ArrayList<BaseItem> tmpArr = new ArrayList<>(this.rockets);
+		ArrayList<BaseItem> tmpArr = new ArrayList<>(rockets);
 		for (BaseItem r : tmpArr)
 			r.update();
-		ArrayList<Explosion> tmpArr2 = new ArrayList<>(this.explosions);
+		ArrayList<Explosion> tmpArr2 = new ArrayList<>(explosions);
 		for (Explosion e : tmpArr2)
 			e.move();
 
-		this.currLevelProgression.updateProgress(this.nbIcosahedron - this.icosahedrons.size());
+		currLevelProgression.updateProgress(nbIcosahedron - icosahedrons.size());
 	}
 
 	@Override
 	public void collide() {
 		ArrayList<Item> ami = new ArrayList<>();
-		ami.addAll(this.rockets);
-		ami.add(this.ship);
+		ami.addAll(rockets);
+		ami.add(ship);
 		ArrayList<Item> ennemi = new ArrayList<>();
-		ennemi.addAll(this.icosahedrons);
-		ennemi.add(this.noiseMap);
-		Octree octree = new Octree(this.levelLimits, ami, ennemi, 2f);
+		ennemi.addAll(icosahedrons);
+		ennemi.add(noiseMap);
+		Octree octree = new Octree(levelLimits, ami, ennemi, 2f);
 		octree.computeOctree();
 	}
 
 	@Override
 	public boolean isInit() {
-		return this.isInit;
+		return isInit;
 	}
 
 	private float getSoundLevel(BaseItem from) {
-		return 1f - Vector.length3f(from.vector3fTo(this.ship)) / this.levelLimitSize;
+		return 1f - Vector.length3f(from.vector3fTo(ship)) / levelLimitSize;
 	}
 
 	@Override
 	public void removeAddObjects() {
-		for (int i = this.explosions.size() - 1; i >= 0; i--)
-			if (!this.explosions.get(i).isAlive())
-				this.explosions.remove(i);
+		for (int i = explosions.size() - 1; i >= 0; i--)
+			if (!explosions.get(i).isAlive())
+				explosions.remove(i);
 
-		for (int i = this.icosahedrons.size() - 1; i >= 0; i--) {
-			if (!this.icosahedrons.get(i).isAlive()) {
-				Icosahedron ico = (Icosahedron) this.icosahedrons.get(i);
-				ico.addExplosion(this.explosions);
-				this.soundPoolBuilder.playSimpleBoom(this.getSoundLevel(ico), this.getSoundLevel(ico));
-				this.icosahedrons.remove(i);
-			} else if (!this.icosahedrons.get(i).isInside(this.levelLimits))
-				this.icosahedrons.remove(i);
+		for (int i = icosahedrons.size() - 1; i >= 0; i--) {
+			if (!icosahedrons.get(i).isAlive()) {
+				Icosahedron ico = (Icosahedron) icosahedrons.get(i);
+				ico.addExplosion(explosions);
+				soundPoolBuilder.playSimpleBoom(getSoundLevel(ico), getSoundLevel(ico));
+				icosahedrons.remove(i);
+			} else if (!icosahedrons.get(i).isInside(levelLimits))
+				icosahedrons.remove(i);
 		}
 
-		for (int i = this.rockets.size() - 1; i >= 0; i--)
-			if (!this.rockets.get(i).isAlive() || !this.rockets.get(i).isInside(this.levelLimits))
-				this.rockets.remove(i);
+		for (int i = rockets.size() - 1; i >= 0; i--)
+			if (!rockets.get(i).isAlive() || !rockets.get(i).isInside(levelLimits))
+				rockets.remove(i);
 
-		if (!this.ship.isAlive() || !this.ship.isInside(this.levelLimits))
-			this.ship.addExplosion(this.explosions);
+		if (!ship.isAlive() || !ship.isInside(levelLimits))
+			ship.addExplosion(explosions);
 
-		this.ship.fire();
+		ship.fire();
 	}
 
 	@Override
 	public int getScore() {
-		return this.nbIcosahedron - this.icosahedrons.size();
+		return nbIcosahedron - icosahedrons.size();
 	}
 
 	@Override
 	public boolean isDead() {
-		return !this.ship.isAlive() || !this.ship.isInside(this.levelLimits);
+		return !ship.isAlive() || !ship.isInside(levelLimits);
 	}
 
 	@Override
 	public boolean isWinner() {
-		return this.nbIcosahedron - this.icosahedrons.size() > 49;
+		return nbIcosahedron - icosahedrons.size() > 49;
 	}
 }

@@ -30,10 +30,10 @@ public abstract class Boss extends BaseItem implements Shooter {
 	//TODO modèles simplifiés pr crashable ?
 	public Boss(Context context, String objFileName, String mtlFileName, int life, float[] mPosition, float scale, FireType fireType, List<BaseItem> rockets) {
 		super(context, objFileName, mtlFileName, objFileName, 1f, 0f, false, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
-		this.counter = 0;
+		counter = 0;
 		this.fireType = fireType;
-		this.colorCounter = 0;
-		this.changingColor = false;
+		colorCounter = 0;
+		changingColor = false;
 		this.rockets = rockets;
 	}
 
@@ -44,21 +44,21 @@ public abstract class Boss extends BaseItem implements Shooter {
 
 	@Override
 	public void decrementLife(int minus) {
-		if (minus > 0 && !this.changingColor) {
-			this.changingColor = true;
+		if (minus > 0 && !changingColor) {
+			changingColor = true;
 			objModelMtlVBO.changeColor();
 		}
 		super.life = super.life - minus >= 0 ? super.life - minus : 0;
 	}
 
 	private void count() {
-		this.counter = (this.counter > this.MAX_COUNT ? 0 : this.counter + 1);
-		if (this.changingColor && this.colorCounter > 75) {
+		counter = (counter > MAX_COUNT ? 0 : counter + 1);
+		if (changingColor && colorCounter > 75) {
 			objModelMtlVBO.changeColor();
-			this.changingColor = false;
-			this.colorCounter = 0;
-		} else if (this.changingColor) {
-			this.colorCounter++;
+			changingColor = false;
+			colorCounter = 0;
+		} else if (changingColor) {
+			colorCounter++;
 		}
 	}
 
@@ -119,8 +119,8 @@ public abstract class Boss extends BaseItem implements Shooter {
 
 	@Override
 	public void update() {
-		super.mModelMatrix = this.computeModelMatrix();
-		this.count();
+		super.mModelMatrix = computeModelMatrix();
+		count();
 	}
 
 	protected abstract float[] computeModelMatrix();

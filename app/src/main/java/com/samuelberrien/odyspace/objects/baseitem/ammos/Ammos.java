@@ -28,9 +28,9 @@ public class Ammos extends BaseItem {
 
 		Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, realSpeed.clone(), 0);
 
-		super.mPosition[0] += this.maxSpeed * realSpeed[0];
-		super.mPosition[1] += this.maxSpeed * realSpeed[1];
-		super.mPosition[2] += this.maxSpeed * realSpeed[2];
+		super.mPosition[0] += maxSpeed * realSpeed[0];
+		super.mPosition[1] += maxSpeed * realSpeed[1];
+		super.mPosition[2] += maxSpeed * realSpeed[2];
 
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
