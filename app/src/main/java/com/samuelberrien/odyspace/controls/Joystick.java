@@ -45,7 +45,7 @@ class Joystick extends Control {
 	private float color[] = Color.ControlsColor;
 
 	Joystick() {
-		this.isVisible = false;
+		isVisible = false;
 	}
 
 	@Override
@@ -53,41 +53,41 @@ class Joystick extends Control {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.makeCricle();
-		this.makeStick();
-		this.bind();
+		makeCricle();
+		makeStick();
+		bind();
 	}
 
 	private void makeCricle() {
-		for (int i = 0; i < this.nbPoint; i++) {
-			double mTmpAngle = (double) i * Math.PI * 2d / (double) this.nbPoint;
-			this.mCirclePoint[i * 3 + 0] = (float) (this.circleLength * Math.cos(mTmpAngle));
-			this.mCirclePoint[i * 3 + 1] = (float) (this.circleLength * Math.sin(mTmpAngle));
-			this.mCirclePoint[i * 3 + 2] = 0f;
+		for (int i = 0; i < nbPoint; i++) {
+			double mTmpAngle = (double) i * Math.PI * 2d / (double) nbPoint;
+			mCirclePoint[i * 3 + 0] = (float) (circleLength * Math.cos(mTmpAngle));
+			mCirclePoint[i * 3 + 1] = (float) (circleLength * Math.sin(mTmpAngle));
+			mCirclePoint[i * 3 + 2] = 0f;
 		}
-		ByteBuffer bb = ByteBuffer.allocateDirect(this.mCirclePoint.length * 4);
+		ByteBuffer bb = ByteBuffer.allocateDirect(mCirclePoint.length * 4);
 		bb.order(ByteOrder.nativeOrder());
 		circleVertexBuffer = bb.asFloatBuffer();
-		circleVertexBuffer.put(this.mCirclePoint);
+		circleVertexBuffer.put(mCirclePoint);
 		circleVertexBuffer.position(0);
 	}
 
 	private void makeStick() {
-		for (int i = 0; i < this.nbPoint; i++) {
-			double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) this.nbPoint;
-			this.mStickPoint[i * 3 + 0] = (float) (this.stickLength * Math.cos(mTmpAngle));
-			this.mStickPoint[i * 3 + 1] = (float) (this.stickLength * Math.sin(mTmpAngle));
-			this.mStickPoint[i * 3 + 2] = 0f;
+		for (int i = 0; i < nbPoint; i++) {
+			double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) nbPoint;
+			mStickPoint[i * 3 + 0] = (float) (stickLength * Math.cos(mTmpAngle));
+			mStickPoint[i * 3 + 1] = (float) (stickLength * Math.sin(mTmpAngle));
+			mStickPoint[i * 3 + 2] = 0f;
 		}
-		ByteBuffer bb = ByteBuffer.allocateDirect(this.mStickPoint.length * 4);
+		ByteBuffer bb = ByteBuffer.allocateDirect(mStickPoint.length * 4);
 		bb.order(ByteOrder.nativeOrder());
 		stickVertexBuffer = bb.asFloatBuffer();
-		stickVertexBuffer.put(this.mStickPoint);
+		stickVertexBuffer.put(mStickPoint);
 		stickVertexBuffer.position(0);
 	}
 
@@ -100,35 +100,35 @@ class Joystick extends Control {
 	@Override
 	void updatePosition(float x, float y, float ratio) {
 		x = x * ratio;
-		this.mPosition[0] = x;
-		this.mPosition[1] = y;
-		this.mPosition[2] = 0f;
+		mPosition[0] = x;
+		mPosition[1] = y;
+		mPosition[2] = 0f;
 
-		this.mStickPosition[0] = x;
-		this.mStickPosition[1] = y;
-		this.mStickPosition[2] = 0f;
+		mStickPosition[0] = x;
+		mStickPosition[1] = y;
+		mStickPosition[2] = 0f;
 	}
 
 	@Override
 	void updateStick(float x, float y, float ratio) {
 		x = x * ratio;
-		double length = Math.sqrt(Math.pow(this.mPosition[0] - x, 2d) + Math.pow(this.mPosition[1] - y, 2d));
-		if (length > this.circleLength - this.stickLength) {
-			double xDist = x - this.mPosition[0];
-			double yDist = y - this.mPosition[1];
-			this.mStickPosition[0] = this.mPosition[0] + (float) ((this.circleLength - this.stickLength) * xDist / length);
-			this.mStickPosition[1] = this.mPosition[1] + (float) ((this.circleLength - this.stickLength) * yDist / length);
-			this.mStickPosition[2] = 0f;
+		double length = Math.sqrt(Math.pow(mPosition[0] - x, 2d) + Math.pow(mPosition[1] - y, 2d));
+		if (length > circleLength - stickLength) {
+			double xDist = x - mPosition[0];
+			double yDist = y - mPosition[1];
+			mStickPosition[0] = mPosition[0] + (float) ((circleLength - stickLength) * xDist / length);
+			mStickPosition[1] = mPosition[1] + (float) ((circleLength - stickLength) * yDist / length);
+			mStickPosition[2] = 0f;
 		} else {
-			this.mStickPosition[0] = x;
-			this.mStickPosition[1] = y;
-			this.mStickPosition[2] = 0f;
+			mStickPosition[0] = x;
+			mStickPosition[1] = y;
+			mStickPosition[2] = 0f;
 		}
 	}
 
 	float[] getStickPosition() {
-		if (this.isVisible) {
-			return new float[]{-(this.mStickPosition[0] - this.mPosition[0]) / (float) (this.circleLength - this.stickLength), (this.mStickPosition[1] - this.mPosition[1]) / (float) (this.circleLength - this.stickLength)};
+		if (isVisible) {
+			return new float[]{-(mStickPosition[0] - mPosition[0]) / (float) (circleLength - stickLength), (mStickPosition[1] - mPosition[1]) / (float) (circleLength - stickLength)};
 		} else {
 			return new float[]{0f, 0f};
 		}
@@ -136,7 +136,7 @@ class Joystick extends Control {
 
 	@Override
 	void setPointerID(int pointerID) {
-		this.setVisible(true);
+		setVisible(true);
 		super.setPointerID(pointerID);
 	}
 
@@ -146,7 +146,7 @@ class Joystick extends Control {
 
 	@Override
 	void clear() {
-		this.setVisible(false);
+		setVisible(false);
 		super.clear();
 	}
 
@@ -157,8 +157,8 @@ class Joystick extends Control {
 
 	@Override
 	public void draw(float ratio) {
-		if (this.isVisible) {
-			GLES20.glUseProgram(this.mProgram);
+		if (isVisible) {
+			GLES20.glUseProgram(mProgram);
 
 			GLES20.glLineWidth(5f);
 
@@ -171,22 +171,22 @@ class Joystick extends Control {
 			float[] mMVPMatrix = new float[16];
 			float[] mMMatrix = new float[16];
 			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, this.mPosition[0], this.mPosition[1], this.mPosition[2]);
+			Matrix.translateM(mMMatrix, 0, mPosition[0], mPosition[1], mPosition[2]);
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 			GLES20.glEnableVertexAttribArray(mPositionHandle);
 			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, circleVertexBuffer);
 			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mCirclePoint.length / 3);
+			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mCirclePoint.length / 3);
 
 			//Stick
 			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, stickVertexBuffer);
 			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, this.mStickPosition[0], this.mStickPosition[1], this.mStickPosition[2]);
+			Matrix.translateM(mMMatrix, 0, mStickPosition[0], mStickPosition[1], mStickPosition[2]);
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mStickPoint.length / 3);
+			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mStickPoint.length / 3);
 			GLES20.glDisableVertexAttribArray(mPositionHandle);
 
 			GLES20.glLineWidth(1f);

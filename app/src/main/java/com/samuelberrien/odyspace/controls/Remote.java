@@ -41,7 +41,7 @@ class Remote extends Control {
 	private float color[] = Color.ControlsColor;
 
 	Remote() {
-		this.isVisible = false;
+		isVisible = false;
 	}
 
 	@Override
@@ -49,14 +49,14 @@ class Remote extends Control {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.makeRemote();
-		this.makeRemoteStick();
-		this.bind();
+		makeRemote();
+		makeRemoteStick();
+		bind();
 	}
 
 	private void bind() {
@@ -66,62 +66,62 @@ class Remote extends Control {
 	}
 
 	private void makeRemote() {
-		this.mRemotePoints[0] = this.width * 0.5f;
-		this.mRemotePoints[1] = this.height * 0.5f;
-		this.mRemotePoints[2] = 0f;
+		mRemotePoints[0] = width * 0.5f;
+		mRemotePoints[1] = height * 0.5f;
+		mRemotePoints[2] = 0f;
 
-		this.mRemotePoints[3] = this.width * 0.5f;
-		this.mRemotePoints[4] = -this.height * 0.5f;
-		this.mRemotePoints[5] = 0f;
+		mRemotePoints[3] = width * 0.5f;
+		mRemotePoints[4] = -height * 0.5f;
+		mRemotePoints[5] = 0f;
 
-		this.mRemotePoints[6] = -this.width * 0.5f;
-		this.mRemotePoints[7] = -this.height * 0.5f;
-		this.mRemotePoints[8] = 0f;
+		mRemotePoints[6] = -width * 0.5f;
+		mRemotePoints[7] = -height * 0.5f;
+		mRemotePoints[8] = 0f;
 
-		this.mRemotePoints[9] = -this.width * 0.5f;
-		this.mRemotePoints[10] = this.height * 0.5f;
-		this.mRemotePoints[11] = 0f;
+		mRemotePoints[9] = -width * 0.5f;
+		mRemotePoints[10] = height * 0.5f;
+		mRemotePoints[11] = 0f;
 
-		ByteBuffer bb = ByteBuffer.allocateDirect(this.mRemotePoints.length * 4);
+		ByteBuffer bb = ByteBuffer.allocateDirect(mRemotePoints.length * 4);
 		bb.order(ByteOrder.nativeOrder());
-		this.remoteVertexBuffer = (FloatBuffer) bb.asFloatBuffer()
-				.put(this.mRemotePoints)
+		remoteVertexBuffer = (FloatBuffer) bb.asFloatBuffer()
+				.put(mRemotePoints)
 				.position(0);
 	}
 
 	private void makeRemoteStick() {
-		this.mRemoteStickPoints[0] = this.height * 0.5f;
-		this.mRemoteStickPoints[1] = this.height * 0.5f;
-		this.mRemoteStickPoints[2] = 0f;
+		mRemoteStickPoints[0] = height * 0.5f;
+		mRemoteStickPoints[1] = height * 0.5f;
+		mRemoteStickPoints[2] = 0f;
 
-		this.mRemoteStickPoints[3] = this.height * 0.5f;
-		this.mRemoteStickPoints[4] = -this.height * 0.5f;
-		this.mRemoteStickPoints[5] = 0f;
+		mRemoteStickPoints[3] = height * 0.5f;
+		mRemoteStickPoints[4] = -height * 0.5f;
+		mRemoteStickPoints[5] = 0f;
 
-		this.mRemoteStickPoints[6] = -this.height * 0.5f;
-		this.mRemoteStickPoints[7] = -this.height * 0.5f;
-		this.mRemoteStickPoints[8] = 0f;
+		mRemoteStickPoints[6] = -height * 0.5f;
+		mRemoteStickPoints[7] = -height * 0.5f;
+		mRemoteStickPoints[8] = 0f;
 
-		this.mRemoteStickPoints[9] = -this.height * 0.5f;
-		this.mRemoteStickPoints[10] = this.height * 0.5f;
-		this.mRemoteStickPoints[11] = 0f;
+		mRemoteStickPoints[9] = -height * 0.5f;
+		mRemoteStickPoints[10] = height * 0.5f;
+		mRemoteStickPoints[11] = 0f;
 
-		ByteBuffer bb = ByteBuffer.allocateDirect(this.mRemoteStickPoints.length * 4);
+		ByteBuffer bb = ByteBuffer.allocateDirect(mRemoteStickPoints.length * 4);
 		bb.order(ByteOrder.nativeOrder());
-		this.remoteStickVertexBuffer = (FloatBuffer) bb.asFloatBuffer()
-				.put(this.mRemoteStickPoints)
+		remoteStickVertexBuffer = (FloatBuffer) bb.asFloatBuffer()
+				.put(mRemoteStickPoints)
 				.position(0);
 	}
 
 	@Override
 	void setPointerID(int pointerID) {
-		this.setVisible(true);
+		setVisible(true);
 		super.setPointerID(pointerID);
 	}
 
 	@Override
 	void clear() {
-		this.setVisible(false);
+		setVisible(false);
 		super.clear();
 	}
 
@@ -131,38 +131,38 @@ class Remote extends Control {
 	}
 
 	private void setVisible(boolean isRemoteVisible) {
-		this.isVisible = isRemoteVisible;
+		isVisible = isRemoteVisible;
 	}
 
 	@Override
 	void updatePosition(float x, float y, float ratio) {
-		this.mRemotePosition[0] = x * ratio;
-		this.mRemotePosition[1] = y;
-		this.mRemotePosition[2] = 0f;
-		this.mRemoteStickPosition = this.mRemotePosition.clone();
+		mRemotePosition[0] = x * ratio;
+		mRemotePosition[1] = y;
+		mRemotePosition[2] = 0f;
+		mRemoteStickPosition = mRemotePosition.clone();
 	}
 
 	@Override
 	void updateStick(float x, float y, float ratio) {
 		x *= ratio;
-		if (x - this.mRemotePosition[0] > this.width * 0.5f - this.height * 0.5f) {
-			this.mRemoteStickPosition[0] = this.mRemotePosition[0] + this.width * 0.5f - this.height * 0.5f;
-		} else if (x - this.mRemotePosition[0] < -this.width * 0.5f + this.height * 0.5f) {
-			this.mRemoteStickPosition[0] = this.mRemotePosition[0] - this.width * 0.5f + this.height * 0.5f;
+		if (x - mRemotePosition[0] > width * 0.5f - height * 0.5f) {
+			mRemoteStickPosition[0] = mRemotePosition[0] + width * 0.5f - height * 0.5f;
+		} else if (x - mRemotePosition[0] < -width * 0.5f + height * 0.5f) {
+			mRemoteStickPosition[0] = mRemotePosition[0] - width * 0.5f + height * 0.5f;
 		} else {
-			this.mRemoteStickPosition[0] = x;
+			mRemoteStickPosition[0] = x;
 		}
 
 	}
 
 	float getRemoteLevel() {
-		return this.isVisible ? (this.mRemoteStickPosition[0] - this.mRemotePosition[0]) / (0.5f * (this.width - this.height)) : 0f;
+		return isVisible ? (mRemoteStickPosition[0] - mRemotePosition[0]) / (0.5f * (width - height)) : 0f;
 	}
 
 	@Override
 	public void draw(float ratio) {
-		if (this.isVisible) {
-			GLES20.glUseProgram(this.mProgram);
+		if (isVisible) {
+			GLES20.glUseProgram(mProgram);
 
 			GLES20.glLineWidth(5f);
 
@@ -177,24 +177,24 @@ class Remote extends Control {
 			float[] mMMatrix = new float[16];
 
 			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, this.mRemotePosition[0], this.mRemotePosition[1], this.mRemotePosition[2]);
+			Matrix.translateM(mMMatrix, 0, mRemotePosition[0], mRemotePosition[1], mRemotePosition[2]);
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.remoteVertexBuffer);
+			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, remoteVertexBuffer);
 			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mRemotePoints.length / 3);
+			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mRemotePoints.length / 3);
 
 			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, this.mRemoteStickPosition[0], this.mRemoteStickPosition[1], this.mRemoteStickPosition[2]);
+			Matrix.translateM(mMMatrix, 0, mRemoteStickPosition[0], mRemoteStickPosition[1], mRemoteStickPosition[2]);
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.remoteStickVertexBuffer);
+			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, remoteStickVertexBuffer);
 			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.mRemoteStickPoints.length / 3);
+			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mRemoteStickPoints.length / 3);
 
 			GLES20.glDisableVertexAttribArray(mPositionHandle);
 

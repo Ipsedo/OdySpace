@@ -25,7 +25,7 @@ public class Button extends Control {
 	private int mProgram;
 
 	private static int nbPoint = 64;
-	private float[] buttonPoints = new float[this.nbPoint * 3];
+	private float[] buttonPoints = new float[nbPoint * 3];
 	private FloatBuffer buttonVertexBuffer;
 	private String objFileName;
 	private ObjModel logo;
@@ -39,14 +39,14 @@ public class Button extends Control {
 
 	public Button(String objFileName, float ray, float[] mPosition) {
 		this.objFileName = objFileName;
-		this.isTouching = false;
+		isTouching = false;
 		this.ray = ray;
 		this.mPosition = mPosition;
 	}
 
 	@Override
 	public void draw(float ratio) {
-		GLES20.glUseProgram(this.mProgram);
+		GLES20.glUseProgram(mProgram);
 
 		GLES20.glLineWidth(5f);
 
@@ -60,35 +60,35 @@ public class Button extends Control {
 
 		float[] mMMatrix = new float[16];
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mPosition[0] * ratio + ray, this.mPosition[1], this.mPosition[2]);
+		Matrix.translateM(mMMatrix, 0, mPosition[0] * ratio + ray, mPosition[1], mPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.buttonVertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, buttonVertexBuffer);
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, this.buttonPoints.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, buttonPoints.length / 3);
 
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 		GLES20.glLineWidth(1f);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, this.mPosition[0] * ratio + ray, this.mPosition[1], this.mPosition[2]);
+		Matrix.translateM(mMMatrix, 0, mPosition[0] * ratio + ray, mPosition[1], mPosition[2]);
 		Matrix.scaleM(mMMatrix, 0, ray / 1.2f, ray / 1.2f, ray / 1.2f);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
-		this.logo.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);
+		logo.draw(mMVPMatrix, mVPMatrix, new float[]{0f, 0f, -1f}, new float[0]);
 	}
 
 	@Override
 	boolean canCatchID(float x, float y, float ratio) {
-		float xRef = x * ratio - (this.mPosition[0] * ratio + ray);
-		float yRef = y - this.mPosition[1];
+		float xRef = x * ratio - (mPosition[0] * ratio + ray);
+		float yRef = y - mPosition[1];
 		if (xRef * xRef + yRef * yRef < ray * ray) {
-			this.isTouching = true;
+			isTouching = true;
 			return true;
 		} else {
-			this.isTouching = false;
+			isTouching = false;
 			return false;
 		}
 	}
@@ -117,14 +117,14 @@ public class Button extends Control {
 		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
 		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
 
-		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(this.mProgram);
+		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(mProgram);
 
-		this.bind();
-		this.makeFireButton();
-		this.logo = new ObjModel(context, objFileName, color[0], color[1], color[2], 1f, 0f, 0f);
+		bind();
+		makeFireButton();
+		logo = new ObjModel(context, objFileName, color[0], color[1], color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {
@@ -136,14 +136,14 @@ public class Button extends Control {
 	private void makeFireButton() {
 		for (int i = 0; i < nbPoint; i++) {
 			double mTmpAngle = (double) (i - 1) * Math.PI * 2d / (double) nbPoint;
-			this.buttonPoints[i * 3 + 0] = (float) (ray * Math.cos(mTmpAngle));
-			this.buttonPoints[i * 3 + 1] = (float) (ray * Math.sin(mTmpAngle));
-			this.buttonPoints[i * 3 + 2] = 0f;
+			buttonPoints[i * 3 + 0] = (float) (ray * Math.cos(mTmpAngle));
+			buttonPoints[i * 3 + 1] = (float) (ray * Math.sin(mTmpAngle));
+			buttonPoints[i * 3 + 2] = 0f;
 		}
-		ByteBuffer bb = ByteBuffer.allocateDirect(this.buttonPoints.length * 4);
+		ByteBuffer bb = ByteBuffer.allocateDirect(buttonPoints.length * 4);
 		bb.order(ByteOrder.nativeOrder());
-		this.buttonVertexBuffer = bb.asFloatBuffer();
-		this.buttonVertexBuffer.put(this.buttonPoints);
-		this.buttonVertexBuffer.position(0);
+		buttonVertexBuffer = bb.asFloatBuffer();
+		buttonVertexBuffer.put(buttonPoints);
+		buttonVertexBuffer.position(0);
 	}
 }

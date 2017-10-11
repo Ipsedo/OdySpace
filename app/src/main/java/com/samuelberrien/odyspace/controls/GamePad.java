@@ -37,19 +37,18 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * Create a new GamePad instance
 	 */
 	public GamePad() {
-		this.joystick = new Joystick();
-		this.fire = new Fire();
-		this.remote = new Remote();
-		this.boost = new Boost();
-		this.controls = new ArrayList<>();
+		joystick = new Joystick();
+		fire = new Fire();
+		remote = new Remote();
+		boost = new Boost();
+		controls = new ArrayList<>();
 
-		//Important order of adding !
-		this.controls.add(this.fire);
-		this.controls.add(this.boost);
-		this.controls.add(this.joystick);
-		this.controls.add(this.remote);
-		this.isPitchInversed = true;
-		this.isRollAndYawInversed = false;
+		controls.add(fire);
+		controls.add(boost);
+		controls.add(joystick);
+		controls.add(remote);
+		isPitchInversed = true;
+		isRollAndYawInversed = false;
 	}
 
 	/**
@@ -58,11 +57,11 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * @param context The Application context
 	 */
 	public void initGraphics(Context context) {
-		this.joystick.initGraphics(context);
-		this.fire.initGraphics(context);
-		this.remote.initGraphics(context);
-		this.boost.initGraphics(context);
-		this.context = context;
+		joystick.initGraphics(context);
+		fire.initGraphics(context);
+		remote.initGraphics(context);
+		boost.initGraphics(context);
+		context = context;
 		SharedPreferences gamePreference = context.getSharedPreferences(context.getString(R.string.game_preferences), Context.MODE_PRIVATE);
 		isPitchInversed = gamePreference.getBoolean(context.getString(R.string.saved_joystick_inversed), context.getResources().getBoolean(R.bool.vrai));
 		isRollAndYawInversed = gamePreference.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.faux));
@@ -75,7 +74,7 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * @return pitch value between -1 and 1
 	 */
 	public float getPitch() {
-		return this.joystick.getStickPosition()[1] * (this.isPitchInversed ? 1f : -1f);
+		return joystick.getStickPosition()[1] * (isPitchInversed ? 1f : -1f);
 	}
 
 	/**
@@ -84,10 +83,10 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * @return roll value between -1 and 1
 	 */
 	public float getRoll() {
-		if (!this.isRollAndYawInversed) {
-			return this.joystick.getStickPosition()[0];
+		if (!isRollAndYawInversed) {
+			return joystick.getStickPosition()[0];
 		} else {
-			return -this.remote.getRemoteLevel();
+			return -remote.getRemoteLevel();
 		}
 	}
 
@@ -97,10 +96,10 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * @return yaw value between -1 and 1
 	 */
 	public float getYaw() {
-		if (!this.isRollAndYawInversed) {
-			return this.remote.getRemoteLevel();
+		if (!isRollAndYawInversed) {
+			return remote.getRemoteLevel();
 		} else {
-			return -this.joystick.getStickPosition()[0];
+			return -joystick.getStickPosition()[0];
 		}
 	}
 
@@ -110,7 +109,7 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * @return boost value between -1 and 1
 	 */
 	public float getBoost() {
-		return this.boost.getBoost();
+		return boost.getBoost();
 	}
 
 	/**
@@ -119,8 +118,8 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 * @return true if there is a fire
 	 */
 	public boolean fire() {
-		if (this.fire.isFire()) {
-			this.fire.turnOffFire();
+		if (fire.isFire()) {
+			fire.turnOffFire();
 			return true;
 		}
 		return false;
