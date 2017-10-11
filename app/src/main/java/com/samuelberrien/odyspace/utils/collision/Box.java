@@ -50,7 +50,6 @@ public class Box {
                 }
             }
         }*/
-
 		return this.checkIntersectionInclusion(b) || b.checkIntersectionInclusion(this);
 		//return Math.abs(this.x - b.x) * 2f < this.sizeX + b.sizeX && Math.abs(this.y - b.y) * 2f < this.sizeY + b.sizeY && Math.abs(this.z - b.z) * 2f < this.sizeZ + b.sizeZ;
 	}
