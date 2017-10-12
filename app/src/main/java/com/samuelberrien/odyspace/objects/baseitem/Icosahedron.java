@@ -32,7 +32,7 @@ public class Icosahedron extends BaseItem {
 				.setMaxScale((float) Math.ceil(super.scale / 2f))
 				.setLimitSpeed((float) Math.ceil(super.scale / 3f) * 0.9f)
 				.setMaxSpeed((float) Math.ceil(super.scale / 3f) * 1.7f)
-				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
+				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 
 	//mExplosion = new Explosion(super.context, super.diffColorBuffer, (int) Math.ceil(super.scale / 2f) * 10, 0.05f, (float) Math.ceil(super.scale / 5f), (float) Math.ceil(super.scale / 2f), (float) Math.ceil(super.scale / 3f) * 0.9f, (float) Math.ceil(super.scale / 3f) * 1.7f);

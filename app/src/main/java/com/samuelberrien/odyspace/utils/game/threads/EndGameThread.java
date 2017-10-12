@@ -21,13 +21,13 @@ public class EndGameThread extends CancelableThread {
 	public EndGameThread(Level level, LevelActivity levelActivity) {
 		super("EndGameThread", level);
 		this.levelActivity = levelActivity;
-		this.resultSetted = false;
-		this.setPriority(Thread.MIN_PRIORITY);
+		resultSetted = false;
+		setPriority(Thread.MIN_PRIORITY);
 	}
 
 	@Override
 	public void afterInit() {
-		this.levelActivity.runOnUiThread(new Runnable() {
+		levelActivity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				levelActivity.loadingLevelFinished();
@@ -46,26 +46,26 @@ public class EndGameThread extends CancelableThread {
 
 	@Override
 	public void work() {
-		if (!this.resultSetted && super.level.isDead()) {
+		if (!resultSetted && level.isDead()) {
 			Intent resultIntent = new Intent();
 			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(0));
-			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(super.level.getScore()));
-			this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-			this.finishGame();
-		} else if (!this.resultSetted && super.level.isWinner()) {
+			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(level.getScore()));
+			levelActivity.setResult(Activity.RESULT_OK, resultIntent);
+			finishGame();
+		} else if (!resultSetted && level.isWinner()) {
 			Intent resultIntent = new Intent();
 			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(1));
-			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(super.level.getScore()));
-			this.levelActivity.setResult(Activity.RESULT_OK, resultIntent);
-			this.finishGame();
+			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(level.getScore()));
+			levelActivity.setResult(Activity.RESULT_OK, resultIntent);
+			finishGame();
 		}
 	}
 
 	private void finishGame() {
-		this.resultSetted = true;
+		resultSetted = true;
 		Thread tmp = new Thread("StopGameThread") {
 			public void run() {
-				EndGameThread.this.levelActivity.finish();
+				levelActivity.finish();
 			}
 		};
 		tmp.setPriority(Thread.MAX_PRIORITY);

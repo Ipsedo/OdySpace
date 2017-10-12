@@ -61,7 +61,7 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 		fire.initGraphics(context);
 		remote.initGraphics(context);
 		boost.initGraphics(context);
-		context = context;
+		this.context = context;
 		SharedPreferences gamePreference = context.getSharedPreferences(context.getString(R.string.game_preferences), Context.MODE_PRIVATE);
 		isPitchInversed = gamePreference.getBoolean(context.getString(R.string.saved_joystick_inversed), context.getResources().getBoolean(R.bool.vrai));
 		isRollAndYawInversed = gamePreference.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.faux));

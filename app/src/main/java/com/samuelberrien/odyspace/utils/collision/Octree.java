@@ -30,7 +30,7 @@ public class Octree {
 
 	private Octree[] makeSons() {
 		Octree[] sons = new Octree[8];
-		Box[] levelLimitsSons = this.boxes.makeSons();
+		Box[] levelLimitsSons = boxes.makeSons();
 		/*ArrayList<Item>[] futurAmis = new ArrayList[8];
 		ArrayList<Item>[] futurEnnemis = new ArrayList[8];*/
 
@@ -38,22 +38,22 @@ public class Octree {
 			ArrayList<Item> futurAmis = new ArrayList<>();
 			ArrayList<Item> futurEnnemis = new ArrayList<>();
 
-			for (Item ami : this.amis)
+			for (Item ami : amis)
 				if (ami.isInside(levelLimitsSons[i]))
 					futurAmis.add(ami);
-			for (Item ennemi : this.ennemis)
+			for (Item ennemi : ennemis)
 				if (ennemi.isInside(levelLimitsSons[i]))
 					futurEnnemis.add(ennemi);
 
-			sons[i] = new Octree(levelLimitsSons[i], futurAmis, futurEnnemis, this.limitSize);
+			sons[i] = new Octree(levelLimitsSons[i], futurAmis, futurEnnemis, limitSize);
 		}
 
 		return sons;
 	}
 
 	private void computeCollision() {
-		for (Item ami : this.amis)
-			for (Item ennemi : this.ennemis)
+		for (Item ami : amis)
+			for (Item ennemi : ennemis)
 				if (ami.isCollided(ennemi)) {
 					int tmp = ami.getDamage();
 					ami.decrementLife(ennemi.getDamage());
@@ -62,19 +62,19 @@ public class Octree {
 	}
 
 	public void computeOctree() {
-		if (this.isLeaf())
-			this.computeCollision();
+		if (isLeaf())
+			computeCollision();
 		else
-			for (Octree sb : this.makeSons())
+			for (Octree sb : makeSons())
 				if (!sb.containsNoCollision())
 					sb.computeOctree();
 	}
 
 	private boolean isLeaf() {
-		return this.boxes.getSizeAv() <= this.limitSize;
+		return boxes.getSizeAv() <= limitSize;
 	}
 
 	private boolean containsNoCollision() {
-		return this.amis.isEmpty() || this.ennemis.isEmpty();
+		return amis.isEmpty() || ennemis.isEmpty();
 	}
 }

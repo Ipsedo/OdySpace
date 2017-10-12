@@ -39,7 +39,7 @@ public class Base extends BaseItem {
 				.setMaxScale(7f)
 				.setLimitSpeed(6f)
 				.setMaxSpeed(10f)
-				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
+				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 	//mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);
 }

@@ -140,7 +140,7 @@ public class TestTurrets implements Level {
 	@Override
 	public void drawLevelInfo(float ratio) {
 		ArrayList<BaseItem> turrets = new ArrayList<>();
-		turrets.addAll(turrets);
+		turrets.addAll(this.turrets);
 		for (BaseItem t : turrets) {
 			compass.update(ship, t, t.isDanger());
 			compass.draw(ratio);

@@ -1,5 +1,5 @@
 uniform mat4 u_MVPMatrix;
-uniform vec4 u_Color;
+uniform vec3 u_Color;
 attribute vec3 v_Position;
 
 void main() {

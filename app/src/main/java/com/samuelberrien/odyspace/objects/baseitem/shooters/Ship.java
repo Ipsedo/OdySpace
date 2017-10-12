@@ -167,7 +167,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 	@Override
 	protected Explosion getExplosion() {
-		return new Explosion.ExplosionBuilder().makeExplosion(context, super.objModelMtlVBO.getRandomMtlDiffRGBA());
+		return new Explosion.ExplosionBuilder().makeExplosion(context, super.objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 
 	@Override

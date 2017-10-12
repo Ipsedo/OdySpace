@@ -13,7 +13,7 @@ public class CollisionThread extends CancelableThread {
 
 	public CollisionThread(Level level) {
 		super("CollisionThread", level);
-		this.setPriority(Thread.NORM_PRIORITY);
+		setPriority(Thread.NORM_PRIORITY);
 	}
 
 	@Override
@@ -23,6 +23,6 @@ public class CollisionThread extends CancelableThread {
 
 	@Override
 	public void work() {
-		super.level.collide();
+		level.collide();
 	}
 }

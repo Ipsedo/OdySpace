@@ -49,6 +49,6 @@ public class Ammos extends BaseItem {
 				.setMaxScale(0.8f)
 				.setLimitSpeed(0.4f)
 				.setMaxSpeed(0.8f)
-				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
+				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 }

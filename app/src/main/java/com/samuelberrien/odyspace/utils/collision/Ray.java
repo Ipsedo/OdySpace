@@ -19,11 +19,11 @@ public class Ray {
 	public Ray(float[] orig, float[] dir) {
 		this.orig = orig.clone();
 		this.dir = dir.clone();
-		this.sign = new int[3];
-		this.invDir = Vector.inv3f(dir);
-		this.sign[0] = invDir[0] < 0 ? 1 : 0;
-		this.sign[1] = invDir[1] < 0 ? 1 : 0;
-		this.sign[2] = invDir[2] < 0 ? 1 : 0;
+		sign = new int[3];
+		invDir = Vector.inv3f(dir);
+		sign[0] = invDir[0] < 0 ? 1 : 0;
+		sign[1] = invDir[1] < 0 ? 1 : 0;
+		sign[2] = invDir[2] < 0 ? 1 : 0;
 	}
 
 	private void checkBound(int i) {
@@ -33,22 +33,22 @@ public class Ray {
 	}
 
 	public float originGet(int i) {
-		this.checkBound(i);
-		return this.orig[i];
+		checkBound(i);
+		return orig[i];
 	}
 
 	public float directionGet(int i) {
-		this.checkBound(i);
-		return this.dir[i];
+		checkBound(i);
+		return dir[i];
 	}
 
 	public int signGet(int i) {
-		this.checkBound(i);
-		return this.sign[i];
+		checkBound(i);
+		return sign[i];
 	}
 
 	public float invDirGet(int i) {
-		this.checkBound(i);
-		return this.invDir[i];
+		checkBound(i);
+		return invDir[i];
 	}
 }

@@ -13,7 +13,7 @@ public class UpdateThread extends CancelableThread {
 
 	public UpdateThread(Level level) {
 		super("UpdateThread", level);
-		this.setPriority(Thread.NORM_PRIORITY);
+		setPriority(Thread.NORM_PRIORITY);
 	}
 
 	@Override
@@ -23,6 +23,6 @@ public class UpdateThread extends CancelableThread {
 
 	@Override
 	public void work() {
-		super.level.update();
+		level.update();
 	}
 }

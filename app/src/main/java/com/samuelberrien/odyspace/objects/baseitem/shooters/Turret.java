@@ -58,7 +58,7 @@ public class Turret extends BaseItem implements Shooter {
 				.setMaxScale(2f)
 				.setLimitSpeed(1f)
 				.setMaxSpeed(1.5f)
-				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGBA());
+				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 	private FloatBuffer specColorBuffer;
 	private FloatBuffer specShininess;
 
-	private float[] randomDiffRGBA = new float[4];
+	private float[] randomDiffRGB = new float[3];
 
 	private int vertexBufferId;
 	private int normalsBufferId;
@@ -486,10 +486,9 @@ public class ObjModelMtlVBO implements GLDrawable {
 				.position(0);
 
 
-		randomDiffRGBA[0] = allDiffColor[0];
-		randomDiffRGBA[1] = allDiffColor[1];
-		randomDiffRGBA[2] = allDiffColor[2];
-		randomDiffRGBA[3] = allDiffColor[3];
+		randomDiffRGB[0] = allDiffColor[0];
+		randomDiffRGB[1] = allDiffColor[1];
+		randomDiffRGB[2] = allDiffColor[2];
 	}
 
 	@Override
@@ -548,7 +547,7 @@ public class ObjModelMtlVBO implements GLDrawable {
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 	}
 
-	public float[] getRandomMtlDiffRGBA() {
-		return randomDiffRGBA;
+	public float[] getRandomMtlDiffRGB() {
+		return randomDiffRGB;
 	}
 }

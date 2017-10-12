@@ -218,27 +218,24 @@ public class Explosion implements GLItemDrawable {
 			float[] mMVPMatrix = new float[16];
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mModelMatrix, 0);
 
-			ShaderLoader.checkGlError("0");
+			GLES20.glEnable(GLES20.GL_BLEND);
+			GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+
 			GLES20.glUseProgram(mProgram);
-			ShaderLoader.checkGlError("1");
 
 			vertexBuffer.position(0);
 			GLES20.glEnableVertexAttribArray(vPositionHandle);
-			ShaderLoader.checkGlError("2");
 			GLES20.glVertexAttribPointer(vPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, vertexBuffer);
-			ShaderLoader.checkGlError("3");
 
 			GLES20.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-			ShaderLoader.checkGlError("4");
 
-			GLES20.glUniform4fv(uColorHandle, 1, color, 0);
-			ShaderLoader.checkGlError("5");
+			GLES20.glUniform3fv(uColorHandle, 1, color, 0);
 
 			GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertices.length / 3);
-			ShaderLoader.checkGlError("6");
 
 			GLES20.glDisableVertexAttribArray(vPositionHandle);
-			ShaderLoader.checkGlError("7");
+
+			GLES20.glDisable(GLES20.GL_BLEND);
 		}
 	}
 }
