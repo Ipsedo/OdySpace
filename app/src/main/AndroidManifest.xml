@@ -11,7 +11,8 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
-            android:name=".main.MainActivity">
+            android:name=".main.MainActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

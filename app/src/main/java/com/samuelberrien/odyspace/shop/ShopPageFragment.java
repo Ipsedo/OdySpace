@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.samuelberrien.odyspace.R;
+
 /**
  * Created by samuel on 04/05/17.
  * Copyright samuel, 2016 - 2017.
@@ -35,6 +37,8 @@ public class ShopPageFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return ((ShopActivity) getActivity()).setPageChosen(this.mPage - 1, inflater, container);
+		//return inflater.inflate(R.layout.game_params, container, false);
+		//return ((ShopActivity) getActivity()).setPageChosen(this.mPage - 1, inflater, container);
+		return ((ShopFragment) getParentFragment()).setPageChosen(this.mPage - 1, inflater, container);
 	}
 }

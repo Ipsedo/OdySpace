@@ -1,39 +1,127 @@
 package com.samuelberrien.odyspace.main;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Point;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
-import android.view.Display;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.game.LevelActivity;
-import com.samuelberrien.odyspace.shop.ShopActivity;
-import com.samuelberrien.odyspace.utils.game.FireType;
-import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.game.Purchases;
-import com.samuelberrien.odyspace.utils.main.ItemImageViewMaker;
-import com.samuelberrien.odyspace.utils.main.ViewHelper;
-
-import java.util.ArrayList;
+import com.samuelberrien.odyspace.shop.ShopFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-	private static final int RESULT_VALUE = 1;
+	public static final String LEVEL_ID = "LEVEL_ID";
+	public static final int RESULT_VALUE = 1;
+
+	private Toolbar toolbar;
+	private DrawerLayout drawerLayout;
+	private ActionBarDrawerToggle drawerToggle;
+
+	private ShopFragment shopFragment;
+	private LevelsFragment levelsFragment;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.new_main);
+
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
+		drawerLayout.addDrawerListener(drawerToggle);
+
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		levelsFragment = new LevelsFragment();
+		shopFragment = new ShopFragment();
+
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+		transaction.replace(R.id.content_fragment, levelsFragment);
+
+		transaction.commit();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+		return true;
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		drawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		drawerToggle.onConfigurationChanged(newConfig);
+
+		//switchOrientation(newConfig.orientation);
+		//TODO orientation switch drawer
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				drawerLayout.openDrawer(GravityCompat.START);
+				return true;
+			case R.id.settings_item_menu:
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void continueStory(View v) {
+
+	}
+
+	public void levels(View v) {
+
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+		transaction.replace(R.id.content_fragment, levelsFragment);
+
+		transaction.commit();
+
+	}
+
+	public void shop(View v) {
+		Fragment newFragment = new ShopFragment();
+
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+		transaction.replace(R.id.content_fragment, newFragment);
+
+		transaction.commit();
+	}
+
+	/*private static final int RESULT_VALUE = 1;
 	public static final String LEVEL_ID = "LEVEL_ID";
 
 	private int currLevel;
@@ -323,5 +411,5 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		this.initGameInfo();
-	}
+	}*/
 }
