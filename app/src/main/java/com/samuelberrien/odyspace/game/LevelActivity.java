@@ -117,7 +117,7 @@ public class LevelActivity extends AppCompatActivity {
 
 	private View getPauseView() {
 		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.parameters_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
+		View layout = inflater.inflate(R.layout.pause_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
 
 		final SeekBar sb1 = (SeekBar) layout.findViewById(R.id.device_volume_seek_bar);
 		final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);

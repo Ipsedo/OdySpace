@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/parameters_layout_id"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:baselineAligned="false">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/drawable_grey_corner"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
+
+        <include layout="@layout/game_params"/>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="0.75"
+        android:background="@drawable/drawable_grey_corner"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Fire"
+                android:textStyle="italic"/>
+
+            <RadioGroup
+                android:id="@+id/select_weapon_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="0.75"
+        android:background="@drawable/drawable_grey_corner"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Bonus"
+                android:textStyle="italic"/>
+
+            <RadioGroup
+                android:id="@+id/select_bonus_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
