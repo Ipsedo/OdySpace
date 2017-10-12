@@ -6,7 +6,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorMainLayout"
-                tools:context="com.samuelberrien.odyspace.shop.ShopActivity">
+                tools:context=".main.shop.ShopActivity">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/shop_tab_layout"

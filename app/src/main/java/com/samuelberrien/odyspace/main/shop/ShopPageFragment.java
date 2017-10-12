@@ -1,12 +1,10 @@
-package com.samuelberrien.odyspace.shop;
+package com.samuelberrien.odyspace.main.shop;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.samuelberrien.odyspace.R;
 
 /**
  * Created by samuel on 04/05/17.

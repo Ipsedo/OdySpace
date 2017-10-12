@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.shop;
+package com.samuelberrien.odyspace.main.shop;
 
 import android.content.Context;
 import android.content.DialogInterface;

@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.shop;
+package com.samuelberrien.odyspace.main.shop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.shop.ShopFragmentPagerAdapter;
+import com.samuelberrien.odyspace.main.shop.ShopFragmentPagerAdapter;
 
 import java.util.ArrayList;
 

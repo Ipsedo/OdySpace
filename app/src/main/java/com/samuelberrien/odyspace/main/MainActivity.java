@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.shop.ShopFragment;
+import com.samuelberrien.odyspace.main.shop.ShopFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private ShopFragment shopFragment;
 	private LevelsFragment levelsFragment;
+	private SettingsFragment settingsFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 		levelsFragment = new LevelsFragment();
 		shopFragment = new ShopFragment();
+		settingsFragment = new SettingsFragment();
 
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -92,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
 				drawerLayout.openDrawer(GravityCompat.START);
 				return true;
 			case R.id.settings_item_menu:
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+				transaction.replace(R.id.content_fragment, settingsFragment);
+				transaction.commit();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

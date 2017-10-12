@@ -29,6 +29,7 @@ import android.widget.SeekBar;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.MainActivity;
+import com.samuelberrien.odyspace.utils.main.GameParamsBuilder;
 import com.samuelberrien.odyspace.utils.main.ViewHelper;
 
 public class LevelActivity extends AppCompatActivity {
@@ -119,77 +120,7 @@ public class LevelActivity extends AppCompatActivity {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.pause_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
 
-		final SeekBar sb1 = (SeekBar) layout.findViewById(R.id.device_volume_seek_bar);
-		final AudioManager tmp = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		sb1.setMax(tmp.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-		sb1.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
-		sb1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				tmp.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_VIBRATE);
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-		});
-
-		getApplicationContext().getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, new ContentObserver(new Handler()) {
-			@Override
-			public boolean deliverSelfNotifications() {
-				return super.deliverSelfNotifications();
-			}
-
-			@Override
-			public void onChange(boolean selfChange) {
-				super.onChange(selfChange);
-				sb1.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
-			}
-		});
-
-		SeekBar sb2 = (SeekBar) layout.findViewById(R.id.effect_volume_seek_bar);
-		sb2.setMax(100);
-		sb2.setProgress(gamePreferences.getInt(getString(R.string.saved_sound_effect_volume), 100));
-		sb2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				gamePreferences.edit()
-						.putInt(getString(R.string.saved_sound_effect_volume), progress)
-						.apply();
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-		});
-
-		final CheckBox inverseJoystickCheckBox = (CheckBox) layout.findViewById(R.id.inverse_joystick_checkbox);
-		inverseJoystickCheckBox.setChecked(gamePreferences.getBoolean(getString(R.string.saved_joystick_inversed), getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
-		inverseJoystickCheckBox.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				gamePreferences.edit()
-						.putBoolean(getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
-						.apply();
-			}
-		});
-
-		final CheckBox switchYawRollCheckBox = (CheckBox) layout.findViewById(R.id.switch_yaw_roll_checkbox);
-		switchYawRollCheckBox.setChecked(gamePreferences.getBoolean(getString(R.string.saved_yaw_roll_switched), getResources().getBoolean(R.bool.saved_yaw_roll_switched_default)));
-		switchYawRollCheckBox.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				gamePreferences.edit()
-						.putBoolean(getString(R.string.saved_yaw_roll_switched), switchYawRollCheckBox.isChecked())
-						.apply();
-			}
-		});
+		GameParamsBuilder.buildGameParams(this, layout, gamePreferences);
 
 		SharedPreferences savedShop = getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		final SharedPreferences savedShip = getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);

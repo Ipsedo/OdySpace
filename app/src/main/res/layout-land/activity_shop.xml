@@ -7,7 +7,7 @@
               android:layout_height="match_parent"
               android:background="@color/colorMainLayout"
               android:orientation="horizontal"
-              tools:context="com.samuelberrien.odyspace.shop.ShopActivity">
+              tools:context=".main.shop.ShopActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
