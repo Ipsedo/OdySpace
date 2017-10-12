@@ -29,7 +29,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:orientation="vertical">
 
         <View
@@ -46,6 +46,7 @@
             android:background="@color/grey">
 
             <LinearLayout
+                android:id="@+id/layout_menu_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -77,8 +78,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/used_items"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

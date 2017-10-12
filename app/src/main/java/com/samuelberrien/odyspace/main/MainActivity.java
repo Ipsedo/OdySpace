@@ -1,9 +1,10 @@
 package com.samuelberrien.odyspace.main;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,11 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.shop.ShopFragment;
+import com.samuelberrien.odyspace.utils.main.ItemInfosBuilder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	public static final String LEVEL_ID = "LEVEL_ID";
 	public static final int RESULT_VALUE = 1;
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 	private ShopFragment shopFragment;
 	private LevelsFragment levelsFragment;
 	private SettingsFragment settingsFragment;
+
+	private SharedPreferences savedShip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,28 @@ public class MainActivity extends AppCompatActivity {
 		transaction.replace(R.id.content_fragment, levelsFragment);
 
 		transaction.commit();
+
+		SharedPreferences savedShop = getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
+		savedShop.registerOnSharedPreferenceChangeListener(this);
+		savedShip = getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+		savedShip.registerOnSharedPreferenceChangeListener(this);
+
+		initItems();
+	}
+
+	public void initItems() {
+		((LinearLayout) findViewById(R.id.used_items)).removeAllViews();
+
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		layoutParams.weight = 1f;
+
+		String fireType = savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
+		((LinearLayout) findViewById(R.id.used_items)).addView(ItemInfosBuilder.makeFireInfos(this, fireType), layoutParams);
+
+		String shipUsed = savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
+		((LinearLayout) findViewById(R.id.used_items)).addView(ItemInfosBuilder.makeShipInfos(this, shipUsed), layoutParams);
+
+		((LinearLayout) findViewById(R.id.used_items)).addView(new View(this), layoutParams);
 	}
 
 	@Override
@@ -83,8 +111,38 @@ public class MainActivity extends AppCompatActivity {
 		super.onConfigurationChanged(newConfig);
 		drawerToggle.onConfigurationChanged(newConfig);
 
-		//switchOrientation(newConfig.orientation);
+		switchOrientation(newConfig.orientation);
 		//TODO orientation switch drawer
+	}
+
+	private void switchOrientation(int orientation) {
+		LinearLayout menuDrawer = (LinearLayout) findViewById(R.id.menu_drawer);
+		LinearLayout layoutMenu = (LinearLayout) findViewById(R.id.layout_menu_button);
+		LinearLayout layoutItem = (LinearLayout) findViewById(R.id.used_items);
+
+		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
+
+		switch (orientation) {
+			case Configuration.ORIENTATION_LANDSCAPE:
+				menuDrawer.setOrientation(LinearLayout.HORIZONTAL);
+				layoutMenu.setLayoutParams(layoutLandParams);
+				layoutItem.setLayoutParams(layoutLandParams);
+
+				if(ItemInfosBuilder.dialog != null){
+					ItemInfosBuilder.dialog.dismiss();
+				}
+				break;
+			case Configuration.ORIENTATION_PORTRAIT:
+				menuDrawer.setOrientation(LinearLayout.VERTICAL);
+				layoutMenu.setLayoutParams(layoutPortraitParams);
+				layoutItem.setLayoutParams(layoutPortraitParams);
+
+				if(ItemInfosBuilder.dialog != null){
+					ItemInfosBuilder.dialog.dismiss();
+				}
+				break;
+		}
 	}
 
 	@Override
@@ -107,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void levels(View v) {
-
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
 		transaction.replace(R.id.content_fragment, levelsFragment);
@@ -117,13 +174,16 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void shop(View v) {
-		Fragment newFragment = new ShopFragment();
-
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-		transaction.replace(R.id.content_fragment, newFragment);
+		transaction.replace(R.id.content_fragment, shopFragment);
 
 		transaction.commit();
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+		initItems();
 	}
 
 	/*private static final int RESULT_VALUE = 1;
@@ -232,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 		final ImageView imageView1 = (ImageView) findViewById(R.id.fire_image_main);
-		ItemImageViewMaker.makeFireTypeImage(this, this.myToast, imageView1, currFireType);
+		ItemImageViewMaker.makeFireInfos(this, this.myToast, imageView1, currFireType);
 		imageView1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
