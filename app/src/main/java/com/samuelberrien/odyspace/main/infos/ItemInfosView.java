@@ -170,6 +170,9 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				infos.setText(itemName);
 				break;
 			case BONUS:
+				int currentBoughtDuration = savedShop.getInt(parentsActivity.getString(R.string.bought_duration), getResources().getInteger(R.integer.zero));
+				int currentBonusDuration = savedShip.getInt(parentsActivity.getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.zero));
+				infos.setText(itemName + System.getProperty("line.separator") + "Duration : " + currentBonusDuration + " + " + currentBoughtDuration);
 				break;
 
 		}
@@ -244,6 +247,35 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				}
 				break;
 			case BONUS:
+				titleItemChooser.setText("Bought bonus");
+				items = parentsActivity.getResources().getStringArray(R.array.bonus_shop_list_item);
+				final int[] durationList = parentsActivity.getResources().getIntArray(R.array.bonus_duration_shop_list_item);
+				for (int i = 1; i < items.length; i++) {
+					int rBool = items[i].equals(parentsActivity.getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
+					boolean bool = parentsActivity.getResources().getBoolean(rBool);
+					if (savedShop.getBoolean(items[i], bool)) {
+						RadioButton tmpRadioButton = new RadioButton(parentsActivity);
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+						radioGroup.addView(tmpRadioButton);
+						tmpRadioButton.setText(items[i]);
+
+						final int index = i;
+						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								savedShip.edit()
+										.putString(parentsActivity.getString(R.string.current_bonus_used), items[index])
+										.putInt(parentsActivity.getString(R.string.current_bonus_duration), durationList[index - 1])
+										.apply();
+							}
+						});
+
+						if (savedShip.getString(parentsActivity.getString(R.string.current_bonus_used), parentsActivity.getString(R.string.bonus_1)).equals(items[index])) {
+							tmpRadioButton.setChecked(true);
+						}
+					}
+				}
 				break;
 
 		}

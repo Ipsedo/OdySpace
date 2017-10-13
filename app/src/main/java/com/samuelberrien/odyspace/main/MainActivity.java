@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 	private LevelsFragment levelsFragment;
 	private SettingsFragment settingsFragment;
 
-	private SharedPreferences savedShip;
 	private SharedPreferences savedShop;
 
 	private ItemInfosView shipView;
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		transaction.commit();
 
 		savedShop = getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
-		savedShip = getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 
 		initItems();
 
@@ -92,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		shipView = new ItemInfosView(this, Purchases.SHIP);
 		((LinearLayout) findViewById(R.id.used_items)).addView(shipView, layoutParams);
 
-		((LinearLayout) findViewById(R.id.used_items)).addView(new View(this), layoutParams);
+		bonusView = new ItemInfosView(this, Purchases.BONUS);
+		((LinearLayout) findViewById(R.id.used_items)).addView(bonusView, layoutParams);
 
 		int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 		TextView textView = (TextView) findViewById(R.id.money_text);
@@ -246,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 			editor.remove(ship[i]);
 		}
 		String[] bonus = getResources().getStringArray(R.array.bonus_shop_list_item);
-		for (int i = 0; i < bonus.length; i++) {
+		for (int i = 1; i < bonus.length; i++) {
 			editor.remove(bonus[i]);
 		}
 		editor.remove(getString(R.string.bought_life));

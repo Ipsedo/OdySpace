@@ -4,7 +4,6 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.view.View;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
@@ -78,8 +77,8 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 					objFileName = "triple_fire.obj";
 					mtlFileName = "triple_fire.mtl";
 				} else if (name.equals(context.getString(R.string.fire_5))) {
-					objFileName = "laser.obj";
-					mtlFileName = "laser.mtl";
+					objFileName = "laser_item_menu.obj";
+					mtlFileName = "laser_item_menu.mtl";
 				} else if (name.equals(context.getString(R.string.fire_6))) {
 					objFileName = "torus.obj";
 					mtlFileName = "torus.mtl";
@@ -112,7 +111,7 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
-		if(willCreateObj) {
+		if (willCreateObj) {
 			objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
 			willCreateObj = false;
 		}
@@ -130,7 +129,7 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 
 	@Override
 	public void onDrawFrame(GL10 gl10) {
-		if(willCreateObj) {
+		if (willCreateObj) {
 			objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
 			willCreateObj = false;
 		}
