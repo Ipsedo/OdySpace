@@ -55,7 +55,7 @@ public class ShopFragment extends Fragment {
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
 		layoutParams.setMargins(margin, margin, margin, 0);
 
-		if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.FIRE_TAB) == 0) {
+		if (ShopFragmentPagerAdapter.TAB_TITLES[page].equals(ShopFragmentPagerAdapter.FIRE_TAB)) {
 			final String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.fire_shop_price);
 			for (int i = 0; i < fires.length; i++) {
@@ -100,7 +100,7 @@ public class ShopFragment extends Fragment {
 				subLayout.addView(buttons);
 				buttons.setLayoutParams(layoutParams);
 			}
-		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.SHIP_TAB) == 0) {
+		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].equals(ShopFragmentPagerAdapter.SHIP_TAB)) {
 			final String[] shipsItem = getResources().getStringArray(R.array.ship_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.ship_shop_price);
 			for (int i = 0; i < shipsItem.length; i++) {
@@ -176,7 +176,7 @@ public class ShopFragment extends Fragment {
 				subLayout.addView(buttons);
 				buttons.setLayoutParams(layoutParams);
 			}
-		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].compareTo(ShopFragmentPagerAdapter.BONUS_TAB) == 0) {
+		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].equals(ShopFragmentPagerAdapter.BONUS_TAB)) {
 			final String[] bonusItem = getResources().getStringArray(R.array.bonus_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.bonus_shop_price);
 			for (int i = 0; i < bonusItem.length; i++) {

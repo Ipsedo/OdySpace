@@ -61,7 +61,7 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 		GLES20.glEnable(GLES20.GL_CULL_FACE);
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 		GLES20.glDepthMask(true);
-		GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
+		GLES20.glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
 		objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
 	}

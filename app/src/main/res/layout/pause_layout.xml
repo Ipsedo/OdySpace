@@ -7,6 +7,7 @@
               android:baselineAligned="false">
 
     <ScrollView
+        android:id="@+id/game_settings_pause"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_scroll_view_pause"
         android:layout_marginEnd="5dp"
@@ -16,7 +17,6 @@
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
-        <include layout="@layout/game_params"/>
     </ScrollView>
 
     <ScrollView

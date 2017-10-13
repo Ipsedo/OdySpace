@@ -24,7 +24,7 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.infos.ItemInfosView;
 import com.samuelberrien.odyspace.main.shop.ShopFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	public static final String LEVEL_ID = "LEVEL_ID";
 	public static final int RESULT_VALUE = 1;
@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 		initItems();
 
 		switchOrientation(getResources().getConfiguration().orientation);
+
+		getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
 	}
 
 	public void initItems() {
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 		LinearLayout menuDrawer = (LinearLayout) findViewById(R.id.menu_drawer);
 		LinearLayout layoutMenu = (LinearLayout) findViewById(R.id.layout_menu_button);
 		View mainSeparator = findViewById(R.id.main_separator);
+		View moneySeparator = findViewById(R.id.money_separator);
 		LinearLayout layoutItem = (LinearLayout) findViewById(R.id.used_items);
 
 		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(
@@ -148,12 +151,13 @@ public class MainActivity extends AppCompatActivity {
 				menuDrawer.setOrientation(LinearLayout.HORIZONTAL);
 				layoutMenu.setLayoutParams(layoutLandParams);
 				layoutItem.setLayoutParams(layoutLandParams);
-				layoutParams= new LinearLayout.LayoutParams(
+				layoutParams = new LinearLayout.LayoutParams(
 						(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-								1,
+								2,
 								r.getDisplayMetrics()),
 						ViewGroup.LayoutParams.MATCH_PARENT);
 				mainSeparator.setLayoutParams(layoutParams);
+				moneySeparator.setVisibility(View.VISIBLE);
 				shipView.dismissDialog();
 				fireView.dismissDialog();
 				break;
@@ -167,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 								1,
 								r.getDisplayMetrics()));
 				mainSeparator.setLayoutParams(layoutParams);
+				moneySeparator.setVisibility(View.GONE);
 				shipView.dismissDialog();
 				fireView.dismissDialog();
 				break;
@@ -189,24 +194,94 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void continueStory(View v) {
-
+		drawerLayout.closeDrawers();
 	}
 
 	public void levels(View v) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
 		transaction.replace(R.id.content_fragment, levelsFragment);
-
 		transaction.commit();
+
+		drawerLayout.closeDrawers();
 
 	}
 
 	public void shop(View v) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
 		transaction.replace(R.id.content_fragment, shopFragment);
-
 		transaction.commit();
+
+		drawerLayout.closeDrawers();
+	}
+
+	public void resetSettings(View v) {
+		getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE).edit()
+				.remove(getString(R.string.saved_sound_effect_volume))
+				.remove(getString(R.string.saved_joystick_inversed))
+				.remove(getString(R.string.saved_max_level))
+				.remove(getString(R.string.saved_yaw_roll_switched))
+				.apply();
+		/*getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE)
+				.edit()
+				.clear()
+				.apply();
+		getSupportFragmentManager()
+				.beginTransaction()
+				.detach(settingsFragment)
+				.attach(settingsFragment)
+				.commit();*/
+	}
+
+	public void resetShop(View v) {
+		SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE)
+				.edit();
+		editor.remove(getString(R.string.saved_money));
+		String[] fire = getResources().getStringArray(R.array.fire_shop_list_item);
+		for (String f : fire) {
+			editor.remove(f);
+		}
+		String[] ship = getResources().getStringArray(R.array.ship_shop_list_item);
+		for (int i = 1; i < ship.length; i++) {
+			editor.remove(ship[i]);
+		}
+		String[] bonus = getResources().getStringArray(R.array.bonus_shop_list_item);
+		for (int i = 0; i < bonus.length; i++) {
+			editor.remove(bonus[i]);
+		}
+		editor.remove(getString(R.string.bought_life));
+		editor.remove(getString(R.string.bought_duration));
+		editor.apply();
+
+		editor = getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE)
+				.edit();
+		editor.remove(getString(R.string.current_bonus_used))
+				.remove(getString(R.string.current_ship_used))
+				.remove(getString(R.string.current_fire_type))
+				.remove(getString(R.string.current_bonus_duration))
+				.remove(getString(R.string.current_life_number))
+				.apply();
+	}
+
+	public void resetLevels(View v) {
+		//TODO gerer SharedPreference propre
+		getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE)
+				.edit()
+				.clear()
+				.apply();
+		getSupportFragmentManager()
+				.beginTransaction()
+				.detach(levelsFragment)
+				.attach(levelsFragment)
+				.commit();
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+		if (s.equals(getString(R.string.saved_money))) {
+			int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
+			TextView textView = (TextView) findViewById(R.id.money_text);
+			textView.setText(String.valueOf(currMoney) + " $");
+		}
 	}
 
 	/*private static final int RESULT_VALUE = 1;

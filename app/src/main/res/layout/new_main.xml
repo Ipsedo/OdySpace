@@ -48,7 +48,7 @@
             <LinearLayout
                 android:id="@+id/layout_menu_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <Button
@@ -89,6 +89,12 @@
                     android:gravity="center"
                     android:background="@drawable/drawer_button_unpressed"/>
 
+                <View
+                    android:id="@+id/money_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black"/>
+
             </LinearLayout>
 
             <View
@@ -100,7 +106,7 @@
             <LinearLayout
                 android:id="@+id/used_items"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"></LinearLayout>
 
         </LinearLayout>

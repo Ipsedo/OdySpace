@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.MainActivity;
-import com.samuelberrien.odyspace.utils.main.GameParamsBuilder;
+import com.samuelberrien.odyspace.utils.main.GameParamsView;
 import com.samuelberrien.odyspace.utils.main.ViewHelper;
 
 public class LevelActivity extends AppCompatActivity {
@@ -115,7 +115,9 @@ public class LevelActivity extends AppCompatActivity {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.pause_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
 
-		GameParamsBuilder.buildGameParams(this, layout, gamePreferences);
+		//GameParamsView.buildGameParams(this, layout, gamePreferences);
+		((LinearLayout) layout.findViewById(R.id.game_settings_main))
+				.addView(new GameParamsView(this));
 
 		SharedPreferences savedShop = getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		final SharedPreferences savedShip = getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);

@@ -9,8 +9,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/game_params"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/game_settings_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black"/>
+
+            <LinearLayout
+                android:id="@+id/layout_reset_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:onClick="resetSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reset game settings"/>
+
+                <Button
+                    android:onClick="resetShop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reset items and money"/>
+
+                <Button
+                    android:onClick="resetLevels"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Reset level progression"/>
+
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>
