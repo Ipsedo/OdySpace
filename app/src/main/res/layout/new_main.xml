@@ -75,6 +75,11 @@
                     android:background="@drawable/drawer_button"
                     android:text="Shop"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black"/>
+
                 <TextView
                     android:id="@+id/money_text"
                     android:layout_width="match_parent"
@@ -85,6 +90,12 @@
                     android:background="@drawable/drawer_button_unpressed"/>
 
             </LinearLayout>
+
+            <View
+                android:id="@+id/main_separator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"/>
 
             <LinearLayout
                 android:id="@+id/used_items"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.main.infos.ItemInfosBuilder;
+import com.samuelberrien.odyspace.main.infos.ItemInfosView;
 import com.samuelberrien.odyspace.main.shop.ShopFragment;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity {
 
 	public static final String LEVEL_ID = "LEVEL_ID";
 	public static final int RESULT_VALUE = 1;
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 	private SharedPreferences savedShip;
 	private SharedPreferences savedShop;
+
+	private ItemInfosView shipView;
+	private ItemInfosView fireView;
+	private ItemInfosView bonusView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +70,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		transaction.commit();
 
 		savedShop = getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
-		savedShop.registerOnSharedPreferenceChangeListener(this);
 		savedShip = getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
-		savedShip.registerOnSharedPreferenceChangeListener(this);
 
 		initItems();
+
+		switchOrientation(getResources().getConfiguration().orientation);
 	}
 
 	public void initItems() {
@@ -77,11 +83,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams.weight = 1f;
 
-		String fireType = savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default));
-		((LinearLayout) findViewById(R.id.used_items)).addView(ItemInfosBuilder.makeFireInfos(this, fireType), layoutParams);
+		fireView = new ItemInfosView(this, ItemInfosView.Kind.FIRE);
+		((LinearLayout) findViewById(R.id.used_items)).addView(fireView, layoutParams);
 
-		String shipUsed = savedShip.getString(getString(R.string.current_ship_used), getString(R.string.saved_ship_used_default));
-		((LinearLayout) findViewById(R.id.used_items)).addView(ItemInfosBuilder.makeShipInfos(this, shipUsed), layoutParams);
+		shipView = new ItemInfosView(this, ItemInfosView.Kind.SHIP);
+		((LinearLayout) findViewById(R.id.used_items)).addView(shipView, layoutParams);
 
 		((LinearLayout) findViewById(R.id.used_items)).addView(new View(this), layoutParams);
 
@@ -124,29 +130,45 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 	private void switchOrientation(int orientation) {
 		LinearLayout menuDrawer = (LinearLayout) findViewById(R.id.menu_drawer);
 		LinearLayout layoutMenu = (LinearLayout) findViewById(R.id.layout_menu_button);
+		View mainSeparator = findViewById(R.id.main_separator);
 		LinearLayout layoutItem = (LinearLayout) findViewById(R.id.used_items);
 
-		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
+		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
+
+		Resources r = getResources();
+		LinearLayout.LayoutParams layoutParams;
 
 		switch (orientation) {
 			case Configuration.ORIENTATION_LANDSCAPE:
 				menuDrawer.setOrientation(LinearLayout.HORIZONTAL);
 				layoutMenu.setLayoutParams(layoutLandParams);
 				layoutItem.setLayoutParams(layoutLandParams);
-
-				if (ItemInfosBuilder.dialog != null) {
-					ItemInfosBuilder.dialog.dismiss();
-				}
+				layoutParams= new LinearLayout.LayoutParams(
+						(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+								1,
+								r.getDisplayMetrics()),
+						ViewGroup.LayoutParams.MATCH_PARENT);
+				mainSeparator.setLayoutParams(layoutParams);
+				shipView.dismissDialog();
+				fireView.dismissDialog();
 				break;
 			case Configuration.ORIENTATION_PORTRAIT:
 				menuDrawer.setOrientation(LinearLayout.VERTICAL);
 				layoutMenu.setLayoutParams(layoutPortraitParams);
 				layoutItem.setLayoutParams(layoutPortraitParams);
-
-				if (ItemInfosBuilder.dialog != null) {
-					ItemInfosBuilder.dialog.dismiss();
-				}
+				layoutParams = new LinearLayout.LayoutParams(
+						ViewGroup.LayoutParams.MATCH_PARENT,
+						(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+								1,
+								r.getDisplayMetrics()));
+				mainSeparator.setLayoutParams(layoutParams);
+				shipView.dismissDialog();
+				fireView.dismissDialog();
 				break;
 		}
 	}
@@ -185,11 +207,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		transaction.replace(R.id.content_fragment, shopFragment);
 
 		transaction.commit();
-	}
-
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-		initItems();
 	}
 
 	/*private static final int RESULT_VALUE = 1;
