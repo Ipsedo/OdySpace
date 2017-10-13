@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,31 +36,10 @@ public class ItemInfosBuilder {
 		LinearLayout linearLayout = new LinearLayout(activity);
 		linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		layoutParams.weight = 1f;
-		Resources r = activity.getResources();
-		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
-		layoutParams.setMargins(5, 5, 5, 5 + (int) px);
+		LinearLayout.LayoutParams layoutParams = getLayoutParams(activity);
 
-		if (currFireType.equals(activity.getString(R.string.fire_1))) {
-			linearLayout.addView(new Item3DWindow(activity, "rocket.obj", "rocket.mtl"), layoutParams);
-			//imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_fire));
-		} else if (currFireType.equals(activity.getString(R.string.fire_2))) {
-			linearLayout.addView(new Item3DWindow(activity, "rocket.obj", "rocket.mtl"), layoutParams);
-			//imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.quint_fire));
-		} else if (currFireType.equals(activity.getString(R.string.fire_3))) {
-			linearLayout.addView(new Item3DWindow(activity, "bomb.obj", "bomb.mtl"), layoutParams);
-			//imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.simple_bomb));
-		} else if (currFireType.equals(activity.getString(R.string.fire_4))) {
-			linearLayout.addView(new Item3DWindow(activity, "rocket.obj", "rocket.mtl"), layoutParams);
-			//imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.triple_fire));
-		} else if (currFireType.equals(activity.getString(R.string.fire_5))) {
-			linearLayout.addView(new Item3DWindow(activity, "laser.obj", "laser.mtl"), layoutParams);
-			//imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.laser));
-		} else if (currFireType.equals(activity.getString(R.string.fire_6))) {
-			linearLayout.addView(new Item3DWindow(activity, "torus.obj", "torus.mtl"), layoutParams);
-			//imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.torus));
-		}
+		linearLayout.addView(Item3DWindow.makeFireView(activity, currFireType), layoutParams);
+
 		TextView fireName = new TextView(activity);
 		fireName.setText(currFireType);
 		fireName.setGravity(Gravity.CENTER);
@@ -94,12 +75,10 @@ public class ItemInfosBuilder {
 			}
 		}
 
-		LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		/*LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams1.weight = 0.3f;
 
-
-		dialog = new Dialog(activity, R.style.AppTheme);
-		/*TextView okDialog = new TextView(activity);
+		TextView okDialog = new TextView(activity);
 		okDialog.setText("Ok");
 		okDialog.setGravity(Gravity.CENTER);
 		okDialog.setLayoutParams(layoutParams1);
@@ -118,15 +97,7 @@ public class ItemInfosBuilder {
 		linearLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Point screenSize = getScreenSize(activity);
-				LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(screenSize.x * 3 / 4, screenSize.y / 2);
-				selectItemLayout.setLayoutParams(layoutParams2);
-
-				dialog.setContentView(selectItemLayout);
-				dialog.setCancelable(true);
-				dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
-				dialog.show();
-				selectItemLayout.requestLayout();
+				ItemInfosBuilder.showDialog(activity, selectItemLayout);
 			}
 		});
 
@@ -141,19 +112,9 @@ public class ItemInfosBuilder {
 		LinearLayout linearLayout = new LinearLayout(activity);
 		linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		layoutParams.weight = 1f;
-		Resources r = activity.getResources();
-		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
-		layoutParams.setMargins(5, 5, 5, 5 + (int) px);
+		LinearLayout.LayoutParams layoutParams = getLayoutParams(activity);
 
-		if (shipUsed.equals(activity.getString(R.string.ship_simple))) {
-			linearLayout.addView(new Item3DWindow(activity, "ship_3.obj", "ship_3.mtl"), layoutParams);
-		} else if (shipUsed.equals(activity.getString(R.string.ship_bird))) {
-			linearLayout.addView(new Item3DWindow(activity, "ship_bird.obj", "ship_bird.mtl"), layoutParams);
-		} else if (shipUsed.equals(activity.getString(R.string.ship_supreme))) {
-			linearLayout.addView(new Item3DWindow(activity, "ship_supreme.obj", "ship_supreme.mtl"), layoutParams);
-		}
+		linearLayout.addView(Item3DWindow.makeShipView(activity, shipUsed), layoutParams);
 
 		int currBoughtLife = savedShop.getInt(activity.getString(R.string.bought_life), activity.getResources().getInteger(R.integer.saved_ship_life_shop_default));
 		int currShipLife = savedShip.getInt(activity.getString(R.string.current_life_number), activity.getResources().getInteger(R.integer.saved_ship_life_default));
@@ -194,22 +155,6 @@ public class ItemInfosBuilder {
 			}
 		}
 
-		LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		layoutParams1.weight = 0.3f;
-
-		dialog = new Dialog(activity, R.style.AppTheme);
-		/*TextView okDialog = new TextView(activity);
-		okDialog.setText("Ok");
-		okDialog.setGravity(Gravity.CENTER);
-		okDialog.setLayoutParams(layoutParams1);
-		okDialog.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				dialog.dismiss();
-			}
-		});
-		selectItemLayout.addView(okDialog);*/
-
 		linearLayout.addView(fireName, layoutParams);
 
 		linearLayout.setBackground(ContextCompat.getDrawable(activity, R.drawable.drawer_button));
@@ -217,16 +162,7 @@ public class ItemInfosBuilder {
 		linearLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Point screenSize = getScreenSize(activity);
-
-				LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(screenSize.x * 3 / 4, screenSize.y / 2);
-				selectItemLayout.setLayoutParams(layoutParams2);
-
-				dialog.setContentView(selectItemLayout);
-				dialog.setCancelable(true);
-				dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
-				dialog.show();
-				selectItemLayout.requestLayout();
+				ItemInfosBuilder.showDialog(activity, selectItemLayout);
 			}
 		});
 
@@ -238,5 +174,35 @@ public class ItemInfosBuilder {
 		Point size = new Point();
 		display.getSize(size);
 		return size;
+	}
+
+	private static void showDialog(Activity activity, LinearLayout selectItemLayout) {
+		ViewGroup parent = (ViewGroup) selectItemLayout.getParent();
+		if (parent != null)
+			parent.removeView(selectItemLayout);
+
+		dialog = new Dialog(activity, R.style.AppTheme);
+
+		Point screenSize = getScreenSize(activity);
+		LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(screenSize.x * 3 / 4, screenSize.y / 2);
+		selectItemLayout.setLayoutParams(layoutParams2);
+
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		dialog.setContentView(selectItemLayout);
+
+		dialog.setCancelable(true);
+
+		dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
+
+		dialog.show();
+	}
+
+	private static LinearLayout.LayoutParams getLayoutParams(Context context) {
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		layoutParams.weight = 1f;
+		Resources r = context.getResources();
+		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
+		layoutParams.setMargins(5, 5, 5, 5 + (int) px);
+		return layoutParams;
 	}
 }

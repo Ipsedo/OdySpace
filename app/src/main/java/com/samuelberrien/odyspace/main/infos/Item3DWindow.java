@@ -4,7 +4,9 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.view.View;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -99,5 +101,35 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 		Matrix.translateM(mLightModelMatrix, 0, pos[0], pos[1], pos[2]);
 		Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
+	}
+
+	public static View makeFireView(Context context, String currFireType) {
+		if (currFireType.equals(context.getString(R.string.fire_1))) {
+			return new Item3DWindow(context, "rocket.obj", "rocket.mtl");
+		} else if (currFireType.equals(context.getString(R.string.fire_2))) {
+			return new Item3DWindow(context, "quint_fire.obj", "quint_fire.mtl");
+		} else if (currFireType.equals(context.getString(R.string.fire_3))) {
+			return new Item3DWindow(context, "bomb.obj", "bomb.mtl");
+		} else if (currFireType.equals(context.getString(R.string.fire_4))) {
+			return new Item3DWindow(context, "triple_fire.obj", "triple_fire.mtl");
+		} else if (currFireType.equals(context.getString(R.string.fire_5))) {
+			return new Item3DWindow(context, "laser.obj", "laser.mtl");
+		} else if (currFireType.equals(context.getString(R.string.fire_6))) {
+			return new Item3DWindow(context, "torus.obj", "torus.mtl");
+		} else {
+			return new Item3DWindow(context, "rocket.obj", "rocket.mtl");
+		}
+	}
+
+	public static View makeShipView(Context context, String shipUsed) {
+		if (shipUsed.equals(context.getString(R.string.ship_simple))) {
+			return new Item3DWindow(context, "ship_3.obj", "ship_3.mtl");
+		} else if (shipUsed.equals(context.getString(R.string.ship_bird))) {
+			return new Item3DWindow(context, "ship_bird.obj", "ship_bird.mtl");
+		} else if (shipUsed.equals(context.getString(R.string.ship_supreme))) {
+			return new Item3DWindow(context, "ship_supreme.obj", "ship_supreme.mtl");
+		} else {
+			return new Item3DWindow(context, "ship_3.obj", "ship_3.mtl");
+		}
 	}
 }
