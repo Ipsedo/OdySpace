@@ -1,8 +1,7 @@
-package com.samuelberrien.odyspace.utils.main;
+package com.samuelberrien.odyspace.main.infos;
 
 import android.content.Context;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 

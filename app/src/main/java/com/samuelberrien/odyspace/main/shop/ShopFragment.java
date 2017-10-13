@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.main.shop.ShopFragmentPagerAdapter;
 
 import java.util.ArrayList;
 

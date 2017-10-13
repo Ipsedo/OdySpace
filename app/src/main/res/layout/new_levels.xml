@@ -4,6 +4,7 @@
               android:layout_height="match_parent"
               android:background="@color/grey"
               android:orientation="vertical">
+
     <ScrollView
         android:id="@+id/level_chooser"
         android:layout_width="match_parent"

@@ -16,10 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.main.infos.ItemInfosBuilder;
 import com.samuelberrien.odyspace.main.shop.ShopFragment;
-import com.samuelberrien.odyspace.utils.main.ItemInfosBuilder;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 	private SettingsFragment settingsFragment;
 
 	private SharedPreferences savedShip;
+	private SharedPreferences savedShop;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 		transaction.commit();
 
-		SharedPreferences savedShop = getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
+		savedShop = getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		savedShop.registerOnSharedPreferenceChangeListener(this);
 		savedShip = getApplicationContext().getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
 		savedShip.registerOnSharedPreferenceChangeListener(this);
@@ -82,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		((LinearLayout) findViewById(R.id.used_items)).addView(ItemInfosBuilder.makeShipInfos(this, shipUsed), layoutParams);
 
 		((LinearLayout) findViewById(R.id.used_items)).addView(new View(this), layoutParams);
+
+		int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
+		TextView textView = (TextView) findViewById(R.id.money_text);
+		textView.setText(String.valueOf(currMoney) + " $");
 	}
 
 	@Override
@@ -129,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 				layoutMenu.setLayoutParams(layoutLandParams);
 				layoutItem.setLayoutParams(layoutLandParams);
 
-				if(ItemInfosBuilder.dialog != null){
+				if (ItemInfosBuilder.dialog != null) {
 					ItemInfosBuilder.dialog.dismiss();
 				}
 				break;
@@ -138,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 				layoutMenu.setLayoutParams(layoutPortraitParams);
 				layoutItem.setLayoutParams(layoutPortraitParams);
 
-				if(ItemInfosBuilder.dialog != null){
+				if (ItemInfosBuilder.dialog != null) {
 					ItemInfosBuilder.dialog.dismiss();
 				}
 				break;

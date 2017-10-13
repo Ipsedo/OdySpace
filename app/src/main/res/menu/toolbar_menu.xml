@@ -8,5 +8,5 @@
         android:orderInCategory="0"
         android:icon="@drawable/settings"
         android:title=""
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 </menu>

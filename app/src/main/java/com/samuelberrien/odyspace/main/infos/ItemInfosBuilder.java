@@ -1,29 +1,23 @@
-package com.samuelberrien.odyspace.utils.main;
+package com.samuelberrien.odyspace.main.infos;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.text.Text;
-
-import java.util.ArrayList;
 
 /**
  * Created by samuel on 12/10/17.
@@ -42,7 +36,9 @@ public class ItemInfosBuilder {
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 1f;
-		layoutParams.setMargins(0, 5, 0, 0);
+		Resources r = activity.getResources();
+		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
+		layoutParams.setMargins(5, 5, 5, 5 + (int) px);
 
 		if (currFireType.equals(activity.getString(R.string.fire_1))) {
 			linearLayout.addView(new Item3DWindow(activity, "rocket.obj", "rocket.mtl"), layoutParams);
@@ -103,7 +99,7 @@ public class ItemInfosBuilder {
 
 
 		dialog = new Dialog(activity, R.style.AppTheme);
-		TextView okDialog = new TextView(activity);
+		/*TextView okDialog = new TextView(activity);
 		okDialog.setText("Ok");
 		okDialog.setGravity(Gravity.CENTER);
 		okDialog.setLayoutParams(layoutParams1);
@@ -113,7 +109,7 @@ public class ItemInfosBuilder {
 				dialog.dismiss();
 			}
 		});
-		selectItemLayout.addView(okDialog);
+		selectItemLayout.addView(okDialog);*/
 
 		linearLayout.addView(fireName, layoutParams);
 
@@ -127,7 +123,7 @@ public class ItemInfosBuilder {
 				selectItemLayout.setLayoutParams(layoutParams2);
 
 				dialog.setContentView(selectItemLayout);
-
+				dialog.setCancelable(true);
 				dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
 				dialog.show();
 				selectItemLayout.requestLayout();
@@ -147,7 +143,9 @@ public class ItemInfosBuilder {
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 1f;
-		layoutParams.setMargins(0, 5, 0, 5);
+		Resources r = activity.getResources();
+		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
+		layoutParams.setMargins(5, 5, 5, 5 + (int) px);
 
 		if (shipUsed.equals(activity.getString(R.string.ship_simple))) {
 			linearLayout.addView(new Item3DWindow(activity, "ship_3.obj", "ship_3.mtl"), layoutParams);
@@ -200,7 +198,7 @@ public class ItemInfosBuilder {
 		layoutParams1.weight = 0.3f;
 
 		dialog = new Dialog(activity, R.style.AppTheme);
-		TextView okDialog = new TextView(activity);
+		/*TextView okDialog = new TextView(activity);
 		okDialog.setText("Ok");
 		okDialog.setGravity(Gravity.CENTER);
 		okDialog.setLayoutParams(layoutParams1);
@@ -210,7 +208,7 @@ public class ItemInfosBuilder {
 				dialog.dismiss();
 			}
 		});
-		selectItemLayout.addView(okDialog);
+		selectItemLayout.addView(okDialog);*/
 
 		linearLayout.addView(fireName, layoutParams);
 
@@ -225,7 +223,7 @@ public class ItemInfosBuilder {
 				selectItemLayout.setLayoutParams(layoutParams2);
 
 				dialog.setContentView(selectItemLayout);
-
+				dialog.setCancelable(true);
 				dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
 				dialog.show();
 				selectItemLayout.requestLayout();
@@ -239,6 +237,6 @@ public class ItemInfosBuilder {
 		Display display = activity.getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
-		return  size;
+		return size;
 	}
 }
