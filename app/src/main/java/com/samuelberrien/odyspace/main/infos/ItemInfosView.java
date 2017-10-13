@@ -19,6 +19,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.game.Purchases;
+
+import static com.samuelberrien.odyspace.utils.game.Purchases.BONUS;
+import static com.samuelberrien.odyspace.utils.game.Purchases.FIRE;
+import static com.samuelberrien.odyspace.utils.game.Purchases.SHIP;
 
 /**
  * Created by samuel on 12/10/17.
@@ -31,46 +36,29 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		if (key.equals(parentsActivity.getString(R.string.current_fire_type))) {
-			if (kind == Kind.FIRE) {
-				loadName();
-				removeAllViews();
-				makeText();
-				make3DView();
-				addView(item3DWindow, layoutParams);
-				addView(infos, layoutParams);
+			if (kind == FIRE) {
+				reinit();
 			}
 		} else if (key.equals(parentsActivity.getString(R.string.current_ship_used))) {
-			if (kind == Kind.SHIP) {
-				loadName();
-				removeAllViews();
-				makeText();
-				make3DView();
-				addView(item3DWindow, layoutParams);
-				addView(infos, layoutParams);
+			if (kind == SHIP) {
+				reinit();
 			}
 		} else if (key.equals(parentsActivity.getString(R.string.current_bonus_used))) {
-			if (kind == Kind.BONUS) {
-				loadName();
-				removeAllViews();
-				makeText();
-				make3DView();
-				addView(item3DWindow, layoutParams);
-				addView(infos, layoutParams);
+			if (kind == BONUS) {
+				reinit();
 			}
 		} else if (key.equals(parentsActivity.getString(R.string.saved_money))) {
 			reloadItemChooser();
 		} else if (key.equals(parentsActivity.getString(R.string.bought_life))) {
-			if (kind == Kind.SHIP) {
+			if (kind == SHIP) {
 				setText();
 			}
 		} else if (key.equals(parentsActivity.getString(R.string.bought_duration))) {
-			if (kind == Kind.BONUS) {
+			if (kind == BONUS) {
 				setText();
 			}
 		}
 	}
-
-	public enum Kind {SHIP, FIRE, BONUS}
 
 	private SharedPreferences savedShop;
 	private SharedPreferences savedShip;
@@ -79,10 +67,10 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 
 	private LinearLayout.LayoutParams layoutParams;
 
-	private View item3DWindow;
+	private final Item3DWindow item3DWindow;
 	private TextView infos;
 
-	private Kind kind;
+	private Purchases kind;
 
 	private Activity parentsActivity;
 
@@ -90,7 +78,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	private TextView titleItemChooser;
 	private RadioGroup radioGroup;
 
-	public ItemInfosView(Activity mActivity, Kind kind) {
+	public ItemInfosView(Activity mActivity, Purchases kind) {
 		super(mActivity);
 		setOrientation(LinearLayout.HORIZONTAL);
 
@@ -107,7 +95,21 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 
 
 		loadName();
-		make3DView();
+		switch (kind) {
+			case SHIP:
+				item3DWindow = new Item3DWindow(parentsActivity, Purchases.SHIP, itemName);
+				break;
+			case FIRE:
+				item3DWindow = new Item3DWindow(parentsActivity, Purchases.FIRE, itemName);
+				break;
+			case BONUS:
+				item3DWindow = new Item3DWindow(parentsActivity, Purchases.SHIP, itemName);
+				break;
+			default:
+				item3DWindow = new Item3DWindow(parentsActivity, Purchases.SHIP, itemName);
+				break;
+
+		}
 		makeText();
 
 		addView(item3DWindow, layoutParams);
@@ -133,6 +135,12 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		});
 	}
 
+	private void reinit() {
+		loadName();
+		setText();
+		item3DWindow.changeObj(kind, itemName);
+	}
+
 	private void loadName() {
 		switch (kind) {
 			case SHIP:
@@ -148,17 +156,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	}
 
 	private void make3DView() {
-		switch (kind) {
-			case SHIP:
-				item3DWindow = Item3DWindow.makeShipView(parentsActivity, itemName);
-				break;
-			case FIRE:
-				item3DWindow = Item3DWindow.makeFireView(parentsActivity, itemName);
-				break;
-			case BONUS:
-				break;
 
-		}
 	}
 
 	private void setText() {
@@ -283,14 +281,14 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		dialog.dismiss();
 	}
 
-	private static Point getScreenSize(Activity activity) {
+	private Point getScreenSize(Activity activity) {
 		Display display = activity.getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
 		return size;
 	}
 
-	private static LinearLayout.LayoutParams getLayoutParams(Context context) {
+	private LinearLayout.LayoutParams getLayoutParams(Context context) {
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 1f;
 		Resources r = context.getResources();

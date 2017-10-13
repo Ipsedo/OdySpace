@@ -116,7 +116,7 @@ public class LevelActivity extends AppCompatActivity {
 		View layout = inflater.inflate(R.layout.pause_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
 
 		//GameParamsView.buildGameParams(this, layout, gamePreferences);
-		((LinearLayout) layout.findViewById(R.id.game_settings_main))
+		((LinearLayout) layout.findViewById(R.id.game_settings_pause))
 				.addView(new GameParamsView(this));
 
 		SharedPreferences savedShop = getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);

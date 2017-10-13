@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.utils.game.Purchases;
 
 import java.util.ArrayList;
 
@@ -59,7 +60,7 @@ public class ShopFragment extends Fragment {
 			final String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.fire_shop_price);
 			for (int i = 0; i < fires.length; i++) {
-				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
+				/*final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
 				final TextView fireName = (TextView) buttons.findViewById(R.id.expand_text);
 				fireName.setText(fires[i]);
 				final Button buy = (Button) buttons.findViewById(R.id.expand_button);
@@ -98,13 +99,14 @@ public class ShopFragment extends Fragment {
 					buy.setClickable(true);
 				}
 				subLayout.addView(buttons);
-				buttons.setLayoutParams(layoutParams);
+				buttons.setLayoutParams(layoutParams);*/
+				subLayout.addView(new ShopItemView(getContext(), Purchases.FIRE, i));
 			}
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].equals(ShopFragmentPagerAdapter.SHIP_TAB)) {
 			final String[] shipsItem = getResources().getStringArray(R.array.ship_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.ship_shop_price);
 			for (int i = 0; i < shipsItem.length; i++) {
-				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
+				/*final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
 				final TextView shipItemName = (TextView) buttons.findViewById(R.id.expand_text);
 				shipItemName.setText(shipsItem[i]);
 				final Button buy = (Button) buttons.findViewById(R.id.expand_button);
@@ -122,8 +124,8 @@ public class ShopFragment extends Fragment {
 								editor.putInt(getString(R.string.saved_money), currMoney - lifeCost);
 								editor.apply();
 								lifeCost = (int) Math.pow(savedShop.getInt(getString(R.string.bought_life), getResources().getInteger(R.integer.zero)), 2d) * cost[index];
-								/*insertPrice(lifeCost);
-								updateShipInfo();*/
+								insertPrice(lifeCost);
+								updateShipInfo();
 							}
 						}
 					});
@@ -172,15 +174,14 @@ public class ShopFragment extends Fragment {
 					} else {
 						buy.setClickable(true);
 					}
-				}
-				subLayout.addView(buttons);
-				buttons.setLayoutParams(layoutParams);
+				}*/
+				subLayout.addView(new ShopItemView(getContext(), Purchases.SHIP, i));
 			}
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].equals(ShopFragmentPagerAdapter.BONUS_TAB)) {
 			final String[] bonusItem = getResources().getStringArray(R.array.bonus_shop_list_item);
 			final int[] cost = getResources().getIntArray(R.array.bonus_shop_price);
 			for (int i = 0; i < bonusItem.length; i++) {
-				final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
+				/*final LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.expand_button, null);
 				final TextView bonusItemName = (TextView) buttons.findViewById(R.id.expand_text);
 				bonusItemName.setText(bonusItem[i]);
 				final Button buy = (Button) buttons.findViewById(R.id.expand_button);
@@ -197,8 +198,8 @@ public class ShopFragment extends Fragment {
 								editor.putInt(getString(R.string.bought_duration), currentBoughtDuration + 10);
 								editor.putInt(getString(R.string.saved_money), currMoney - currentPrice);
 								editor.commit();
-								/*insertPrice((int) Math.pow(savedShop.getInt(getString(R.string.bought_duration), getResources().getInteger(R.integer.zero)) / 10, 2d) * getResources().getInteger(R.integer.life_coeff_cost));
-								updateShipInfo();*/
+								insertPrice((int) Math.pow(savedShop.getInt(getString(R.string.bought_duration), getResources().getInteger(R.integer.zero)) / 10, 2d) * getResources().getInteger(R.integer.life_coeff_cost));
+								updateShipInfo();
 							}
 						}
 					});
@@ -247,9 +248,8 @@ public class ShopFragment extends Fragment {
 					} else {
 						buy.setClickable(true);
 					}
-				}
-				subLayout.addView(buttons);
-				buttons.setLayoutParams(layoutParams);
+				}*/
+				subLayout.addView(new ShopItemView(getContext(), Purchases.BONUS, i));
 			}
 		}
 		return linearLayout;

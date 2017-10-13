@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.utils.game.Purchases;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -34,15 +35,63 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 
 	private ObjModelMtlVBO objModelMtlVBO;
 
+	private boolean willCreateObj;
 
-	public Item3DWindow(Context context, String objFileName, String mtlFileName) {
+	public Item3DWindow(Context context, Purchases purchases, String name) {
 		super(context);
 		this.context = context;
-		this.objFileName = objFileName;
-		this.mtlFileName = mtlFileName;
+
+		changeObj(purchases, name);
 
 		setEGLContextClientVersion(2);
 		setRenderer(this);
+	}
+
+	public void changeObj(Purchases purchases, String name) {
+		switch (purchases) {
+			case SHIP:
+				if (name.equals(context.getString(R.string.ship_simple))) {
+					objFileName = "ship_3.obj";
+					mtlFileName = "ship_3.mtl";
+				} else if (name.equals(context.getString(R.string.ship_bird))) {
+					objFileName = "ship_bird.obj";
+					mtlFileName = "ship_bird.mtl";
+				} else if (name.equals(context.getString(R.string.ship_supreme))) {
+					objFileName = "ship_supreme.obj";
+					mtlFileName = "ship_supreme.mtl";
+				} else {
+					objFileName = "ship_3.obj";
+					mtlFileName = "ship_3.mtl";
+				}
+				break;
+			case FIRE:
+				if (name.equals(context.getString(R.string.fire_1))) {
+					objFileName = "rocket.obj";
+					mtlFileName = "rocket.mtl";
+				} else if (name.equals(context.getString(R.string.fire_2))) {
+					objFileName = "quint_fire.obj";
+					mtlFileName = "quint_fire.mtl";
+				} else if (name.equals(context.getString(R.string.fire_3))) {
+					objFileName = "bomb.obj";
+					mtlFileName = "bomb.mtl";
+				} else if (name.equals(context.getString(R.string.fire_4))) {
+					objFileName = "triple_fire.obj";
+					mtlFileName = "triple_fire.mtl";
+				} else if (name.equals(context.getString(R.string.fire_5))) {
+					objFileName = "laser.obj";
+					mtlFileName = "laser.mtl";
+				} else if (name.equals(context.getString(R.string.fire_6))) {
+					objFileName = "torus.obj";
+					mtlFileName = "torus.mtl";
+				} else {
+					objFileName = "rocket.obj";
+					mtlFileName = "rocket.mtl";
+				}
+				break;
+			case BONUS:
+				break;
+		}
+		willCreateObj = true;
 	}
 
 	@Override
@@ -63,7 +112,10 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
-		objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
+		if(willCreateObj) {
+			objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
+			willCreateObj = false;
+		}
 	}
 
 	@Override
@@ -78,6 +130,11 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 
 	@Override
 	public void onDrawFrame(GL10 gl10) {
+		if(willCreateObj) {
+			objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
+			willCreateObj = false;
+		}
+
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
 		Matrix.setLookAtM(mViewMatrix, 0, 0f, 0f, -4f, 0f, 0f, 0f, 0f, 1f, 0f);
@@ -103,7 +160,7 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 	}
 
-	public static View makeFireView(Context context, String currFireType) {
+	/*public static Item3DWindow makeFireView(Context context, String currFireType) {
 		if (currFireType.equals(context.getString(R.string.fire_1))) {
 			return new Item3DWindow(context, "rocket.obj", "rocket.mtl");
 		} else if (currFireType.equals(context.getString(R.string.fire_2))) {
@@ -119,9 +176,9 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 		} else {
 			return new Item3DWindow(context, "rocket.obj", "rocket.mtl");
 		}
-	}
+	}*/
 
-	public static View makeShipView(Context context, String shipUsed) {
+	/*public static Item3DWindow makeShipView(Context context, String shipUsed) {
 		if (shipUsed.equals(context.getString(R.string.ship_simple))) {
 			return new Item3DWindow(context, "ship_3.obj", "ship_3.mtl");
 		} else if (shipUsed.equals(context.getString(R.string.ship_bird))) {
@@ -131,5 +188,5 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 		} else {
 			return new Item3DWindow(context, "ship_3.obj", "ship_3.mtl");
 		}
-	}
+	}*/
 }

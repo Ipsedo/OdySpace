@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.infos.ItemInfosView;
 import com.samuelberrien.odyspace.main.shop.ShopFragment;
+import com.samuelberrien.odyspace.utils.game.Purchases;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -85,10 +86,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams.weight = 1f;
 
-		fireView = new ItemInfosView(this, ItemInfosView.Kind.FIRE);
+		fireView = new ItemInfosView(this, Purchases.FIRE);
 		((LinearLayout) findViewById(R.id.used_items)).addView(fireView, layoutParams);
 
-		shipView = new ItemInfosView(this, ItemInfosView.Kind.SHIP);
+		shipView = new ItemInfosView(this, Purchases.SHIP);
 		((LinearLayout) findViewById(R.id.used_items)).addView(shipView, layoutParams);
 
 		((LinearLayout) findViewById(R.id.used_items)).addView(new View(this), layoutParams);
