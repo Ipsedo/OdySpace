@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils.main;
+package com.samuelberrien.odyspace.main.params;
 
 import android.app.Activity;
 import android.content.Context;

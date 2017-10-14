@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.MainActivity;
-import com.samuelberrien.odyspace.utils.main.GameParamsView;
+import com.samuelberrien.odyspace.main.params.GameParamsView;
 
 public class LevelActivity extends AppCompatActivity {
 

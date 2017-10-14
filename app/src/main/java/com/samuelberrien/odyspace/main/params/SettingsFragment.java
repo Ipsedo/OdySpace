@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main;
+package com.samuelberrien.odyspace.main.params;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.main.GameParamsView;
 
 /**
  * Created by samuel on 12/10/17.
