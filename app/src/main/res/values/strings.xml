@@ -55,4 +55,7 @@
     <string name="check">✖</string>
     <string name="next">▶</string>
     <string name="retry">▲</string>
+    <string name="reset_settings_text">Reset game settings</string>
+    <string name="reset_ship_text">Reset items and money</string>
+    <string name="reset_level_text">Reset level progression</string>
 </resources>

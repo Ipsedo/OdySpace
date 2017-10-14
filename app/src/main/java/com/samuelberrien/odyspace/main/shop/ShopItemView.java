@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.main.infos.Item3DWindow;
+import com.samuelberrien.odyspace.main.infos.Item3DView;
 import com.samuelberrien.odyspace.utils.game.Purchases;
 
 /**
@@ -22,7 +22,7 @@ import com.samuelberrien.odyspace.utils.game.Purchases;
 
 public class ShopItemView extends LinearLayout {
 
-	private Item3DWindow item3DWindow;
+	private Item3DView item3DView;
 
 	private TextView infos;
 
@@ -59,7 +59,7 @@ public class ShopItemView extends LinearLayout {
 		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
 		layoutParams.setMargins(5, 5, 5, 5 + (int) px);
 
-		addView(item3DWindow, layoutParams);
+		addView(item3DView, layoutParams);
 		addView(infos, layoutParams);
 
 		layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -74,14 +74,14 @@ public class ShopItemView extends LinearLayout {
 		switch (kind) {
 			case SHIP:
 				names = getResources().getStringArray(R.array.ship_shop_list_item);
-				item3DWindow = new Item3DWindow(getContext(), Purchases.SHIP, names[index]);
+				item3DView = new Item3DView(getContext(), Purchases.SHIP, names[index]);
 				break;
 			case FIRE:
 				names = getResources().getStringArray(R.array.fire_shop_list_item);
-				item3DWindow = new Item3DWindow(getContext(), Purchases.FIRE, names[index]);
+				item3DView = new Item3DView(getContext(), Purchases.FIRE, names[index]);
 				break;
 			case BONUS:
-				item3DWindow = new Item3DWindow(getContext(), Purchases.SHIP, getContext().getString(R.string.ship_supreme));
+				item3DView = new Item3DView(getContext(), Purchases.SHIP, getContext().getString(R.string.ship_supreme));
 				break;
 		}
 	}

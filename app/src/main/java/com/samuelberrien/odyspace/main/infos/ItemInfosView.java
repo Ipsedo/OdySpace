@@ -67,7 +67,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 
 	private LinearLayout.LayoutParams layoutParams;
 
-	private final Item3DWindow item3DWindow;
+	private final Item3DView item3DView;
 	private TextView infos;
 
 	private Purchases kind;
@@ -97,22 +97,21 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		loadName();
 		switch (kind) {
 			case SHIP:
-				item3DWindow = new Item3DWindow(parentsActivity, Purchases.SHIP, itemName);
+				item3DView = new Item3DView(parentsActivity, Purchases.SHIP, itemName);
 				break;
 			case FIRE:
-				item3DWindow = new Item3DWindow(parentsActivity, Purchases.FIRE, itemName);
+				item3DView = new Item3DView(parentsActivity, Purchases.FIRE, itemName);
 				break;
 			case BONUS:
-				item3DWindow = new Item3DWindow(parentsActivity, Purchases.SHIP, itemName);
+				item3DView = new Item3DView(parentsActivity, Purchases.SHIP, itemName);
 				break;
 			default:
-				item3DWindow = new Item3DWindow(parentsActivity, Purchases.SHIP, itemName);
+				item3DView = new Item3DView(parentsActivity, Purchases.SHIP, itemName);
 				break;
-
 		}
 		makeText();
 
-		addView(item3DWindow, layoutParams);
+		addView(item3DView, layoutParams);
 		addView(infos, layoutParams);
 
 		setBackground(ContextCompat.getDrawable(parentsActivity, R.drawable.drawer_button));
@@ -138,7 +137,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	private void reinit() {
 		loadName();
 		setText();
-		item3DWindow.changeObj(kind, itemName);
+		item3DView.changeObj(kind, itemName);
 	}
 
 	private void loadName() {
@@ -172,7 +171,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 			case BONUS:
 				int currentBoughtDuration = savedShop.getInt(parentsActivity.getString(R.string.bought_duration), getResources().getInteger(R.integer.zero));
 				int currentBonusDuration = savedShip.getInt(parentsActivity.getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.zero));
-				infos.setText(itemName + System.getProperty("line.separator") + "Duration : " + currentBonusDuration + " + " + currentBoughtDuration);
+				infos.setText(itemName + System.getProperty("line.separator") + "Time : " + currentBonusDuration + " + " + currentBoughtDuration);
 				break;
 
 		}

@@ -35,19 +35,22 @@
                     android:onClick="resetSettings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Reset game settings"/>
+                    android:background="@drawable/drawer_button"
+                    android:text="@string/reset_settings_text"/>
 
                 <Button
                     android:onClick="resetShop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Reset items and money"/>
+                    android:background="@drawable/drawer_button"
+                    android:text="@string/reset_ship_text"/>
 
                 <Button
                     android:onClick="resetLevels"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Reset level progression"/>
+                    android:background="@drawable/drawer_button"
+                    android:text="@string/reset_level_text"/>
 
             </LinearLayout>
         </LinearLayout>

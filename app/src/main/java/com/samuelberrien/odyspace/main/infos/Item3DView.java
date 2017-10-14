@@ -16,12 +16,12 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by samuel on 12/10/17.
  */
 
-public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Renderer {
+public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
 	private final float[] mProjectionMatrix = new float[16];
 	private final float[] mViewMatrix = new float[16];
 	private float[] mItemModelMatrix = new float[16];
-	private float angle = 0f;
+	private float angle;
 
 	private final float[] mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
 	private final float[] mLightPosInEyeSpace = new float[4];
@@ -36,9 +36,10 @@ public class Item3DWindow extends GLSurfaceView implements GLSurfaceView.Rendere
 
 	private boolean willCreateObj;
 
-	public Item3DWindow(Context context, Purchases purchases, String name) {
+	public Item3DView(Context context, Purchases purchases, String name) {
 		super(context);
 		this.context = context;
+		angle = (float) (Math.random() * 360d);
 
 		changeObj(purchases, name);
 
