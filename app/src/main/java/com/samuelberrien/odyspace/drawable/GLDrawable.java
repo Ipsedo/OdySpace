@@ -10,15 +10,13 @@ package com.samuelberrien.odyspace.drawable;
 public interface GLDrawable {
 
 	/**
-	 *
-	 */
-	void changeColor();
-
-	/**
-	 * @param mMVPMatrix
-	 * @param mMVMatrix
+	 * @param mProjectionMatrix
+	 * @param mViewMatrix
 	 * @param mLightPosInEyeSpace
 	 * @param mCameraPosition
 	 */
-	void draw(float[] mMVPMatrix, float[] mMVMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
+	void draw(float[] mProjectionMatrix,
+			  float[] mViewMatrix,
+			  float[] mLightPosInEyeSpace,
+			  float[] mCameraPosition);
 }

@@ -52,14 +52,24 @@ public class TestBossThread implements Level {
 		ship = currShip;
 		float limitDown = -100f;
 		//heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
-		noiseMap = new NoiseMap(context, new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
+		noiseMap = new NoiseMap(context,
+				new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f},
+				0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
 		noiseMap.update();
-		forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, noiseMap, levelLimitSize);
-		levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
+		forest = new Forest(this.context,
+				"dead_tree.obj", "dead_tree.mtl",
+				100, noiseMap, levelLimitSize);
+		levelLimits = new Box(-levelLimitSize,
+				limitDown - 0.02f * levelLimitSize,
+				-levelLimitSize,
+				levelLimitSize * 2f,
+				levelLimitSize,
+				levelLimitSize * 2f);
 		cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_rouge/");
 		cubeMap.update();
 
-		progressBar = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		progressBar = new ProgressBar(this.context, 20, -1f + 0.15f, 0.9f,
+				Color.LevelProgressBarColor);
 
 		rocketsShip = Collections.synchronizedList(new ArrayList<BaseItem>());
 		rocketsBoss = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -77,7 +87,10 @@ public class TestBossThread implements Level {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		ArrayList<BaseItem> tmp = new ArrayList<>();
 		tmp.addAll(rocketsShip);

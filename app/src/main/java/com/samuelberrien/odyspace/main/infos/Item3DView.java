@@ -48,6 +48,7 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 	}
 
 	public void changeObj(Purchases purchases, String name) {
+		//TODO faire truc propre string.xml avec list des noms de fichier obj et mtl (biens indéxés)
 		switch (purchases) {
 			case SHIP:
 				if (name.equals(context.getString(R.string.ship_simple))) {
@@ -89,6 +90,24 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 				}
 				break;
 			case BONUS:
+				//TODO item bonus en 3D
+				if (name.equals(context.getString(R.string.bonus_1))) {
+					objFileName = "arrow_speed.obj";
+					mtlFileName = "arrow_speed.mtl";
+				} else if (name.equals(context.getString(R.string.bought_duration))) {
+					objFileName = "clock.obj";
+					mtlFileName = "clock.mtl";
+				} else if (name.equals(context.getString(R.string.bonus_2))) {
+					objFileName = "arrow_speed.obj";
+					mtlFileName = "arrow_speed.mtl";
+				} else {
+					objFileName = "arrow_speed.obj";
+					mtlFileName = "arrow_speed.mtl";
+				}
+				break;
+			default:
+				objFileName = "ship_3.obj";
+				mtlFileName = "ship_3.mtl";
 				break;
 		}
 		willCreateObj = true;

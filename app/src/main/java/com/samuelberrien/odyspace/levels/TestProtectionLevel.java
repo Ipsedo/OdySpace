@@ -77,10 +77,19 @@ public class TestProtectionLevel implements Level {
 		this.ship = ship;
 
 		float limitDown = -100f;
-		noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
+		noiseMap = new NoiseMap(context,
+				new float[]{0f, 177f / 255f, 106f / 255f, 1f},
+				0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
 		noiseMap.update();
-		forest = new Forest(this.context, "dead_tree.obj", "dead_tree.mtl", 100, noiseMap, levelLimitSize);
-		levelLimits = new Box(-levelLimitSize, limitDown - 0.02f * levelLimitSize - 100f, -levelLimitSize, levelLimitSize * 2f, levelLimitSize * 1.5f, levelLimitSize * 2f);
+		forest = new Forest(this.context,
+				"dead_tree.obj", "dead_tree.mtl",
+				100, noiseMap, levelLimitSize);
+		levelLimits = new Box(-levelLimitSize,
+				limitDown - 0.02f * levelLimitSize - 100f,
+				-levelLimitSize,
+				levelLimitSize * 2f,
+				levelLimitSize * 1.5f,
+				levelLimitSize * 2f);
 		cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
 		cubeMap.update();
 		this.levelLimitSize = levelLimitSize;
@@ -93,7 +102,9 @@ public class TestProtectionLevel implements Level {
 		this.ship.setRockets(rockets);
 
 		particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
-		icosahedron = new ObjModelMtlVBO(this.context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
+		icosahedron = new ObjModelMtlVBO(this.context,
+				"icosahedron.obj", "icosahedron.mtl",
+				1f, 0f, true);
 		directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
 		//TODO crashable
 		crashableIco = new CrashableMesh(context, "icosahedron.obj");
@@ -108,9 +119,16 @@ public class TestProtectionLevel implements Level {
 			float x = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
 			float z = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
 
-			float[] triangles = noiseMap.passToModelMatrix(noiseMap.getRestreintArea(new float[]{x, 0f, z}));
-			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
-			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
+			float[] triangles = noiseMap.passToModelMatrix(
+					noiseMap.getRestreintArea(new float[]{x, 0f, z}));
+			float moy = Triangle.CalcY(
+					new float[]{triangles[0], triangles[1], triangles[2]},
+					new float[]{triangles[3], triangles[4], triangles[5]},
+					new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
+			moy += Triangle.CalcY(
+					new float[]{triangles[9], triangles[10], triangles[11]},
+					new float[]{triangles[12], triangles[13], triangles[14]},
+					new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
 			float[] pos = new float[]{x, moy + 5f, z};
 
@@ -120,7 +138,8 @@ public class TestProtectionLevel implements Level {
 			bases.add(tmpBase);
 		}
 
-		currLevelProgression = new ProgressBar(this.context, maxLevelTime, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		currLevelProgression = new ProgressBar(this.context, maxLevelTime, -1f + 0.15f, 0.9f,
+				Color.LevelProgressBarColor);
 
 		soundPoolBuilder = new SoundPoolBuilder(this.context);
 
@@ -135,7 +154,10 @@ public class TestProtectionLevel implements Level {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
 		forest.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
@@ -210,7 +232,9 @@ public class TestProtectionLevel implements Level {
 	}
 
 	private float[] randomIcoPosition() {
-		return new float[]{rand.nextFloat() * levelLimitSize * 2f - levelLimitSize, -100f - 0.02f * levelLimitSize + levelLimitSize + rand.nextFloat() * levelLimitSize * 0.5f, rand.nextFloat() * levelLimitSize * 2f - levelLimitSize};
+		return new float[]{rand.nextFloat() * levelLimitSize * 2f - levelLimitSize,
+				-100f - 0.02f * levelLimitSize + levelLimitSize + rand.nextFloat() * levelLimitSize * 0.5f,
+				rand.nextFloat() * levelLimitSize * 2f - levelLimitSize};
 	}
 
 	private float[] randomIcoSpeed(float maxSpeed) {
@@ -248,7 +272,12 @@ public class TestProtectionLevel implements Level {
 
 		List<BaseItem> targets = new ArrayList<>(bases);
 		if (rand.nextFloat() < 4e-2f) {
-			Icosahedron tmp = new SuperIcosahedron(context, icosahedron, crashableIco, (int) Math.ceil(rand.nextDouble() * 3), randomIcoPosition(), randomIcoSpeed(rand.nextFloat() * 0.1f + 0.2f), rand.nextFloat() * 10f + 10f);
+			Icosahedron tmp = new SuperIcosahedron(context,
+					icosahedron, crashableIco,
+					(int) Math.ceil(rand.nextDouble() * 3),
+					randomIcoPosition(),
+					randomIcoSpeed(rand.nextFloat() * 0.1f + 0.2f),
+					rand.nextFloat() * 10f + 10f);
 			tmp.update();
 			tmp.queueExplosion();
 			tmp.computeDanger(targets);
@@ -264,7 +293,8 @@ public class TestProtectionLevel implements Level {
 
 		for (int i = bases.size() - 1; i >= 0; i--)
 			if (!bases.get(i).isAlive()) {
-				soundPoolBuilder.playBigBoom(getSoundLevel(bases.get(i)), getSoundLevel(bases.get(i)));
+				soundPoolBuilder.playBigBoom(getSoundLevel(bases.get(i)),
+						getSoundLevel(bases.get(i)));
 				bases.get(i).addExplosion(explosions);
 				bases.remove(i);
 			}

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.GLDrawable;
+import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.io.BufferedReader;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by samuel on 05/01/17.
  */
 
-public class ObjModel implements GLDrawable {
+public class ObjModel implements GLItemDrawable {
 
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer normalsBuffer;
@@ -57,7 +57,12 @@ public class ObjModel implements GLDrawable {
 	 * @param blue              the blue color of the object
 	 * @param lightAugmentation the light augmentation of the object
 	 */
-	public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef, float ambColorCoef) {
+	public ObjModel(Context context,
+					int resId,
+					float red,
+					float green,
+					float blue,
+					float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
@@ -74,8 +79,12 @@ public class ObjModel implements GLDrawable {
 		}
 
 
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.diffuse_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.diffuse_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -85,7 +94,12 @@ public class ObjModel implements GLDrawable {
 		bind();
 	}
 
-	public ObjModel(Context context, String fileName, float red, float green, float blue, float lightAugmentation, float distanceCoef, float ambColorCoef) {
+	public ObjModel(Context context,
+					String fileName,
+					float red,
+					float green,
+					float blue,
+					float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
@@ -101,8 +115,12 @@ public class ObjModel implements GLDrawable {
 			ioe.printStackTrace();
 		}
 
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.diffuse_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.diffuse_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -248,7 +266,10 @@ public class ObjModel implements GLDrawable {
 	 * @param mvMatrix            The Model View matrix
 	 * @param mLightPosInEyeSpace The light position in the eye space
 	 */
-	public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] unused) {
+	public void draw(float[] mvpMatrix,
+					 float[] mvMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] unused) {
 		// Add program to OpenGL environment
 		GLES20.glUseProgram(mProgram);
 
@@ -257,13 +278,16 @@ public class ObjModel implements GLDrawable {
 		normalsBuffer.position(0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
 
 		GLES20.glEnableVertexAttribArray(mColorHandle);
-		GLES20.glVertexAttribPointer(mColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, colorBuffer);
+		GLES20.glVertexAttribPointer(mColorHandle,
+				4, GLES20.GL_FLOAT, false, 4 * 4, colorBuffer);
 
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
-		GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, normalsBuffer);
+		GLES20.glVertexAttribPointer(mNormalHandle,
+				3, GLES20.GL_FLOAT, false, 3 * 4, normalsBuffer);
 
 		// Apply the projection and view transformation
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);

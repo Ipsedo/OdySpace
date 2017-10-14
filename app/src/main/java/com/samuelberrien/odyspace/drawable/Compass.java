@@ -46,8 +46,12 @@ public class Compass implements GLInfoDrawable {
 	private int mProgram;
 
 	public Compass(Context context, float maxDistance) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -83,15 +87,22 @@ public class Compass implements GLInfoDrawable {
 			float[] vecUpShip = from.getCamUpVec();
 			float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
 
-			angleWithFrontVec = Math.acos(Vector.dot3f(Vector.normalize3f(vecFrontShip), Vector.normalize3f(vecShipToOther)));
+			angleWithFrontVec = Math.acos(
+					Vector.dot3f(
+							Vector.normalize3f(vecFrontShip),
+							Vector.normalize3f(vecShipToOther)));
 			if (angleWithFrontVec < Math.toRadians(30d)) {
 				willDraw = false;
 				return;
 			}
 
-			float[] vecProjeté = Vector.cross3f(vecFrontShip, Vector.cross3f(vecShipToOther, vecFrontShip));
+			float[] vecProjeté = Vector.cross3f(
+					vecFrontShip,
+					Vector.cross3f(vecShipToOther, vecFrontShip));
 
-			double angle = Math.acos(Vector.dot3f(Vector.normalize3f(vecUpShip), Vector.normalize3f(vecProjeté)));
+			double angle = Math.acos(Vector.dot3f(
+					Vector.normalize3f(vecUpShip),
+					Vector.normalize3f(vecProjeté)));
 			float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
 
 			if (vecDansRepereShip[0] > 0)
@@ -126,7 +137,8 @@ public class Compass implements GLInfoDrawable {
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mModelMatrix, 0);
 
 			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, triangleBuffer);
+			GLES20.glVertexAttribPointer(mPositionHandle,
+					3, GLES20.GL_FLOAT, false, 3 * 4, triangleBuffer);
 			GLES20.glUniform4fv(mColorHandle, 1, isAccent ? colorAccent : color, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 			GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, triangle.length / 3);

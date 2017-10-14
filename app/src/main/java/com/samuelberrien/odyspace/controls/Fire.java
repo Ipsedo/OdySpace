@@ -28,7 +28,10 @@ class Fire extends Control {
 	static float FireButtonRay = 0.3f;
 	private float[] fireButtonPoints = new float[nbPoint * 3];
 	private FloatBuffer fireButtonVertexBuffer;
-	private float[] mFireButtonPosition = new float[]{-1f + 1e-2f, -1f + FireButtonRay + 1e-2f, 0f};
+	private float[] mFireButtonPosition = new float[]{
+			-1f + 1e-2f,
+			-1f + FireButtonRay + 1e-2f,
+			0f};
 	private ObjModel fireLogo;
 	private boolean isFire;
 
@@ -55,8 +58,12 @@ class Fire extends Control {
 
 	@Override
 	void initGraphics(Context context) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -125,11 +132,15 @@ class Fire extends Control {
 
 		float[] mMMatrix = new float[16];
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, mFireButtonPosition[0] * ratio + FireButtonRay, mFireButtonPosition[1], mFireButtonPosition[2]);
+		Matrix.translateM(mMMatrix, 0,
+				mFireButtonPosition[0] * ratio + FireButtonRay,
+				mFireButtonPosition[1],
+				mFireButtonPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, fireButtonVertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				3, GLES20.GL_FLOAT, false, 3 * 4, fireButtonVertexBuffer);
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, fireButtonPoints.length / 3);
@@ -137,8 +148,14 @@ class Fire extends Control {
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, mFireButtonPosition[0] * ratio + FireButtonRay, mFireButtonPosition[1], mFireButtonPosition[2]);
-		Matrix.scaleM(mMMatrix, 0, FireButtonRay / 1.2f, FireButtonRay / 1.2f, FireButtonRay / 1.2f);
+		Matrix.translateM(mMMatrix, 0,
+				mFireButtonPosition[0] * ratio + FireButtonRay,
+				mFireButtonPosition[1],
+				mFireButtonPosition[2]);
+		Matrix.scaleM(mMMatrix, 0,
+				FireButtonRay / 1.2f,
+				FireButtonRay / 1.2f,
+				FireButtonRay / 1.2f);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glLineWidth(1f);

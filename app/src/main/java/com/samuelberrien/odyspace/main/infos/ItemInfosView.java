@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -35,25 +36,25 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if (key.equals(parentsActivity.getString(R.string.current_fire_type))) {
+		if (key.equals(getContext().getString(R.string.current_fire_type))) {
 			if (kind == FIRE) {
 				reinit();
 			}
-		} else if (key.equals(parentsActivity.getString(R.string.current_ship_used))) {
+		} else if (key.equals(getContext().getString(R.string.current_ship_used))) {
 			if (kind == SHIP) {
 				reinit();
 			}
-		} else if (key.equals(parentsActivity.getString(R.string.current_bonus_used))) {
+		} else if (key.equals(getContext().getString(R.string.current_bonus_used))) {
 			if (kind == BONUS) {
 				reinit();
 			}
-		} else if (key.equals(parentsActivity.getString(R.string.saved_money))) {
+		} else if (key.equals(getContext().getString(R.string.saved_money))) {
 			reloadItemChooser();
-		} else if (key.equals(parentsActivity.getString(R.string.bought_life))) {
+		} else if (key.equals(getContext().getString(R.string.bought_life))) {
 			if (kind == SHIP) {
 				setText();
 			}
-		} else if (key.equals(parentsActivity.getString(R.string.bought_duration))) {
+		} else if (key.equals(getContext().getString(R.string.bought_duration))) {
 			if (kind == BONUS) {
 				setText();
 			}
@@ -72,7 +73,8 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 
 	private Purchases kind;
 
-	private Activity parentsActivity;
+	//private Activity parentsActivity;
+	private LayoutInflater layoutInflater;
 
 	private LinearLayout selectItemLayout;
 	private TextView titleItemChooser;
@@ -82,31 +84,35 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		super(mActivity);
 		setOrientation(LinearLayout.HORIZONTAL);
 
-		parentsActivity = mActivity;
+		layoutInflater = mActivity.getLayoutInflater();
 		this.kind = kind;
 
-		savedShop = parentsActivity.getApplicationContext().getSharedPreferences(parentsActivity.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
-		savedShip = parentsActivity.getApplicationContext().getSharedPreferences(parentsActivity.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+		savedShop = mActivity.getApplicationContext()
+				.getSharedPreferences(getContext().getString(R.string.shop_preferences),
+						Context.MODE_PRIVATE);
+		savedShip = mActivity.getApplicationContext()
+				.getSharedPreferences(getContext().getString(R.string.ship_info_preferences),
+						Context.MODE_PRIVATE);
 
 		savedShip.registerOnSharedPreferenceChangeListener(this);
 		savedShop.registerOnSharedPreferenceChangeListener(this);
 
-		layoutParams = getLayoutParams(parentsActivity);
+		layoutParams = getLayoutParams(getContext());
 
 
 		loadName();
 		switch (kind) {
 			case SHIP:
-				item3DView = new Item3DView(parentsActivity, Purchases.SHIP, itemName);
+				item3DView = new Item3DView(getContext(), Purchases.SHIP, itemName);
 				break;
 			case FIRE:
-				item3DView = new Item3DView(parentsActivity, Purchases.FIRE, itemName);
+				item3DView = new Item3DView(getContext(), Purchases.FIRE, itemName);
 				break;
 			case BONUS:
-				item3DView = new Item3DView(parentsActivity, Purchases.SHIP, itemName);
+				item3DView = new Item3DView(getContext(), Purchases.BONUS, itemName);
 				break;
 			default:
-				item3DView = new Item3DView(parentsActivity, Purchases.SHIP, itemName);
+				item3DView = new Item3DView(getContext(), Purchases.SHIP, itemName);
 				break;
 		}
 		makeText();
@@ -114,11 +120,12 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		addView(item3DView, layoutParams);
 		addView(infos, layoutParams);
 
-		setBackground(ContextCompat.getDrawable(parentsActivity, R.drawable.drawer_button));
+		setBackground(ContextCompat.getDrawable(getContext(), R.drawable.drawer_button));
 
-		dialog = new Dialog(parentsActivity, R.style.AppTheme);
+		dialog = new Dialog(getContext(), R.style.AppTheme);
 		makeItemChooser();
-		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		dialog.getWindow()
+				.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		dialog.setContentView(selectItemLayout);
 		dialog.setCancelable(true);
 		dialog.setCanceledOnTouchOutside(true);
@@ -126,7 +133,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Point screenSize = getScreenSize(parentsActivity);
+				Point screenSize = getScreenSize();
 				dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
 				selectItemLayout.requestLayout();
 				dialog.show();
@@ -143,13 +150,19 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	private void loadName() {
 		switch (kind) {
 			case SHIP:
-				itemName = savedShip.getString(parentsActivity.getString(R.string.current_ship_used), parentsActivity.getString(R.string.saved_ship_used_default));
+				itemName = savedShip.getString(
+						getContext().getString(R.string.current_ship_used),
+						getContext().getString(R.string.saved_ship_used_default));
 				break;
 			case FIRE:
-				itemName = savedShip.getString(parentsActivity.getString(R.string.current_fire_type), parentsActivity.getString(R.string.saved_fire_type_default));
+				itemName = savedShip.getString(
+						getContext().getString(R.string.current_fire_type),
+						getContext().getString(R.string.saved_fire_type_default));
 				break;
 			case BONUS:
-				itemName = savedShip.getString(parentsActivity.getString(R.string.current_bonus_used), parentsActivity.getString(R.string.bonus_1));
+				itemName = savedShip.getString(
+						getContext().getString(R.string.current_bonus_used),
+						getContext().getString(R.string.bonus_1));
 				break;
 		}
 	}
@@ -161,24 +174,34 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	private void setText() {
 		switch (kind) {
 			case SHIP:
-				int currBoughtLife = savedShop.getInt(parentsActivity.getString(R.string.bought_life), parentsActivity.getResources().getInteger(R.integer.saved_ship_life_shop_default));
-				int currShipLife = savedShip.getInt(parentsActivity.getString(R.string.current_life_number), parentsActivity.getResources().getInteger(R.integer.saved_ship_life_default));
-				infos.setText(itemName + System.getProperty("line.separator") + "Life : " + currShipLife + " + " + currBoughtLife);
+				int currBoughtLife = savedShop.getInt(
+						getContext().getString(R.string.bought_life),
+						getResources().getInteger(R.integer.saved_ship_life_shop_default));
+				int currShipLife = savedShip.getInt(
+						getContext().getString(R.string.current_life_number),
+						getResources().getInteger(R.integer.saved_ship_life_default));
+				infos.setText(itemName + System.getProperty("line.separator")
+						+ "Life : " + currShipLife + " + " + currBoughtLife);
 				break;
 			case FIRE:
 				infos.setText(itemName);
 				break;
 			case BONUS:
-				int currentBoughtDuration = savedShop.getInt(parentsActivity.getString(R.string.bought_duration), getResources().getInteger(R.integer.zero));
-				int currentBonusDuration = savedShip.getInt(parentsActivity.getString(R.string.current_bonus_duration), getResources().getInteger(R.integer.zero));
-				infos.setText(itemName + System.getProperty("line.separator") + "Time : " + currentBonusDuration + " + " + currentBoughtDuration);
+				int currentBoughtDuration = savedShop.getInt(
+						getContext().getString(R.string.bought_duration),
+						getResources().getInteger(R.integer.zero));
+				int currentBonusDuration = savedShip.getInt(
+						getContext().getString(R.string.current_bonus_duration),
+						getResources().getInteger(R.integer.zero));
+				infos.setText(itemName + System.getProperty("line.separator")
+						+ "Time : " + currentBonusDuration + " + " + currentBoughtDuration);
 				break;
 
 		}
 	}
 
 	private void makeText() {
-		infos = new TextView(parentsActivity);
+		infos = new TextView(getContext());
 		infos.setGravity(Gravity.CENTER);
 		setText();
 	}
@@ -189,13 +212,16 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		switch (kind) {
 			case SHIP:
 				titleItemChooser.setText("Bought ships");
-				items = parentsActivity.getResources().getStringArray(R.array.ship_shop_list_item);
-				final int[] lifeList = parentsActivity.getResources().getIntArray(R.array.ship_life_shop_list_item);
+				items = getResources().getStringArray(R.array.ship_shop_list_item);
+				final int[] lifeList = getResources().getIntArray(R.array.ship_life_shop_list_item);
 				for (int i = 1; i < items.length; i++) {
-					int rBool = items[i].equals(parentsActivity.getString(R.string.ship_simple)) ? R.bool.vrai : R.bool.faux;
-					if (savedShop.getBoolean(items[i], parentsActivity.getResources().getBoolean(rBool))) {
-						RadioButton tmpRadioButton = new RadioButton(parentsActivity);
-						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					int rBool = items[i].equals(getContext().getString(R.string.ship_simple)) ?
+							R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
+						RadioButton tmpRadioButton = new RadioButton(getContext());
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(
+								ViewGroup.LayoutParams.MATCH_PARENT,
+								ViewGroup.LayoutParams.WRAP_CONTENT));
 
 						radioGroup.addView(tmpRadioButton);
 						tmpRadioButton.setText(items[i]);
@@ -205,13 +231,19 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 							@Override
 							public void onClick(View view) {
 								savedShip.edit()
-										.putString(parentsActivity.getString(R.string.current_ship_used), items[index])
-										.putInt(parentsActivity.getString(R.string.current_life_number), lifeList[index - 1])
+										.putString(
+												getContext().getString(R.string.current_ship_used),
+												items[index])
+										.putInt(
+												getContext().getString(R.string.current_life_number),
+												lifeList[index - 1])
 										.apply();
 							}
 						});
 
-						if (savedShip.getString(parentsActivity.getString(R.string.current_ship_used), parentsActivity.getString(R.string.saved_ship_used_default)).equals(items[index])) {
+						if (savedShip.getString(getContext().getString(R.string.current_ship_used),
+								getContext().getString(R.string.saved_ship_used_default))
+								.equals(items[index])) {
 							tmpRadioButton.setChecked(true);
 						}
 					}
@@ -219,12 +251,15 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				break;
 			case FIRE:
 				titleItemChooser.setText("Bought fires");
-				items = parentsActivity.getResources().getStringArray(R.array.fire_shop_list_item);
+				items = getResources().getStringArray(R.array.fire_shop_list_item);
 				for (int i = 0; i < items.length; i++) {
-					int rBool = items[i].equals(parentsActivity.getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
-					if (savedShop.getBoolean(items[i], parentsActivity.getResources().getBoolean(rBool))) {
-						RadioButton tmpRadioButton = new RadioButton(parentsActivity);
-						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					int rBool = items[i].equals(getContext().getString(R.string.fire_1)) ?
+							R.bool.vrai : R.bool.faux;
+					if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
+						RadioButton tmpRadioButton = new RadioButton(getContext());
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(
+								ViewGroup.LayoutParams.MATCH_PARENT,
+								ViewGroup.LayoutParams.WRAP_CONTENT));
 
 						radioGroup.addView(tmpRadioButton);
 						tmpRadioButton.setText(items[i]);
@@ -234,12 +269,16 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 							@Override
 							public void onClick(View view) {
 								savedShip.edit()
-										.putString(parentsActivity.getString(R.string.current_fire_type), items[index])
+										.putString(
+												getContext().getString(R.string.current_fire_type),
+												items[index])
 										.apply();
 							}
 						});
 
-						if (savedShip.getString(parentsActivity.getString(R.string.current_fire_type), parentsActivity.getString(R.string.saved_fire_type_default)).equals(items[index])) {
+						if (savedShip.getString(getContext().getString(R.string.current_fire_type),
+								getContext().getString(R.string.saved_fire_type_default))
+								.equals(items[index])) {
 							tmpRadioButton.setChecked(true);
 						}
 					}
@@ -247,14 +286,18 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				break;
 			case BONUS:
 				titleItemChooser.setText("Bought bonus");
-				items = parentsActivity.getResources().getStringArray(R.array.bonus_shop_list_item);
-				final int[] durationList = parentsActivity.getResources().getIntArray(R.array.bonus_duration_shop_list_item);
+				items = getResources().getStringArray(R.array.bonus_shop_list_item);
+				final int[] durationList = getResources().getIntArray(
+						R.array.bonus_duration_shop_list_item);
 				for (int i = 1; i < items.length; i++) {
-					int rBool = items[i].equals(parentsActivity.getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
-					boolean bool = parentsActivity.getResources().getBoolean(rBool);
+					int rBool = items[i].equals(getContext().getString(R.string.bonus_1)) ?
+							R.bool.vrai : R.bool.faux;
+					boolean bool = getResources().getBoolean(rBool);
 					if (savedShop.getBoolean(items[i], bool)) {
-						RadioButton tmpRadioButton = new RadioButton(parentsActivity);
-						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+						RadioButton tmpRadioButton = new RadioButton(getContext());
+						tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(
+								ViewGroup.LayoutParams.MATCH_PARENT,
+								ViewGroup.LayoutParams.WRAP_CONTENT));
 
 						radioGroup.addView(tmpRadioButton);
 						tmpRadioButton.setText(items[i]);
@@ -264,13 +307,17 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 							@Override
 							public void onClick(View view) {
 								savedShip.edit()
-										.putString(parentsActivity.getString(R.string.current_bonus_used), items[index])
-										.putInt(parentsActivity.getString(R.string.current_bonus_duration), durationList[index - 1])
+										.putString(getContext().getString(R.string.current_bonus_used),
+												items[index])
+										.putInt(getContext().getString(R.string.current_bonus_duration),
+												durationList[index - 1])
 										.apply();
 							}
 						});
 
-						if (savedShip.getString(parentsActivity.getString(R.string.current_bonus_used), parentsActivity.getString(R.string.bonus_1)).equals(items[index])) {
+						if (savedShip.getString(getContext().getString(R.string.current_bonus_used),
+								getContext().getString(R.string.bonus_1))
+								.equals(items[index])) {
 							tmpRadioButton.setChecked(true);
 						}
 					}
@@ -281,7 +328,9 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	}
 
 	private void makeItemChooser() {
-		selectItemLayout = (LinearLayout) parentsActivity.getLayoutInflater().inflate(R.layout.select_item_layout, (LinearLayout) parentsActivity.findViewById(R.id.select_item_layout));
+		selectItemLayout = (LinearLayout) layoutInflater
+				.inflate(R.layout.select_item_layout,
+						(LinearLayout) findViewById(R.id.select_item_layout));
 		radioGroup = (RadioGroup) selectItemLayout.findViewById(R.id.select_item_radio_group);
 		titleItemChooser = (TextView) selectItemLayout.findViewById(R.id.select_item_text);
 		fillItemChooser();
@@ -312,15 +361,17 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		dialog.dismiss();
 	}
 
-	private Point getScreenSize(Activity activity) {
-		Display display = activity.getWindowManager().getDefaultDisplay();
+	private Point getScreenSize() {
+		Display display = getDisplay();
 		Point size = new Point();
 		display.getSize(size);
 		return size;
 	}
 
 	private LinearLayout.LayoutParams getLayoutParams(Context context) {
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 1f;
 		Resources r = context.getResources();
 		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());

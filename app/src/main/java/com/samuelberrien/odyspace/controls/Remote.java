@@ -46,8 +46,12 @@ class Remote extends Control {
 
 	@Override
 	void initGraphics(Context context) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -156,7 +160,9 @@ class Remote extends Control {
 	}
 
 	float getRemoteLevel() {
-		return isVisible ? (mRemoteStickPosition[0] - mRemotePosition[0]) / (0.5f * (width - height)) : 0f;
+		return isVisible ?
+				(mRemoteStickPosition[0] - mRemotePosition[0]) / (0.5f * (width - height))
+				: 0f;
 	}
 
 	@Override
@@ -177,21 +183,29 @@ class Remote extends Control {
 			float[] mMMatrix = new float[16];
 
 			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, mRemotePosition[0], mRemotePosition[1], mRemotePosition[2]);
+			Matrix.translateM(mMMatrix, 0,
+					mRemotePosition[0],
+					mRemotePosition[1],
+					mRemotePosition[2]);
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, remoteVertexBuffer);
+			GLES20.glVertexAttribPointer(mPositionHandle,
+					3, GLES20.GL_FLOAT, false, 3 * 4, remoteVertexBuffer);
 			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mRemotePoints.length / 3);
 
 			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, mRemoteStickPosition[0], mRemoteStickPosition[1], mRemoteStickPosition[2]);
+			Matrix.translateM(mMMatrix, 0,
+					mRemoteStickPosition[0],
+					mRemoteStickPosition[1],
+					mRemoteStickPosition[2]);
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, remoteStickVertexBuffer);
+			GLES20.glVertexAttribPointer(mPositionHandle,
+					3, GLES20.GL_FLOAT, false, 3 * 4, remoteStickVertexBuffer);
 			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mRemoteStickPoints.length / 3);

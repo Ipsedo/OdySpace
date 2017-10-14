@@ -16,7 +16,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Forest implements GLItemDrawable {
+public class Forest implements GLDrawable {
 
 	private Context context;
 
@@ -25,9 +25,13 @@ public class Forest implements GLItemDrawable {
 	private int nbTree;
 	private float[][] mModelsMatrix;
 
-	public Forest(Context context, String treeObjFileName, String treeMtlFileName, int nbTree, Map map, float areaSize) {
+	public Forest(Context context,
+				  String treeObjFileName, String treeMtlFileName,
+				  int nbTree, Map map, float areaSize) {
 		this.context = context;
-		tree = new ObjModelMtlVBO(this.context, treeObjFileName, treeMtlFileName, 0.7f, 0f, false);
+		tree = new ObjModelMtlVBO(this.context,
+				treeObjFileName, treeMtlFileName,
+				0.7f, 0f, false);
 		this.nbTree = nbTree;
 		mModelsMatrix = new float[this.nbTree][16];
 		initTrees(map, areaSize);
@@ -40,9 +44,18 @@ public class Forest implements GLItemDrawable {
 			float y;
 			float z = rand.nextFloat() * areaSize - areaSize * 0.5f;
 
-			float[] triangles = map.passToModelMatrix(map.getRestreintArea(new float[]{x, 0f, z}));
-			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
-			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
+			float[] triangles = map.passToModelMatrix(
+					map.getRestreintArea(new float[]{x, 0f, z}));
+			float moy = Triangle.CalcY(
+					new float[]{triangles[0], triangles[1], triangles[2]},
+					new float[]{triangles[3], triangles[4], triangles[5]},
+					new float[]{triangles[6], triangles[7], triangles[8]},
+					x, z) / 2f;
+			moy += Triangle.CalcY(
+					new float[]{triangles[9], triangles[10], triangles[11]},
+					new float[]{triangles[12], triangles[13], triangles[14]},
+					new float[]{triangles[15], triangles[16], triangles[17]},
+					x, z) / 2f;
 
 			y = moy;
 
@@ -62,7 +75,10 @@ public class Forest implements GLItemDrawable {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		float[] tmpMVMatrix = new float[16];
 		float[] tmpMVPMatrix = new float[16];
 		for (int i = 0; i < nbTree; i++) {

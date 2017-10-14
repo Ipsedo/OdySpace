@@ -62,9 +62,15 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 		remote.initGraphics(context);
 		boost.initGraphics(context);
 		this.context = context;
-		SharedPreferences gamePreference = context.getSharedPreferences(context.getString(R.string.game_preferences), Context.MODE_PRIVATE);
-		isPitchInversed = gamePreference.getBoolean(context.getString(R.string.saved_joystick_inversed), context.getResources().getBoolean(R.bool.vrai));
-		isRollAndYawInversed = gamePreference.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.faux));
+		SharedPreferences gamePreference = context.getSharedPreferences(
+				context.getString(R.string.game_preferences),
+				Context.MODE_PRIVATE);
+		isPitchInversed = gamePreference.getBoolean(
+				context.getString(R.string.saved_joystick_inversed),
+				context.getResources().getBoolean(R.bool.vrai));
+		isRollAndYawInversed = gamePreference.getBoolean(
+				context.getString(R.string.saved_yaw_roll_switched),
+				context.getResources().getBoolean(R.bool.faux));
 		gamePreference.registerOnSharedPreferenceChangeListener(this);
 	}
 
@@ -157,7 +163,9 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 				for (int i = 0; i < e.getPointerCount(); i++)
 					for (Control c : controls)
 						if (c.isCurrentTouched(e.getPointerId(i)))
-							c.updateStick(-(2f * e.getX(i) / screenWidth - 1f), -(2f * e.getY(i) / screenHeight - 1f), ratio);
+							c.updateStick(-(2f * e.getX(i) / screenWidth - 1f),
+									-(2f * e.getY(i) / screenHeight - 1f),
+									ratio);
 				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
 				for (Control c : controls)
@@ -187,9 +195,13 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		if (key.equals(context.getString(R.string.saved_joystick_inversed))) {
-			isPitchInversed = sharedPreferences.getBoolean(key, context.getResources().getBoolean(R.bool.vrai));
+			isPitchInversed = sharedPreferences.getBoolean(
+					key,
+					context.getResources().getBoolean(R.bool.vrai));
 		} else if (key.equals(context.getString(R.string.saved_yaw_roll_switched))) {
-			isRollAndYawInversed = sharedPreferences.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.faux));
+			isRollAndYawInversed = sharedPreferences.getBoolean(
+					context.getString(R.string.saved_yaw_roll_switched),
+					context.getResources().getBoolean(R.bool.faux));
 		}
 	}
 }

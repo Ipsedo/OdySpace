@@ -50,8 +50,12 @@ class Joystick extends Control {
 
 	@Override
 	void initGraphics(Context context) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -116,8 +120,10 @@ class Joystick extends Control {
 		if (length > circleLength - stickLength) {
 			double xDist = x - mPosition[0];
 			double yDist = y - mPosition[1];
-			mStickPosition[0] = mPosition[0] + (float) ((circleLength - stickLength) * xDist / length);
-			mStickPosition[1] = mPosition[1] + (float) ((circleLength - stickLength) * yDist / length);
+			mStickPosition[0] = mPosition[0]
+					+ (float) ((circleLength - stickLength) * xDist / length);
+			mStickPosition[1] = mPosition[1]
+					+ (float) ((circleLength - stickLength) * yDist / length);
 			mStickPosition[2] = 0f;
 		} else {
 			mStickPosition[0] = x;
@@ -128,7 +134,9 @@ class Joystick extends Control {
 
 	float[] getStickPosition() {
 		if (isVisible) {
-			return new float[]{-(mStickPosition[0] - mPosition[0]) / (float) (circleLength - stickLength), (mStickPosition[1] - mPosition[1]) / (float) (circleLength - stickLength)};
+			return new float[]{
+					-(mStickPosition[0] - mPosition[0]) / (float) (circleLength - stickLength),
+					(mStickPosition[1] - mPosition[1]) / (float) (circleLength - stickLength)};
 		} else {
 			return new float[]{0f, 0f};
 		}
@@ -175,15 +183,20 @@ class Joystick extends Control {
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 			GLES20.glEnableVertexAttribArray(mPositionHandle);
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, circleVertexBuffer);
+			GLES20.glVertexAttribPointer(mPositionHandle,
+					3, GLES20.GL_FLOAT, false, 3 * 4, circleVertexBuffer);
 			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mCirclePoint.length / 3);
 
 			//Stick
-			GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, stickVertexBuffer);
+			GLES20.glVertexAttribPointer(mPositionHandle,
+					3, GLES20.GL_FLOAT, false, 3 * 4, stickVertexBuffer);
 			Matrix.setIdentityM(mMMatrix, 0);
-			Matrix.translateM(mMMatrix, 0, mStickPosition[0], mStickPosition[1], mStickPosition[2]);
+			Matrix.translateM(mMMatrix, 0,
+					mStickPosition[0],
+					mStickPosition[1],
+					mStickPosition[2]);
 			Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 			GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 			GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mStickPoint.length / 3);

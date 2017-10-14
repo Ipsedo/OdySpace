@@ -68,12 +68,20 @@ public class TestTurrets implements Level {
 
 		this.levelLimitSize = levelLimitSize;
 
-		currLevelProgression = new ProgressBar(context, 20, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		currLevelProgression = new ProgressBar(context, 20, -1f + 0.15f, 0.9f,
+				Color.LevelProgressBarColor);
 
 		float limitDown = -100f;
-		noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 6, levelLimitSize, limitDown, 0.03f);
+		noiseMap = new NoiseMap(context,
+				new float[]{0f, 177f / 255f, 106f / 255f, 1f},
+				0.45f, 0f, 6, levelLimitSize, limitDown, 0.03f);
 		noiseMap.update();
-		levelLimits = new Box(-levelLimitSize, limitDown - 0.03f * levelLimitSize, -levelLimitSize, levelLimitSize * 2f, levelLimitSize, levelLimitSize * 2f);
+		levelLimits = new Box(-levelLimitSize,
+				limitDown - 0.03f * levelLimitSize,
+				-levelLimitSize,
+				levelLimitSize * 2f,
+				levelLimitSize,
+				levelLimitSize * 2f);
 		cubeMap = new CubeMap(context, levelLimitSize, "cube_map/ciel_2/");
 		cubeMap.update();
 
@@ -84,20 +92,31 @@ public class TestTurrets implements Level {
 
 		ship.setRockets(rocketsShip);
 
-		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context, "turret.obj", "turret.mtl", 1f, 0f, false);
+		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context,
+				"turret.obj", "turret.mtl",
+				1f, 0f, false);
 		CrashableMesh crashableMesh = new CrashableMesh(context, "turret.obj");
 		Random rand = new Random(System.currentTimeMillis());
 		for (int i = 0; i < nbTurret; i++) {
 			float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
 			float z = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
 
-			float[] triangles = noiseMap.passToModelMatrix(noiseMap.getRestreintArea(new float[]{x, 0f, z}));
-			float moy = Triangle.CalcY(new float[]{triangles[0], triangles[1], triangles[2]}, new float[]{triangles[3], triangles[4], triangles[5]}, new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
-			moy += Triangle.CalcY(new float[]{triangles[9], triangles[10], triangles[11]}, new float[]{triangles[12], triangles[13], triangles[14]}, new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
+			float[] triangles = noiseMap.passToModelMatrix(
+					noiseMap.getRestreintArea(new float[]{x, 0f, z}));
+			float moy = Triangle.CalcY(
+					new float[]{triangles[0], triangles[1], triangles[2]},
+					new float[]{triangles[3], triangles[4], triangles[5]},
+					new float[]{triangles[6], triangles[7], triangles[8]}, x, z) / 2f;
+			moy += Triangle.CalcY(
+					new float[]{triangles[9], triangles[10], triangles[11]},
+					new float[]{triangles[12], triangles[13], triangles[14]},
+					new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
 			FireType fireType = FireType.GUIDED_MISSILE;
 			//TODO modèles simplifiés pr crashable ?
-			Turret tmp = new Turret(context, tmpTurret, crashableMesh, new float[]{x, moy + 3f, z}, fireType, ship, rocketsTurret);
+			Turret tmp = new Turret(context,
+					tmpTurret, crashableMesh,
+					new float[]{x, moy + 3f, z}, fireType, ship, rocketsTurret);
 			tmp.update();
 			tmp.queueExplosion();
 			turrets.add(tmp);
@@ -116,7 +135,10 @@ public class TestTurrets implements Level {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
 		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		cubeMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);
@@ -202,7 +224,8 @@ public class TestTurrets implements Level {
 		for (int i = turrets.size() - 1; i >= 0; i--)
 			if (!turrets.get(i).isAlive()) {
 				turrets.get(i).addExplosion(explosions);
-				soundPoolBuilder.playSimpleBoom(getSoundLevel(turrets.get(i)), getSoundLevel(turrets.get(i)));
+				soundPoolBuilder.playSimpleBoom(getSoundLevel(turrets.get(i)),
+						getSoundLevel(turrets.get(i)));
 				turrets.remove(i);
 			}
 		for (int i = rocketsShip.size() - 1; i >= 0; i--)

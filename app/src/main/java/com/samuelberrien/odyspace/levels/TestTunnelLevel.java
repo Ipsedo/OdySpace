@@ -54,7 +54,8 @@ public class TestTunnelLevel implements Level {
 
 		ship.setRockets(rockets);
 
-		tunnel = new Tunnel(context, new Random(System.currentTimeMillis()), 200, new float[]{0f, 0f, -250f});
+		tunnel = new Tunnel(context, new Random(System.currentTimeMillis()), 200,
+				new float[]{0f, 0f, -250f});
 
 		tunnel.putIcoAtCircleCenter(context, icos, 0.1f);
 
@@ -79,7 +80,10 @@ public class TestTunnelLevel implements Level {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 
 		ArrayList<BaseItem> tmp = new ArrayList<>(rockets);
@@ -158,7 +162,8 @@ public class TestTunnelLevel implements Level {
 				explosions.remove(i);
 
 		for (int i = rockets.size() - 1; i >= 0; i--)
-			if (!rockets.get(i).isAlive() || !rockets.get(i).isInside(makeBoundingBox(levelLimitSize * 2f)))
+			if (!rockets.get(i).isAlive()
+					|| !rockets.get(i).isInside(makeBoundingBox(levelLimitSize * 2f)))
 				rockets.remove(i);
 
 		ship.fire();

@@ -100,8 +100,12 @@ public class CubeMap implements Map {
 	}
 
 	private void makeProgram() {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.cube_map_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.cube_map_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.cube_map_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.cube_map_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -122,42 +126,68 @@ public class CubeMap implements Map {
 		ByteBuffer b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+				0, GLES20.GL_RGBA,
+				bitmap.getWidth(), bitmap.getHeight(),
+				0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
 		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "negx.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+				0, GLES20.GL_RGBA,
+				bitmap.getWidth(), bitmap.getHeight(),
+				0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
 		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "posy.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+				0, GLES20.GL_RGBA,
+				bitmap.getWidth(), bitmap.getHeight(),
+				0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
 		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "negy.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+				0, GLES20.GL_RGBA,
+				bitmap.getWidth(), bitmap.getHeight(),
+				0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
 		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "posz.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+				0, GLES20.GL_RGBA,
+				bitmap.getWidth(), bitmap.getHeight(),
+				0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
 		bitmap = BitmapLoader.getBitmapFromAsset(context, assetsPathName + "negz.jpg");
 		b = ByteBuffer.allocateDirect(bitmap.getHeight() * bitmap.getWidth() * 4);
 		bitmap.copyPixelsToBuffer(b);
 		b.position(0);
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GLES20.GL_RGBA, bitmap.getWidth(), bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+				0, GLES20.GL_RGBA,
+				bitmap.getWidth(), bitmap.getHeight(),
+				0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, b);
 
-		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP,
+				GLES20.GL_TEXTURE_MAG_FILTER,
+				GLES20.GL_LINEAR);
+		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP,
+				GLES20.GL_TEXTURE_MIN_FILTER,
+				GLES20.GL_LINEAR);
+		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP,
+				GLES20.GL_TEXTURE_WRAP_S,
+				GLES20.GL_CLAMP_TO_EDGE);
+		GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP,
+				GLES20.GL_TEXTURE_WRAP_T,
+				GLES20.GL_CLAMP_TO_EDGE);
 	}
 
 	private void makeCube() {
@@ -169,7 +199,9 @@ public class CubeMap implements Map {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] unused1, float[] unused2) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] unused1, float[] unused2) {
 		float[] mvpMatrix = new float[16];
 		Matrix.multiplyMM(mvpMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 		Matrix.multiplyMM(mvpMatrix, 0, mvpMatrix.clone(), 0, mModelMatrix, 0);

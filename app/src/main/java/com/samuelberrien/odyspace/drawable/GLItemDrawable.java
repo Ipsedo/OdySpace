@@ -7,13 +7,10 @@ package com.samuelberrien.odyspace.drawable;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public interface GLItemDrawable {
+public interface GLItemDrawable extends GLDrawable {
 
 	/**
-	 * @param mProjectionMatrix
-	 * @param mViewMatrix
-	 * @param mLightPosInEyeSpace
-	 * @param mCameraPosition
+	 *
 	 */
-	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
+	void changeColor();
 }

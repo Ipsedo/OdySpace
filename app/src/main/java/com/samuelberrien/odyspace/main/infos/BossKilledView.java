@@ -125,7 +125,9 @@ public class BossKilledView extends GLSurfaceView implements GLSurfaceView.Rende
 				mItemModelMatrix.add(new float[16]);
 				mAngles.add(random.nextFloat() * 360f);
 				String fileName = objFileNames.get(i);
-				boss.add(new ObjModelMtlVBO(getContext(), fileName + ".obj", fileName + ".mtl", 1f, 0f, false));
+				boss.add(new ObjModelMtlVBO(getContext(),
+						fileName + ".obj", fileName + ".mtl",
+						1f, 0f, false));
 			}
 			willCreateBoss = false;
 		}

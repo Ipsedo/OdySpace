@@ -46,8 +46,12 @@ class Boost extends Control {
 
 	@Override
 	void initGraphics(Context context) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -135,7 +139,8 @@ class Boost extends Control {
 
 	@Override
 	void updateStick(float unused1, float y, float unused2) {
-		if (y >= mBoostPosition[1] - boostHeight * 0.5f + boostWidth * 0.5f && y <= mBoostPosition[1] + boostHeight * 0.5f - boostWidth * 0.5f)
+		if (y >= mBoostPosition[1] - boostHeight * 0.5f + boostWidth * 0.5f
+				&& y <= mBoostPosition[1] + boostHeight * 0.5f - boostWidth * 0.5f)
 			mBoostStickPosition[1] = y;
 	}
 
@@ -164,21 +169,29 @@ class Boost extends Control {
 
 		float[] mMMatrix = new float[16];
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, mBoostPosition[0] * ratio + FireButtonRay, mBoostPosition[1], mBoostPosition[2]);
+		Matrix.translateM(mMMatrix, 0,
+				mBoostPosition[0] * ratio + FireButtonRay,
+				mBoostPosition[1],
+				mBoostPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, boostVertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				3, GLES20.GL_FLOAT, false, 3 * 4, boostVertexBuffer);
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mBoostPoint.length / 3);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, mBoostStickPosition[0] * ratio + FireButtonRay, mBoostStickPosition[1], mBoostStickPosition[2]);
+		Matrix.translateM(mMMatrix, 0,
+				mBoostStickPosition[0] * ratio + FireButtonRay,
+				mBoostStickPosition[1],
+				mBoostStickPosition[2]);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, boostStickVertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				3, GLES20.GL_FLOAT, false, 3 * 4, boostStickVertexBuffer);
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, mBoostStickPoint.length / 3);

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.GLDrawable;
+import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.io.BufferedReader;
@@ -25,7 +25,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class ObjModelMtlVBO implements GLDrawable {
+public class ObjModelMtlVBO implements GLItemDrawable {
 
 	protected Context context;
 
@@ -99,7 +99,9 @@ public class ObjModelMtlVBO implements GLDrawable {
 	 * @param lightAugmentation The light augmentation
 	 * @param distanceCoef      The distance attenuation coefficient
 	 */
-	public ObjModelMtlVBO(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef, boolean randomColor) {
+	public ObjModelMtlVBO(Context context,
+						  int objResId, int mtlResId,
+						  float lightAugmentation, float distanceCoef, boolean randomColor) {
 
 		this.context = context;
 
@@ -123,7 +125,9 @@ public class ObjModelMtlVBO implements GLDrawable {
 	 * @param lightAugmentation The light augmentation
 	 * @param distanceCoef      The distance attenuation coefficient
 	 */
-	public ObjModelMtlVBO(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor) {
+	public ObjModelMtlVBO(Context context,
+						  String objFileName, String mtlFileName,
+						  float lightAugmentation, float distanceCoef, boolean randomColor) {
 
 		this.context = context;
 
@@ -192,8 +196,12 @@ public class ObjModelMtlVBO implements GLDrawable {
 	}
 
 	private void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, vertexShaderResId));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, fragmentShaderResId));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, vertexShaderResId));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, fragmentShaderResId));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -226,22 +234,34 @@ public class ObjModelMtlVBO implements GLDrawable {
 		GLES20.glGenBuffers(6, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexBuffer.capacity() * BYTES_PER_FLOAT, vertexBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				vertexBuffer.capacity() * BYTES_PER_FLOAT,
+				vertexBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, normalsBuffer.capacity() * BYTES_PER_FLOAT, normalsBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				normalsBuffer.capacity() * BYTES_PER_FLOAT,
+				normalsBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[2]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, ambColorBuffer.capacity() * BYTES_PER_FLOAT, ambColorBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				ambColorBuffer.capacity() * BYTES_PER_FLOAT,
+				ambColorBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[3]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, diffColorBuffer.capacity() * BYTES_PER_FLOAT, diffColorBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				diffColorBuffer.capacity() * BYTES_PER_FLOAT,
+				diffColorBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[4]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, specColorBuffer.capacity() * BYTES_PER_FLOAT, specColorBuffer, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				specColorBuffer.capacity() * BYTES_PER_FLOAT,
+				specColorBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[5]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, specShininess.capacity() * BYTES_PER_FLOAT, specShininess, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				specShininess.capacity() * BYTES_PER_FLOAT,
+				specShininess, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
@@ -280,13 +300,22 @@ public class ObjModelMtlVBO implements GLDrawable {
 					currentMtl = line.split(" ")[1];
 				} else if (line.startsWith("Ka")) {
 					String[] tmp = line.split(" ");
-					mtlAmbColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlAmbColor.put(currentMtl, new float[]{
+							Float.parseFloat(tmp[1]),
+							Float.parseFloat(tmp[2]),
+							Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Kd")) {
 					String[] tmp = line.split(" ");
-					mtlDiffColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlDiffColor.put(currentMtl, new float[]{
+							Float.parseFloat(tmp[1]),
+							Float.parseFloat(tmp[2]),
+							Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Ks")) {
 					String[] tmp = line.split(" ");
-					mtlSpecColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+					mtlSpecColor.put(currentMtl, new float[]{
+							Float.parseFloat(tmp[1]),
+							Float.parseFloat(tmp[2]),
+							Float.parseFloat(tmp[3])});
 				} else if (line.startsWith("Ns")) {
 					mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
 				}
@@ -368,17 +397,31 @@ public class ObjModelMtlVBO implements GLDrawable {
 		Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < allVertexDrawOrderList.size(); i++) {
 			for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
-				coords.add(currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3));
-				coords.add(currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 1));
-				coords.add(currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 2));
+				coords.add(
+						currVertixsList.get(
+								(allVertexDrawOrderList.get(i).get(j) - 1) * 3));
+				coords.add(
+						currVertixsList.get(
+								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 1));
+				coords.add(
+						currVertixsList.get(
+								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 2));
 			}
 
 			for (int j = 0; j < allNormalDrawOrderList.get(i).size(); j++) {
-				normals.add(currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3));
-				normals.add(currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 1));
-				normals.add(currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 2));
+				normals.add(
+						currNormalsList.get(
+								(allNormalDrawOrderList.get(i).get(j) - 1) * 3));
+				normals.add(
+						currNormalsList.get(
+								(allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 1));
+				normals.add(
+						currNormalsList.get(
+								(allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 2));
 			}
-			float ambRed, ambGreen, ambBlue, diffRed, diffGreen, diffBlue, specRed, specGreen, specBlue;
+			float ambRed, ambGreen, ambBlue,
+					diffRed, diffGreen, diffBlue,
+					specRed, specGreen, specBlue;
 			if (randomColor) {
 				ambRed = random.nextFloat();
 				ambGreen = random.nextFloat();
@@ -499,34 +542,43 @@ public class ObjModelMtlVBO implements GLDrawable {
 	}
 
 	@Override
-	public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mvpMatrix,
+					 float[] mvMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		GLES20.glUseProgram(mProgram);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		// Pass in the normal information
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, normalsBufferId);
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
-		GLES20.glVertexAttribPointer(mNormalHandle, NORMAL_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mNormalHandle,
+				NORMAL_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		// Pass in the texture information
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ambBufferId);
 		GLES20.glEnableVertexAttribArray(mAmbColorHandle);
-		GLES20.glVertexAttribPointer(mAmbColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mAmbColorHandle,
+				COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, diffBufferId);
 		GLES20.glEnableVertexAttribArray(mDiffColorHandle);
-		GLES20.glVertexAttribPointer(mDiffColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mDiffColorHandle,
+				COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, specBufferId);
 		GLES20.glEnableVertexAttribArray(mSpecColorHandle);
-		GLES20.glVertexAttribPointer(mSpecColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mSpecColorHandle,
+				COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, shinBufferId);
 		GLES20.glEnableVertexAttribArray(mSpecShininessHandle);
-		GLES20.glVertexAttribPointer(mSpecShininessHandle, SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mSpecShininessHandle,
+				SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 

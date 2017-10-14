@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.GLItemDrawable;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -22,7 +22,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Explosion implements GLItemDrawable {
+public class Explosion implements GLDrawable {
 
 	public static class ExplosionBuilder {
 		private int nbParticules = 3;
@@ -93,7 +93,11 @@ public class Explosion implements GLItemDrawable {
 		Random rand = new Random(System.currentTimeMillis());
 		color = rgba;
 		for (int i = 0; i < explosionBuilder.nbParticules; i++) {
-			particules.add(new Particule(rand, explosionBuilder.limitScale, explosionBuilder.maxScale, explosionBuilder.limitSpeed, explosionBuilder.maxSpeed));
+			particules.add(new Particule(rand,
+					explosionBuilder.limitScale,
+					explosionBuilder.maxScale,
+					explosionBuilder.limitSpeed,
+					explosionBuilder.maxSpeed));
 		}
 		makeProgram(context);
 
@@ -105,8 +109,12 @@ public class Explosion implements GLItemDrawable {
 	}
 
 	private void makeProgram(Context context) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.exlosion_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.explosion_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.exlosion_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.explosion_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -133,7 +141,10 @@ public class Explosion implements GLItemDrawable {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		GLES20.glDisable(GLES20.GL_CULL_FACE);
 		float[] mVPMatrix = new float[16];
 		Matrix.multiplyMM(mVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
@@ -163,15 +174,22 @@ public class Explosion implements GLItemDrawable {
 
 		private boolean fstMove;
 
-		private Particule(Random rand, float limitScale, float maxScale, float limitSpeed, float maxSpeed) {
+		private Particule(Random rand,
+						  float limitScale,
+						  float maxScale,
+						  float limitSpeed,
+						  float maxSpeed) {
 			mPosition = new float[3];
 			mSpeed = new float[3];
 			fstMove = true;
 			double phi = rand.nextDouble() * Math.PI * 2d;
 			double theta = rand.nextDouble() * Math.PI * 2d;
-			mSpeed[0] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.sin(theta));
-			mSpeed[1] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) Math.sin(phi);
-			mSpeed[2] = (limitSpeed + (maxSpeed - limitSpeed) * rand.nextFloat()) * (float) (Math.cos(phi) * Math.cos(theta));
+			mSpeed[0] = (limitSpeed + (maxSpeed - limitSpeed)
+					* rand.nextFloat()) * (float) (Math.cos(phi) * Math.sin(theta));
+			mSpeed[1] = (limitSpeed + (maxSpeed - limitSpeed)
+					* rand.nextFloat()) * (float) Math.sin(phi);
+			mSpeed[2] = (limitSpeed + (maxSpeed - limitSpeed)
+					* rand.nextFloat()) * (float) (Math.cos(phi) * Math.cos(theta));
 			mModelMatrix = new float[16];
 			float mAngle = rand.nextFloat() * 360f;
 			float[] mRotAxis = new float[3];
@@ -225,7 +243,8 @@ public class Explosion implements GLItemDrawable {
 
 			vertexBuffer.position(0);
 			GLES20.glEnableVertexAttribArray(vPositionHandle);
-			GLES20.glVertexAttribPointer(vPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, vertexBuffer);
+			GLES20.glVertexAttribPointer(vPositionHandle,
+					3, GLES20.GL_FLOAT, false, 3 * 4, vertexBuffer);
 
 			GLES20.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 

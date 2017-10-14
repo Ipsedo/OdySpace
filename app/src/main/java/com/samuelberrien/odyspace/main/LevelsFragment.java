@@ -32,8 +32,11 @@ public class LevelsFragment extends Fragment {
 
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		savedLevelInfo = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE);
+	public View onCreateView(LayoutInflater inflater,
+							 @Nullable ViewGroup container,
+							 @Nullable Bundle savedInstanceState) {
+		savedLevelInfo = getActivity().getApplicationContext()
+				.getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE);
 
 		View v = inflater.inflate(R.layout.new_levels, container, false);
 
@@ -44,8 +47,11 @@ public class LevelsFragment extends Fragment {
 
 		levelChooser.removeAllViews();
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+				5, getResources().getDisplayMetrics());
 		layoutParams.setMargins(margin, margin, margin, 0);
 
 		final ArrayList<Button> playButtons = new ArrayList<>();

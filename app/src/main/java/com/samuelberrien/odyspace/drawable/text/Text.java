@@ -19,7 +19,10 @@ public class Text extends ObjModel implements GLInfoDrawable {
 	private float scale;
 
 	public Text(Context context, String objFileName, float scale) {
-		super(context, objFileName, Color.TextsColor[0], Color.TextsColor[1], Color.TextsColor[2], 1f, 0f, 0f);
+		super(context,
+				objFileName,
+				Color.TextsColor[0], Color.TextsColor[1], Color.TextsColor[2],
+				1f, 0f, 0f);
 		this.scale = scale;
 	}
 

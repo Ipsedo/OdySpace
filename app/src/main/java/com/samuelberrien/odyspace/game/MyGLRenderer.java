@@ -72,7 +72,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		FireType.initAmmos(context);
 
 		if (!isInit) {
-			mCameraDirection = new float[]{mCameraPosition[0], mCameraPosition[1], mCameraPosition[2] + 1f};
+			mCameraDirection = new float[]{
+					mCameraPosition[0],
+					mCameraPosition[1],
+					mCameraPosition[2] + 1f};
 
 			gamePad.initGraphics(context);
 
@@ -143,7 +146,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		updateCamUpVec(ship.getCamUpVec());
 
 		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, maxProjDist);
-		Matrix.setLookAtM(mViewMatrix, 0, mCameraPosition[0], mCameraPosition[1], mCameraPosition[2], mCameraDirection[0], mCameraDirection[1], mCameraDirection[2], mCameraUpVec[0], mCameraUpVec[1], mCameraUpVec[2]);
+		Matrix.setLookAtM(mViewMatrix, 0,
+				mCameraPosition[0], mCameraPosition[1], mCameraPosition[2],
+				mCameraDirection[0], mCameraDirection[1], mCameraDirection[2],
+				mCameraUpVec[0], mCameraUpVec[1], mCameraUpVec[2]);
 
 		updateLight(currentLevel.getLightPos());
 

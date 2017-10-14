@@ -43,23 +43,35 @@ public class LevelActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mSurfaceView = new MyGLSurfaceView(getApplicationContext(), this, Integer.parseInt(super.getIntent().getStringExtra(MainActivity.LEVEL_ID)));
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		mSurfaceView = new MyGLSurfaceView(
+				getApplicationContext(),
+				this,
+				Integer.parseInt(super.getIntent().getStringExtra(MainActivity.LEVEL_ID)));
+		getWindow().setFlags(
+				WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		gamePreferences = getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE);
 
 		progressBar = new ProgressBar(this);
-		progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.pumpkin), PorterDuff.Mode.SRC_IN);
+		progressBar.getIndeterminateDrawable()
+				.setColorFilter(
+						ContextCompat.getColor(this, R.color.pumpkin),
+						PorterDuff.Mode.SRC_IN);
 		//progressBar.setIndeterminateDrawable(ContextCompat.getDrawable(this, R.drawable.progress_bar));
 		//progressBar.setIndeterminateTintList(ColorStateList.valueOf(getColor(R.color.pumpkin)));
 		progressBar.setIndeterminate(true);
 		progressBar.setVisibility(View.VISIBLE);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.MATCH_PARENT);
 
 		pauseButton = (Button) getLayoutInflater().inflate(R.layout.button_pause, null); //new Button(this);
 		pauseButton.setVisibility(View.GONE);
 		//pauseButton.setBackground(ContextCompat.getDrawable(this, R.drawable.transition_button_main));
-		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(getScreenHeight() / 13, getScreenHeight() / 13);
+		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(
+				getScreenHeight() / 13,
+				getScreenHeight() / 13);
 		tmp.setMargins(0, getScreenHeight() / 50, 0, 0);
 		pauseButton.setLayoutParams(tmp);
 		//pauseButton.setText("❚❚");
@@ -93,35 +105,52 @@ public class LevelActivity extends AppCompatActivity {
 						})
 						.setMessage("Current Score : " + mSurfaceView.getScore())
 						.create();
-				pauseDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(LevelActivity.this, R.drawable.drawable_grey_corner));
+				pauseDialog.getWindow()
+						.setBackgroundDrawable(
+								ContextCompat.getDrawable(
+										LevelActivity.this,
+										R.drawable.drawable_grey_corner));
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
-				pauseDialog.getWindow().setLayout(getScreenWidth() * 4 / 5, pauseDialog.getWindow().getAttributes().height);
+				pauseDialog.getWindow()
+						.setLayout(
+								getScreenWidth() * 4 / 5,
+								pauseDialog.getWindow().getAttributes().height);
 				v.requestLayout();
 			}
 		});
 
 		RelativeLayout relativeLayout = new RelativeLayout(this);
-		relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT));
 		relativeLayout.addView(pauseButton);
 		relativeLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
 
 		setContentView(mSurfaceView);
 
 		addContentView(progressBar, params);
-		addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+		addContentView(relativeLayout, new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.MATCH_PARENT));
 	}
 
 	private View getPauseView() {
 		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.pause_layout, (LinearLayout) findViewById(R.id.parameters_layout_id));
+		View layout = inflater.inflate(
+				R.layout.pause_layout,
+				(LinearLayout) findViewById(R.id.parameters_layout_id));
 
 		//GameParamsView.buildGameParams(this, layout, gamePreferences);
 		((LinearLayout) layout.findViewById(R.id.game_settings_pause))
 				.addView(new GameParamsView(this));
 
-		SharedPreferences savedShop = getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
-		final SharedPreferences savedShip = getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+		SharedPreferences savedShop = getSharedPreferences(
+				getString(R.string.shop_preferences),
+				Context.MODE_PRIVATE);
+		final SharedPreferences savedShip = getSharedPreferences(
+				getString(R.string.ship_info_preferences),
+				Context.MODE_PRIVATE);
 
 		RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.select_weapon_radio_group);
 		String[] fireType = getResources().getStringArray(R.array.fire_shop_list_item);
@@ -129,7 +158,9 @@ public class LevelActivity extends AppCompatActivity {
 			int rBool = fire.equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
 			if (savedShop.getBoolean(fire, getResources().getBoolean(rBool))) {
 				RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
-				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(
+						ViewGroup.LayoutParams.MATCH_PARENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT));
 				radioGroup.addView(tmpRadioButton);
 				tmpRadioButton.setText(fire);
 
@@ -141,7 +172,10 @@ public class LevelActivity extends AppCompatActivity {
 								.apply();
 					}
 				});
-				if (savedShip.getString(getString(R.string.current_fire_type), getString(R.string.saved_fire_type_default)).equals(fire)) {
+				if (savedShip.getString(
+						getString(R.string.current_fire_type),
+						getString(R.string.saved_fire_type_default))
+						.equals(fire)) {
 					tmpRadioButton.setChecked(true);
 				}
 			}
@@ -155,7 +189,9 @@ public class LevelActivity extends AppCompatActivity {
 				int rBool = bonus[i].equals(getString(R.string.bonus_1)) ? R.bool.vrai : R.bool.faux;
 				if (savedShop.getBoolean(bonus[i], getResources().getBoolean(rBool))) {
 					RadioButton tmpRadioButton = new RadioButton(LevelActivity.this);
-					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT));
 					radioGroup.addView(tmpRadioButton);
 
 					tmpRadioButton.setText(bonus[i]);
@@ -165,12 +201,16 @@ public class LevelActivity extends AppCompatActivity {
 						@Override
 						public void onClick(View view) {
 							savedShip.edit()
-									.putString(getString(R.string.current_bonus_used), bonus[index])
-									.putInt(getString(R.string.current_bonus_duration), duration[index - 1])
+									.putString(getString(R.string.current_bonus_used),
+											bonus[index])
+									.putInt(getString(R.string.current_bonus_duration),
+											duration[index - 1])
 									.apply();
 						}
 					});
-					if (savedShip.getString(getString(R.string.current_bonus_used), getString(R.string.bonus_1)).equals(bonus[i])) {
+					if (savedShip.getString(getString(R.string.current_bonus_used),
+							getString(R.string.bonus_1))
+							.equals(bonus[i])) {
 						tmpRadioButton.setChecked(true);
 					}
 				}

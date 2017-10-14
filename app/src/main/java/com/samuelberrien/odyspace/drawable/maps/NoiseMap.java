@@ -25,7 +25,10 @@ import java.util.ArrayList;
 
 public class NoiseMap implements Item, Map {
 
-	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
+	private native boolean areCollided(float[] mPointItem1,
+									   float[] mModelMatrix1,
+									   float[] mPointItem2,
+									   float[] mModelMatrix2);
 
 	static {
 		System.loadLibrary("collision");
@@ -70,7 +73,14 @@ public class NoiseMap implements Item, Map {
 
 	private Box box;
 
-	public NoiseMap(Context context, float[] color, float lightCoeff, float distanceCoeff, int coeffNoise, float scale, float limitHeight, float coeffHeight) {
+	public NoiseMap(Context context,
+					float[] color,
+					float lightCoeff,
+					float distanceCoeff,
+					int coeffNoise,
+					float scale,
+					float limitHeight,
+					float coeffHeight) {
 		this.context = context;
 		this.lightCoeff = lightCoeff;
 		this.distanceCoeff = distanceCoeff;
@@ -81,8 +91,12 @@ public class NoiseMap implements Item, Map {
 		this.color = color;
 		mModelMatrix = new float[16];
 
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.noise_map_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.noise_map_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.noise_map_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.noise_map_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -107,11 +121,17 @@ public class NoiseMap implements Item, Map {
 			float[] tmpPoints = new float[(SIZE + 1) * 2 * 3];
 			for (int j = 0; j < SIZE + 1; j++) {
 				tmpPoints[j * 2 * 3] = 2f * (float) j / (float) SIZE - 1f;
-				tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise((double) i / (double) (SIZE / coeffNoise), (double) j / (double) (SIZE / coeffNoise)) * coeffHeight;
+				tmpPoints[j * 2 * 3 + 1] = (float) SimplexNoise.noise(
+						(double) i / (double) (SIZE / coeffNoise),
+						(double) j / (double) (SIZE / coeffNoise))
+						* coeffHeight;
 				tmpPoints[j * 2 * 3 + 2] = 2f * (float) i / (float) SIZE - 1f;
 
 				tmpPoints[(j * 2 + 1) * 3] = 2f * (float) j / (float) SIZE - 1f;
-				tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise((double) (i + 1) / (double) (SIZE / coeffNoise), (double) j / (double) (SIZE / coeffNoise)) * coeffHeight;
+				tmpPoints[(j * 2 + 1) * 3 + 1] = (float) SimplexNoise.noise(
+						(double) (i + 1) / (double) (SIZE / coeffNoise),
+						(double) j / (double) (SIZE / coeffNoise))
+						* coeffHeight;
 				tmpPoints[(j * 2 + 1) * 3 + 2] = 2f * ((float) i + 1) / (float) SIZE - 1f;
 			}
 			for (int j = 0; j < tmpPoints.length / 3 - 2; j += 2) {
@@ -128,8 +148,14 @@ public class NoiseMap implements Item, Map {
 				triangles.add(tmpPoints[j * 3 + 8]);
 
 				//Normal 1
-				float[] v1 = new float[]{tmpPoints[j * 3 + 6] - tmpPoints[j * 3 + 0], tmpPoints[j * 3 + 7] - tmpPoints[j * 3 + 1], tmpPoints[j * 3 + 8] - tmpPoints[j * 3 + 2]};
-				float[] v2 = new float[]{tmpPoints[j * 3 + 3] - tmpPoints[j * 3 + 0], tmpPoints[j * 3 + 4] - tmpPoints[j * 3 + 1], tmpPoints[j * 3 + 5] - tmpPoints[j * 3 + 2]};
+				float[] v1 = new float[]{
+						tmpPoints[j * 3 + 6] - tmpPoints[j * 3 + 0],
+						tmpPoints[j * 3 + 7] - tmpPoints[j * 3 + 1],
+						tmpPoints[j * 3 + 8] - tmpPoints[j * 3 + 2]};
+				float[] v2 = new float[]{
+						tmpPoints[j * 3 + 3] - tmpPoints[j * 3 + 0],
+						tmpPoints[j * 3 + 4] - tmpPoints[j * 3 + 1],
+						tmpPoints[j * 3 + 5] - tmpPoints[j * 3 + 2]};
 				float[] normal = Vector.normalize3f(Vector.cross3f(v2, v1));
 				normales.add(normal[0]);
 				normales.add(normal[1]);
@@ -154,8 +180,14 @@ public class NoiseMap implements Item, Map {
 				triangles.add(tmpPoints[(j + 1) * 3 + 8]);
 
 				//Normal 2
-				v1 = new float[]{tmpPoints[j * 3 + 9] - tmpPoints[j * 3 + 3], tmpPoints[j * 3 + 10] - tmpPoints[j * 3 + 4], tmpPoints[j * 3 + 11] - tmpPoints[j * 3 + 5]};
-				v2 = new float[]{tmpPoints[j * 3 + 6] - tmpPoints[j * 3 + 3], tmpPoints[j * 3 + 7] - tmpPoints[j * 3 + 4], tmpPoints[j * 3 + 8] - tmpPoints[j * 3 + 5]};
+				v1 = new float[]{
+						tmpPoints[j * 3 + 9] - tmpPoints[j * 3 + 3],
+						tmpPoints[j * 3 + 10] - tmpPoints[j * 3 + 4],
+						tmpPoints[j * 3 + 11] - tmpPoints[j * 3 + 5]};
+				v2 = new float[]{
+						tmpPoints[j * 3 + 6] - tmpPoints[j * 3 + 3],
+						tmpPoints[j * 3 + 7] - tmpPoints[j * 3 + 4],
+						tmpPoints[j * 3 + 8] - tmpPoints[j * 3 + 5]};
 				normal = Vector.normalize3f(Vector.cross3f(v1, v2));
 				normales.add(normal[0]);
 				normales.add(normal[1]);
@@ -191,10 +223,12 @@ public class NoiseMap implements Item, Map {
 		GLES20.glGenBuffers(2, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, mPositions.capacity() * 4, mPositions, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				mPositions.capacity() * 4, mPositions, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, mNormals.capacity() * 4, mNormals, GLES20.GL_STATIC_DRAW);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				mNormals.capacity() * 4, mNormals, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
@@ -234,7 +268,10 @@ public class NoiseMap implements Item, Map {
 
 	@Override
 	public float[] getRestreintArea(float[] position) {
-		if (position[0] >= -1f * scale && position[0] <= 1f * scale && position[2] >= -1f * scale && position[2] <= 1f * scale) {
+		if (position[0] >= -1f * scale
+				&& position[0] <= 1f * scale
+				&& position[2] >= -1f * scale
+				&& position[2] <= 1f * scale) {
 			float xNorm = (position[0] / scale + 1f) * 0.5f;
 			float zNorm = (position[2] / scale + 1f) * 0.5f;
 
@@ -278,7 +315,10 @@ public class NoiseMap implements Item, Map {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] unused) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] unused) {
 		float[] mvpMatrix = new float[16];
 		float[] mvMatrix = new float[16];
 		Matrix.multiplyMM(mvMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
@@ -288,11 +328,13 @@ public class NoiseMap implements Item, Map {
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mPositionsBufferId);
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mNormalsBufferId);
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
-		GLES20.glVertexAttribPointer(mNormalHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mNormalHandle,
+				COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
@@ -318,7 +360,11 @@ public class NoiseMap implements Item, Map {
 		//TODO use container to get restreint area ?
 		float[] position = new float[]{0f, 0f, 0f, 1f};
 		Matrix.multiplyMV(position, 0, modelMatrix, 0, position.clone(), 0);
-		return areCollided(getRestreintArea(new float[]{position[0], position[1], position[2]}), mModelMatrix.clone(), triangleArray, modelMatrix);
+		return areCollided(getRestreintArea(
+				new float[]{position[0], position[1], position[2]}),
+				mModelMatrix.clone(),
+				triangleArray,
+				modelMatrix);
 		//return areCollided(points.clone(), mModelMatrix.clone(), triangleArray, modelMatrix);
 	}
 
@@ -328,7 +374,12 @@ public class NoiseMap implements Item, Map {
 	}
 
 	private void makeBox() {
-		box = new Box(-scale, limitHeight - coeffHeight * scale, -scale, scale * 2f, 2f * coeffHeight * scale, scale * 2f);
+		box = new Box(-scale,
+				limitHeight - coeffHeight * scale,
+				-scale,
+				scale * 2f,
+				2f * coeffHeight * scale,
+				scale * 2f);
 	}
 
 	@Override

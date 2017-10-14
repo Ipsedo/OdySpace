@@ -143,7 +143,9 @@ public class MainActivity
 		v.setBackground(new ColorDrawable(ContextCompat.getColor(this, R.color.black)));
 		Resources r = getResources();
 		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
-		v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) px));
+		v.setLayoutParams(new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				(int) px));
 
 		layoutDialog.addView(resetYes, layoutParams);
 		layoutDialog.addView(v);

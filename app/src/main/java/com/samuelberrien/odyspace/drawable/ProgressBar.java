@@ -44,8 +44,12 @@ public class ProgressBar implements GLInfoDrawable {
 		this.x = x;
 		this.y = y;
 		this.color = color;
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.simple_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.simple_fs));
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.simple_fs));
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
 		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
@@ -134,18 +138,26 @@ public class ProgressBar implements GLInfoDrawable {
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, container);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				3, GLES20.GL_FLOAT, false, 3 * 4, container);
 		GLES20.glUniform4fv(mColorHandle, 1, containerColor, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, 4);
 
 		Matrix.setIdentityM(mMMatrix, 0);
-		Matrix.translateM(mMMatrix, 0, x + 0.5f * (float) (maxProgress - currProgress) / (float) maxProgress, y, 0f);
-		Matrix.scaleM(mMMatrix, 0, 0.5f * (float) currProgress / (float) maxProgress, 0.05f, 0.05f);
+		Matrix.translateM(mMMatrix, 0,
+				x + 0.5f * (float) (maxProgress - currProgress) / (float) maxProgress,
+				y,
+				0f);
+		Matrix.scaleM(mMMatrix, 0,
+				0.5f * (float) currProgress / (float) maxProgress,
+				0.05f,
+				0.05f);
 		Matrix.multiplyMM(mMVPMatrix, 0, mVPMatrix, 0, mMMatrix, 0);
 
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, progressRect);
+		GLES20.glVertexAttribPointer(mPositionHandle,
+				3, GLES20.GL_FLOAT, false, 3 * 4, progressRect);
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);

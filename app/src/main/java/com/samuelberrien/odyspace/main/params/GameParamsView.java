@@ -18,7 +18,9 @@ import com.samuelberrien.odyspace.R;
  * Created by samuel on 12/10/17.
  */
 
-public class GameParamsView extends LinearLayout implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class GameParamsView
+		extends LinearLayout
+		implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private SharedPreferences gamePreferences;
 
@@ -40,7 +42,9 @@ public class GameParamsView extends LinearLayout implements SharedPreferences.On
 
 		context = activity;
 
-		gamePreferences = activity.getSharedPreferences(activity.getString(R.string.game_preferences), Context.MODE_PRIVATE);
+		gamePreferences = activity.getSharedPreferences(
+				activity.getString(R.string.game_preferences),
+				Context.MODE_PRIVATE);
 
 		tmp = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -51,7 +55,9 @@ public class GameParamsView extends LinearLayout implements SharedPreferences.On
 
 		initSettings();
 
-		addView(v, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+		addView(v, new LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT));
 
 		gamePreferences.registerOnSharedPreferenceChangeListener(this);
 	}
@@ -73,21 +79,26 @@ public class GameParamsView extends LinearLayout implements SharedPreferences.On
 			}
 		});
 
-		context.getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, new ContentObserver(new Handler()) {
-			@Override
-			public boolean deliverSelfNotifications() {
-				return super.deliverSelfNotifications();
-			}
+		context.getContentResolver()
+				.registerContentObserver(
+						android.provider.Settings.System.CONTENT_URI,
+						true,
+						new ContentObserver(new Handler()) {
+							@Override
+							public boolean deliverSelfNotifications() {
+								return super.deliverSelfNotifications();
+							}
 
-			@Override
-			public void onChange(boolean selfChange) {
-				super.onChange(selfChange);
-				sb1.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
-			}
-		});
+							@Override
+							public void onChange(boolean selfChange) {
+								super.onChange(selfChange);
+								sb1.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
+							}
+						});
 
 		effectVolumeSeekBar.setMax(100);
-		effectVolumeSeekBar.setProgress(gamePreferences.getInt(context.getString(R.string.saved_sound_effect_volume), 100));
+		effectVolumeSeekBar.setProgress(
+				gamePreferences.getInt(context.getString(R.string.saved_sound_effect_volume), 100));
 		effectVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				gamePreferences.edit()
@@ -104,22 +115,30 @@ public class GameParamsView extends LinearLayout implements SharedPreferences.On
 			}
 		});
 
-		inverseJoystickCheckBox.setChecked(gamePreferences.getBoolean(context.getString(R.string.saved_joystick_inversed), context.getResources().getBoolean(R.bool.saved_joystick_inversed_default)));
+		inverseJoystickCheckBox.setChecked(
+				gamePreferences.getBoolean(context.getString(R.string.saved_joystick_inversed),
+						context.getResources()
+								.getBoolean(R.bool.saved_joystick_inversed_default)));
 		inverseJoystickCheckBox.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				gamePreferences.edit()
-						.putBoolean(context.getString(R.string.saved_joystick_inversed), inverseJoystickCheckBox.isChecked())
+						.putBoolean(context.getString(R.string.saved_joystick_inversed),
+								inverseJoystickCheckBox.isChecked())
 						.apply();
 			}
 		});
 
-		switchYawRollCheckBox.setChecked(gamePreferences.getBoolean(context.getString(R.string.saved_yaw_roll_switched), context.getResources().getBoolean(R.bool.saved_yaw_roll_switched_default)));
+		switchYawRollCheckBox.setChecked(gamePreferences.getBoolean(
+				context.getString(R.string.saved_yaw_roll_switched),
+				context.getResources()
+						.getBoolean(R.bool.saved_yaw_roll_switched_default)));
 		switchYawRollCheckBox.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				gamePreferences.edit()
-						.putBoolean(context.getString(R.string.saved_yaw_roll_switched), switchYawRollCheckBox.isChecked())
+						.putBoolean(context.getString(R.string.saved_yaw_roll_switched),
+								switchYawRollCheckBox.isChecked())
 						.apply();
 			}
 		});

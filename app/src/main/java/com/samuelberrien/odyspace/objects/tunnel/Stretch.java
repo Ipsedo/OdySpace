@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.GLItemDrawable;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Stretch implements Item, GLItemDrawable {
+public class Stretch implements Item, GLDrawable {
 
 	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 

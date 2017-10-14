@@ -2,7 +2,7 @@ package com.samuelberrien.odyspace.objects.baseitem.group;
 
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.GLItemDrawable;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.collision.Box;
 import com.samuelberrien.odyspace.utils.game.Item;
 import com.samuelberrien.odyspace.utils.game.UpdatableItem;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by samuel on 04/08/17.
  */
 
-public class Tree implements UpdatableItem, GLItemDrawable {
+public class Tree implements UpdatableItem, GLDrawable {
 
 	private boolean isLeaf;
 	private Leaf leaf;

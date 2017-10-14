@@ -3,7 +3,7 @@ package com.samuelberrien.odyspace.objects.baseitem;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.GLItemDrawable;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
@@ -23,7 +23,7 @@ import java.util.List;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public abstract class BaseItem implements Item, GLItemDrawable, UpdatableItem {
+public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 
 	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 

@@ -62,14 +62,24 @@ public class TestThread implements Level {
 		this.ship = ship;
 		this.levelLimitSize = levelLimitSize;
 
-		currLevelProgression = new ProgressBar(context, 50, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
+		currLevelProgression = new ProgressBar(context, 50, -1f + 0.15f, 0.9f,
+				Color.LevelProgressBarColor);
 
 		float limitDown = -100f;
 		//heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
-		noiseMap = new NoiseMap(context, new float[]{0f, 177f / 255f, 106f / 255f, 1f}, 0.45f, 0f, 8, this.levelLimitSize, limitDown, 0.02f);
+		noiseMap = new NoiseMap(context,
+				new float[]{0f, 177f / 255f, 106f / 255f, 1f},
+				0.45f, 0f, 8, this.levelLimitSize, limitDown, 0.02f);
 		noiseMap.update();
-		forest = new Forest(context, "dead_tree.obj", "dead_tree.mtl", 100, noiseMap, this.levelLimitSize);
-		levelLimits = new Box(-this.levelLimitSize, limitDown - 0.02f * this.levelLimitSize, -this.levelLimitSize, this.levelLimitSize * 2f, this.levelLimitSize, this.levelLimitSize * 2f);
+		forest = new Forest(context,
+				"dead_tree.obj", "dead_tree.mtl",
+				100, noiseMap, this.levelLimitSize);
+		levelLimits = new Box(-this.levelLimitSize,
+				limitDown - 0.02f * this.levelLimitSize,
+				-this.levelLimitSize,
+				this.levelLimitSize * 2f,
+				this.levelLimitSize,
+				this.levelLimitSize * 2f);
 		cubeMap = new CubeMap(context, this.levelLimitSize, "cube_map/ciel_1/");
 		cubeMap.update();
 
@@ -82,7 +92,11 @@ public class TestThread implements Level {
 		Random rand = new Random(System.currentTimeMillis());
 		//ObjModelMtlVBO modelIco = new ObjModelMtlVBO(context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		for (int i = 0; i < nbIcosahedron; i++) {
-			Icosahedron ico = new Icosahedron(context, 1, new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f, rand.nextFloat() * 100f - 50f, rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f}, rand.nextFloat() * 2f + 1f);
+			Icosahedron ico = new Icosahedron(context, 1,
+					new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f,
+							rand.nextFloat() * 100f - 50f,
+							rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f},
+					rand.nextFloat() * 2f + 1f);
 			ico.update();
 			ico.queueExplosion();
 			icosahedrons.add(ico);
@@ -103,7 +117,10 @@ public class TestThread implements Level {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix,
+					 float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		//heightMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace);
 		noiseMap.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, new float[0]);

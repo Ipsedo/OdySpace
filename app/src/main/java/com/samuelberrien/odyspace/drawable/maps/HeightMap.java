@@ -57,9 +57,20 @@ public class HeightMap implements Item, Map {
 	private float mScale;
 	private float[] mModelMatrix;
 
-	public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff, float scale, float limitHeight) {
-		int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.height_map_vs));
-		int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.height_map_fs));
+	public HeightMap(Context context,
+					 int texHMResId,
+					 int texResId,
+					 float coeff,
+					 float lightCoeff,
+					 float distanceCoeff,
+					 float scale,
+					 float limitHeight) {
+		int vertexShader = ShaderLoader.loadShader(
+				GLES20.GL_VERTEX_SHADER,
+				ShaderLoader.openShader(context, R.raw.height_map_vs));
+		int fragmentShader = ShaderLoader.loadShader(
+				GLES20.GL_FRAGMENT_SHADER,
+				ShaderLoader.openShader(context, R.raw.height_map_fs));
 
 		this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
@@ -136,13 +147,19 @@ public class HeightMap implements Item, Map {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
 
-		Matrix.translateM(mModelMatrix, 0, -0.5f * this.mScale, this.limitHeight, -0.5f * this.mScale);
+		Matrix.translateM(mModelMatrix, 0,
+				-0.5f * this.mScale,
+				this.limitHeight,
+				-0.5f * this.mScale);
 		Matrix.scaleM(mModelMatrix, 0, this.mScale, this.mScale, this.mScale);
 		this.mModelMatrix = mModelMatrix.clone();
 	}
 
 	@Override
-	public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] unused) {
+	public void draw(float[] pMatrix,
+					 float[] vMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] unused) {
 		float[] mvMatrix = new float[16];
 		float[] mvpMatrix = new float[16];
 
