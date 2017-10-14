@@ -15,13 +15,9 @@ import com.samuelberrien.odyspace.utils.game.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
-import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.egl.EGLContext;
-import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
@@ -89,7 +85,7 @@ public class BossKilledView extends GLSurfaceView implements GLSurfaceView.Rende
 		boss.clear();
 		nbBeatedBoss = 0;
 		for (int i = 0; i < currLevel; i++) {
-			if(Level.LEVELS[i].equals(TestBossThread.NAME)) {
+			if (Level.LEVELS[i].equals(TestBossThread.NAME)) {
 				nbBeatedBoss++;
 			}
 		}
@@ -125,11 +121,11 @@ public class BossKilledView extends GLSurfaceView implements GLSurfaceView.Rende
 	@Override
 	public void onDrawFrame(GL10 gl10) {
 		if (willCreateBoss) {
-			for(int i = 0; i < nbBeatedBoss; i++) {
+			for (int i = 0; i < nbBeatedBoss; i++) {
 				mItemModelMatrix.add(new float[16]);
 				mAngles.add(random.nextFloat() * 360f);
 				String fileName = objFileNames.get(i);
-				boss.add(new ObjModelMtlVBO(getContext(), fileName+".obj", fileName+".mtl", 1f, 0f, false));
+				boss.add(new ObjModelMtlVBO(getContext(), fileName + ".obj", fileName + ".mtl", 1f, 0f, false));
 			}
 			willCreateBoss = false;
 		}

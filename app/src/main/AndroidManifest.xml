@@ -24,8 +24,6 @@
             android:label="@string/title_activity_level"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".main.shop.ShopActivity"/>
     </application>
     <uses-permission android:name="android.permission.VIBRATE"/>
 </manifest>

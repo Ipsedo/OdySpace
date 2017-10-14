@@ -111,10 +111,10 @@ public class MainActivity
 		resetDialog.setCanceledOnTouchOutside(false);
 
 		resetYes = new Button(this);
-		resetYes.setBackground(ContextCompat.getDrawable(this, R.drawable.drawer_button));
+		resetYes.setBackground(ContextCompat.getDrawable(this, R.drawable.button));
 		resetYes.setText("Yes");
 		resetNo = new Button(this);
-		resetNo.setBackground(ContextCompat.getDrawable(this, R.drawable.drawer_button));
+		resetNo.setBackground(ContextCompat.getDrawable(this, R.drawable.button));
 		resetNo.setText("No");
 
 		resetNo.setOnClickListener(new View.OnClickListener() {
@@ -128,14 +128,24 @@ public class MainActivity
 		layoutDialog.setLayoutParams(new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT));
+
 		layoutDialog.setBackground(ContextCompat.getDrawable(this,
 				R.drawable.drawable_grey_corner));
 		layoutDialog.setOrientation(LinearLayout.VERTICAL);
+
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 1f;
+
+		View v = new View(this);
+		v.setBackground(new ColorDrawable(ContextCompat.getColor(this, R.color.black)));
+		Resources r = getResources();
+		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics());
+		v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) px));
+
 		layoutDialog.addView(resetYes, layoutParams);
+		layoutDialog.addView(v);
 		layoutDialog.addView(resetNo, layoutParams);
 
 		resetDialog.setContentView(layoutDialog);
