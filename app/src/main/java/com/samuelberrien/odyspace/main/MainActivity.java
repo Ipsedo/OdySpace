@@ -1,5 +1,6 @@
 package com.samuelberrien.odyspace.main;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -27,12 +28,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.main.infos.BossKilledView;
 import com.samuelberrien.odyspace.main.infos.ItemInfosView;
 import com.samuelberrien.odyspace.main.shop.ShopFragment;
+import com.samuelberrien.odyspace.utils.game.Level;
 import com.samuelberrien.odyspace.utils.game.Purchases;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity
+		extends AppCompatActivity
+		implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	public static final String LEVEL_ID = "LEVEL_ID";
 	public static final int RESULT_VALUE = 1;
@@ -85,18 +90,23 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 		transaction.commit();
 
-		savedShop = getApplicationContext().getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE);
+		savedShop = getApplicationContext().getSharedPreferences(
+				getString(R.string.shop_preferences),
+				Context.MODE_PRIVATE);
 
 		initItems();
 
 		switchOrientation(getResources().getConfiguration().orientation);
 
-		getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this);
+		getSharedPreferences(getString(R.string.shop_preferences),
+				Context.MODE_PRIVATE)
+				.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	private void initDialog() {
 		resetDialog = new Dialog(this, R.style.AppTheme);
-		resetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		resetDialog.getWindow()
+				.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		resetDialog.setCancelable(false);
 		resetDialog.setCanceledOnTouchOutside(false);
 
@@ -118,16 +128,23 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		layoutDialog.setLayoutParams(new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT));
-		layoutDialog.setBackground(ContextCompat.getDrawable(this, R.drawable.drawable_grey_corner));
+		layoutDialog.setBackground(ContextCompat.getDrawable(this,
+				R.drawable.drawable_grey_corner));
 		layoutDialog.setOrientation(LinearLayout.VERTICAL);
-		layoutDialog.addView(resetYes);
-		layoutDialog.addView(resetNo);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		layoutParams.weight = 1f;
+		layoutDialog.addView(resetYes, layoutParams);
+		layoutDialog.addView(resetNo, layoutParams);
 
 		resetDialog.setContentView(layoutDialog);
 	}
 
 	public void initItems() {
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams.weight = 1f;
 
 		fireView = new ItemInfosView(this, Purchases.FIRE);
@@ -152,6 +169,33 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+
+		switchOrientation(getResources().getConfiguration().orientation);
+
+		switch (requestCode) {
+			case MainActivity.RESULT_VALUE: {
+				if (resultCode == Activity.RESULT_OK) {
+					int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+					int currMoney = this.savedShop.getInt(
+							getString(R.string.saved_money),
+							defaultMoney);
+					int score = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_SCORE));
+					SharedPreferences.Editor editor = this.savedShop.edit();
+					editor.putInt(getString(R.string.saved_money), currMoney + score);
+					editor.apply();
+
+					int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
+					if (result == 1) {
+						/* level done */
+					} else {
+						/* level failed */
+					}
+				} else if (resultCode == Activity.RESULT_CANCELED) {
+					/* level canceled */
+				}
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -172,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		drawerToggle.onConfigurationChanged(newConfig);
 
 		switchOrientation(newConfig.orientation);
-		//TODO orientation switch drawer
 	}
 
 	private void switchOrientation(int orientation) {
@@ -243,6 +286,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 	public void continueStory(View v) {
 		drawerLayout.closeDrawers();
+
+		int maxLevel = getSharedPreferences(
+				getString(R.string.level_info_preferences),
+				Context.MODE_PRIVATE)
+				.getInt(getString(R.string.saved_max_level),
+						getResources().getInteger(R.integer.saved_max_level_default));
+		if (maxLevel >= Level.LEVELS.length) {
+			maxLevel = Level.LEVELS.length - 1;
+		}
+		Intent intent = new Intent(this, LevelActivity.class);
+		intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(maxLevel));
+		startActivityForResult(intent, MainActivity.RESULT_VALUE);
 	}
 
 	public void levels(View v) {
@@ -280,7 +335,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 		showDialogReset(new Runnable() {
 			@Override
 			public void run() {
-				SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE)
+				SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shop_preferences),
+						Context.MODE_PRIVATE)
 						.edit();
 				editor.remove(getString(R.string.saved_money));
 				String[] fire = getResources().getStringArray(R.array.fire_shop_list_item);

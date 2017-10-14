@@ -3,16 +3,15 @@
               android:id="@+id/parameters_layout_id"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="horizontal"
-              android:baselineAligned="false">
+              android:orientation="horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_height="150dp"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_weight="0.5"
-        android:background="@drawable/drawable_grey_corner"
+        android:background="@drawable/drawable_white_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
@@ -25,10 +24,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_height="150dp"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_grey_corner"
+        android:background="@drawable/drawable_white_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
@@ -55,10 +54,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_scroll_view_pause"
+        android:layout_height="150dp"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_grey_corner"
+        android:background="@drawable/drawable_white_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 

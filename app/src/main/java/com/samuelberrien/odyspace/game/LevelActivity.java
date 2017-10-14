@@ -68,19 +68,20 @@ public class LevelActivity extends AppCompatActivity {
 		pauseButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ViewHelper.makeViewTransition(LevelActivity.this, pauseButton);
 				mSurfaceView.pauseGame();
+
+				View v = getPauseView();
 
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
 						.setTitle("Pause menu")
-						.setView(getPauseView())
-						.setNegativeButton(getString(R.string.check), new DialogInterface.OnClickListener() {
+						.setView(v)
+						.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 								finish();
 							}
 						})
-						.setPositiveButton(getString(R.string.next), new DialogInterface.OnClickListener() {
+						.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 							}
@@ -93,10 +94,11 @@ public class LevelActivity extends AppCompatActivity {
 						})
 						.setMessage("Current Score : " + mSurfaceView.getScore())
 						.create();
-				pauseDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(LevelActivity.this, R.drawable.button_main));
+				pauseDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(LevelActivity.this, R.drawable.drawable_grey_corner));
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
 				pauseDialog.getWindow().setLayout(getScreenWidth() * 4 / 5, pauseDialog.getWindow().getAttributes().height);
+				v.requestLayout();
 			}
 		});
 
