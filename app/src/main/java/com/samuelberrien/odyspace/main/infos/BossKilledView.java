@@ -24,7 +24,9 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by samuel on 13/10/17.
  */
 
-public class BossKilledView extends GLSurfaceView implements GLSurfaceView.Renderer {
+public class BossKilledView
+		extends GLSurfaceView
+		implements GLSurfaceView.Renderer, SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private final float[] mProjectionMatrix = new float[16];
 	private final float[] mViewMatrix = new float[16];
@@ -73,6 +75,7 @@ public class BossKilledView extends GLSurfaceView implements GLSurfaceView.Rende
 		levelPreferences = getContext().getSharedPreferences(
 				getContext().getString(R.string.level_info_preferences),
 				Context.MODE_PRIVATE);
+		levelPreferences.registerOnSharedPreferenceChangeListener(this);
 		updateBeatedBoss();
 	}
 
@@ -157,5 +160,12 @@ public class BossKilledView extends GLSurfaceView implements GLSurfaceView.Rende
 			boss.get(i).draw(mvpMatrix, mvMatrix, mLightPosInEyeSpace, new float[]{0f, 0f, -8f});
 		}
 
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+		if(s.equals(getContext().getString(R.string.saved_max_level))) {
+			updateBeatedBoss();
+		}
 	}
 }

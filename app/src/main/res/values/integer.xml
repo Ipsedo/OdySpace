@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="saved_max_level_default">5</integer>
+    <integer name="saved_max_level_default">1</integer>
     <integer name="zero">0</integer>
     <integer name="quint_fire_cost">1000</integer>
     <integer name="triple_fire_cost">500</integer>
@@ -9,7 +9,7 @@
     <integer name="torus_cost">19500</integer>
     <integer name="ship_bird_cost">1000</integer>
     <integer name="ship_supreme_cost">10000</integer>
-    <integer name="saved_init_money">999999999</integer>
+    <integer name="saved_init_money">0</integer>
     <integer name="saved_ship_life_default">20</integer>
     <integer name="saved_ship_life_shop_default">0</integer>
     <integer name="life_coeff_cost">1</integer>

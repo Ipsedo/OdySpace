@@ -153,6 +153,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		bindBuffer();
 	}
 
+	@Deprecated
 	public ObjModelMtlVBO(ObjModelMtlVBO objModelMtl) {
 		context = objModelMtl.context;
 

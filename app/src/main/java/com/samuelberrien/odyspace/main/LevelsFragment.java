@@ -24,11 +24,16 @@ import java.util.ArrayList;
  * Created by samuel on 12/10/17.
  */
 
-public class LevelsFragment extends Fragment {
+public class LevelsFragment
+		extends Fragment
+		implements SharedPreferences.OnSharedPreferenceChangeListener{
 
 	private int currLevel;
 
 	private SharedPreferences savedLevelInfo;
+	private LinearLayout levelChooser;
+
+	private LayoutInflater inflater;
 
 	@Nullable
 	@Override
@@ -38,10 +43,18 @@ public class LevelsFragment extends Fragment {
 		savedLevelInfo = getActivity().getApplicationContext()
 				.getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE);
 
+		this.inflater = inflater;
+
 		View v = inflater.inflate(R.layout.new_levels, container, false);
 
-		LinearLayout levelChooser = (LinearLayout) v.findViewById(R.id.level_chooser_layout);
+		levelChooser = (LinearLayout) v.findViewById(R.id.level_chooser_layout);
 
+		updateLevelList();
+
+		return v;
+	}
+
+	private void updateLevelList() {
 		int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
 		int maxLevel = savedLevelInfo.getInt(getString(R.string.saved_max_level), defaultValue);
 
@@ -85,8 +98,12 @@ public class LevelsFragment extends Fragment {
 			linearLayout.setLayoutParams(layoutParams);
 			levelChooser.addView(linearLayout);
 		}
+	}
 
-
-		return v;
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+		if(s.equals(getString(R.string.saved_max_level))) {
+			updateLevelList();
+		}
 	}
 }

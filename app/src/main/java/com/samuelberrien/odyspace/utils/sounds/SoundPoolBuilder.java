@@ -42,7 +42,7 @@ public class SoundPoolBuilder {
 	}
 
 	private float getVolume() {
-		return (float) this.gamePreferences.getInt(context.getString(R.string.saved_sound_effect_volume), 100) / 100f;
+		return (float) this.gamePreferences.getInt(context.getString(R.string.saved_sound_effect_volume), 50) / 100f;
 	}
 
 	public void playSimpleBoom(float leftLevel, float rightLevel) {

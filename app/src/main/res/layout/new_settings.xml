@@ -32,25 +32,33 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:onClick="resetSettings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/drawer_button"
+                    android:onClick="resetSettings"
                     android:text="@string/reset_settings_text"/>
 
                 <Button
-                    android:onClick="resetShop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/drawer_button"
+                    android:onClick="resetShop"
                     android:text="@string/reset_ship_text"/>
 
                 <Button
-                    android:onClick="resetLevels"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/drawer_button"
+                    android:onClick="resetLevels"
                     android:text="@string/reset_level_text"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawer_button"
+                    android:gravity="center"
+                    android:onClick="cheat"
+                    android:text="@string/cheat_text"/>
 
             </LinearLayout>
         </LinearLayout>

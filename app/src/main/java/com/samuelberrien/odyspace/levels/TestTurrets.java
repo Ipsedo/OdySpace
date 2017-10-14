@@ -201,8 +201,11 @@ public class TestTurrets implements Level {
 		ArrayList<Item> ennemi = new ArrayList<>();
 		ennemi.addAll(rocketsTurret);
 		ennemi.addAll(turrets);
-		ennemi.add(noiseMap);
 		Octree octree = new Octree(levelLimits, ami, ennemi, 3f);
+		octree.computeOctree();
+		ennemi.clear();
+		ennemi.add(noiseMap);
+		octree = new Octree(levelLimits, ami, ennemi, 3f);
 		octree.computeOctree();
 	}
 

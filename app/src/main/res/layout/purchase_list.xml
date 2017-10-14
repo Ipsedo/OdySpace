@@ -6,15 +6,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fadingEdgeLength="30dp"
-        android:requiresFadingEdge="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/layout_list_purchase_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
             android:orientation="vertical"/>
     </ScrollView>
 </LinearLayout>

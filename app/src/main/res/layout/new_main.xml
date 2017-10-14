@@ -42,8 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
-            android:orientation="vertical"
-            android:background="@color/grey">
+            android:background="@color/grey"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/layout_menu_button"
@@ -55,45 +55,50 @@
                     android:id="@+id/continue_drawer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="continueStory"
+                    android:layout_weight="1"
                     android:background="@drawable/drawer_button"
+                    android:onClick="continueStory"
                     android:text="Continue"/>
 
                 <Button
                     android:id="@+id/levels_drawer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="levels"
+                    android:layout_weight="1"
                     android:background="@drawable/drawer_button"
+                    android:onClick="levels"
                     android:text="Levels"/>
 
                 <Button
                     android:id="@+id/shop_drawer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="shop"
+                    android:layout_weight="1"
                     android:background="@drawable/drawer_button"
+                    android:onClick="shop"
                     android:text="Shop"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/black"/>
-
-                <TextView
-                    android:id="@+id/money_text"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/drawer_button_unpressed"/>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <View
-                    android:id="@+id/money_separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/black"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/money_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/drawer_button_unpressed"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"/>
+                </LinearLayout>
+
 
             </LinearLayout>
 

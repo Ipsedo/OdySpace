@@ -235,7 +235,6 @@ public class MainActivity
 		LinearLayout menuDrawer = (LinearLayout) findViewById(R.id.menu_drawer);
 		LinearLayout layoutMenu = (LinearLayout) findViewById(R.id.layout_menu_button);
 		View mainSeparator = findViewById(R.id.main_separator);
-		View moneySeparator = findViewById(R.id.money_separator);
 		LinearLayout layoutItem = (LinearLayout) findViewById(R.id.used_items);
 
 		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(
@@ -243,7 +242,7 @@ public class MainActivity
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
+				LinearLayout.LayoutParams.MATCH_PARENT, 0.5f);
 
 		Resources r = getResources();
 		LinearLayout.LayoutParams layoutParams;
@@ -259,7 +258,6 @@ public class MainActivity
 								r.getDisplayMetrics()),
 						ViewGroup.LayoutParams.MATCH_PARENT);
 				mainSeparator.setLayoutParams(layoutParams);
-				moneySeparator.setVisibility(View.VISIBLE);
 				shipView.dismissDialog();
 				fireView.dismissDialog();
 				resetDialog.dismiss();
@@ -274,7 +272,6 @@ public class MainActivity
 								1,
 								r.getDisplayMetrics()));
 				mainSeparator.setLayoutParams(layoutParams);
-				moneySeparator.setVisibility(View.GONE);
 				shipView.dismissDialog();
 				fireView.dismissDialog();
 				resetDialog.dismiss();
@@ -331,7 +328,7 @@ public class MainActivity
 	}
 
 	public void resetSettings(View v) {
-		showDialogReset(new Runnable() {
+		showDialogConfirm(new Runnable() {
 			@Override
 			public void run() {
 				getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE).edit()
@@ -345,7 +342,7 @@ public class MainActivity
 	}
 
 	public void resetShop(View v) {
-		showDialogReset(new Runnable() {
+		showDialogConfirm(new Runnable() {
 			@Override
 			public void run() {
 				SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shop_preferences),
@@ -381,19 +378,29 @@ public class MainActivity
 	}
 
 	public void resetLevels(View v) {
-		showDialogReset(new Runnable() {
+		showDialogConfirm(new Runnable() {
 			@Override
 			public void run() {
-				//TODO del sharedPreference en mode propre
 				getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE)
 						.edit()
-						.clear()
+						.remove(getString(R.string.saved_max_level))
 						.apply();
-				getSupportFragmentManager()
-						.beginTransaction()
-						.detach(levelsFragment)
-						.attach(levelsFragment)
-						.commit();
+			}
+		});
+	}
+
+	public void cheat(View v) {
+		showDialogConfirm(new Runnable() {
+			@Override
+			public void run() {
+				getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE)
+						.edit()
+						.putInt(getString(R.string.saved_money), 999999999)
+						.apply();
+				getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE)
+						.edit()
+						.putInt(getString(R.string.saved_max_level), Level.LEVELS.length)
+						.apply();
 			}
 		});
 	}
@@ -407,7 +414,7 @@ public class MainActivity
 		}
 	}
 
-	private void showDialogReset(final Runnable runnable) {
+	private void showDialogConfirm(final Runnable runnable) {
 		resetYes.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

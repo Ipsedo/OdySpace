@@ -98,7 +98,7 @@ public class GameParamsView
 
 		effectVolumeSeekBar.setMax(100);
 		effectVolumeSeekBar.setProgress(
-				gamePreferences.getInt(context.getString(R.string.saved_sound_effect_volume), 100));
+				gamePreferences.getInt(context.getString(R.string.saved_sound_effect_volume), 50));
 		effectVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				gamePreferences.edit()

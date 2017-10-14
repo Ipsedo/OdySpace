@@ -49,6 +49,8 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 
 	public void changeObj(Purchases purchases, String name) {
 		//TODO faire truc propre string.xml avec list des noms de fichier obj et mtl (biens indéxés)
+		objFileName = "none_model.obj";
+		mtlFileName = "none_model.mtl";
 		switch (purchases) {
 			case SHIP:
 				if (name.equals(context.getString(R.string.ship_simple))) {
@@ -60,9 +62,9 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 				} else if (name.equals(context.getString(R.string.ship_supreme))) {
 					objFileName = "ship_supreme.obj";
 					mtlFileName = "ship_supreme.mtl";
-				} else {
-					objFileName = "ship_3.obj";
-					mtlFileName = "ship_3.mtl";
+				} else if (name.equals(getContext().getString(R.string.bought_life))) {
+					objFileName = "heart.obj";
+					mtlFileName = "heart.mtl";
 				}
 				break;
 			case FIRE:
@@ -84,9 +86,6 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 				} else if (name.equals(context.getString(R.string.fire_6))) {
 					objFileName = "torus.obj";
 					mtlFileName = "torus.mtl";
-				} else {
-					objFileName = "rocket.obj";
-					mtlFileName = "rocket.mtl";
 				}
 				break;
 			case BONUS:
@@ -98,16 +97,9 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 					objFileName = "clock.obj";
 					mtlFileName = "clock.mtl";
 				} else if (name.equals(context.getString(R.string.bonus_2))) {
-					objFileName = "arrow_speed.obj";
-					mtlFileName = "arrow_speed.mtl";
-				} else {
-					objFileName = "arrow_speed.obj";
-					mtlFileName = "arrow_speed.mtl";
+					objFileName = "shield.obj";
+					mtlFileName = "shield.mtl";
 				}
-				break;
-			default:
-				objFileName = "ship_3.obj";
-				mtlFileName = "ship_3.mtl";
 				break;
 		}
 		willCreateObj = true;
