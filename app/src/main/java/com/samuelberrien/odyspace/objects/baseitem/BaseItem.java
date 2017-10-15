@@ -25,7 +25,8 @@ import java.util.List;
 
 public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 
-	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
+	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1,
+									   float[] mPointItem2, float[] mModelMatrix2);
 
 	static {
 		System.loadLibrary("collision");
