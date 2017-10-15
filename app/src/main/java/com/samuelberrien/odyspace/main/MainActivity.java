@@ -198,7 +198,6 @@ public class MainActivity
 					String result = data.getStringExtra(LevelActivity.LEVEL_RESULT);
 					if (result.equals(LevelActivity.WIN)) {
 						/* level done */
-
 						increaseLevel();
 					} else if (result.equals(LevelActivity.FAIIL)) {
 						/* level failed */
