@@ -30,7 +30,7 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 
 	private String objFileName;
 	private String mtlFileName;
-	private Context context;
+	//private Context context;
 
 	private ObjModelMtlVBO objModelMtlVBO;
 
@@ -38,7 +38,7 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 
 	public Item3DView(Context context, Purchases purchases, String name) {
 		super(context);
-		this.context = context;
+		//this.context = context;
 		angle = (float) (Math.random() * 360d);
 
 		changeObj(purchases, name);
@@ -53,50 +53,53 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 		mtlFileName = "obj/none_model.mtl";
 		switch (purchases) {
 			case SHIP:
-				if (name.equals(context.getString(R.string.ship_simple))) {
+				if (name.equals(getContext().getString(R.string.ship_simple))) {
 					objFileName = "obj/ship_3.obj";
 					mtlFileName = "obj/ship_3.mtl";
-				} else if (name.equals(context.getString(R.string.ship_bird))) {
+				} else if (name.equals(getContext().getString(R.string.ship_bird))) {
 					objFileName = "obj/ship_bird.obj";
 					mtlFileName = "obj/ship_bird.mtl";
-				} else if (name.equals(context.getString(R.string.ship_supreme))) {
+				} else if (name.equals(getContext().getString(R.string.ship_supreme))) {
 					objFileName = "obj/ship_supreme.obj";
 					mtlFileName = "obj/ship_supreme.mtl";
 				} else if (name.equals(getContext().getString(R.string.bought_life))) {
 					objFileName = "obj/heart.obj";
 					mtlFileName = "obj/heart.mtl";
+				} else if (name.equals(getContext().getString(R.string.ship_interceptor))) {
+					objFileName = "obj/interceptor.obj";
+					mtlFileName = "obj/interceptor.mtl";
 				}
 				break;
 			case FIRE:
-				if (name.equals(context.getString(R.string.fire_1))) {
+				if (name.equals(getContext().getString(R.string.fire_1))) {
 					objFileName = "obj/rocket.obj";
 					mtlFileName = "obj/rocket.mtl";
-				} else if (name.equals(context.getString(R.string.fire_2))) {
+				} else if (name.equals(getContext().getString(R.string.fire_2))) {
 					objFileName = "obj/quint_fire.obj";
 					mtlFileName = "obj/quint_fire.mtl";
-				} else if (name.equals(context.getString(R.string.fire_3))) {
+				} else if (name.equals(getContext().getString(R.string.fire_3))) {
 					objFileName = "obj/bomb.obj";
 					mtlFileName = "obj/bomb.mtl";
-				} else if (name.equals(context.getString(R.string.fire_4))) {
+				} else if (name.equals(getContext().getString(R.string.fire_4))) {
 					objFileName = "obj/triple_fire.obj";
 					mtlFileName = "obj/triple_fire.mtl";
-				} else if (name.equals(context.getString(R.string.fire_5))) {
+				} else if (name.equals(getContext().getString(R.string.fire_5))) {
 					objFileName = "obj/laser_item_menu.obj";
 					mtlFileName = "obj/laser_item_menu.mtl";
-				} else if (name.equals(context.getString(R.string.fire_6))) {
+				} else if (name.equals(getContext().getString(R.string.fire_6))) {
 					objFileName = "obj/torus.obj";
 					mtlFileName = "obj/torus.mtl";
 				}
 				break;
 			case BONUS:
 				//TODO item bonus en 3D
-				if (name.equals(context.getString(R.string.bonus_1))) {
+				if (name.equals(getContext().getString(R.string.bonus_1))) {
 					objFileName = "obj/arrow_speed.obj";
 					mtlFileName = "obj/arrow_speed.mtl";
-				} else if (name.equals(context.getString(R.string.bought_duration))) {
+				} else if (name.equals(getContext().getString(R.string.bought_duration))) {
 					objFileName = "obj/clock.obj";
 					mtlFileName = "obj/clock.mtl";
-				} else if (name.equals(context.getString(R.string.bonus_2))) {
+				} else if (name.equals(getContext().getString(R.string.bonus_2))) {
 					objFileName = "obj/shield.obj";
 					mtlFileName = "obj/shield.mtl";
 				}
@@ -124,7 +127,7 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 		GLES20.glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
 		if (willCreateObj) {
-			objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
+			objModelMtlVBO = new ObjModelMtlVBO(getContext(), objFileName, mtlFileName, 1, 0, false);
 			willCreateObj = false;
 		}
 	}
@@ -142,7 +145,7 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 	@Override
 	public void onDrawFrame(GL10 gl10) {
 		if (willCreateObj) {
-			objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, 1, 0, false);
+			objModelMtlVBO = new ObjModelMtlVBO(getContext(), objFileName, mtlFileName, 1, 0, false);
 			willCreateObj = false;
 		}
 

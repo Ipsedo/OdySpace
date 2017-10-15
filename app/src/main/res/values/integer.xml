@@ -9,6 +9,7 @@
     <integer name="torus_cost">19500</integer>
     <integer name="ship_bird_cost">1000</integer>
     <integer name="ship_supreme_cost">10000</integer>
+    <integer name="ship_interceptor_cost">50000</integer>
     <integer name="saved_init_money">0</integer>
     <integer name="saved_ship_life_default">20</integer>
     <integer name="saved_ship_life_shop_default">0</integer>
@@ -20,6 +21,7 @@
         <item>20</item>
         <item>50</item>
         <item>200</item>
+        <item>500</item>
     </integer-array>
     <integer-array name="bonus_duration_shop_list_item">
         <item>@integer/bonus_1_duration</item>
@@ -38,6 +40,7 @@
         <item>@integer/zero</item>
         <item>@integer/ship_bird_cost</item>
         <item>@integer/ship_supreme_cost</item>
+        <item>@integer/ship_interceptor_cost</item>
     </integer-array>
     <integer-array name="bonus_shop_price">
         <item>1</item>
