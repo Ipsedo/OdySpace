@@ -109,7 +109,7 @@ public class LevelActivity extends AppCompatActivity {
 						.setBackgroundDrawable(
 								ContextCompat.getDrawable(
 										LevelActivity.this,
-										R.drawable.drawable_grey_corner));
+										R.drawable.grey_corner));
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
 				pauseDialog.getWindow()

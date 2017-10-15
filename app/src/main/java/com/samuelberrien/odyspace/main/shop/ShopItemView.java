@@ -71,7 +71,7 @@ public class ShopItemView extends LinearLayout {
 		layoutParams.weight = 1f;
 		addView(buyButton, layoutParams);
 
-		setBackground(ContextCompat.getDrawable(context, R.drawable.drawer_button_unpressed));
+		setBackground(ContextCompat.getDrawable(context, R.drawable.button_unpressed));
 	}
 
 	private void makeItem3D() {
@@ -190,7 +190,7 @@ public class ShopItemView extends LinearLayout {
 								buyButton.setClickable(false);
 								buyButton.setBackground(
 										ContextCompat.getDrawable(getContext(),
-												R.drawable.drawer_button_pressed));
+												R.drawable.button_pressed));
 								//insertPrice(cost[index]);
 							}
 						}
@@ -201,7 +201,7 @@ public class ShopItemView extends LinearLayout {
 						buyButton.setClickable(false);
 						buyButton.setBackground(
 								ContextCompat.getDrawable(getContext(),
-										R.drawable.drawer_button_pressed));
+										R.drawable.button_pressed));
 					} else {
 						buyButton.setClickable(true);
 					}
@@ -225,7 +225,7 @@ public class ShopItemView extends LinearLayout {
 							buyButton.setClickable(false);
 							buyButton.setBackground(
 									ContextCompat.getDrawable(getContext(),
-											R.drawable.drawer_button_pressed));
+											R.drawable.button_pressed));
 							//insertPrice(cost[index]);
 						}
 					}
@@ -236,7 +236,7 @@ public class ShopItemView extends LinearLayout {
 					buyButton.setClickable(false);
 					buyButton.setBackground(
 							ContextCompat.getDrawable(getContext(),
-									R.drawable.drawer_button_pressed));
+									R.drawable.button_pressed));
 				} else {
 					buyButton.setClickable(true);
 				}
@@ -283,7 +283,7 @@ public class ShopItemView extends LinearLayout {
 								buyButton.setClickable(false);
 								buyButton.setBackground(
 										ContextCompat.getDrawable(getContext(),
-												R.drawable.drawer_button_pressed));
+												R.drawable.button_pressed));
 								//insertPrice(cost[index]);
 							}
 						}
@@ -294,7 +294,7 @@ public class ShopItemView extends LinearLayout {
 						buyButton.setClickable(false);
 						buyButton.setBackground(
 								ContextCompat.getDrawable(getContext(),
-										R.drawable.drawer_button_pressed));
+										R.drawable.button_pressed));
 					} else {
 						buyButton.setClickable(true);
 					}

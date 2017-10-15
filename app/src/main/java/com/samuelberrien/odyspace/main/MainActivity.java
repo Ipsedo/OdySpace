@@ -131,7 +131,7 @@ public class MainActivity
 				ViewGroup.LayoutParams.MATCH_PARENT));
 
 		layoutDialog.setBackground(ContextCompat.getDrawable(this,
-				R.drawable.drawable_grey_corner));
+				R.drawable.grey_corner));
 		layoutDialog.setOrientation(LinearLayout.VERTICAL);
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(

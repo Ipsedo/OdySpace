@@ -11,7 +11,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_weight="0.5"
-        android:background="@drawable/drawable_white_corner"
+        android:background="@drawable/white_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
@@ -27,7 +27,7 @@
         android:layout_height="150dp"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_white_corner"
+        android:background="@drawable/white_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
@@ -57,7 +57,7 @@
         android:layout_height="150dp"
         android:layout_marginEnd="5dp"
         android:layout_weight="0.75"
-        android:background="@drawable/drawable_white_corner"
+        android:background="@drawable/white_corner"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical">
 
