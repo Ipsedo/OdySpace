@@ -49,15 +49,15 @@ public class TestSpaceTrip implements Level {
 
 	public TestSpaceTrip() {
 		isInit = false;
-		nbAsteroids = 20;
-		levelLimitSize = 500f;
+		nbAsteroids = 200;
+		levelLimitSize = 5000f;
 	}
 
 	@Override
 	public void init(Context context, Ship ship) {
 		this.ship = ship;
 
-		deepSpace = new CubeMap(context, levelLimitSize, "cube_map/space_1/");
+		deepSpace = new CubeMap(context, levelLimitSize, "cube_map/magma_planet/");
 		deepSpace.update();
 
 		levelLimits = new Box(-levelLimitSize,
@@ -72,14 +72,14 @@ public class TestSpaceTrip implements Level {
 		explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
 		ObjModelMtlVBO model = new ObjModelMtlVBO(context,
-				"obj/asteroid1.obj", "obj/asteroid1.mtl", 1f, 0f, true);
+				"obj/asteroid2.obj", "obj/asteroid2.mtl", 1f, 0f, true);
 		CrashableMesh crashableMesh = new CrashableMesh(context, "obj/icosahedron.obj");
 		Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < nbAsteroids; i++) {
 			float[] randomPos = new float[3];
 			float[] randomSpeed = new float[3];
 			for (int j = 0; j < 3; j++) {
-				randomPos[j] = random.nextFloat() * levelLimitSize * 4f / 3f - levelLimitSize * 2f / 3f;
+				randomPos[j] = random.nextFloat() * levelLimitSize * 2f / (3f * 5f) - levelLimitSize * 1f / (3f * 5f);
 				randomSpeed[j] = random.nextFloat() * 0.01f;
 			}
 			asteroids.add(new SuperIcosahedron(context, model, crashableMesh, 1,
@@ -88,6 +88,7 @@ public class TestSpaceTrip implements Level {
 		}
 
 		ship.setRockets(rockets);
+		ship.queueExplosion();
 
 		isInit = true;
 	}
