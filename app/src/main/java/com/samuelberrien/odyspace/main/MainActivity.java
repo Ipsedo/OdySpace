@@ -200,6 +200,7 @@ public class MainActivity
 					int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
 					if (result == 1) {
 						/* level done */
+						increaseLevel();
 					} else {
 						/* level failed */
 					}
