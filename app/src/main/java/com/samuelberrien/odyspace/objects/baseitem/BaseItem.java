@@ -31,7 +31,7 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 		System.loadLibrary("collision");
 	}
 
-	protected final int maxLife;
+	protected int maxLife;
 	protected int life;
 
 	protected float[] mPosition;
@@ -60,27 +60,32 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 
 	private boolean needMAkeExplosion;
 
-	public BaseItem(Context context, String objFileName, String mtlFileName, String objCrashableMeshFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
-		objModelMtlVBO = new ObjModelMtlVBO(context, objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
-		this.context = context;
-		this.life = life;
-		maxLife = this.life;
-		this.mPosition = mPosition;
-		this.mSpeed = mSpeed;
-		this.mAcceleration = mAcceleration;
-		mRotationMatrix = new float[16];
-		Matrix.setIdentityM(mRotationMatrix, 0);
-		mModelMatrix = new float[16];
-		Matrix.setIdentityM(mModelMatrix, 0);
-		this.scale = scale;
-		radius = scale * 2f;
-		isDanger = false;
+	public BaseItem(Context context,
+					String objFileName, String mtlFileName,
+					String objCrashableMeshFileName,
+					float lightAugmentation, float distanceCoef, boolean randomColor,
+					int life,
+					float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+		objModelMtlVBO = new ObjModelMtlVBO(context,
+				objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
 		crashableMesh = new CrashableMesh(context, objCrashableMeshFileName);
-		needMAkeExplosion = false;
+
+		init(context, life, mPosition, mSpeed, mAcceleration, scale);
 	}
 
-	public BaseItem(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+	public BaseItem(Context context,
+					ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh,
+					int life,
+					float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		objModelMtlVBO = objModelMtl;
+		this.crashableMesh = crashableMesh;
+
+		init(context, life, mPosition, mSpeed, mAcceleration, scale);
+	}
+
+	private void init(Context context,
+					  int life,
+					  float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		this.context = context;
 		this.life = life;
 		maxLife = this.life;
@@ -94,7 +99,6 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 		this.scale = scale;
 		radius = this.scale * 2f;
 		isDanger = false;
-		this.crashableMesh = crashableMesh;
 		needMAkeExplosion = false;
 	}
 
@@ -105,7 +109,9 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 
 	@Override
 	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
-		return areCollided(crashableMesh.cloneVertices(), mModelMatrix.clone(), triangleArray, modelMatrix);
+		return areCollided(
+				crashableMesh.cloneVertices(), mModelMatrix.clone(),
+				triangleArray, modelMatrix);
 	}
 
 	@Override
@@ -114,7 +120,11 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 	}
 
 	public Box makeBox() {
-		return new Box(mPosition[0] - radius * 0.5f, mPosition[1] - radius * 0.5f, mPosition[2] - radius * 0.5f, radius, radius, radius);
+		return new Box(
+				mPosition[0] - radius * 0.5f,
+				mPosition[1] - radius * 0.5f,
+				mPosition[2] - radius * 0.5f,
+				radius, radius, radius);
 	}
 
 	@Override
@@ -160,7 +170,10 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 	}
 
 	public float[] vector3fTo(BaseItem to) {
-		return new float[]{to.mPosition[0] - mPosition[0], to.mPosition[1] - mPosition[1], to.mPosition[2] - mPosition[2]};
+		return new float[]{
+				to.mPosition[0] - mPosition[0],
+				to.mPosition[1] - mPosition[1],
+				to.mPosition[2] - mPosition[2]};
 	}
 
 	@Override
@@ -183,7 +196,10 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 	}
 
 	@Override
-	public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] pMatrix,
+					 float[] vMatrix,
+					 float[] mLightPosInEyeSpace,
+					 float[] mCameraPosition) {
 		if (needMAkeExplosion) {
 			makeExplosion();
 			needMAkeExplosion = false;
