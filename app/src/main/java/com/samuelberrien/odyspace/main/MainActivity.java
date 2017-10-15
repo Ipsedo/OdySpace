@@ -182,7 +182,6 @@ public class MainActivity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
 		switchOrientation(getResources().getConfiguration().orientation);
 
 		switch (requestCode) {
@@ -196,12 +195,12 @@ public class MainActivity
 					SharedPreferences.Editor editor = this.savedShop.edit();
 					editor.putInt(getString(R.string.saved_money), currMoney + score);
 					editor.apply();
-
-					int result = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_RESULT));
-					if (result == 1) {
+					String result = data.getStringExtra(LevelActivity.LEVEL_RESULT);
+					if (result.equals(LevelActivity.WIN)) {
 						/* level done */
+
 						increaseLevel();
-					} else {
+					} else if (result.equals(LevelActivity.FAIIL)) {
 						/* level failed */
 					}
 				} else if (resultCode == Activity.RESULT_CANCELED) {
@@ -214,7 +213,7 @@ public class MainActivity
 
 	private void increaseLevel() {
 		SharedPreferences sevedLevelInfo = getSharedPreferences(
-				getString(R.string.saved_max_level),
+				getString(R.string.level_info_preferences),
 				Context.MODE_PRIVATE);
 		int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
 		int maxLevel = sevedLevelInfo.getInt(
@@ -222,8 +221,8 @@ public class MainActivity
 				defaultValue);
 		sevedLevelInfo.edit()
 				.putInt(getString(R.string.saved_max_level),
-						maxLevel + 1 < Level.LEVELS.length - 1 ?
-								maxLevel + 1 : Level.LEVELS.length - 1)
+						maxLevel + 1 < Level.LEVELS.length ?
+								maxLevel + 1 : Level.LEVELS.length)
 				.apply();
 
 	}

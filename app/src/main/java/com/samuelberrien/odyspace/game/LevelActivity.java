@@ -28,6 +28,9 @@ import com.samuelberrien.odyspace.main.params.GameParamsView;
 
 public class LevelActivity extends AppCompatActivity {
 
+	public static final String WIN = "WIN";
+	public static final String FAIIL = "FAIL";
+
 	public static final String LEVEL_RESULT = "LEVEL_RESULT";
 	public static final String LEVEL_SCORE = "LEVEL_SCORE";
 

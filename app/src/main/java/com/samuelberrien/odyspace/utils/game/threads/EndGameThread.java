@@ -48,13 +48,13 @@ public class EndGameThread extends CancelableThread {
 	public void work() {
 		if (!resultSetted && level.isDead()) {
 			Intent resultIntent = new Intent();
-			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(0));
+			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, LevelActivity.FAIIL);
 			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(level.getScore()));
 			levelActivity.setResult(Activity.RESULT_OK, resultIntent);
 			finishGame();
 		} else if (!resultSetted && level.isWinner()) {
 			Intent resultIntent = new Intent();
-			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, Integer.toString(1));
+			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, LevelActivity.WIN);
 			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(level.getScore()));
 			levelActivity.setResult(Activity.RESULT_OK, resultIntent);
 			finishGame();
