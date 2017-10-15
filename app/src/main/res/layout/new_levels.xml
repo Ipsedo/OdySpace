@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical"
-        android:paddingBottom="10dp">
+        android:paddingBottom="5dp">
 
         <com.samuelberrien.odyspace.utils.widget.RadioExpand
             android:id="@+id/radio_expand_level"
