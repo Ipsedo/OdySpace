@@ -64,7 +64,7 @@ public class TestProtectionLevel implements Level {
 	private boolean isInit;
 
 	private ProgressBar currLevelProgression;
-	private static int maxLevelTime = 1 << 1;
+	private static int maxLevelTime = 1 << 14;
 	private int currLevelTime;
 
 	private Random rand;
