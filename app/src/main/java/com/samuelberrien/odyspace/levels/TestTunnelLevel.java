@@ -193,4 +193,9 @@ public class TestTunnelLevel implements Level {
 	public float getMaxProjection() {
 		return levelLimitSize * 10f;
 	}
+
+	@Override
+	public String toString() {
+		return NAME;
+	}
 }

@@ -176,6 +176,8 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 		float[] tmp = new float[16];
 		Matrix.setIdentityM(tmp, 0);
 		Matrix.translateM(tmp, 0, mPosition[0], mPosition[1], mPosition[2]);
+
+		Matrix.multiplyMM(tmp, 0, tmp.clone(), 0, mRotationMatrix, 0);
 		Matrix.scaleM(tmp, 0, scale, scale, scale);
 		mModelMatrix = tmp.clone();
 	}

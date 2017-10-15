@@ -107,8 +107,11 @@ public class TestProtectionLevel implements Level {
 		this.ship.setRockets(rockets);
 
 		particule = new ObjModel(context, "obj/triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
-		icosahedron = new ObjModelMtlVBO(this.context,
+		/*icosahedron = new ObjModelMtlVBO(this.context,
 				"obj/icosahedron.obj", "obj/icosahedron.mtl",
+				1f, 0f, true);*/
+		icosahedron = new ObjModelMtlVBO(this.context,
+				"obj/asteroid1.obj", "obj/asteroid1.mtl",
 				1f, 0f, true);
 		directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
 		//TODO crashable
@@ -325,5 +328,10 @@ public class TestProtectionLevel implements Level {
 	@Override
 	public float getMaxProjection() {
 		return levelLimitSize * 3f;
+	}
+
+	@Override
+	public String toString() {
+		return NAME;
 	}
 }

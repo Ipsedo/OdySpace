@@ -86,12 +86,6 @@ public class Turret extends BaseItem implements Shooter {
 
 		Matrix.setRotateM(super.mRotationMatrix, 0, (float) Math.toDegrees(angle), cross[0], cross[1], cross[2]);
 
-		float[] mModelMatrix = new float[16];
-		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
-		Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, super.mRotationMatrix, 0);
-		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
-
-		super.mModelMatrix = mModelMatrix.clone();
+		super.update();
 	}
 }

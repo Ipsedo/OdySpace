@@ -191,14 +191,15 @@ public class MainActivity
 					int currMoney = this.savedShop.getInt(
 							getString(R.string.saved_money),
 							defaultMoney);
-					int score = Integer.parseInt(data.getStringExtra(LevelActivity.LEVEL_SCORE));
+					int score = data.getIntExtra(LevelActivity.LEVEL_SCORE, 0);
 					SharedPreferences.Editor editor = this.savedShop.edit();
 					editor.putInt(getString(R.string.saved_money), currMoney + score);
 					editor.apply();
 					String result = data.getStringExtra(LevelActivity.LEVEL_RESULT);
+					int levelDoneIndex = data.getIntExtra(MainActivity.LEVEL_ID, -1);
 					if (result.equals(LevelActivity.WIN)) {
 						/* level done */
-						increaseLevel();
+						increaseLevel(levelDoneIndex);
 					} else if (result.equals(LevelActivity.FAIIL)) {
 						/* level failed */
 					}
@@ -210,7 +211,7 @@ public class MainActivity
 		}
 	}
 
-	private void increaseLevel() {
+	private void increaseLevel(int currentLevelIndex) {
 		SharedPreferences sevedLevelInfo = getSharedPreferences(
 				getString(R.string.level_info_preferences),
 				Context.MODE_PRIVATE);
@@ -218,11 +219,13 @@ public class MainActivity
 		int maxLevel = sevedLevelInfo.getInt(
 				getString(R.string.saved_max_level),
 				defaultValue);
-		sevedLevelInfo.edit()
-				.putInt(getString(R.string.saved_max_level),
-						maxLevel + 1 < Level.LEVELS.length ?
-								maxLevel + 1 : Level.LEVELS.length)
-				.apply();
+		if (currentLevelIndex == maxLevel) {
+			sevedLevelInfo.edit()
+					.putInt(getString(R.string.saved_max_level),
+							maxLevel + 1 < Level.LEVELS.length ?
+									maxLevel + 1 : Level.LEVELS.length)
+					.apply();
+		}
 
 	}
 

@@ -186,4 +186,9 @@ public class TestBossThread implements Level {
 	public float getMaxProjection() {
 		return levelLimitSize * 3f;
 	}
+
+	@Override
+	public String toString() {
+		return NAME;
+	}
 }

@@ -16,7 +16,11 @@ public class Rocket extends Ammos {
 
 	private static int Life = 1;
 
-	public Rocket(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed) {
-		super(context, objModelMtl, crashableMesh, mPosition, mSpeed, new float[3], mRotationMatrix, 3f * maxSpeed, 1f, Life);
+	public Rocket(Context context,
+				  ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh,
+				  float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed) {
+		super(context,
+				objModelMtl, crashableMesh,
+				mPosition, mSpeed, new float[3], mRotationMatrix, 3f * maxSpeed, 1f, Life);
 	}
 }

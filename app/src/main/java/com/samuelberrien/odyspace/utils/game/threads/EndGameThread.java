@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.samuelberrien.odyspace.game.LevelActivity;
+import com.samuelberrien.odyspace.main.MainActivity;
 import com.samuelberrien.odyspace.utils.game.Level;
 
 /**
@@ -49,13 +50,14 @@ public class EndGameThread extends CancelableThread {
 		if (!resultSetted && level.isDead()) {
 			Intent resultIntent = new Intent();
 			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, LevelActivity.FAIIL);
-			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(level.getScore()));
+			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, level.getScore());
 			levelActivity.setResult(Activity.RESULT_OK, resultIntent);
 			finishGame();
 		} else if (!resultSetted && level.isWinner()) {
 			Intent resultIntent = new Intent();
 			resultIntent.putExtra(LevelActivity.LEVEL_RESULT, LevelActivity.WIN);
-			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, Integer.toString(level.getScore()));
+			resultIntent.putExtra(LevelActivity.LEVEL_SCORE, level.getScore());
+			resultIntent.putExtra(MainActivity.LEVEL_ID, findLevelIndex());
 			levelActivity.setResult(Activity.RESULT_OK, resultIntent);
 			finishGame();
 		}
@@ -70,5 +72,13 @@ public class EndGameThread extends CancelableThread {
 		};
 		tmp.setPriority(Thread.MAX_PRIORITY);
 		tmp.start();
+	}
+
+	private int findLevelIndex() {
+		for(int i = 0; i < Level.LEVELS.length; i++) {
+			if(Level.LEVELS[i].equals(level.toString()))
+				return i;
+		}
+		return -1;
 	}
 }

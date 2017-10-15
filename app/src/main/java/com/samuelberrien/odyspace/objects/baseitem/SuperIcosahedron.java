@@ -1,9 +1,12 @@
 package com.samuelberrien.odyspace.objects.baseitem;
 
 import android.content.Context;
+import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
+
+import java.util.Random;
 
 /**
  * Created by samuel on 30/06/17.
@@ -14,13 +17,34 @@ import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
 
 public class SuperIcosahedron extends Icosahedron {
 
-	public SuperIcosahedron(Context context, int life, float[] mPosition, float scale) {
-		super(context, life, mPosition, scale);
-	}
+	private float mAngle;
+	private float angularSpeed;
+	private Random random;
+	private float[] rotAxis;
 
 	public SuperIcosahedron(Context context, ObjModelMtlVBO model, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float scale) {
 		super(context, model, crashableMesh, life, mPosition, mSpeed, scale);
+		init();
 	}
+
+	private void init() {
+		rotAxis = new float[3];
+		random = new Random(System.currentTimeMillis());
+		mAngle = random.nextFloat() * 360f;
+		angularSpeed = random.nextFloat();
+		rotAxis[0] = random.nextFloat() * 2f - 1f;
+		rotAxis[1] = random.nextFloat() * 2f - 1f;
+		rotAxis[2] = random.nextFloat() * 2f - 1f;
+	}
+
+	@Override
+	public void update() {
+		mAngle += angularSpeed;
+		mAngle = mAngle < 360f ? mAngle : mAngle - 360f;
+		Matrix.setRotateM(mRotationMatrix, 0, mAngle, rotAxis[0], rotAxis[1], rotAxis[2]);
+		super.update();
+	}
+
 
 	@Override
 	public int getDamage() {

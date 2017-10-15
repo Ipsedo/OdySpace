@@ -14,8 +14,13 @@ public class Torus extends Ammos {
 	private static double BaseLog = 1.3d;
 	private double accuScale;
 
-	public Torus(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMeshes, float[] mPosition, float[] mSpeed, float[] mRotationMatrix, float maxSpeed, double accuScale) {
-		super(context, objModelMtl, crashableMeshes, mPosition, mSpeed, new float[]{0f, 0f, 3e-2f}, mRotationMatrix, maxSpeed, 1f, Life);
+	public Torus(Context context,
+				 ObjModelMtlVBO objModelMtl, CrashableMesh crashableMeshes,
+				 float[] mPosition, float[] mSpeed, float[] mRotationMatrix,
+				 float maxSpeed, double accuScale) {
+		super(context,
+				objModelMtl, crashableMeshes,
+				mPosition, mSpeed, new float[]{0f, 0f, 3e-2f}, mRotationMatrix, maxSpeed, 1f, Life);
 		this.accuScale = BaseLog + accuScale;
 	}
 
