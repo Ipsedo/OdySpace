@@ -41,13 +41,19 @@ public class TestBossThread implements Level {
 	private Boss boss;
 	private List<BaseItem> rocketsShip;
 	private List<BaseItem> rocketsBoss;
-	private boolean isInit = false;
+	private boolean isInit;
 	private Compass compass;
 	private Forest forest;
 	private ProgressBar progressBar;
+	private float levelLimitSize;
+
+	public TestBossThread() {
+		isInit = false;
+		levelLimitSize = 500f;
+	}
 
 	@Override
-	public void init(Context context, Ship currShip, float levelLimitSize) {
+	public void init(Context context, Ship currShip) {
 		this.context = context;
 		ship = currShip;
 		float limitDown = -100f;
@@ -57,7 +63,7 @@ public class TestBossThread implements Level {
 				0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
 		noiseMap.update();
 		forest = new Forest(this.context,
-				"dead_tree.obj", "dead_tree.mtl",
+				"obj/dead_tree.obj", "obj/dead_tree.mtl",
 				100, noiseMap, levelLimitSize);
 		levelLimits = new Box(-levelLimitSize,
 				limitDown - 0.02f * levelLimitSize,
@@ -174,5 +180,10 @@ public class TestBossThread implements Level {
 	@Override
 	public boolean isWinner() {
 		return !boss.isAlive();
+	}
+
+	@Override
+	public float getMaxProjection() {
+		return levelLimitSize * 3f;
 	}
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
+import com.samuelberrien.odyspace.levels.TestSpaceTrip;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
@@ -18,9 +19,9 @@ import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 
 public interface Level {
 
-	String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME, TestTunnelLevel.NAME};
+	String[] LEVELS = {TestThread.NAME, TestProtectionLevel.NAME, TestTurrets.NAME, TestBossThread.NAME, TestTunnelLevel.NAME, TestSpaceTrip.NAME};
 
-	void init(Context context, Ship ship, float levelLimitSize);
+	void init(Context context, Ship ship);
 
 	float[] getLightPos();
 
@@ -41,4 +42,6 @@ public interface Level {
 	boolean isDead();
 
 	boolean isWinner();
+
+	float getMaxProjection();
 }

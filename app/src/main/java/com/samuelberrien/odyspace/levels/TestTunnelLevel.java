@@ -39,14 +39,16 @@ public class TestTunnelLevel implements Level {
 	private List<Explosion> explosions;
 
 	private float levelLimitSize;
-	private float sizeCollideBox = 100f;
 
 	private SoundPoolBuilder soundPoolBuilder;
 
+	public TestTunnelLevel() {
+		levelLimitSize = 100f;
+	}
+
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize) {
+	public void init(Context context, Ship ship) {
 		this.ship = ship;
-		this.levelLimitSize = levelLimitSize;
 
 		rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
 		icos = Collections.synchronizedList(new ArrayList<Icosahedron>());
@@ -123,18 +125,21 @@ public class TestTunnelLevel implements Level {
 	@Override
 	public void collide() {
 		ArrayList<Item> amis = new ArrayList<>();
-		amis.add(ship);
 		ArrayList<Item> ennemis = new ArrayList<>();
-		ennemis.addAll(tunnel.getItemsInBox(makeBoundingBox(2f)));
+		Octree octree;
+
+		amis.addAll(rockets);
 		ennemis.addAll(icos);
-		Octree octree = new Octree(makeBoundingBox(sizeCollideBox), amis, ennemis, 4f);
+		octree = new Octree(makeBoundingBox(levelLimitSize * 10f), amis, ennemis, 2f);
 		octree.computeOctree();
 
 		amis.clear();
 		ennemis.clear();
-		amis.addAll(rockets);
+
+		amis.add(ship);
+		ennemis.addAll(tunnel.getItemsInBox(makeBoundingBox(2f)));
 		ennemis.addAll(icos);
-		octree = new Octree(makeBoundingBox(levelLimitSize), amis, ennemis, 2f);
+		octree = new Octree(makeBoundingBox(levelLimitSize), amis, ennemis, 4f);
 		octree.computeOctree();
 	}
 
@@ -144,7 +149,7 @@ public class TestTunnelLevel implements Level {
 	}
 
 	private float getSoundLevel(BaseItem from) {
-		return 1f - Vector.length3f(from.vector3fTo(ship)) / levelLimitSize;
+		return 1f - Vector.length3f(from.vector3fTo(ship)) / (levelLimitSize * 5f);
 	}
 
 	@Override
@@ -182,5 +187,10 @@ public class TestTunnelLevel implements Level {
 	@Override
 	public boolean isWinner() {
 		return tunnel.isInLastStretch(ship);
+	}
+
+	@Override
+	public float getMaxProjection() {
+		return levelLimitSize * 10f;
 	}
 }

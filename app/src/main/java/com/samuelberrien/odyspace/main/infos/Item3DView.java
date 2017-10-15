@@ -49,56 +49,56 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 
 	public void changeObj(Purchases purchases, String name) {
 		//TODO faire truc propre string.xml avec list des noms de fichier obj et mtl (biens indéxés)
-		objFileName = "none_model.obj";
-		mtlFileName = "none_model.mtl";
+		objFileName = "obj/none_model.obj";
+		mtlFileName = "obj/none_model.mtl";
 		switch (purchases) {
 			case SHIP:
 				if (name.equals(context.getString(R.string.ship_simple))) {
-					objFileName = "ship_3.obj";
-					mtlFileName = "ship_3.mtl";
+					objFileName = "obj/ship_3.obj";
+					mtlFileName = "obj/ship_3.mtl";
 				} else if (name.equals(context.getString(R.string.ship_bird))) {
-					objFileName = "ship_bird.obj";
-					mtlFileName = "ship_bird.mtl";
+					objFileName = "obj/ship_bird.obj";
+					mtlFileName = "obj/ship_bird.mtl";
 				} else if (name.equals(context.getString(R.string.ship_supreme))) {
-					objFileName = "ship_supreme.obj";
-					mtlFileName = "ship_supreme.mtl";
+					objFileName = "obj/ship_supreme.obj";
+					mtlFileName = "obj/ship_supreme.mtl";
 				} else if (name.equals(getContext().getString(R.string.bought_life))) {
-					objFileName = "heart.obj";
-					mtlFileName = "heart.mtl";
+					objFileName = "obj/heart.obj";
+					mtlFileName = "obj/heart.mtl";
 				}
 				break;
 			case FIRE:
 				if (name.equals(context.getString(R.string.fire_1))) {
-					objFileName = "rocket.obj";
-					mtlFileName = "rocket.mtl";
+					objFileName = "obj/rocket.obj";
+					mtlFileName = "obj/rocket.mtl";
 				} else if (name.equals(context.getString(R.string.fire_2))) {
-					objFileName = "quint_fire.obj";
-					mtlFileName = "quint_fire.mtl";
+					objFileName = "obj/quint_fire.obj";
+					mtlFileName = "obj/quint_fire.mtl";
 				} else if (name.equals(context.getString(R.string.fire_3))) {
-					objFileName = "bomb.obj";
-					mtlFileName = "bomb.mtl";
+					objFileName = "obj/bomb.obj";
+					mtlFileName = "obj/bomb.mtl";
 				} else if (name.equals(context.getString(R.string.fire_4))) {
-					objFileName = "triple_fire.obj";
-					mtlFileName = "triple_fire.mtl";
+					objFileName = "obj/triple_fire.obj";
+					mtlFileName = "obj/triple_fire.mtl";
 				} else if (name.equals(context.getString(R.string.fire_5))) {
-					objFileName = "laser_item_menu.obj";
-					mtlFileName = "laser_item_menu.mtl";
+					objFileName = "obj/laser_item_menu.obj";
+					mtlFileName = "obj/laser_item_menu.mtl";
 				} else if (name.equals(context.getString(R.string.fire_6))) {
-					objFileName = "torus.obj";
-					mtlFileName = "torus.mtl";
+					objFileName = "obj/torus.obj";
+					mtlFileName = "obj/torus.mtl";
 				}
 				break;
 			case BONUS:
 				//TODO item bonus en 3D
 				if (name.equals(context.getString(R.string.bonus_1))) {
-					objFileName = "arrow_speed.obj";
-					mtlFileName = "arrow_speed.mtl";
+					objFileName = "obj/arrow_speed.obj";
+					mtlFileName = "obj/arrow_speed.mtl";
 				} else if (name.equals(context.getString(R.string.bought_duration))) {
-					objFileName = "clock.obj";
-					mtlFileName = "clock.mtl";
+					objFileName = "obj/clock.obj";
+					mtlFileName = "obj/clock.mtl";
 				} else if (name.equals(context.getString(R.string.bonus_2))) {
-					objFileName = "shield.obj";
-					mtlFileName = "shield.mtl";
+					objFileName = "obj/shield.obj";
+					mtlFileName = "obj/shield.mtl";
 				}
 				break;
 		}

@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/drawer_button"
                     android:onClick="resetSettings"
+                    android:textAllCaps="false"
                     android:text="@string/reset_settings_text"/>
 
                 <Button
@@ -43,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/drawer_button"
                     android:onClick="resetShop"
+                    android:textAllCaps="false"
                     android:text="@string/reset_ship_text"/>
 
                 <Button
@@ -50,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/drawer_button"
                     android:onClick="resetLevels"
+                    android:textAllCaps="false"
                     android:text="@string/reset_level_text"/>
 
                 <TextView

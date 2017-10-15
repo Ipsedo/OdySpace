@@ -41,7 +41,7 @@ public class TestTurrets implements Level {
 
 	private Context context;
 
-	private boolean isInit = false;
+	private boolean isInit;
 
 	private Ship ship;
 
@@ -60,13 +60,16 @@ public class TestTurrets implements Level {
 
 	private SoundPoolBuilder soundPoolBuilder;
 
+	public TestTurrets() {
+		isInit = false;
+		levelLimitSize = 500f;
+	}
+
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize) {
+	public void init(Context context, Ship ship) {
 		this.context = context;
 		this.ship = ship;
 		ship.queueExplosion();
-
-		this.levelLimitSize = levelLimitSize;
 
 		currLevelProgression = new ProgressBar(context, 20, -1f + 0.15f, 0.9f,
 				Color.LevelProgressBarColor);
@@ -93,9 +96,9 @@ public class TestTurrets implements Level {
 		ship.setRockets(rocketsShip);
 
 		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context,
-				"turret.obj", "turret.mtl",
+				"obj/turret.obj", "obj/turret.mtl",
 				1f, 0f, false);
-		CrashableMesh crashableMesh = new CrashableMesh(context, "turret.obj");
+		CrashableMesh crashableMesh = new CrashableMesh(context, "obj/turret.obj");
 		Random rand = new Random(System.currentTimeMillis());
 		for (int i = 0; i < nbTurret; i++) {
 			float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
@@ -260,5 +263,10 @@ public class TestTurrets implements Level {
 	@Override
 	public boolean isWinner() {
 		return nbTurret - turrets.size() > 19;
+	}
+
+	@Override
+	public float getMaxProjection() {
+		return levelLimitSize * 3f;
 	}
 }

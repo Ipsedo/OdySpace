@@ -129,7 +129,7 @@ public class BossKilledView
 				mAngles.add(random.nextFloat() * 360f);
 				String fileName = objFileNames.get(i);
 				boss.add(new ObjModelMtlVBO(getContext(),
-						fileName + ".obj", fileName + ".mtl",
+						"obj/" + fileName + ".obj", "obj/" + fileName + ".mtl",
 						1f, 0f, false));
 			}
 			willCreateBoss = false;
@@ -164,7 +164,7 @@ public class BossKilledView
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-		if(s.equals(getContext().getString(R.string.saved_max_level))) {
+		if (s.equals(getContext().getString(R.string.saved_max_level))) {
 			updateBeatedBoss();
 		}
 	}

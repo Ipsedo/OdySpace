@@ -27,7 +27,7 @@ public class FstBoss extends Boss {
 	private Random rand;
 
 	public FstBoss(Context context, float[] mPosition, Ship ship, List<BaseItem> rockets) {
-		super(context, "skull.obj", "skull.mtl", 20, mPosition, 3f, FireType.SIMPLE_FIRE, rockets);
+		super(context, "obj/skull.obj", "obj/skull.mtl", 20, mPosition, 3f, FireType.SIMPLE_FIRE, rockets);
 		this.ship = ship;
 		phi = 0f;
 		theta = 0f;

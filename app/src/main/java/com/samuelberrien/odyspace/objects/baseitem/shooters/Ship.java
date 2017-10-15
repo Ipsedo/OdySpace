@@ -93,11 +93,11 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 		Ship resShip;
 
 		if (shipUsed.equals(context.getString(R.string.ship_bird))) {
-			resShip = new Ship(context, "ship_bird.obj", "ship_bird.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
+			resShip = new Ship(context, "obj/ship_bird.obj", "obj/ship_bird.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		} else if (shipUsed.equals(context.getString(R.string.ship_supreme))) {
-			resShip = new Ship(context, "ship_supreme.obj", "ship_supreme.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
+			resShip = new Ship(context, "obj/ship_supreme.obj", "obj/ship_supreme.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		} else {
-			resShip = new Ship(context, "ship_3.obj", "ship_3.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
+			resShip = new Ship(context, "obj/ship_3.obj", "obj/ship_3.mtl", life, shipFireType, gamePad, bonus, currBonusDur, bonusDurationBought);
 		}
 		savedShip.registerOnSharedPreferenceChangeListener(resShip);
 		return resShip;

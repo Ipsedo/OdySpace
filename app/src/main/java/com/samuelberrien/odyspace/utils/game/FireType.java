@@ -38,20 +38,20 @@ public enum FireType {
 	 * @param context the application context
 	 */
 	public static void initAmmos(Context context) {
-		ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "rocket.obj", "rocket.mtl", 2f, 0f, false);
-		CrashableMesh crashableMesh = new CrashableMesh(context, "rocket.obj");
+		ObjModelMtlVBO tmpRocket = new ObjModelMtlVBO(context, "obj/rocket.obj", "obj/rocket.mtl", 2f, 0f, false);
+		CrashableMesh crashableMesh = new CrashableMesh(context, "obj/rocket.obj");
 		SIMPLE_FIRE.ammo = tmpRocket;
 		SIMPLE_FIRE.crashableMesh = crashableMesh;
 		QUINT_FIRE.ammo = tmpRocket;
 		QUINT_FIRE.crashableMesh = crashableMesh;
-		SIMPLE_BOMB.ammo = new ObjModelMtlVBO(context, "bomb.obj", "bomb.mtl", 0.8f, 0f, false);
-		SIMPLE_BOMB.crashableMesh = new CrashableMesh(context, "bomb.obj");
+		SIMPLE_BOMB.ammo = new ObjModelMtlVBO(context, "obj/bomb.obj", "obj/bomb.mtl", 0.8f, 0f, false);
+		SIMPLE_BOMB.crashableMesh = new CrashableMesh(context, "obj/bomb.obj");
 		TRIPLE_FIRE.ammo = tmpRocket;
 		TRIPLE_FIRE.crashableMesh = crashableMesh;
-		LASER.ammo = new ObjModelMtlVBO(context, "laser.obj", "laser.mtl", 2f, 0f, false);
-		LASER.crashableMesh = new CrashableMesh(context, "laser.obj");
-		TORUS.ammo = new ObjModelMtlVBO(context, "torus.obj", "torus.mtl", 2f, 0f, false);
-		TORUS.crashableMesh = new CrashableMesh(context, "torus.obj");
+		LASER.ammo = new ObjModelMtlVBO(context, "obj/laser.obj", "obj/laser.mtl", 2f, 0f, false);
+		LASER.crashableMesh = new CrashableMesh(context, "obj/laser.obj");
+		TORUS.ammo = new ObjModelMtlVBO(context, "obj/torus.obj", "obj/torus.mtl", 2f, 0f, false);
+		TORUS.crashableMesh = new CrashableMesh(context, "obj/torus.obj");
 		GUIDED_MISSILE.ammo = tmpRocket;
 		GUIDED_MISSILE.crashableMesh = crashableMesh;
 		appContext = context;

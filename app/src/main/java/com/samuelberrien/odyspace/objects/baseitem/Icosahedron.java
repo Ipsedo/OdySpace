@@ -17,7 +17,7 @@ public class Icosahedron extends BaseItem {
 
 	//TODO modèles simplifiés pr crashable ?
 	public Icosahedron(Context context, int life, float[] mPosition, float scale) {
-		super(context, "icosahedron.obj", "icosahedron.mtl", "icosahedron.obj", 0.7f, 0f, true, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
+		super(context, "obj/icosahedron.obj", "obj/icosahedron.mtl", "obj/icosahedron.obj", 0.7f, 0f, true, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
 	}
 
 	public Icosahedron(Context context, ObjModelMtlVBO model, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float scale) {

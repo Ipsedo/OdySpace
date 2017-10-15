@@ -57,10 +57,14 @@ public class TestThread implements Level {
 
 	private SoundPoolBuilder soundPoolBuilder;
 
+	public TestThread() {
+		isInit = false;
+		levelLimitSize = 500f;
+	}
+
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize) {
+	public void init(Context context, Ship ship) {
 		this.ship = ship;
-		this.levelLimitSize = levelLimitSize;
 
 		currLevelProgression = new ProgressBar(context, 50, -1f + 0.15f, 0.9f,
 				Color.LevelProgressBarColor);
@@ -72,15 +76,15 @@ public class TestThread implements Level {
 				0.45f, 0f, 8, this.levelLimitSize, limitDown, 0.02f);
 		noiseMap.update();
 		forest = new Forest(context,
-				"dead_tree.obj", "dead_tree.mtl",
-				100, noiseMap, this.levelLimitSize);
-		levelLimits = new Box(-this.levelLimitSize,
-				limitDown - 0.02f * this.levelLimitSize,
-				-this.levelLimitSize,
-				this.levelLimitSize * 2f,
-				this.levelLimitSize,
-				this.levelLimitSize * 2f);
-		cubeMap = new CubeMap(context, this.levelLimitSize, "cube_map/ciel_1/");
+				"obj/dead_tree.obj", "obj/dead_tree.mtl",
+				100, noiseMap, levelLimitSize);
+		levelLimits = new Box(-levelLimitSize,
+				limitDown - 0.02f * levelLimitSize,
+				-levelLimitSize,
+				levelLimitSize * 2f,
+				levelLimitSize,
+				levelLimitSize * 2f);
+		cubeMap = new CubeMap(context, levelLimitSize, "cube_map/ciel_1/");
 		cubeMap.update();
 
 		rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -221,5 +225,10 @@ public class TestThread implements Level {
 	@Override
 	public boolean isWinner() {
 		return nbIcosahedron - icosahedrons.size() > 49;
+	}
+
+	@Override
+	public float getMaxProjection() {
+		return levelLimitSize * 3f;
 	}
 }

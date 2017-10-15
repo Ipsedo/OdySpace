@@ -39,7 +39,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private float[] mCameraUpVec = new float[3];
 	private float maxRange = 1f;
 	private float projectionAngle = 40f;
-	private float maxProjDist = 1200f;
+	//private float maxProjDist;
 	private float ratio = 1f;
 
 	private GamePad gamePad;
@@ -85,7 +85,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 			mCameraPosition = new float[]{0f, 0f, -10f};
 			mCameraUpVec = new float[]{0f, 1f, 0f};
 
-			currentLevel.init(context, ship, 500f);
+			currentLevel.init(context, ship);
 
 			updateCameraPosition(ship.getCamPosition());
 			updateCamLookVec(ship.getCamLookAtVec());
@@ -145,7 +145,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		updateCamLookVec(ship.getCamLookAtVec());
 		updateCamUpVec(ship.getCamUpVec());
 
-		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, maxProjDist);
+		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, currentLevel.getMaxProjection());
 		Matrix.setLookAtM(mViewMatrix, 0,
 				mCameraPosition[0], mCameraPosition[1], mCameraPosition[2],
 				mCameraDirection[0], mCameraDirection[1], mCameraDirection[2],
@@ -178,6 +178,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		ratio = (float) width / height;
 
 		//Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 50f);
-		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, maxProjDist);
+		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, currentLevel.getMaxProjection());
 	}
 }

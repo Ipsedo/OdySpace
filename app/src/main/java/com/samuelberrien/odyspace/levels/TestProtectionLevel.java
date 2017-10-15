@@ -61,7 +61,7 @@ public class TestProtectionLevel implements Level {
 	private NoiseMap noiseMap;
 	private Forest forest;
 
-	private boolean isInit = false;
+	private boolean isInit;
 
 	private ProgressBar currLevelProgression;
 	private static int maxLevelTime = 1 << 14;
@@ -71,8 +71,13 @@ public class TestProtectionLevel implements Level {
 
 	private SoundPoolBuilder soundPoolBuilder;
 
+	public TestProtectionLevel() {
+		isInit = false;
+		levelLimitSize = 500f;
+	}
+
 	@Override
-	public void init(Context context, Ship ship, float levelLimitSize) {
+	public void init(Context context, Ship ship) {
 		this.context = context;
 		this.ship = ship;
 
@@ -82,7 +87,7 @@ public class TestProtectionLevel implements Level {
 				0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);
 		noiseMap.update();
 		forest = new Forest(this.context,
-				"dead_tree.obj", "dead_tree.mtl",
+				"obj/dead_tree.obj", "obj/dead_tree.mtl",
 				100, noiseMap, levelLimitSize);
 		levelLimits = new Box(-levelLimitSize,
 				limitDown - 0.02f * levelLimitSize - 100f,
@@ -101,20 +106,20 @@ public class TestProtectionLevel implements Level {
 
 		this.ship.setRockets(rockets);
 
-		particule = new ObjModel(context, "triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
+		particule = new ObjModel(context, "obj/triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
 		icosahedron = new ObjModelMtlVBO(this.context,
-				"icosahedron.obj", "icosahedron.mtl",
+				"obj/icosahedron.obj", "obj/icosahedron.mtl",
 				1f, 0f, true);
 		directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
 		//TODO crashable
-		crashableIco = new CrashableMesh(context, "icosahedron.obj");
+		crashableIco = new CrashableMesh(context, "obj/icosahedron.obj");
 
 
 		rand = new Random(System.currentTimeMillis());
 
-		base = new ObjModelMtlVBO(this.context, "base.obj", "base.mtl", 1f, 0f, false);
+		base = new ObjModelMtlVBO(this.context, "obj/base.obj", "obj/base.mtl", 1f, 0f, false);
 		//TODO faire vrai crashable?
-		CrashableMesh crashableMesh = new CrashableMesh(context, "base.obj");
+		CrashableMesh crashableMesh = new CrashableMesh(context, "obj/base.obj");
 		for (int i = 0; i < nbBase; i++) {
 			float x = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
 			float z = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
@@ -315,5 +320,10 @@ public class TestProtectionLevel implements Level {
 	@Override
 	public boolean isWinner() {
 		return currLevelTime >= maxLevelTime;
+	}
+
+	@Override
+	public float getMaxProjection() {
+		return levelLimitSize * 3f;
 	}
 }

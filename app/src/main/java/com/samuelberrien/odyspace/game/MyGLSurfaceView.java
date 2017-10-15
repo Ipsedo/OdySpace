@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
+import com.samuelberrien.odyspace.levels.TestSpaceTrip;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
@@ -71,8 +72,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			return new TestTurrets();
 		} else if (currLevelId == 3) {
 			return new TestBossThread();
-		} else {
+		} else if (currLevelId == 4) {
 			return new TestTunnelLevel();
+		} else {
+			return new TestSpaceTrip();
 		}
 	}
 

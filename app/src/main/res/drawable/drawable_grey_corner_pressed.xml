@@ -2,7 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item>
-        <shape android:layout_width="wrap_content"
+        <shape
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shape="rectangle">
             <corners android:radius="3dp"/>

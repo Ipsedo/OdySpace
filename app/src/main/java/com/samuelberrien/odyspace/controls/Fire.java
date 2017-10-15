@@ -72,7 +72,7 @@ class Fire extends Control {
 
 		bind();
 		makeFireButton();
-		fireLogo = new ObjModel(context, "bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
+		fireLogo = new ObjModel(context, "obj/bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {

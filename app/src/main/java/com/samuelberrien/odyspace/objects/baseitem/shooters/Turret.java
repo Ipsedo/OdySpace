@@ -35,7 +35,7 @@ public class Turret extends BaseItem implements Shooter {
 
 	//TODO modèles simplifiés pr crashable ?
 	public Turret(Context context, float[] mPosition, FireType fireType, Ship ship, List<BaseItem> rockets) {
-		super(context, "turret.obj", "turret.mtl", "turret.obj", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
+		super(context, "obj/turret.obj", "obj/turret.mtl", "obj/turret.obj", 1f, 0f, false, 1, mPosition, new float[3], new float[3], 4f);
 		rand = new Random(System.currentTimeMillis());
 		this.fireType = fireType;
 		this.ship = ship;
