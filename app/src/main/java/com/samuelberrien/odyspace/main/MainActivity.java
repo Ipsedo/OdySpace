@@ -211,6 +211,22 @@ public class MainActivity
 		}
 	}
 
+	private void increaseLevel() {
+		SharedPreferences sevedLevelInfo = getSharedPreferences(
+				getString(R.string.saved_max_level),
+				Context.MODE_PRIVATE);
+		int defaultValue = getResources().getInteger(R.integer.saved_max_level_default);
+		int maxLevel = sevedLevelInfo.getInt(
+				getString(R.string.saved_max_level),
+				defaultValue);
+		sevedLevelInfo.edit()
+				.putInt(getString(R.string.saved_max_level),
+						maxLevel + 1 < Level.LEVELS.length - 1 ?
+								maxLevel + 1 : Level.LEVELS.length - 1)
+				.apply();
+
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.toolbar_menu, menu);
