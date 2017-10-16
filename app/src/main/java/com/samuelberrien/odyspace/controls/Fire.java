@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
@@ -32,7 +32,7 @@ class Fire extends Control {
 			-1f + 1e-2f,
 			-1f + FireButtonRay + 1e-2f,
 			0f};
-	private ObjModel fireLogo;
+	private ObjModelVBO fireLogo;
 	private boolean isFire;
 
 	private int mPositionHandle;
@@ -72,7 +72,7 @@ class Fire extends Control {
 
 		bind();
 		makeFireButton();
-		fireLogo = new ObjModel(context, "obj/bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
+		fireLogo = new ObjModelVBO(context, "obj/bullet.obj", color[0], color[1], color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {

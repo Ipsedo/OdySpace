@@ -27,8 +27,6 @@ import java.util.Random;
 
 public class ObjModelMtlVBO implements GLItemDrawable {
 
-	protected Context context;
-
 	private static final int POSITION_DATA_SIZE = 3;
 
 	private static final int NORMAL_DATA_SIZE = 3;
@@ -86,8 +84,6 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 						  int objResId, int mtlResId,
 						  float lightAugmentation, float distanceCoef, boolean randomColor) {
 
-		this.context = context;
-
 		InputStream inputStream;
 		inputStream = context.getResources().openRawResource(mtlResId);
 		parseMtl(inputStream);
@@ -111,8 +107,6 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 	public ObjModelMtlVBO(Context context,
 						  String objFileName, String mtlFileName,
 						  float lightAugmentation, float distanceCoef, boolean randomColor) {
-
-		this.context = context;
 
 		InputStream inputStream;
 		try {

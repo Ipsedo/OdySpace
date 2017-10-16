@@ -8,7 +8,7 @@ import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
-import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.baseitem.Base;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
@@ -46,7 +46,7 @@ public class TestProtectionLevel implements Level {
 	private ObjModelMtlVBO icosahedron;
 	private CrashableMesh crashableIco;
 	private List<BaseItem> icosahedrons;
-	private ObjModel particule;
+	private ObjModelVBO particule;
 	private List<Explosion> explosions;
 	private List<BaseItem> rockets;
 	private Compass directionToIco;
@@ -97,7 +97,6 @@ public class TestProtectionLevel implements Level {
 				levelLimitSize * 2f);
 		cubeMap = new CubeMap(this.context, levelLimitSize, "cube_map/ciel_1/");
 		cubeMap.update();
-		this.levelLimitSize = levelLimitSize;
 
 		rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
 		icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
@@ -106,7 +105,7 @@ public class TestProtectionLevel implements Level {
 
 		this.ship.setRockets(rockets);
 
-		particule = new ObjModel(context, "obj/triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
+		particule = new ObjModelVBO(context, "obj/triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
 		/*icosahedron = new ObjModelMtlVBO(this.context,
 				"obj/icosahedron.obj", "obj/icosahedron.mtl",
 				1f, 0f, true);*/

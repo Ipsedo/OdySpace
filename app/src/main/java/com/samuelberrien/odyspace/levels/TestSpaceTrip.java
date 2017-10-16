@@ -95,7 +95,9 @@ public class TestSpaceTrip implements Level {
 
 	@Override
 	public float[] getLightPos() {
-		return new float[3];
+		return new float[]{
+				0, 0, -levelLimitSize
+		};
 	}
 
 	@Override

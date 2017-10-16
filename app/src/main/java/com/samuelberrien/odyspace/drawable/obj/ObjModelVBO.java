@@ -20,13 +20,25 @@ import java.util.ArrayList;
  * Created by samuel on 05/01/17.
  */
 
-public class ObjModel implements GLItemDrawable {
+public class ObjModelVBO implements GLItemDrawable {
 
-	private FloatBuffer vertexBuffer;
-	private FloatBuffer normalsBuffer;
-	private FloatBuffer colorBuffer;
+	private static final int POSITION_SIZE = 3;
 
-	private final int mProgram;
+	private static final int NORMAL_SIZE = 3;
+
+	private static final int COLOR_SIZE = 4;
+
+	private static final int BYTES_PER_FLOAT = 4;
+
+	private static final int STRIDE = (POSITION_SIZE + NORMAL_SIZE + COLOR_SIZE) * BYTES_PER_FLOAT;
+
+	private FloatBuffer packedDataBuffer;
+
+	private int packedDataBufferId;
+
+	private int nbVertex;
+
+	private int mProgram;
 	private int mPositionHandle;
 	private int mNormalHandle;
 	private int mColorHandle;
@@ -41,14 +53,6 @@ public class ObjModel implements GLItemDrawable {
 	private float distanceCoef;
 	private float ambColorCoef;
 
-	// number of coordinates per vertex in this array
-	static final int COORDS_PER_VERTEX = 3;
-	private float[] coords;
-	private float[] normal;
-	private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
-
-	private float[] color;
-
 	/**
 	 * @param context           the application context
 	 * @param resId             the res id of the obj file
@@ -57,12 +61,12 @@ public class ObjModel implements GLItemDrawable {
 	 * @param blue              the blue color of the object
 	 * @param lightAugmentation the light augmentation of the object
 	 */
-	public ObjModel(Context context,
-					int resId,
-					float red,
-					float green,
-					float blue,
-					float lightAugmentation, float distanceCoef, float ambColorCoef) {
+	public ObjModelVBO(Context context,
+					   int resId,
+					   float red,
+					   float green,
+					   float blue,
+					   float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
@@ -78,28 +82,15 @@ public class ObjModel implements GLItemDrawable {
 			ioe.printStackTrace();
 		}
 
-
-		int vertexShader = ShaderLoader.loadShader(
-				GLES20.GL_VERTEX_SHADER,
-				ShaderLoader.openShader(context, R.raw.diffuse_vs));
-		int fragmentShader = ShaderLoader.loadShader(
-				GLES20.GL_FRAGMENT_SHADER,
-				ShaderLoader.openShader(context, R.raw.diffuse_fs));
-
-		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-		GLES20.glLinkProgram(mProgram);
-
-		bind();
+		init(context);
 	}
 
-	public ObjModel(Context context,
-					String fileName,
-					float red,
-					float green,
-					float blue,
-					float lightAugmentation, float distanceCoef, float ambColorCoef) {
+	public ObjModelVBO(Context context,
+					   String fileName,
+					   float red,
+					   float green,
+					   float blue,
+					   float lightAugmentation, float distanceCoef, float ambColorCoef) {
 
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
@@ -115,6 +106,10 @@ public class ObjModel implements GLItemDrawable {
 			ioe.printStackTrace();
 		}
 
+		init(context);
+	}
+
+	private void init(Context context) {
 		int vertexShader = ShaderLoader.loadShader(
 				GLES20.GL_VERTEX_SHADER,
 				ShaderLoader.openShader(context, R.raw.diffuse_vs));
@@ -128,6 +123,7 @@ public class ObjModel implements GLItemDrawable {
 		GLES20.glLinkProgram(mProgram);
 
 		bind();
+		bindBuffer();
 	}
 
 	private void bind() {
@@ -142,7 +138,24 @@ public class ObjModel implements GLItemDrawable {
 		mAmbColorCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_amb_Color_coef");
 	}
 
+	private void bindBuffer() {
+		final int buffers[] = new int[1];
+		GLES20.glGenBuffers(1, buffers, 0);
+
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+				packedDataBuffer.capacity() * BYTES_PER_FLOAT,
+				packedDataBuffer, GLES20.GL_STATIC_DRAW);
+
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+		packedDataBufferId = buffers[0];
+		packedDataBuffer.limit(0);
+		packedDataBuffer = null;
+	}
+
 	private void parseObj(InputStreamReader inputreader, float red, float green, float blue) {
+		nbVertex = 0;
 		BufferedReader buffreader1 = new BufferedReader(inputreader);
 		String line;
 
@@ -180,79 +193,33 @@ public class ObjModel implements GLItemDrawable {
 			e.printStackTrace();
 		}
 
-		coords = new float[3 * vertexDrawOrderList.size()];
+		ArrayList<Float> packedData = new ArrayList<>();
 		for (int i = 0; i < vertexDrawOrderList.size(); i++) {
-			coords[i * 3] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3);
-			coords[i * 3 + 1] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 1);
-			coords[i * 3 + 2] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 2);
+			packedData.add(vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3));
+			packedData.add(vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 1));
+			packedData.add(vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 2));
+
+			packedData.add(normalsList.get((normalDrawOrderList.get(i) - 1) * 3));
+			packedData.add(normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 1));
+			packedData.add(normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 2));
+
+			//TODO uniform pr la couleur
+			packedData.add(red);
+			packedData.add(green);
+			packedData.add(blue);
+			packedData.add(1f);
+			nbVertex++;
 		}
 
-		normal = new float[coords.length];
-		for (int i = 0; i < normalDrawOrderList.size(); i++) {
-			normal[i * 3] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3);
-			normal[i * 3 + 1] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 1);
-			normal[i * 3 + 2] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 2);
+		float[] tmp = new float[packedData.size()];
+		for (int i = 0; i < tmp.length; i++) {
+			tmp[i] = packedData.get(i);
 		}
 
-		color = new float[coords.length * 4 / 3];
-		for (int i = 0; i < color.length; i += 4) {
-			color[i] = red;
-			color[i + 1] = green;
-			color[i + 2] = blue;
-			color[i + 3] = 1f;
-		}
-
-		vertexBuffer = ByteBuffer.allocateDirect(coords.length * 4)
+		packedDataBuffer = ByteBuffer.allocateDirect(tmp.length * BYTES_PER_FLOAT)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		vertexBuffer.put(coords)
-				.position(0);
-
-		normalsBuffer = ByteBuffer.allocateDirect(normal.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer();
-		normalsBuffer.put(normal)
-				.position(0);
-
-		colorBuffer = ByteBuffer.allocateDirect(color.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer();
-		colorBuffer.put(color)
-				.position(0);
-	}
-
-	/**
-	 * @param colorBuffer a color buffer that will be used to draw the obj 3D model
-	 */
-	public void setColor(FloatBuffer colorBuffer) {
-		this.colorBuffer = colorBuffer;
-	}
-
-	/**
-	 * @return the vertex draw list length of the obj 3D model
-	 */
-	public int getVertexDrawListLength() {
-		return coords.length;
-	}
-
-	/**
-	 * Make a FloatBuffer containing RGBA value for all vertex with the give color
-	 *
-	 * @param color A 4 float array RGBA color
-	 * @return A new color FloatBuffer for the ObjModel instance
-	 */
-	public FloatBuffer makeColor(float[] color) {
-		float[] tmp = new float[coords.length * 4 / 3];
-		for (int i = 0; i < tmp.length; i += 4) {
-			tmp[i] = color[0];
-			tmp[i + 1] = color[1];
-			tmp[i + 2] = color[2];
-			tmp[i + 3] = color[3];
-		}
-
-		return (FloatBuffer) ByteBuffer.allocateDirect(tmp.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer().put(tmp)
+		packedDataBuffer.put(tmp)
 				.position(0);
 	}
 
@@ -270,29 +237,27 @@ public class ObjModel implements GLItemDrawable {
 					 float[] mvMatrix,
 					 float[] mLightPosInEyeSpace,
 					 float[] unused) {
-		// Add program to OpenGL environment
 		GLES20.glUseProgram(mProgram);
 
-		vertexBuffer.position(0);
-		colorBuffer.position(0);
-		normalsBuffer.position(0);
-
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle,
-				COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle, POSITION_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, 0);
 
-		GLES20.glEnableVertexAttribArray(mColorHandle);
-		GLES20.glVertexAttribPointer(mColorHandle,
-				4, GLES20.GL_FLOAT, false, 4 * 4, colorBuffer);
-
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
-		GLES20.glVertexAttribPointer(mNormalHandle,
-				3, GLES20.GL_FLOAT, false, 3 * 4, normalsBuffer);
+		GLES20.glVertexAttribPointer(mNormalHandle, NORMAL_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, POSITION_SIZE * BYTES_PER_FLOAT);
 
-		// Apply the projection and view transformation
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
+		GLES20.glEnableVertexAttribArray(mColorHandle);
+		GLES20.glVertexAttribPointer(mColorHandle, COLOR_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, (POSITION_SIZE + NORMAL_SIZE) * BYTES_PER_FLOAT);
+
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
 
-		// get handle to shape's transformation matrix
 		GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
 		GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
@@ -303,10 +268,8 @@ public class ObjModel implements GLItemDrawable {
 
 		GLES20.glUniform1f(mAmbColorCoefHandle, ambColorCoef);
 
-		// Draw the polygon
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, coords.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, nbVertex);
 
-		// Disable vertex array
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 		GLES20.glDisableVertexAttribArray(mColorHandle);
 		GLES20.glDisableVertexAttribArray(mNormalHandle);

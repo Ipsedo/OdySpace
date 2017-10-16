@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
@@ -28,7 +28,7 @@ public class Button extends Control {
 	private float[] buttonPoints = new float[nbPoint * 3];
 	private FloatBuffer buttonVertexBuffer;
 	private String objFileName;
-	private ObjModel logo;
+	private ObjModelVBO logo;
 
 	private float ray;
 	private float[] mPosition;// = new float[]{-1f + 1e-2f, -1f + FireButtonRay + 1e-2f, 0f};
@@ -129,7 +129,7 @@ public class Button extends Control {
 
 		bind();
 		makeFireButton();
-		logo = new ObjModel(context, objFileName, color[0], color[1], color[2], 1f, 0f, 0f);
+		logo = new ObjModelVBO(context, objFileName, color[0], color[1], color[2], 1f, 0f, 0f);
 	}
 
 	private void bind() {

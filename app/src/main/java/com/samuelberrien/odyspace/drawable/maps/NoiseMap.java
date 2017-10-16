@@ -30,11 +30,17 @@ public class NoiseMap implements Item, Map {
 									   float[] mPointItem2,
 									   float[] mModelMatrix2);
 
+	private static final int POSITION_DATA_SIZE = 3;
+
+	private static final int NORMAL_DATA_SIZE = 3;
+
+	private static final int BYTES_PER_FLOAT = 4;
+
+	private static final int STRIDE = (POSITION_DATA_SIZE + NORMAL_DATA_SIZE) * BYTES_PER_FLOAT;
+
 	static {
 		System.loadLibrary("collision");
 	}
-
-	private Context context;
 
 	private final int SIZE = 30;
 
@@ -47,12 +53,10 @@ public class NoiseMap implements Item, Map {
 	private float coeffHeight;
 
 	private float[] points;
-	private float[] normals;
-	private FloatBuffer mPositions;
-	private FloatBuffer mNormals;
 
-	private int mPositionsBufferId;
-	private int mNormalsBufferId;
+	private FloatBuffer mDataPackedBuffer;
+
+	private int mDataPackedBufferId;
 
 	private float[] mModelMatrix;
 
@@ -66,9 +70,6 @@ public class NoiseMap implements Item, Map {
 	private int mDistanceCoefHandle;
 	private int mLightCoefHandle;
 
-	private static final int COORDS_PER_VERTEX = 3;
-	private final int vertexStride = COORDS_PER_VERTEX * 4;
-
 	private float[] color;
 
 	private Box box;
@@ -81,7 +82,6 @@ public class NoiseMap implements Item, Map {
 					float scale,
 					float limitHeight,
 					float coeffHeight) {
-		this.context = context;
 		this.lightCoeff = lightCoeff;
 		this.distanceCoeff = distanceCoeff;
 		this.coeffNoise = coeffNoise;
@@ -115,7 +115,7 @@ public class NoiseMap implements Item, Map {
 
 	private void initPlan() {
 		ArrayList<Float> triangles = new ArrayList<>();
-		ArrayList<Float> normales = new ArrayList<>();
+		ArrayList<Float> packedData = new ArrayList<>();
 
 		for (int i = 0; i < SIZE; i++) {
 			float[] tmpPoints = new float[(SIZE + 1) * 2 * 3];
@@ -137,16 +137,6 @@ public class NoiseMap implements Item, Map {
 			for (int j = 0; j < tmpPoints.length / 3 - 2; j += 2) {
 
 				//Triangle 1
-				triangles.add(tmpPoints[j * 3 + 0]);
-				triangles.add(tmpPoints[j * 3 + 1]);
-				triangles.add(tmpPoints[j * 3 + 2]);
-				triangles.add(tmpPoints[j * 3 + 3]);
-				triangles.add(tmpPoints[j * 3 + 4]);
-				triangles.add(tmpPoints[j * 3 + 5]);
-				triangles.add(tmpPoints[j * 3 + 6]);
-				triangles.add(tmpPoints[j * 3 + 7]);
-				triangles.add(tmpPoints[j * 3 + 8]);
-
 				//Normal 1
 				float[] v1 = new float[]{
 						tmpPoints[j * 3 + 6] - tmpPoints[j * 3 + 0],
@@ -157,29 +147,46 @@ public class NoiseMap implements Item, Map {
 						tmpPoints[j * 3 + 4] - tmpPoints[j * 3 + 1],
 						tmpPoints[j * 3 + 5] - tmpPoints[j * 3 + 2]};
 				float[] normal = Vector.normalize3f(Vector.cross3f(v2, v1));
-				normales.add(normal[0]);
-				normales.add(normal[1]);
-				normales.add(normal[2]);
-				normales.add(normal[0]);
-				normales.add(normal[1]);
-				normales.add(normal[2]);
-				normales.add(normal[0]);
-				normales.add(normal[1]);
-				normales.add(normal[2]);
+
+				//POINT 1
+				triangles.add(tmpPoints[j * 3 + 0]);
+				triangles.add(tmpPoints[j * 3 + 1]);
+				triangles.add(tmpPoints[j * 3 + 2]);
+
+				packedData.add(tmpPoints[j * 3 + 0]);
+				packedData.add(tmpPoints[j * 3 + 1]);
+				packedData.add(tmpPoints[j * 3 + 2]);
+				packedData.add(normal[0]);
+				packedData.add(normal[1]);
+				packedData.add(normal[2]);
+
+				//POINT 2
+				triangles.add(tmpPoints[j * 3 + 3]);
+				triangles.add(tmpPoints[j * 3 + 4]);
+				triangles.add(tmpPoints[j * 3 + 5]);
+
+				packedData.add(tmpPoints[j * 3 + 3]);
+				packedData.add(tmpPoints[j * 3 + 4]);
+				packedData.add(tmpPoints[j * 3 + 5]);
+				packedData.add(normal[0]);
+				packedData.add(normal[1]);
+				packedData.add(normal[2]);
+
+				//POINT 3
+				triangles.add(tmpPoints[j * 3 + 6]);
+				triangles.add(tmpPoints[j * 3 + 7]);
+				triangles.add(tmpPoints[j * 3 + 8]);
+
+				packedData.add(tmpPoints[j * 3 + 6]);
+				packedData.add(tmpPoints[j * 3 + 7]);
+				packedData.add(tmpPoints[j * 3 + 8]);
+				packedData.add(normal[0]);
+				packedData.add(normal[1]);
+				packedData.add(normal[2]);
+
 
 				//Triangle 2
 
-				triangles.add(tmpPoints[(j + 1) * 3 + 3]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 4]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 5]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 0]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 1]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 2]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 6]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 7]);
-				triangles.add(tmpPoints[(j + 1) * 3 + 8]);
-
-				//Normal 2
 				v1 = new float[]{
 						tmpPoints[j * 3 + 9] - tmpPoints[j * 3 + 3],
 						tmpPoints[j * 3 + 10] - tmpPoints[j * 3 + 4],
@@ -189,44 +196,76 @@ public class NoiseMap implements Item, Map {
 						tmpPoints[j * 3 + 7] - tmpPoints[j * 3 + 4],
 						tmpPoints[j * 3 + 8] - tmpPoints[j * 3 + 5]};
 				normal = Vector.normalize3f(Vector.cross3f(v1, v2));
-				normales.add(normal[0]);
-				normales.add(normal[1]);
-				normales.add(normal[2]);
-				normales.add(normal[0]);
-				normales.add(normal[1]);
-				normales.add(normal[2]);
-				normales.add(normal[0]);
-				normales.add(normal[1]);
-				normales.add(normal[2]);
+
+				//POINT 1
+				triangles.add(tmpPoints[(j + 1) * 3 + 3]);
+				triangles.add(tmpPoints[(j + 1) * 3 + 4]);
+				triangles.add(tmpPoints[(j + 1) * 3 + 5]);
+
+				packedData.add(tmpPoints[(j + 1) * 3 + 3]);
+				packedData.add(tmpPoints[(j + 1) * 3 + 4]);
+				packedData.add(tmpPoints[(j + 1) * 3 + 5]);
+				packedData.add(normal[0]);
+				packedData.add(normal[1]);
+				packedData.add(normal[2]);
+
+				//POINT 2
+				triangles.add(tmpPoints[(j + 1) * 3 + 0]);
+				triangles.add(tmpPoints[(j + 1) * 3 + 1]);
+				triangles.add(tmpPoints[(j + 1) * 3 + 2]);
+
+				packedData.add(tmpPoints[(j + 1) * 3 + 0]);
+				packedData.add(tmpPoints[(j + 1) * 3 + 1]);
+				packedData.add(tmpPoints[(j + 1) * 3 + 2]);
+				packedData.add(normal[0]);
+				packedData.add(normal[1]);
+				packedData.add(normal[2]);
+
+				//POINT 3
+				triangles.add(tmpPoints[(j + 1) * 3 + 6]);
+				triangles.add(tmpPoints[(j + 1) * 3 + 7]);
+				triangles.add(tmpPoints[(j + 1) * 3 + 8]);
+
+				packedData.add(tmpPoints[(j + 1) * 3 + 6]);
+				packedData.add(tmpPoints[(j + 1) * 3 + 7]);
+				packedData.add(tmpPoints[(j + 1) * 3 + 8]);
+				packedData.add(normal[0]);
+				packedData.add(normal[1]);
+				packedData.add(normal[2]);
 			}
 		}
 
 		points = new float[triangles.size()];
-		normals = new float[normales.size()];
 		for (int i = 0; i < points.length; i++) {
 			points[i] = triangles.get(i);
-			normals[i] = normales.get(i);
 		}
 
-		mPositions = ByteBuffer.allocateDirect(points.length * 4)
-				.order(ByteOrder.nativeOrder()).asFloatBuffer();
-		mPositions.put(points).position(0);
+		float[] packedDataArray = new float[packedData.size()];
+		for (int i = 0; i < packedDataArray.length; i++) {
+			packedDataArray[i] = packedData.get(i);
+		}
 
-		mNormals = ByteBuffer.allocateDirect(normals.length * 4)
-				.order(ByteOrder.nativeOrder()).asFloatBuffer();
-		mNormals.put(normals).position(0);
+		mDataPackedBuffer = ByteBuffer.allocateDirect(packedDataArray.length * BYTES_PER_FLOAT)
+				.order(ByteOrder.nativeOrder())
+				.asFloatBuffer();
+		mDataPackedBuffer.put(packedDataArray)
+				.position(0);
 	}
 
 	private void bindBuffer() {
-		int[] buffers = new int[2];
+		int[] buffers = new int[1];
 
-		GLES20.glGenBuffers(2, buffers, 0);
+		GLES20.glGenBuffers(1, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
 		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				mPositions.capacity() * 4, mPositions, GLES20.GL_STATIC_DRAW);
+				mDataPackedBuffer.capacity() * 4, mDataPackedBuffer, GLES20.GL_STATIC_DRAW);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
+		mDataPackedBufferId = buffers[0];
+		mDataPackedBuffer.limit(0);
+		mDataPackedBuffer = null;
+
+		/*GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
 		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
 				mNormals.capacity() * 4, mNormals, GLES20.GL_STATIC_DRAW);
 
@@ -238,7 +277,7 @@ public class NoiseMap implements Item, Map {
 		mPositions.limit(0);
 		mPositions = null;
 		mNormals.limit(0);
-		mNormals = null;
+		mNormals = null;*/
 	}
 
 	@Override
@@ -326,15 +365,15 @@ public class NoiseMap implements Item, Map {
 
 		GLES20.glUseProgram(mProgram);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mPositionsBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mDataPackedBufferId);
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle,
-				COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, 0);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mNormalsBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mDataPackedBufferId);
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
-		GLES20.glVertexAttribPointer(mNormalHandle,
-				COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mNormalHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, POSITION_DATA_SIZE * BYTES_PER_FLOAT);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 

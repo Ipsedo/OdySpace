@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
-import com.samuelberrien.odyspace.drawable.obj.ObjModel;
+import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
 /**
@@ -14,7 +14,7 @@ import com.samuelberrien.odyspace.utils.graphics.Color;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Text extends ObjModel implements GLInfoDrawable {
+public class Text extends ObjModelVBO implements GLInfoDrawable {
 
 	private float scale;
 
