@@ -29,45 +29,32 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 
 	protected Context context;
 
-	/**
-	 * Size of the position data in elements.
-	 */
 	private static final int POSITION_DATA_SIZE = 3;
 
-	/**
-	 * Size of the normal data in elements.
-	 */
 	private static final int NORMAL_DATA_SIZE = 3;
 
 	private static final int COLOR_DATA_SIZE = 4;
 
 	private static final int SHININESS_DATA_SIZE = 1;
 
-	/**
-	 * How many bytes per float.
-	 */
 	private static final int BYTES_PER_FLOAT = 4;
+
+	private static final int STRIDE = (POSITION_DATA_SIZE
+			+ NORMAL_DATA_SIZE
+			+ COLOR_DATA_SIZE * 3
+			+ SHININESS_DATA_SIZE)
+			* BYTES_PER_FLOAT;
 
 	private HashMap<String, float[]> mtlAmbColor = new HashMap<>();
 	private HashMap<String, float[]> mtlDiffColor = new HashMap<>();
 	private HashMap<String, float[]> mtlSpecColor = new HashMap<>();
 	private HashMap<String, Float> mtlSpecShininess = new HashMap<>();
 
-	private FloatBuffer vertexBuffer;
-	private FloatBuffer normalsBuffer;
-	private FloatBuffer ambColorBuffer;
-	private FloatBuffer diffColorBuffer;
-	private FloatBuffer specColorBuffer;
-	private FloatBuffer specShininess;
+	private FloatBuffer packedDataBuffer;
 
 	private float[] randomDiffRGB = new float[3];
 
-	private int vertexBufferId;
-	private int normalsBufferId;
-	private int ambBufferId;
-	private int diffBufferId;
-	private int specBufferId;
-	private int shinBufferId;
+	private int packedDataBufferId;
 
 	private int mProgram;
 	private int mPositionHandle;
@@ -86,11 +73,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 	private float lightCoef;
 	private float distanceCoef;
 
-	// number of coordinates per vertex in this array
-	private final int COORDS_PER_VERTEX = 3;
-	private float[] allCoords;
-	private float[] allNormals;
-	private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+	private int nbVertex;
 
 	/**
 	 * @param context           The application context
@@ -153,49 +136,6 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		bindBuffer();
 	}
 
-	@Deprecated
-	public ObjModelMtlVBO(ObjModelMtlVBO objModelMtl) {
-		context = objModelMtl.context;
-
-		mtlAmbColor = objModelMtl.mtlAmbColor;
-		mtlDiffColor = objModelMtl.mtlDiffColor;
-		mtlSpecColor = objModelMtl.mtlSpecColor;
-
-		vertexBuffer = objModelMtl.vertexBuffer;
-		normalsBuffer = objModelMtl.normalsBuffer;
-		ambColorBuffer = objModelMtl.ambColorBuffer;
-		diffColorBuffer = objModelMtl.diffColorBuffer;
-		specColorBuffer = objModelMtl.specColorBuffer;
-		specShininess = objModelMtl.specShininess;
-
-		vertexBufferId = objModelMtl.vertexBufferId;
-		normalsBufferId = objModelMtl.normalsBufferId;
-		ambBufferId = objModelMtl.ambBufferId;
-		diffBufferId = objModelMtl.diffBufferId;
-		specBufferId = objModelMtl.specBufferId;
-		shinBufferId = objModelMtl.shinBufferId;
-
-		mProgram = objModelMtl.mProgram;
-		mPositionHandle = objModelMtl.mPositionHandle;
-		mNormalHandle = objModelMtl.mNormalHandle;
-		mAmbColorHandle = objModelMtl.mAmbColorHandle;
-		mDiffColorHandle = objModelMtl.mDiffColorHandle;
-		mSpecColorHandle = objModelMtl.mSpecColorHandle;
-		mSpecShininessHandle = objModelMtl.mSpecShininessHandle;
-		mCameraPosHandle = objModelMtl.mCameraPosHandle;
-		mMVPMatrixHandle = objModelMtl.mMVPMatrixHandle;
-		mLightPosHandle = objModelMtl.mLightPosHandle;
-		mMVMatrixHandle = objModelMtl.mMVMatrixHandle;
-		mDistanceCoefHandle = objModelMtl.mDistanceCoefHandle;
-		mLightCoefHandle = objModelMtl.mLightCoefHandle;
-
-		lightCoef = objModelMtl.lightCoef;
-		distanceCoef = objModelMtl.distanceCoef;
-
-		allCoords = objModelMtl.allCoords;
-		allNormals = objModelMtl.allNormals;
-	}
-
 	private void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
 		int vertexShader = ShaderLoader.loadShader(
 				GLES20.GL_VERTEX_SHADER,
@@ -231,60 +171,19 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 	}
 
 	private void bindBuffer() {
-		final int buffers[] = new int[6];
-		GLES20.glGenBuffers(6, buffers, 0);
+		final int buffers[] = new int[1];
+		GLES20.glGenBuffers(1, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
 		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				vertexBuffer.capacity() * BYTES_PER_FLOAT,
-				vertexBuffer, GLES20.GL_STATIC_DRAW);
-
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				normalsBuffer.capacity() * BYTES_PER_FLOAT,
-				normalsBuffer, GLES20.GL_STATIC_DRAW);
-
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[2]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				ambColorBuffer.capacity() * BYTES_PER_FLOAT,
-				ambColorBuffer, GLES20.GL_STATIC_DRAW);
-
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[3]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				diffColorBuffer.capacity() * BYTES_PER_FLOAT,
-				diffColorBuffer, GLES20.GL_STATIC_DRAW);
-
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[4]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				specColorBuffer.capacity() * BYTES_PER_FLOAT,
-				specColorBuffer, GLES20.GL_STATIC_DRAW);
-
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[5]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				specShininess.capacity() * BYTES_PER_FLOAT,
-				specShininess, GLES20.GL_STATIC_DRAW);
+				packedDataBuffer.capacity() * BYTES_PER_FLOAT,
+				packedDataBuffer, GLES20.GL_STATIC_DRAW);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-		vertexBufferId = buffers[0];
-		normalsBufferId = buffers[1];
-		ambBufferId = buffers[2];
-		diffBufferId = buffers[3];
-		specBufferId = buffers[4];
-		shinBufferId = buffers[5];
-
-		vertexBuffer.limit(0);
-		vertexBuffer = null;
-		normalsBuffer.limit(0);
-		normalsBuffer = null;
-		ambColorBuffer.limit(0);
-		ambColorBuffer = null;
-		// Need to keeps diffColorBuffer for Explosion
-
-		specColorBuffer.limit(0);
-		specColorBuffer = null;
-		specShininess.limit(0);
-		specShininess = null;
+		packedDataBufferId = buffers[0];
+		packedDataBuffer.limit(0);
+		packedDataBuffer = null;
 	}
 
 	/**
@@ -389,37 +288,10 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		allVertexDrawOrderList.add(currVertexDrawOrderList);
 		allNormalDrawOrderList.add(currNormalDrawOrderList);
 
-		ArrayList<Float> coords = new ArrayList<>();
-		ArrayList<Float> normals = new ArrayList<>();
-		ArrayList<Float> ambColor = new ArrayList<>();
-		ArrayList<Float> diffColor = new ArrayList<>();
-		ArrayList<Float> specColor = new ArrayList<>();
-		ArrayList<Float> specShin = new ArrayList<>();
+		ArrayList<Float> objPackedData = new ArrayList<>();
 		Random random = new Random(System.currentTimeMillis());
+		nbVertex = 0;
 		for (int i = 0; i < allVertexDrawOrderList.size(); i++) {
-			for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
-				coords.add(
-						currVertixsList.get(
-								(allVertexDrawOrderList.get(i).get(j) - 1) * 3));
-				coords.add(
-						currVertixsList.get(
-								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 1));
-				coords.add(
-						currVertixsList.get(
-								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 2));
-			}
-
-			for (int j = 0; j < allNormalDrawOrderList.get(i).size(); j++) {
-				normals.add(
-						currNormalsList.get(
-								(allNormalDrawOrderList.get(i).get(j) - 1) * 3));
-				normals.add(
-						currNormalsList.get(
-								(allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 1));
-				normals.add(
-						currNormalsList.get(
-								(allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 2));
-			}
 			float ambRed, ambGreen, ambBlue,
 					diffRed, diffGreen, diffBlue,
 					specRed, specGreen, specBlue;
@@ -449,97 +321,70 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 				specBlue = mtlSpecColor.get(mtlToUse.get(i))[2];
 			}
 
-			for (int j = 0; j < allVertexDrawOrderList.get(i).size() * 4; j += 4) {
-				ambColor.add(ambRed);
-				ambColor.add(ambGreen);
-				ambColor.add(ambBlue);
-				ambColor.add(1f);
+			randomDiffRGB[0] = diffRed;
+			randomDiffRGB[1] = diffGreen;
+			randomDiffRGB[2] = diffBlue;
 
-				diffColor.add(diffRed);
-				diffColor.add(diffGreen);
-				diffColor.add(diffBlue);
-				diffColor.add(1f);
+			for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
+				objPackedData.add(
+						currVertixsList.get(
+								(allVertexDrawOrderList.get(i).get(j) - 1) * 3));
+				objPackedData.add(
+						currVertixsList.get(
+								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 1));
+				objPackedData.add(
+						currVertixsList.get(
+								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 2));
 
-				specColor.add(specRed);
-				specColor.add(specGreen);
-				specColor.add(specBlue);
-				specColor.add(1f);
+				objPackedData.add(
+						currNormalsList.get(
+								(allNormalDrawOrderList.get(i).get(j) - 1) * 3));
+				objPackedData.add(
+						currNormalsList.get(
+								(allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 1));
+				objPackedData.add(
+						currNormalsList.get(
+								(allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 2));
 
-				specShin.add(mtlSpecShininess.get(mtlToUse.get(i)));
+				objPackedData.add(ambRed);
+				objPackedData.add(ambGreen);
+				objPackedData.add(ambBlue);
+				objPackedData.add(1f);
+
+				objPackedData.add(diffRed);
+				objPackedData.add(diffGreen);
+				objPackedData.add(diffBlue);
+				objPackedData.add(1f);
+
+				objPackedData.add(specRed);
+				objPackedData.add(specGreen);
+				objPackedData.add(specBlue);
+				objPackedData.add(1f);
+
+				objPackedData.add(mtlSpecShininess.get(mtlToUse.get(i)));
+
+				nbVertex++;
 			}
 		}
 
-		allCoords = new float[coords.size()];
-		for (int i = 0; i < allCoords.length; i++) {
-			allCoords[i] = coords.get(i);
+		float[] allDataPacked = new float[objPackedData.size()];
+		for(int i = 0; i < allDataPacked.length; i++) {
+			allDataPacked[i] = objPackedData.get(i);
 		}
-		vertexBuffer = ByteBuffer.allocateDirect(allCoords.length * 4)
+
+		packedDataBuffer = ByteBuffer.allocateDirect(allDataPacked.length * BYTES_PER_FLOAT)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		vertexBuffer.put(allCoords)
+		packedDataBuffer.put(allDataPacked)
 				.position(0);
 
-		allNormals = new float[normals.size()];
-		for (int i = 0; i < allNormals.length; i++) {
-			allNormals[i] = normals.get(i);
-		}
-		normalsBuffer = ByteBuffer.allocateDirect(allNormals.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer();
-		normalsBuffer.put(allNormals)
-				.position(0);
-
-		float[] allAmbColor = new float[ambColor.size()];
-		for (int i = 0; i < allAmbColor.length; i++) {
-			allAmbColor[i] = ambColor.get(i);
-		}
-		ambColorBuffer = ByteBuffer.allocateDirect(allAmbColor.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer();
-		ambColorBuffer.put(allAmbColor)
-				.position(0);
-
-		float[] allDiffColor = new float[diffColor.size()];
-		for (int i = 0; i < allDiffColor.length; i++) {
-			allDiffColor[i] = diffColor.get(i);
-		}
-		diffColorBuffer = ByteBuffer.allocateDirect(allDiffColor.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer();
-		diffColorBuffer.put(allDiffColor)
-				.position(0);
-
-		float[] allSpecColor = new float[specColor.size()];
-		for (int i = 0; i < allSpecColor.length; i++) {
-			allSpecColor[i] = specColor.get(i);
-		}
-		specColorBuffer = ByteBuffer.allocateDirect(allSpecColor.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer();
-		specColorBuffer.put(allSpecColor)
-				.position(0);
-
-		float[] allSpecShin = new float[specShin.size()];
-		for (int i = 0; i < allSpecShin.length; i++) {
-			allSpecShin[i] = specShin.get(i);
-		}
-		specShininess = ByteBuffer.allocateDirect(allSpecShin.length * 4)
-				.order(ByteOrder.nativeOrder())
-				.asFloatBuffer();
-		specShininess.put(allSpecShin)
-				.position(0);
-
-
-		randomDiffRGB[0] = allDiffColor[0];
-		randomDiffRGB[1] = allDiffColor[1];
-		randomDiffRGB[2] = allDiffColor[2];
 	}
 
 	@Override
 	public void changeColor() {
-		int tmpSpecColor = specBufferId;
+		/*int tmpSpecColor = specBufferId;
 		specBufferId = diffBufferId;
-		diffBufferId = tmpSpecColor;
+		diffBufferId = tmpSpecColor;*/
 	}
 
 	@Override
@@ -549,37 +394,35 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 					 float[] mCameraPosition) {
 		GLES20.glUseProgram(mProgram);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle,
-				POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, 0);
 
-		// Pass in the normal information
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, normalsBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mNormalHandle);
-		GLES20.glVertexAttribPointer(mNormalHandle,
-				NORMAL_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mNormalHandle, NORMAL_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, POSITION_DATA_SIZE * BYTES_PER_FLOAT);
 
-		// Pass in the texture information
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ambBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mAmbColorHandle);
-		GLES20.glVertexAttribPointer(mAmbColorHandle,
-				COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mAmbColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, (POSITION_DATA_SIZE + NORMAL_DATA_SIZE) * BYTES_PER_FLOAT);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, diffBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mDiffColorHandle);
-		GLES20.glVertexAttribPointer(mDiffColorHandle,
-				COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mDiffColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, (POSITION_DATA_SIZE + NORMAL_DATA_SIZE + COLOR_DATA_SIZE) * BYTES_PER_FLOAT);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, specBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mSpecColorHandle);
-		GLES20.glVertexAttribPointer(mSpecColorHandle,
-				COLOR_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mSpecColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, (POSITION_DATA_SIZE + NORMAL_DATA_SIZE + COLOR_DATA_SIZE * 2) * BYTES_PER_FLOAT);
 
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, shinBufferId);
+		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
 		GLES20.glEnableVertexAttribArray(mSpecShininessHandle);
-		GLES20.glVertexAttribPointer(mSpecShininessHandle,
-				SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+		GLES20.glVertexAttribPointer(mSpecShininessHandle, SHININESS_DATA_SIZE, GLES20.GL_FLOAT, false,
+				STRIDE, (POSITION_DATA_SIZE + NORMAL_DATA_SIZE + COLOR_DATA_SIZE * 3) * BYTES_PER_FLOAT);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
@@ -595,7 +438,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 
 		GLES20.glUniform1f(mLightCoefHandle, lightCoef);
 
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, allCoords.length / 3);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, nbVertex);
 
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 	}
