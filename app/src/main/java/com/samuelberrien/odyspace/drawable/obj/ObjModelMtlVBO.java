@@ -379,6 +379,9 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		/*int tmpSpecColor = specBufferId;
 		specBufferId = diffBufferId;
 		diffBufferId = tmpSpecColor;*/
+		int tmp = mSpecColorHandle;
+		mSpecColorHandle = mDiffColorHandle;
+		mDiffColorHandle = tmp;
 	}
 
 	@Override
