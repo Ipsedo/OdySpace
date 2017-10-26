@@ -52,12 +52,12 @@ public class Ammos extends BaseItem {
 
 	@Override
 	protected Explosion getExplosion() {
-		return new Explosion.ExplosionBuilder().setNbParticules(3)
-				.setLimitSpeedAlife(0.1f)
+		return new Explosion.ExplosionBuilder()
+				.setNbParticules(3)
 				.setLimitScale(0.3f)
-				.setMaxScale(0.8f)
+				.setRangeScale(0.5f)
 				.setLimitSpeed(0.4f)
-				.setMaxSpeed(0.8f)
+				.setRangeSpeed(0.4f)
 				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 }

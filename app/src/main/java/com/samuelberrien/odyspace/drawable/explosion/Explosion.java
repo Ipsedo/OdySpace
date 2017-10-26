@@ -9,6 +9,7 @@ import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
+import java.lang.reflect.ParameterizedType;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -28,11 +29,10 @@ public class Explosion implements GLDrawable {
 
 	public static class ExplosionBuilder {
 		private int nbParticules = 3;
-		private float limitSpeedAlife = 0.16f;
 		private float limitScale = 0.8f;
-		private float maxScale = 1.2f;
+		private float rangeScale = 0.4f;
 		private float limitSpeed = 0.4f;
-		private float maxSpeed = 0.6f;
+		private float rangeSpeed = 0.2f;
 
 		public ExplosionBuilder() {
 		}
@@ -42,18 +42,13 @@ public class Explosion implements GLDrawable {
 			return this;
 		}
 
-		public ExplosionBuilder setLimitSpeedAlife(float limitSpeedAlife) {
-			this.limitSpeedAlife = limitSpeedAlife;
-			return this;
-		}
-
 		public ExplosionBuilder setLimitScale(float limitScale) {
 			this.limitScale = limitScale;
 			return this;
 		}
 
-		public ExplosionBuilder setMaxScale(float maxScale) {
-			this.maxScale = maxScale;
+		public ExplosionBuilder setRangeScale(float rangeScale) {
+			this.rangeScale = rangeScale;
 			return this;
 		}
 
@@ -62,8 +57,8 @@ public class Explosion implements GLDrawable {
 			return this;
 		}
 
-		public ExplosionBuilder setMaxSpeed(float maxSpeed) {
-			this.maxSpeed = maxSpeed;
+		public ExplosionBuilder setRangeSpeed(float rangeSpeed) {
+			this.rangeSpeed = rangeSpeed;
 			return this;
 		}
 
@@ -72,8 +67,7 @@ public class Explosion implements GLDrawable {
 		}
 	}
 
-	private ArrayList<Particule> particules;
-	private final float limitSpeedAlife;
+	private List<Particule> particules;
 	private float[] initialPos;
 
 	private float[] vertices = new float[]{
@@ -89,20 +83,16 @@ public class Explosion implements GLDrawable {
 	private int vPositionHandle;
 	private int mProgram;
 
-	private float speedDecreasingRange;
-
 	private Explosion(Context context, float[] rgba, ExplosionBuilder explosionBuilder) {
-		limitSpeedAlife = explosionBuilder.limitSpeedAlife;
-		speedDecreasingRange = (explosionBuilder.maxSpeed - explosionBuilder.limitSpeed) * 0.5f;
-		particules = new ArrayList<>();
+		particules = Collections.synchronizedList(new ArrayList<Particule>());
 		Random rand = new Random(System.currentTimeMillis());
 		color = rgba;
 		for (int i = 0; i < explosionBuilder.nbParticules; i++) {
 			particules.add(new Particule(rand,
 					explosionBuilder.limitScale,
-					explosionBuilder.maxScale,
+					explosionBuilder.rangeScale,
 					explosionBuilder.limitSpeed,
-					explosionBuilder.maxSpeed));
+					explosionBuilder.rangeSpeed));
 		}
 		makeProgram(context);
 
@@ -139,8 +129,8 @@ public class Explosion implements GLDrawable {
 		for (Particule p : particules) {
 			p.move();
 		}
-		for(int i = particules.size() - 1; i >= 0; i--) {
-			if(!particules.get(i).isAlive()) {
+		for (int i = particules.size() - 1; i >= 0; i--) {
+			if (!particules.get(i).isAlive()) {
 				particules.remove(i);
 			}
 		}
@@ -187,21 +177,21 @@ public class Explosion implements GLDrawable {
 
 		private Particule(Random rand,
 						  float limitScale,
-						  float maxScale,
+						  float rangeScale,
 						  float limitSpeed,
-						  float maxSpeed) {
+						  float rangeSpeed) {
 			mPosition = new float[3];
 			mSpeed = new float[3];
 			fstMove = true;
 			double phi = rand.nextDouble() * Math.PI * 2d;
 			double theta = rand.nextDouble() * Math.PI * 2d;
 			speedDecreaseCoeff = 0.89f + rand.nextFloat() * 0.02f;
-			mSpeed[0] = (limitSpeed + (maxSpeed - limitSpeed)
-					* rand.nextFloat()) * (float) (Math.cos(phi) * Math.sin(theta));
-			mSpeed[1] = (limitSpeed + (maxSpeed - limitSpeed)
-					* rand.nextFloat()) * (float) Math.sin(phi);
-			mSpeed[2] = (limitSpeed + (maxSpeed - limitSpeed)
-					* rand.nextFloat()) * (float) (Math.cos(phi) * Math.cos(theta));
+			mSpeed[0] = (limitSpeed + rangeSpeed * rand.nextFloat())
+					* (float) (Math.cos(phi) * Math.sin(theta));
+			mSpeed[1] = (limitSpeed + rangeSpeed * rand.nextFloat())
+					* (float) Math.sin(phi);
+			mSpeed[2] = (limitSpeed + rangeSpeed * rand.nextFloat())
+					* (float) (Math.cos(phi) * Math.cos(theta));
 			mModelMatrix = new float[16];
 			float mAngle = rand.nextFloat() * 360f;
 			float[] mRotAxis = new float[3];
@@ -210,7 +200,7 @@ public class Explosion implements GLDrawable {
 			mRotAxis[2] = rand.nextFloat() * 2f - 1f;
 			mRotMatrix = new float[16];
 			Matrix.setRotateM(mRotMatrix, 0, mAngle, mRotAxis[0], mRotAxis[1], mRotAxis[2]);
-			scale = limitScale + (maxScale - limitScale) * rand.nextFloat();
+			scale = limitScale + rangeScale * rand.nextFloat();
 			ttl = 10 + rand.nextInt(30);
 		}
 

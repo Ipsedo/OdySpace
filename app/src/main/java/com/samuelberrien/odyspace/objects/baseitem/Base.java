@@ -33,12 +33,12 @@ public class Base extends BaseItem {
 
 	@Override
 	protected Explosion getExplosion() {
-		return new Explosion.ExplosionBuilder().setNbParticules(40)
-				.setLimitSpeedAlife(0.16f)
+		return new Explosion.ExplosionBuilder()
+				.setNbParticules(40)
 				.setLimitScale(5f)
-				.setMaxScale(7f)
+				.setRangeScale(2f)
 				.setLimitSpeed(6f)
-				.setMaxSpeed(10f)
+				.setRangeSpeed(4f)
 				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 	//mExplosion = new Explosion(particule, super.diffColorBuffer, 40, 0.16f, 5f, 7f, 6f, 10f);

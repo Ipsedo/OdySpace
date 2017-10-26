@@ -53,11 +53,10 @@ public class Turret extends BaseItem implements Shooter {
 	@Override
 	protected Explosion getExplosion() {
 		return new Explosion.ExplosionBuilder().setNbParticules(10)
-				.setLimitSpeedAlife(0.05f)
 				.setLimitScale(1f)
-				.setMaxScale(2f)
+				.setRangeScale(1f)
 				.setLimitSpeed(1f)
-				.setMaxSpeed(1.5f)
+				.setRangeSpeed(0.5f)
 				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 

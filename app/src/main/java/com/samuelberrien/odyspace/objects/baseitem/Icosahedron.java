@@ -26,12 +26,12 @@ public class Icosahedron extends BaseItem {
 
 	@Override
 	protected Explosion getExplosion() {
-		return new Explosion.ExplosionBuilder().setNbParticules((int) Math.ceil(super.scale / 2f) * 10)
-				.setLimitSpeedAlife(0.05f)
-				.setLimitScale((float) Math.ceil(super.scale / 5f))
-				.setMaxScale((float) Math.ceil(super.scale / 2f))
-				.setLimitSpeed((float) Math.ceil(super.scale / 3f) * 0.9f)
-				.setMaxSpeed((float) Math.ceil(super.scale / 3f) * 1.7f)
+		return new Explosion.ExplosionBuilder()
+				.setNbParticules((int) (40f * Math.log(scale) / Math.log(2d)))
+				.setLimitScale(scale / 5f)
+				.setRangeScale(scale / 5f)
+				.setLimitSpeed((scale / 3f) * 0.5f)
+				.setRangeSpeed((scale / 3f) * 1.5f)
 				.makeExplosion(context, objModelMtlVBO.getRandomMtlDiffRGB());
 	}
 
