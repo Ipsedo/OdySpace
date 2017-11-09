@@ -14,6 +14,7 @@ public class CollisionThread extends CancelableThread {
 	public CollisionThread(Level level) {
 		super("CollisionThread", level);
 		setPriority(Thread.NORM_PRIORITY);
+		timeToWait = 30L;
 	}
 
 	@Override

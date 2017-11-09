@@ -14,6 +14,7 @@ public class UpdateThread extends CancelableThread {
 	public UpdateThread(Level level) {
 		super("UpdateThread", level);
 		setPriority(Thread.NORM_PRIORITY);
+		timeToWait = 10L;
 	}
 
 	@Override

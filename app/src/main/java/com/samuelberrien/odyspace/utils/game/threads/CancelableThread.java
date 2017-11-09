@@ -11,7 +11,7 @@ import com.samuelberrien.odyspace.utils.game.Level;
 
 public abstract class CancelableThread extends Thread {
 
-	private final long TIME_TO_WAIT = 10L;
+	long timeToWait;
 
 	private boolean isCanceled;
 	protected Level level;
@@ -20,6 +20,7 @@ public abstract class CancelableThread extends Thread {
 		super(threadName);
 		this.isCanceled = false;
 		this.level = level;
+		timeToWait = 10L;
 	}
 
 	public void cancel() {
@@ -34,9 +35,10 @@ public abstract class CancelableThread extends Thread {
 
 	public abstract void work();
 
-	protected void waitRequiredTime(long t1) {
+	private void waitRequiredTime(long t1) {
 		try {
-			Thread.sleep(TIME_TO_WAIT);
+			long toWait = timeToWait - t1 >= 0 ? timeToWait - t1 : 0;
+			Thread.sleep(toWait);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 		}
@@ -45,7 +47,7 @@ public abstract class CancelableThread extends Thread {
 	public void run() {
 		while (!this.isCanceled && !this.level.isInit()) {
 			try {
-				Thread.sleep(this.TIME_TO_WAIT);
+				Thread.sleep(this.timeToWait);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

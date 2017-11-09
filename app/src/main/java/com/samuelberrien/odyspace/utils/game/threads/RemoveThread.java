@@ -14,20 +14,12 @@ public class RemoveThread extends CancelableThread {
 	public RemoveThread(Level level) {
 		super("RemoveThread", level);
 		setPriority(Thread.MIN_PRIORITY);
+		timeToWait = 100L;
 	}
 
 	@Override
 	public void afterInit() {
 
-	}
-
-	@Override
-	protected void waitRequiredTime(long t1) {
-		try {
-			Thread.sleep(100L);
-		} catch (InterruptedException ie) {
-			ie.printStackTrace();
-		}
 	}
 
 	@Override

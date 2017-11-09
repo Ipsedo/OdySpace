@@ -24,6 +24,7 @@ public class EndGameThread extends CancelableThread {
 		this.levelActivity = levelActivity;
 		resultSetted = false;
 		setPriority(Thread.MIN_PRIORITY);
+		timeToWait = 300L;
 	}
 
 	@Override
@@ -34,15 +35,6 @@ public class EndGameThread extends CancelableThread {
 				levelActivity.loadingLevelFinished();
 			}
 		});
-	}
-
-	@Override
-	protected void waitRequiredTime(long t1) {
-		try {
-			Thread.sleep(300L);
-		} catch (InterruptedException ie) {
-			ie.printStackTrace();
-		}
 	}
 
 	@Override
