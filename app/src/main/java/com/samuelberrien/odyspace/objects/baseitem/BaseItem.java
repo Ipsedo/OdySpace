@@ -3,14 +3,15 @@ package com.samuelberrien.odyspace.objects.baseitem;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.core.collision.TriangleCollision;
 import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
-import com.samuelberrien.odyspace.utils.collision.Box;
-import com.samuelberrien.odyspace.utils.collision.Ray;
-import com.samuelberrien.odyspace.utils.game.Item;
-import com.samuelberrien.odyspace.utils.game.UpdatableItem;
+import com.samuelberrien.odyspace.core.collision.Box;
+import com.samuelberrien.odyspace.core.collision.Ray;
+import com.samuelberrien.odyspace.core.Item;
+import com.samuelberrien.odyspace.core.UpdatableItem;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;
@@ -25,12 +26,12 @@ import java.util.List;
 
 public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 
-	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1,
+	/*private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1,
 									   float[] mPointItem2, float[] mModelMatrix2);
 
 	static {
 		System.loadLibrary("collision");
-	}
+	}*/
 
 	protected int maxLife;
 	protected int life;
@@ -110,7 +111,7 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 
 	@Override
 	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
-		return areCollided(
+		return TriangleCollision.AreCollided(
 				crashableMesh.cloneVertices(), mModelMatrix.clone(),
 				triangleArray, modelMatrix);
 	}

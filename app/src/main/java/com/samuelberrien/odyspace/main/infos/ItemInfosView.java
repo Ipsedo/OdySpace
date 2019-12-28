@@ -20,11 +20,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.game.Purchases;
+import com.samuelberrien.odyspace.core.Purchases;
 
-import static com.samuelberrien.odyspace.utils.game.Purchases.BONUS;
-import static com.samuelberrien.odyspace.utils.game.Purchases.FIRE;
-import static com.samuelberrien.odyspace.utils.game.Purchases.SHIP;
+import static com.samuelberrien.odyspace.core.Purchases.BONUS;
+import static com.samuelberrien.odyspace.core.Purchases.FIRE;
+import static com.samuelberrien.odyspace.core.Purchases.SHIP;
 
 /**
  * Created by samuel on 12/10/17.

@@ -6,7 +6,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
-import com.samuelberrien.odyspace.utils.game.FireType;
+import com.samuelberrien.odyspace.core.FireType;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;

@@ -16,8 +16,8 @@ import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
-import com.samuelberrien.odyspace.utils.game.FireType;
-import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.core.FireType;
+import com.samuelberrien.odyspace.core.Level;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -167,7 +167,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 			levelDone.draw(ratio);
 		}
 
-		System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - currTime));
+		//System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - currTime));
 		currTime = System.currentTimeMillis();
 	}
 

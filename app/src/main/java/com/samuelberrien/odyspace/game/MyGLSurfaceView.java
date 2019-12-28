@@ -11,11 +11,11 @@ import com.samuelberrien.odyspace.levels.TestSpaceTrip;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
-import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.game.threads.CollisionThread;
-import com.samuelberrien.odyspace.utils.game.threads.EndGameThread;
-import com.samuelberrien.odyspace.utils.game.threads.RemoveThread;
-import com.samuelberrien.odyspace.utils.game.threads.UpdateThread;
+import com.samuelberrien.odyspace.core.Level;
+import com.samuelberrien.odyspace.core.threads.CollisionThread;
+import com.samuelberrien.odyspace.core.threads.EndGameThread;
+import com.samuelberrien.odyspace.core.threads.RemoveThread;
+import com.samuelberrien.odyspace.core.threads.UpdateThread;
 
 /**
  * Created by samuel on 16/04/17.

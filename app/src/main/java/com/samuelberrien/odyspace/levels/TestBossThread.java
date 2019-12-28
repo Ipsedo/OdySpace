@@ -11,10 +11,10 @@ import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.boss.Boss;
 import com.samuelberrien.odyspace.objects.baseitem.shooters.boss.FstBoss;
-import com.samuelberrien.odyspace.utils.collision.Box;
-import com.samuelberrien.odyspace.utils.collision.Octree;
-import com.samuelberrien.odyspace.utils.game.Item;
-import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.core.collision.Box;
+import com.samuelberrien.odyspace.core.collision.Octree;
+import com.samuelberrien.odyspace.core.Item;
+import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
 import java.util.ArrayList;

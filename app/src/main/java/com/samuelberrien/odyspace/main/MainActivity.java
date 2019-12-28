@@ -33,8 +33,8 @@ import com.samuelberrien.odyspace.main.infos.BossKilledView;
 import com.samuelberrien.odyspace.main.infos.ItemInfosView;
 import com.samuelberrien.odyspace.main.params.SettingsFragment;
 import com.samuelberrien.odyspace.main.shop.ShopFragment;
-import com.samuelberrien.odyspace.utils.game.Level;
-import com.samuelberrien.odyspace.utils.game.Purchases;
+import com.samuelberrien.odyspace.core.Level;
+import com.samuelberrien.odyspace.core.Purchases;
 
 public class MainActivity
 		extends AppCompatActivity

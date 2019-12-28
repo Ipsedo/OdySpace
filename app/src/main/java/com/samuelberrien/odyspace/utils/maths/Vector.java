@@ -47,6 +47,12 @@ public final class Vector {
 		return new float[]{u[0] + v[0], u[1] + v[1], u[2] + v[2]};
 	}
 
+	public static float[] sub3f(float[] u, float[] v) {
+		Vector.checkBound(u, 3);
+		Vector.checkBound(v, 3);
+		return new float[]{u[0] - v[0], u[1] - v[1], u[2] - v[2]};
+	}
+
 	public static float dot3f(float[] u, float[] v) {
 		Vector.checkBound(u, 3);
 		Vector.checkBound(v, 3);

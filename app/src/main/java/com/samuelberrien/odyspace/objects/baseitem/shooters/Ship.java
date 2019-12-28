@@ -10,9 +10,9 @@ import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.utils.game.Bonus;
-import com.samuelberrien.odyspace.utils.game.FireType;
-import com.samuelberrien.odyspace.utils.game.Shooter;
+import com.samuelberrien.odyspace.core.Bonus;
+import com.samuelberrien.odyspace.core.FireType;
+import com.samuelberrien.odyspace.core.Shooter;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
 import java.util.List;

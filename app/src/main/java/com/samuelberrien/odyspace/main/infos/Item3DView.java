@@ -7,7 +7,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.utils.game.Purchases;
+import com.samuelberrien.odyspace.core.Purchases;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

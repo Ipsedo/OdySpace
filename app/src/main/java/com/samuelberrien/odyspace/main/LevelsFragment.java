@@ -1,6 +1,5 @@
 package com.samuelberrien.odyspace.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
-import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.utils.widget.ExpandButton;
 import com.samuelberrien.odyspace.utils.widget.RadioExpand;
 

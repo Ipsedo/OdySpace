@@ -3,9 +3,9 @@ package com.samuelberrien.odyspace.objects.baseitem.group;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.GLDrawable;
-import com.samuelberrien.odyspace.utils.collision.Box;
-import com.samuelberrien.odyspace.utils.game.Item;
-import com.samuelberrien.odyspace.utils.game.UpdatableItem;
+import com.samuelberrien.odyspace.core.collision.Box;
+import com.samuelberrien.odyspace.core.Item;
+import com.samuelberrien.odyspace.core.UpdatableItem;
 
 /**
  * Created by samuel on 04/08/17.

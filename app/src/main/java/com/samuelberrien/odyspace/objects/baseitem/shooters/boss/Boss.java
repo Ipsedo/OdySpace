@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.utils.game.FireType;
-import com.samuelberrien.odyspace.utils.game.Shooter;
+import com.samuelberrien.odyspace.core.FireType;
+import com.samuelberrien.odyspace.core.Shooter;
 
 import java.util.List;
 

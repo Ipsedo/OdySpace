@@ -5,7 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
-import com.samuelberrien.odyspace.utils.game.Item;
+import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 /**

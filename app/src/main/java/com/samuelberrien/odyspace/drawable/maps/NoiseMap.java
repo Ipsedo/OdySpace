@@ -5,8 +5,9 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.utils.collision.Box;
-import com.samuelberrien.odyspace.utils.game.Item;
+import com.samuelberrien.odyspace.core.collision.Box;
+import com.samuelberrien.odyspace.core.Item;
+import com.samuelberrien.odyspace.core.collision.TriangleCollision;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.SimplexNoise;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -25,10 +26,10 @@ import java.util.ArrayList;
 
 public class NoiseMap implements Item, Map {
 
-	private native boolean areCollided(float[] mPointItem1,
+	/*private native boolean areCollided(float[] mPointItem1,
 									   float[] mModelMatrix1,
 									   float[] mPointItem2,
-									   float[] mModelMatrix2);
+									   float[] mModelMatrix2);*/
 
 	private static final int POSITION_DATA_SIZE = 3;
 
@@ -38,9 +39,9 @@ public class NoiseMap implements Item, Map {
 
 	private static final int STRIDE = (POSITION_DATA_SIZE + NORMAL_DATA_SIZE) * BYTES_PER_FLOAT;
 
-	static {
+	/*static {
 		System.loadLibrary("collision");
-	}
+	}*/
 
 	private final int SIZE = 30;
 
@@ -399,7 +400,7 @@ public class NoiseMap implements Item, Map {
 		//TODO use container to get restreint area ?
 		float[] position = new float[]{0f, 0f, 0f, 1f};
 		Matrix.multiplyMV(position, 0, modelMatrix, 0, position.clone(), 0);
-		return areCollided(getRestreintArea(
+		return TriangleCollision.AreCollided(getRestreintArea(
 				new float[]{position[0], position[1], position[2]}),
 				mModelMatrix.clone(),
 				triangleArray,

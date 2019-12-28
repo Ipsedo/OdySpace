@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.levels.TestBossThread;
-import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.core.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
