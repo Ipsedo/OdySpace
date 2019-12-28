@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils.collision;
+package com.samuelberrien.odyspace.core.collision;
 
 /**
  * Created by samuel on 13/06/17.

@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils.collision;
+package com.samuelberrien.odyspace.core.collision;
 
 import com.samuelberrien.odyspace.utils.maths.Vector;
 

@@ -1,11 +1,11 @@
-package com.samuelberrien.odyspace.utils.game.threads;
+package com.samuelberrien.odyspace.core.threads;
 
 import android.app.Activity;
 import android.content.Intent;
 
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.main.MainActivity;
-import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.core.Level;
 
 /**
  * Created by samuel on 09/05/17.

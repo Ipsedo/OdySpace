@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.utils.game;
+package com.samuelberrien.odyspace.core;
 
 import android.content.Context;
 import android.opengl.Matrix;

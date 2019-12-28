@@ -1,6 +1,6 @@
-package com.samuelberrien.odyspace.utils.collision;
+package com.samuelberrien.odyspace.core.collision;
 
-import com.samuelberrien.odyspace.utils.game.Item;
+import com.samuelberrien.odyspace.core.Item;
 
 import java.util.ArrayList;
 import java.util.List;

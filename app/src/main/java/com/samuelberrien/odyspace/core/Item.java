@@ -1,6 +1,6 @@
-package com.samuelberrien.odyspace.utils.game;
+package com.samuelberrien.odyspace.core;
 
-import com.samuelberrien.odyspace.utils.collision.Box;
+import com.samuelberrien.odyspace.core.collision.Box;
 
 /**
  * Created by samuel on 14/06/17.

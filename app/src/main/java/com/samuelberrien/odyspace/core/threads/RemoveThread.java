@@ -1,6 +1,6 @@
-package com.samuelberrien.odyspace.utils.game.threads;
+package com.samuelberrien.odyspace.core.threads;
 
-import com.samuelberrien.odyspace.utils.game.Level;
+import com.samuelberrien.odyspace.core.Level;
 
 /**
  * Created by samuel on 09/05/17.
