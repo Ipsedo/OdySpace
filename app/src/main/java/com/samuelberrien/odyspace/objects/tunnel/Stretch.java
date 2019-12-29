@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.core.collision.TriangleCollision;
 import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.Item;
@@ -25,11 +26,11 @@ import java.util.ArrayList;
 
 public class Stretch implements Item, GLDrawable {
 
-	private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
+	/*private native boolean areCollided(float[] mPointItem1, float[] mModelMatrix1, float[] mPointItem2, float[] mModelMatrix2);
 
 	static {
 		System.loadLibrary("collision");
-	}
+	}*/
 
 	/**
 	 * Size of the position data in elements.
@@ -392,7 +393,7 @@ public class Stretch implements Item, GLDrawable {
 
 	@Override
 	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
-		return areCollided(vertex.clone(), identityMatrix.clone(), triangleArray, modelMatrix);
+		return TriangleCollision.AreCollided(vertex.clone(), identityMatrix.clone(), triangleArray, modelMatrix);
 	}
 
 	@Override
