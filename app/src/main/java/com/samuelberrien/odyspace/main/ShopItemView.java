@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main.shop;
+package com.samuelberrien.odyspace.main;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -43,7 +43,7 @@ public class ShopItemView extends LinearLayout {
 		infos = new TextView(context);
 		infos.setGravity(Gravity.CENTER);
 		buyButton = new Button(context);
-		buyButton.setText("Buy");
+		buyButton.setText(getContext().getString(R.string.buy));
 		buyButton.setBackground(ContextCompat.getDrawable(context, R.drawable.drawer_button));
 
 		//item3DWindow = new Item3DWindow(glContext, Purchases.SHIP, glContext.getString(R.string.ship_supreme));
@@ -100,43 +100,42 @@ public class ShopItemView extends LinearLayout {
 			case SHIP:
 				items = getResources().getStringArray(R.array.ship_shop_list_item);
 				price = getResources().getIntArray(R.array.ship_shop_price);
-				String life = "";
+				int life;
 				if (index == 0) {
 					int currentBoughtLife = savedShop.getInt(
 							getContext().getString(R.string.bought_life),
 							getResources().getInteger(R.integer.zero));
 					cost = (int) Math.pow(currentBoughtLife, 2d) * price[index];
+					life = currentBoughtLife;
 				} else {
 					int[] lifes = getResources().getIntArray(R.array.ship_life_shop_list_item);
-					life += "life : " + lifes[index - 1];
+					life = lifes[index - 1];
 					cost = price[index];
 				}
-				infos.setText(items[index] + System.getProperty("line.separator")
-						+ life + System.getProperty("line.separator") + "cost : " + cost);
+				infos.setText(getResources().getString(R.string.ship_info_shop, items[index], life, cost));
 				break;
 			case FIRE:
 				items = getResources().getStringArray(R.array.fire_shop_list_item);
 				price = getResources().getIntArray(R.array.fire_shop_price);
-				infos.setText(items[index] + System.getProperty("line.separator")
-						+ System.getProperty("line.separator") + "cost : " + price[index]);
+				infos.setText(getResources().getString(R.string.fire_info_shop, items[index], price[index]));
 				break;
 			case BONUS:
 				items = getResources().getStringArray(R.array.bonus_shop_list_item);
 				price = getResources().getIntArray(R.array.bonus_shop_price);
 
-				String duration = "";
+				int duration;
 				if (index == 0) {
 					int currentBoughtDuration = savedShop.getInt(
 							getContext().getString(R.string.bought_duration),
 							getResources().getInteger(R.integer.zero));
-					cost = (int) Math.pow(currentBoughtDuration / 10, 2d) * price[index];
+					cost = (int) Math.pow(currentBoughtDuration / 10., 2d) * price[index];
+					duration = currentBoughtDuration;
 				} else {
 					int[] durations = getResources().getIntArray(R.array.bonus_duration_shop_list_item);
-					duration += "duration : " + durations[index - 1];
+					duration = durations[index - 1];
 					cost = price[index];
 				}
-				infos.setText(items[index] + System.getProperty("line.separator")
-						+ duration + System.getProperty("line.separator") + "cost : " + cost);
+				infos.setText(getResources().getString(R.string.bonus_info_shop, items[index], duration, cost));
 				break;
 		}
 	}
@@ -152,9 +151,7 @@ public class ShopItemView extends LinearLayout {
 				items = getResources().getStringArray(R.array.ship_shop_list_item);
 				price = getResources().getIntArray(R.array.ship_shop_price);
 				if (index == 0) {
-					buyButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View view) {
+					buyButton.setOnClickListener((view) -> {
 							int currMoney = savedShop.getInt(
 									getContext().getString(R.string.saved_money),
 									getResources().getInteger(R.integer.saved_init_money));
@@ -171,13 +168,11 @@ public class ShopItemView extends LinearLayout {
 										currMoney - lifeCost);
 								editor.apply();
 								setText();
-							}
+
 						}
 					});
 				} else {
-					buyButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View view) {
+					buyButton.setOnClickListener((view) -> {
 							int currMoney = savedShop.getInt(
 									getContext().getString(R.string.saved_money),
 									getResources().getInteger(R.integer.saved_init_money));
@@ -193,7 +188,7 @@ public class ShopItemView extends LinearLayout {
 												R.drawable.button_pressed));
 								//insertPrice(cost[index]);
 							}
-						}
+
 					});
 					rBool = items[index].equals(getContext().getString(R.string.ship_simple)) ?
 							R.bool.vrai : R.bool.faux;
@@ -210,9 +205,7 @@ public class ShopItemView extends LinearLayout {
 			case FIRE:
 				items = getResources().getStringArray(R.array.fire_shop_list_item);
 				price = getResources().getIntArray(R.array.fire_shop_price);
-				buyButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
+				buyButton.setOnClickListener((view) -> {
 						int currMoney = savedShop.getInt(
 								getContext().getString(R.string.saved_money),
 								getResources().getInteger(R.integer.saved_init_money));
@@ -228,7 +221,7 @@ public class ShopItemView extends LinearLayout {
 											R.drawable.button_pressed));
 							//insertPrice(cost[index]);
 						}
-					}
+
 				});
 				rBool = items[index].equals(getContext().getString(R.string.fire_1)) ?
 						R.bool.vrai : R.bool.faux;
@@ -245,13 +238,11 @@ public class ShopItemView extends LinearLayout {
 				items = getResources().getStringArray(R.array.bonus_shop_list_item);
 				price = getResources().getIntArray(R.array.bonus_shop_price);
 				if (index == 0) {
-					buyButton.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
+					buyButton.setOnClickListener((v) -> {
 							int currentBoughtDuration = savedShop.getInt(
 									getContext().getString(R.string.bought_duration),
 									getResources().getInteger(R.integer.zero));
-							int currentPrice = (int) Math.pow(currentBoughtDuration / 10, 2d) * price[index];
+							int currentPrice = (int) Math.pow(currentBoughtDuration / 10., 2d) * price[index];
 							int currMoney = savedShop.getInt(
 									getContext().getString(R.string.saved_money),
 									getResources().getInteger(R.integer.saved_init_money));
@@ -265,12 +256,9 @@ public class ShopItemView extends LinearLayout {
 								editor.apply();
 								setText();
 							}
-						}
 					});
 				} else {
-					buyButton.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
+					buyButton.setOnClickListener((v) -> {
 							int currMoney = savedShop.getInt(
 									getContext().getString(R.string.saved_money),
 									getResources().getInteger(R.integer.saved_init_money));
@@ -286,7 +274,6 @@ public class ShopItemView extends LinearLayout {
 												R.drawable.button_pressed));
 								//insertPrice(cost[index]);
 							}
-						}
 					});
 					rBool = items[index].equals(getContext().getString(R.string.bonus_1)) ?
 							R.bool.vrai : R.bool.faux;

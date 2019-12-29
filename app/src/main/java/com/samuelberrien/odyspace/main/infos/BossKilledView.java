@@ -9,7 +9,7 @@ import android.opengl.Matrix;
 import android.util.AttributeSet;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.core.Level;
 
@@ -48,7 +48,7 @@ public class BossKilledView
 
 	private Random random;
 
-	private HashMap<Integer, String> objFileNames;
+	private ArrayList<String> objFileNames;
 
 	public BossKilledView(Context context) {
 		super(context);
@@ -68,8 +68,8 @@ public class BossKilledView
 		setEGLContextClientVersion(2);
 		setRenderer(this);
 
-		objFileNames = new HashMap<>();
-		objFileNames.put(0, "skull");
+		objFileNames = new ArrayList<>();
+		objFileNames.add("skull");
 		random = new Random(System.currentTimeMillis());
 		willCreateBoss = false;
 		levelPreferences = getContext().getSharedPreferences(
@@ -79,7 +79,7 @@ public class BossKilledView
 		updateBeatedBoss();
 	}
 
-	public void updateBeatedBoss() {
+	private void updateBeatedBoss() {
 		int currLevel = levelPreferences.getInt(
 				getContext().getString(R.string.saved_max_level),
 				getResources().getInteger(R.integer.saved_max_level_default));

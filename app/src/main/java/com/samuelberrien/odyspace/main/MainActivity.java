@@ -31,8 +31,6 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.main.infos.BossKilledView;
 import com.samuelberrien.odyspace.main.infos.ItemInfosView;
-import com.samuelberrien.odyspace.main.params.SettingsFragment;
-import com.samuelberrien.odyspace.main.shop.ShopFragment;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.Purchases;
 
@@ -43,7 +41,6 @@ public class MainActivity
 	public static final String LEVEL_ID = "LEVEL_ID";
 	public static final int RESULT_VALUE = 1;
 
-	private Toolbar toolbar;
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
 
@@ -55,24 +52,22 @@ public class MainActivity
 
 	private ItemInfosView shipView;
 	private ItemInfosView fireView;
-	private ItemInfosView bonusView;
 
 	private BossKilledView bossKilledView;
 
 	private Dialog resetDialog;
 	private LinearLayout layoutDialog;
 	private Button resetYes;
-	private Button resetNo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_main);
 
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerLayout = findViewById(R.id.drawer_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
 		drawerLayout.addDrawerListener(drawerToggle);
 
@@ -113,17 +108,13 @@ public class MainActivity
 
 		resetYes = new Button(this);
 		resetYes.setBackground(ContextCompat.getDrawable(this, R.drawable.button));
-		resetYes.setText("Yes");
-		resetNo = new Button(this);
-		resetNo.setBackground(ContextCompat.getDrawable(this, R.drawable.button));
-		resetNo.setText("No");
+		resetYes.setText(getString(R.string.yes));
 
-		resetNo.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				resetDialog.dismiss();
-			}
-		});
+		Button resetNo = new Button(this);
+		resetNo.setBackground(ContextCompat.getDrawable(this, R.drawable.button));
+		resetNo.setText(getString(R.string.no));
+
+		resetNo.setOnClickListener((view) -> resetDialog.dismiss());
 
 		layoutDialog = new LinearLayout(this);
 		layoutDialog.setLayoutParams(new LinearLayout.LayoutParams(
@@ -154,7 +145,7 @@ public class MainActivity
 		resetDialog.setContentView(layoutDialog);
 	}
 
-	public void initItems() {
+	private void initItems() {
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -168,13 +159,13 @@ public class MainActivity
 		((LinearLayout) findViewById(R.id.used_items)).addView(shipView, layoutParams);
 		shipView.setGLViewOnTop(true);
 
-		bonusView = new ItemInfosView(this, Purchases.BONUS);
+		ItemInfosView bonusView = new ItemInfosView(this, Purchases.BONUS);
 		((LinearLayout) findViewById(R.id.used_items)).addView(bonusView, layoutParams);
 		bonusView.setGLViewOnTop(true);
 
 		int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
-		TextView textView = (TextView) findViewById(R.id.money_text);
-		textView.setText(String.valueOf(currMoney) + " $");
+		TextView textView = findViewById(R.id.money_text);
+		textView.setText(getString(R.string.money, currMoney));
 	}
 
 	@Override
@@ -187,8 +178,7 @@ public class MainActivity
 		super.onActivityResult(requestCode, resultCode, data);
 		switchOrientation(getResources().getConfiguration().orientation);
 
-		switch (requestCode) {
-			case MainActivity.RESULT_VALUE: {
+		if (requestCode == MainActivity.RESULT_VALUE) {
 				if (resultCode == Activity.RESULT_OK) {
 					int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
 					int currMoney = this.savedShop.getInt(
@@ -209,9 +199,8 @@ public class MainActivity
 				} else if (resultCode == Activity.RESULT_CANCELED) {
 					/* level canceled */
 				}
-				break;
 			}
-		}
+
 	}
 
 	private void increaseLevel(int currentLevelIndex) {
@@ -253,10 +242,10 @@ public class MainActivity
 	}
 
 	private void switchOrientation(int orientation) {
-		LinearLayout menuDrawer = (LinearLayout) findViewById(R.id.menu_drawer);
-		LinearLayout layoutMenu = (LinearLayout) findViewById(R.id.layout_menu_button);
+		LinearLayout menuDrawer = findViewById(R.id.menu_drawer);
+		LinearLayout layoutMenu = findViewById(R.id.layout_menu_button);
 		View mainSeparator = findViewById(R.id.main_separator);
-		LinearLayout layoutItem = (LinearLayout) findViewById(R.id.used_items);
+		LinearLayout layoutItem = findViewById(R.id.used_items);
 
 		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
@@ -309,6 +298,7 @@ public class MainActivity
 			case R.id.settings_item_menu:
 				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 				transaction.replace(R.id.content_fragment, settingsFragment);
+				transaction.addToBackStack(null);
 				transaction.commit();
 				return true;
 		}
@@ -334,6 +324,7 @@ public class MainActivity
 	public void levels(View v) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.content_fragment, levelsFragment);
+		transaction.addToBackStack(null);
 		transaction.commit();
 
 		drawerLayout.closeDrawers();
@@ -343,29 +334,25 @@ public class MainActivity
 	public void shop(View v) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.content_fragment, shopFragment);
+		transaction.addToBackStack(null);
 		transaction.commit();
 
 		drawerLayout.closeDrawers();
 	}
 
 	public void resetSettings(View v) {
-		showDialogConfirm(new Runnable() {
-			@Override
-			public void run() {
+		showDialogConfirm(() ->
 				getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE).edit()
 						.remove(getString(R.string.saved_sound_effect_volume))
 						.remove(getString(R.string.saved_joystick_inversed))
 						.remove(getString(R.string.saved_max_level))
 						.remove(getString(R.string.saved_yaw_roll_switched))
-						.apply();
-			}
-		});
+						.apply()
+		);
 	}
 
 	public void resetShop(View v) {
-		showDialogConfirm(new Runnable() {
-			@Override
-			public void run() {
+		showDialogConfirm(() -> {
 				SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shop_preferences),
 						Context.MODE_PRIVATE)
 						.edit();
@@ -394,26 +381,20 @@ public class MainActivity
 						.remove(getString(R.string.current_bonus_duration))
 						.remove(getString(R.string.current_life_number))
 						.apply();
-			}
 		});
 	}
 
 	public void resetLevels(View v) {
-		showDialogConfirm(new Runnable() {
-			@Override
-			public void run() {
+		showDialogConfirm(() ->
 				getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE)
 						.edit()
 						.remove(getString(R.string.saved_max_level))
-						.apply();
-			}
-		});
+						.apply()
+		);
 	}
 
 	public void cheat(View v) {
-		showDialogConfirm(new Runnable() {
-			@Override
-			public void run() {
+		showDialogConfirm(() -> {
 				getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE)
 						.edit()
 						.putInt(getString(R.string.saved_money), 999999999)
@@ -422,7 +403,6 @@ public class MainActivity
 						.edit()
 						.putInt(getString(R.string.saved_max_level), Level.LEVELS.length)
 						.apply();
-			}
 		});
 	}
 
@@ -430,18 +410,15 @@ public class MainActivity
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
 		if (s.equals(getString(R.string.saved_money))) {
 			int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
-			TextView textView = (TextView) findViewById(R.id.money_text);
-			textView.setText(String.valueOf(currMoney) + " $");
+			TextView textView = findViewById(R.id.money_text);
+			textView.setText(getString(R.string.money, currMoney));
 		}
 	}
 
 	private void showDialogConfirm(final Runnable runnable) {
-		resetYes.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
+		resetYes.setOnClickListener((view) -> {
 				runnable.run();
 				resetDialog.dismiss();
-			}
 		});
 		Point screenSize = getScreenSize();
 		resetDialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 3);
@@ -454,5 +431,11 @@ public class MainActivity
 		Point size = new Point();
 		display.getSize(size);
 		return size;
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (drawerLayout.isDrawerOpen(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
+		else super.onBackPressed();
 	}
 }

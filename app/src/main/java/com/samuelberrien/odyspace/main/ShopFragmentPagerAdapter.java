@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main.shop;
+package com.samuelberrien.odyspace.main;
 
 
 import android.support.v4.app.Fragment;
@@ -14,21 +14,20 @@ import com.samuelberrien.odyspace.core.Purchases;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class ShopFragmentPagerAdapter extends FragmentPagerAdapter {
+class ShopFragmentPagerAdapter extends FragmentPagerAdapter {
 
-	final int PAGE_COUNT = 3;
 	static String SHIP_TAB = Purchases.SHIP.getName();
 	static String FIRE_TAB = Purchases.FIRE.getName();
 	static String BONUS_TAB = Purchases.BONUS.getName();
 	static String[] TAB_TITLES = new String[]{SHIP_TAB, FIRE_TAB, BONUS_TAB};
 
-	public ShopFragmentPagerAdapter(FragmentManager fm) {
+	ShopFragmentPagerAdapter(FragmentManager fm) {
 		super(fm);
 	}
 
 	@Override
 	public int getCount() {
-		return PAGE_COUNT;
+		return 3;
 	}
 
 	@Override

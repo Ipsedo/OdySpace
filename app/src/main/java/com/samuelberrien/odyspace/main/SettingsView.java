@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main.params;
+package com.samuelberrien.odyspace.main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.samuelberrien.odyspace.R;
  * Created by samuel on 12/10/17.
  */
 
-public class GameParamsView
+public class SettingsView
 		extends LinearLayout
 		implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -35,10 +35,10 @@ public class GameParamsView
 	private final CheckBox inverseJoystickCheckBox;
 	private final CheckBox switchYawRollCheckBox;
 
-	public GameParamsView(Activity activity) {
+	public SettingsView(Activity activity) {
 		super(activity);
 
-		v = activity.getLayoutInflater().inflate(R.layout.game_params, null);
+		v = activity.getLayoutInflater().inflate(R.layout.game_params, new LinearLayout(activity));
 
 		context = activity;
 
@@ -48,10 +48,10 @@ public class GameParamsView
 
 		tmp = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-		sb1 = (SeekBar) v.findViewById(R.id.device_volume_seek_bar);
-		effectVolumeSeekBar = (SeekBar) v.findViewById(R.id.effect_volume_seek_bar);
-		inverseJoystickCheckBox = (CheckBox) v.findViewById(R.id.inverse_joystick_checkbox);
-		switchYawRollCheckBox = (CheckBox) v.findViewById(R.id.switch_yaw_roll_checkbox);
+		sb1 = v.findViewById(R.id.device_volume_seek_bar);
+		effectVolumeSeekBar = v.findViewById(R.id.effect_volume_seek_bar);
+		inverseJoystickCheckBox = v.findViewById(R.id.inverse_joystick_checkbox);
+		switchYawRollCheckBox = v.findViewById(R.id.switch_yaw_roll_checkbox);
 
 		initSettings();
 
@@ -85,11 +85,6 @@ public class GameParamsView
 						true,
 						new ContentObserver(new Handler()) {
 							@Override
-							public boolean deliverSelfNotifications() {
-								return super.deliverSelfNotifications();
-							}
-
-							@Override
 							public void onChange(boolean selfChange) {
 								super.onChange(selfChange);
 								sb1.setProgress(tmp.getStreamVolume(AudioManager.STREAM_MUSIC));
@@ -119,29 +114,23 @@ public class GameParamsView
 				gamePreferences.getBoolean(context.getString(R.string.saved_joystick_inversed),
 						context.getResources()
 								.getBoolean(R.bool.saved_joystick_inversed_default)));
-		inverseJoystickCheckBox.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
+		inverseJoystickCheckBox.setOnClickListener((view) ->
 				gamePreferences.edit()
 						.putBoolean(context.getString(R.string.saved_joystick_inversed),
 								inverseJoystickCheckBox.isChecked())
-						.apply();
-			}
-		});
+						.apply()
+		);
 
 		switchYawRollCheckBox.setChecked(gamePreferences.getBoolean(
 				context.getString(R.string.saved_yaw_roll_switched),
 				context.getResources()
 						.getBoolean(R.bool.saved_yaw_roll_switched_default)));
-		switchYawRollCheckBox.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
+		switchYawRollCheckBox.setOnClickListener((view) ->
 				gamePreferences.edit()
 						.putBoolean(context.getString(R.string.saved_yaw_roll_switched),
 								switchYawRollCheckBox.isChecked())
-						.apply();
-			}
-		});
+						.apply()
+		);
 	}
 
 	@Override

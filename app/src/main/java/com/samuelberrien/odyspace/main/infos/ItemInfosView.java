@@ -67,8 +67,6 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 
 	private String itemName;
 
-	private LinearLayout.LayoutParams layoutParams;
-
 	private final Item3DView item3DView;
 	private TextView infos;
 
@@ -98,7 +96,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		savedShip.registerOnSharedPreferenceChangeListener(this);
 		savedShop.registerOnSharedPreferenceChangeListener(this);
 
-		layoutParams = getLayoutParams(getContext());
+		LinearLayout.LayoutParams layoutParams = getLayoutParams(getContext());
 
 
 		loadName();
@@ -168,10 +166,6 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		}
 	}
 
-	private void make3DView() {
-
-	}
-
 	private void setText() {
 		switch (kind) {
 			case SHIP:
@@ -181,8 +175,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				int currShipLife = savedShip.getInt(
 						getContext().getString(R.string.current_life_number),
 						getResources().getInteger(R.integer.saved_ship_life_default));
-				infos.setText(itemName + System.getProperty("line.separator")
-						+ "Life : " + currShipLife + " + " + currBoughtLife);
+				infos.setText(getContext().getString(R.string.ship_info_drawer, itemName, currShipLife, currBoughtLife));
 				break;
 			case FIRE:
 				infos.setText(itemName);
@@ -194,8 +187,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				int currentBonusDuration = savedShip.getInt(
 						getContext().getString(R.string.current_bonus_duration),
 						getResources().getInteger(R.integer.zero));
-				infos.setText(itemName + System.getProperty("line.separator")
-						+ "Time : " + currentBonusDuration + " + " + currentBoughtDuration);
+				infos.setText(getContext().getString(R.string.bonus_info_drawer, itemName, currentBonusDuration, currentBoughtDuration));
 				break;
 
 		}
@@ -212,7 +204,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 
 		switch (kind) {
 			case SHIP:
-				titleItemChooser.setText("Bought ships");
+				titleItemChooser.setText(getContext().getString(R.string.bought_ships));
 				items = getResources().getStringArray(R.array.ship_shop_list_item);
 				final int[] lifeList = getResources().getIntArray(R.array.ship_life_shop_list_item);
 				for (int i = 1; i < items.length; i++) {
@@ -251,7 +243,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				}
 				break;
 			case FIRE:
-				titleItemChooser.setText("Bought fires");
+				titleItemChooser.setText(getContext().getString(R.string.bought_fires));
 				items = getResources().getStringArray(R.array.fire_shop_list_item);
 				for (int i = 0; i < items.length; i++) {
 					int rBool = items[i].equals(getContext().getString(R.string.fire_1)) ?
@@ -286,7 +278,7 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 				}
 				break;
 			case BONUS:
-				titleItemChooser.setText("Bought bonus");
+				titleItemChooser.setText(getContext().getString(R.string.bought_bonus));
 				items = getResources().getStringArray(R.array.bonus_shop_list_item);
 				final int[] durationList = getResources().getIntArray(
 						R.array.bonus_duration_shop_list_item);
@@ -304,17 +296,14 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 						tmpRadioButton.setText(items[i]);
 
 						final int index = i;
-						tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
+						tmpRadioButton.setOnClickListener((view) ->
 								savedShip.edit()
 										.putString(getContext().getString(R.string.current_bonus_used),
 												items[index])
 										.putInt(getContext().getString(R.string.current_bonus_duration),
 												durationList[index - 1])
-										.apply();
-							}
-						});
+										.apply()
+						);
 
 						if (savedShip.getString(getContext().getString(R.string.current_bonus_used),
 								getContext().getString(R.string.bonus_1))
@@ -331,9 +320,9 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 	private void makeItemChooser() {
 		selectItemLayout = (LinearLayout) layoutInflater
 				.inflate(R.layout.select_item_layout,
-						(LinearLayout) findViewById(R.id.select_item_layout));
-		radioGroup = (RadioGroup) selectItemLayout.findViewById(R.id.select_item_radio_group);
-		titleItemChooser = (TextView) selectItemLayout.findViewById(R.id.select_item_text);
+						findViewById(R.id.select_item_layout));
+		radioGroup = selectItemLayout.findViewById(R.id.select_item_radio_group);
+		titleItemChooser = selectItemLayout.findViewById(R.id.select_item_text);
 		fillItemChooser();
 	}
 
@@ -342,21 +331,6 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		fillItemChooser();
 	}
 
-
-	/*LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		layoutParams1.weight = 0.3f;
-
-		TextView okDialog = new TextView(activity);
-		okDialog.setText("Ok");
-		okDialog.setGravity(Gravity.CENTER);
-		okDialog.setLayoutParams(layoutParams1);
-		okDialog.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				dialog.dismiss();
-			}
-		});
-		selectItemLayout.addView(okDialog);*/
 
 	public void dismissDialog() {
 		dialog.dismiss();
@@ -384,29 +358,4 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		item3DView.setZOrderOnTop(onTop);
 	}
 
-	/*@Override
-	protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-		super.onVisibilityChanged(changedView, visibility);
-		if (visibility == View.VISIBLE) item3DView.onResume();
-    	else item3DView.onPause();
-	}
-
-	@Override
-	public void onWindowFocusChanged(boolean hasWindowFocus) {
-		super.onWindowFocusChanged(hasWindowFocus);
-		if (hasWindowFocus) item3DView.onResume();
-    	else item3DView.onPause();
-	}
-
-	@Override
-	protected void onDetachedFromWindow() {
-		super.onDetachedFromWindow();
-		// onDestroy() called
-	}
-
-	@Override
-	protected void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		// onCreate() called
-	}*/
 }

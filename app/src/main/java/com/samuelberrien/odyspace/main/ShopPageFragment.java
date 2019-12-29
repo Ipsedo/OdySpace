@@ -1,6 +1,7 @@
-package com.samuelberrien.odyspace.main.shop;
+package com.samuelberrien.odyspace.main;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import android.view.ViewGroup;
 
 public class ShopPageFragment extends Fragment {
 
-	public static final String ARG_PAGE = "ARG_PAGE";
+	private static final String ARG_PAGE = "ARG_PAGE";
 
 	private int mPage;
 
@@ -34,7 +35,7 @@ public class ShopPageFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//return inflater.inflate(R.layout.game_params, container, false);
 		//return ((ShopActivity) getActivity()).setPageChosen(this.mPage - 1, inflater, container);
 		return ((ShopFragment) getParentFragment()).setPageChosen(this.mPage - 1, inflater, container);
