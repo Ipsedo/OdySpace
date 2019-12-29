@@ -2,6 +2,7 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
+import com.samuelberrien.odyspace.core.objects.Dome;
 import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
@@ -10,7 +11,6 @@ import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.objects.Base;
 import com.samuelberrien.odyspace.core.objects.BaseItem;
 import com.samuelberrien.odyspace.core.objects.Icosahedron;
 import com.samuelberrien.odyspace.core.objects.SuperIcosahedron;
@@ -39,7 +39,7 @@ import java.util.Random;
 
 public class TestProtectionLevel implements Level {
 
-	public static String NAME = "Protect the bases";
+	public static String NAME = "Protect the domes";
 	private Context context;
 
 	private Ship ship;
@@ -52,8 +52,8 @@ public class TestProtectionLevel implements Level {
 	private Compass directionToIco;
 
 	private int nbBase = 64;
-	private ObjModelMtlVBO base;
-	private List<BaseItem> bases;
+	private ObjModelMtlVBO dome;
+	private List<BaseItem> domes;
 
 	private float levelLimitSize;
 	private Box levelLimits;
@@ -101,7 +101,7 @@ public class TestProtectionLevel implements Level {
 		rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
 		icosahedrons = Collections.synchronizedList(new ArrayList<BaseItem>());
 		explosions = Collections.synchronizedList(new ArrayList<Explosion>());
-		bases = Collections.synchronizedList(new ArrayList<BaseItem>());
+		domes = Collections.synchronizedList(new ArrayList<BaseItem>());
 
 		this.ship.setRockets(rockets);
 
@@ -119,9 +119,9 @@ public class TestProtectionLevel implements Level {
 
 		rand = new Random(System.currentTimeMillis());
 
-		base = new ObjModelMtlVBO(this.context, "obj/base.obj", "obj/base.mtl", 1f, 0f, false);
+		dome = new ObjModelMtlVBO(this.context, "obj/dome.obj", "obj/dome.mtl", 1f, 0f, false);
 		//TODO faire vrai crashable?
-		CollisionMesh collisionMesh = new CollisionMesh(context, "obj/base.obj");
+		CollisionMesh collisionMesh = new CollisionMesh(context, "obj/dome.obj");
 		for (int i = 0; i < nbBase; i++) {
 			float x = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
 			float z = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
@@ -139,10 +139,10 @@ public class TestProtectionLevel implements Level {
 
 			float[] pos = new float[]{x, moy + 5f, z};
 
-			Base tmpBase = new Base(context, base, collisionMesh, 1, pos, 25f);
-			tmpBase.update();
-			tmpBase.queueExplosion();
-			bases.add(tmpBase);
+			Dome tmpDome = new Dome(context, dome, collisionMesh, 1, pos, 25f);
+			tmpDome.update();
+			tmpDome.queueExplosion();
+			domes.add(tmpDome);
 		}
 
 		currLevelProgression = new ProgressBar(this.context, maxLevelTime, -1f + 0.15f, 0.9f,
@@ -175,7 +175,7 @@ public class TestProtectionLevel implements Level {
 		tmp = new ArrayList<>(icosahedrons);
 		for (BaseItem i : tmp)
 			i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-		tmp = new ArrayList<>(bases);
+		tmp = new ArrayList<>(domes);
 		for (BaseItem b : tmp)
 			b.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		ArrayList<Explosion> tmp2 = new ArrayList<>(explosions);
@@ -220,14 +220,14 @@ public class TestProtectionLevel implements Level {
 		ArrayList<Item> ennemi = new ArrayList<>();
 		ennemi.addAll(icosahedrons);
 		ennemi.add(noiseMap);
-		ennemi.addAll(bases);
+		ennemi.addAll(domes);
 		Octree octree = new Octree(levelLimits, ami, ennemi, 10f);
 		octree.computeOctree();
 
 		ami.clear();
 		ennemi.clear();
 		ami.add(noiseMap);
-		ami.addAll(bases);
+		ami.addAll(domes);
 		ennemi.addAll(icosahedrons);
 		octree = new Octree(levelLimits, ami, ennemi, 10f);
 		octree.computeOctree();
@@ -277,7 +277,7 @@ public class TestProtectionLevel implements Level {
 				icosahedrons.remove(i);
 		}
 
-		List<BaseItem> targets = new ArrayList<>(bases);
+		List<BaseItem> targets = new ArrayList<>(domes);
 		if (rand.nextFloat() < 4e-2f) {
 			Icosahedron tmp = new SuperIcosahedron(context,
 					icosahedron, crashableIco,
@@ -298,12 +298,12 @@ public class TestProtectionLevel implements Level {
 		if (!ship.isAlive() || !ship.isInside(levelLimits))
 			ship.addExplosion(explosions);
 
-		for (int i = bases.size() - 1; i >= 0; i--)
-			if (!bases.get(i).isAlive()) {
-				soundPoolBuilder.playBigBoom(getSoundLevel(bases.get(i)),
-						getSoundLevel(bases.get(i)));
-				bases.get(i).addExplosion(explosions);
-				bases.remove(i);
+		for (int i = domes.size() - 1; i >= 0; i--)
+			if (!domes.get(i).isAlive()) {
+				soundPoolBuilder.playBigBoom(getSoundLevel(domes.get(i)),
+						getSoundLevel(domes.get(i)));
+				domes.get(i).addExplosion(explosions);
+				domes.remove(i);
 			}
 
 		ship.fire();
@@ -311,12 +311,12 @@ public class TestProtectionLevel implements Level {
 
 	@Override
 	public int getScore() {
-		return ship.isAlive() && nbBase - bases.size() == 0 ? 100 : 0;
+		return ship.isAlive() && nbBase - domes.size() == 0 ? 100 : 0;
 	}
 
 	@Override
 	public boolean isDead() {
-		return !ship.isAlive() || !ship.isInside(levelLimits) || nbBase - bases.size() != 0;
+		return !ship.isAlive() || !ship.isInside(levelLimits) || nbBase - domes.size() != 0;
 	}
 
 	@Override

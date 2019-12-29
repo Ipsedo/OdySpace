@@ -13,14 +13,14 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class Base extends BaseItem {
+public class Dome extends BaseItem {
 
 	//TODO vrai Crashable ?
-	public Base(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float scale) {
+	public Dome(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float scale) {
 		super(context, objFileName, mtlFileName, objFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, new float[3], new float[3], scale);
 	}
 
-	public Base(Context context, ObjModelMtlVBO objModelMtl, CollisionMesh collisionMesh, int life, float[] mPosition, float scale) {
+	public Dome(Context context, ObjModelMtlVBO objModelMtl, CollisionMesh collisionMesh, int life, float[] mPosition, float scale) {
 		super(context, objModelMtl, collisionMesh, life, mPosition, new float[3], new float[3], scale);
 	}
 
