@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private Joystick joystick;
-	private Fire fire;
+	private FireButton fireButton;
 	private Remote remote;
 	private Boost boost;
 
@@ -38,12 +38,12 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	 */
 	public GamePad() {
 		joystick = new Joystick();
-		fire = new Fire();
+		fireButton = new FireButton();
 		remote = new Remote();
 		boost = new Boost();
 		controls = new ArrayList<>();
 
-		controls.add(fire);
+		controls.add(fireButton);
 		controls.add(boost);
 		controls.add(joystick);
 		controls.add(remote);
@@ -54,11 +54,11 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	/**
 	 * Init the graphics, must be called an OpenGL Thread
 	 *
-	 * @param context The Application context
+	 * @param context The Application glContext
 	 */
 	public void initGraphics(Context context) {
 		joystick.initGraphics(context);
-		fire.initGraphics(context);
+		fireButton.initGraphics(context);
 		remote.initGraphics(context);
 		boost.initGraphics(context);
 		this.context = context;
@@ -119,13 +119,13 @@ public class GamePad implements GLInfoDrawable, SharedPreferences.OnSharedPrefer
 	}
 
 	/**
-	 * Gamepad fire
+	 * Gamepad fireButton
 	 *
-	 * @return true if there is a fire
+	 * @return true if there is a fireButton
 	 */
 	public boolean fire() {
-		if (fire.isFire()) {
-			fire.turnOffFire();
+		if (fireButton.isFire()) {
+			fireButton.turnOffFire();
 			return true;
 		}
 		return false;

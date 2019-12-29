@@ -15,8 +15,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.drawable.text.GameOver;
 import com.samuelberrien.odyspace.drawable.text.LevelDone;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
-import com.samuelberrien.odyspace.core.FireType;
+import com.samuelberrien.odyspace.core.objects.shooters.Ship;
 import com.samuelberrien.odyspace.core.Level;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -69,7 +68,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
 
-		FireType.initAmmos(context);
+		//FireType.initAmmos(glContext);
 
 		if (!isInit) {
 			mCameraDirection = new float[]{
@@ -139,6 +138,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onDrawFrame(GL10 unused) {
+		ship.runGLStuff();
+
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
 		updateCameraPosition(ship.getCamPosition());

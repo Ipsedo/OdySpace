@@ -3,10 +3,10 @@ package com.samuelberrien.odyspace.levels;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
-import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
-import com.samuelberrien.odyspace.objects.tunnel.Tunnel;
+import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.core.objects.Icosahedron;
+import com.samuelberrien.odyspace.core.objects.shooters.Ship;
+import com.samuelberrien.odyspace.core.objects.Tunnel;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.Item;

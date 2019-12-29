@@ -16,7 +16,7 @@ import android.opengl.GLUtils;
 public final class TextureHelper {
 
 	/**
-	 * @param context    the application context
+	 * @param context    the application glContext
 	 * @param resourceId the texture image res id
 	 * @return the texture handle
 	 */

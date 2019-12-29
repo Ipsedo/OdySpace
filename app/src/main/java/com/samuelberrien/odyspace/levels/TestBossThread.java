@@ -7,10 +7,10 @@ import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
-import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.boss.Boss;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.boss.FstBoss;
+import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.core.objects.shooters.Ship;
+import com.samuelberrien.odyspace.core.objects.shooters.boss.Boss;
+import com.samuelberrien.odyspace.core.objects.shooters.boss.FstBoss;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.Item;
@@ -57,7 +57,7 @@ public class TestBossThread implements Level {
 		this.context = context;
 		ship = currShip;
 		float limitDown = -100f;
-		//heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
+		//heightMap = new HeightMap(glContext, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, -100f);
 		noiseMap = new NoiseMap(context,
 				new float[]{161f / 255f, 37f / 255f, 27f / 255f, 1f},
 				0.45f, 0f, 8, levelLimitSize, limitDown, 0.02f);

@@ -8,9 +8,9 @@ import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
-import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
+import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.core.objects.Icosahedron;
+import com.samuelberrien.odyspace.core.objects.shooters.Ship;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.Item;
@@ -70,7 +70,7 @@ public class TestThread implements Level {
 				Color.LevelProgressBarColor);
 
 		float limitDown = -100f;
-		//heightMap = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
+		//heightMap = new HeightMap(glContext, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f, levelLimitSize, limitDown);
 		noiseMap = new NoiseMap(context,
 				new float[]{0f, 177f / 255f, 106f / 255f, 1f},
 				0.45f, 0f, 8, this.levelLimitSize, limitDown, 0.02f);
@@ -94,7 +94,7 @@ public class TestThread implements Level {
 		this.ship.setRockets(rockets);
 
 		Random rand = new Random(System.currentTimeMillis());
-		//ObjModelMtlVBO modelIco = new ObjModelMtlVBO(context, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
+		//ObjModelMtlVBO modelIco = new ObjModelMtlVBO(glContext, "icosahedron.obj", "icosahedron.mtl", 1f, 0f, true);
 		for (int i = 0; i < nbIcosahedron; i++) {
 			Icosahedron ico = new Icosahedron(context, 1,
 					new float[]{rand.nextFloat() * this.levelLimitSize - this.levelLimitSize / 2f,

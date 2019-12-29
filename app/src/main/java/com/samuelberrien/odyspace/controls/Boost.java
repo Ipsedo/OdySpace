@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import static com.samuelberrien.odyspace.controls.Fire.FireButtonRay;
+import static com.samuelberrien.odyspace.controls.FireButton.FireButtonRay;
 
 /**
  * Created by samuel on 04/08/17.

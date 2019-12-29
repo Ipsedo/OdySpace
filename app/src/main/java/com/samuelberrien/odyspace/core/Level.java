@@ -8,7 +8,7 @@ import com.samuelberrien.odyspace.levels.TestSpaceTrip;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
+import com.samuelberrien.odyspace.core.objects.shooters.Ship;
 
 /**
  * Created by samuel on 18/04/17.

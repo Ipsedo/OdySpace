@@ -74,7 +74,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 	private int nbVertex;
 
 	/**
-	 * @param context           The application context
+	 * @param context           The application glContext
 	 * @param objResId          The res id of the obj 3D model file
 	 * @param mtlResId          The res id of the mtl model file
 	 * @param lightAugmentation The light augmentation
@@ -98,7 +98,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 	}
 
 	/**
-	 * @param context           The application context
+	 * @param context           The application glContext
 	 * @param objFileName       The obj file name in assets folder
 	 * @param mtlFileName       The mtl file name in assets folder
 	 * @param lightAugmentation The light augmentation

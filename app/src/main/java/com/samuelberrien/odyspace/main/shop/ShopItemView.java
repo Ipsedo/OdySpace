@@ -46,7 +46,7 @@ public class ShopItemView extends LinearLayout {
 		buyButton.setText("Buy");
 		buyButton.setBackground(ContextCompat.getDrawable(context, R.drawable.drawer_button));
 
-		//item3DWindow = new Item3DWindow(context, Purchases.SHIP, context.getString(R.string.ship_supreme));
+		//item3DWindow = new Item3DWindow(glContext, Purchases.SHIP, glContext.getString(R.string.ship_supreme));
 		makeItem3D();
 
 		setText();

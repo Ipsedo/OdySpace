@@ -7,10 +7,11 @@
     <string name="shop_preferences">SavedShop</string>
     <string name="fire_1">Simple Fire</string>
     <string name="fire_2">Quint Fire</string>
-    <string name="fire_3">Bomb</string>
+    <string name="fire_3">Simple Bomb</string>
     <string name="fire_4">Triple Fire</string>
     <string name="fire_5">Laser</string>
     <string name="fire_6">Torus</string>
+    <string name="fire_7">Guided Missile</string>
     <string name="ship_bird">Bird Ship</string>
     <string name="ship_simple">Simple Ship</string>
     <string name="ship_supreme">Supreme Ship</string>

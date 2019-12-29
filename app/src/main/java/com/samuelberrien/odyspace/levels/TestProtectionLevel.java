@@ -10,12 +10,12 @@ import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.objects.baseitem.Base;
-import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
-import com.samuelberrien.odyspace.objects.baseitem.SuperIcosahedron;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
-import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
+import com.samuelberrien.odyspace.core.objects.Base;
+import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.core.objects.Icosahedron;
+import com.samuelberrien.odyspace.core.objects.SuperIcosahedron;
+import com.samuelberrien.odyspace.core.objects.shooters.Ship;
+import com.samuelberrien.odyspace.core.objects.CrashableMesh;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.Item;
@@ -106,7 +106,7 @@ public class TestProtectionLevel implements Level {
 		this.ship.setRockets(rockets);
 
 		particule = new ObjModelVBO(context, "obj/triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
-		/*icosahedron = new ObjModelMtlVBO(this.context,
+		/*icosahedron = new ObjModelMtlVBO(this.glContext,
 				"obj/icosahedron.obj", "obj/icosahedron.mtl",
 				1f, 0f, true);*/
 		icosahedron = new ObjModelMtlVBO(this.context,

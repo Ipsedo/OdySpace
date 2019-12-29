@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 public final class ShaderLoader {
 
 	/**
-	 * @param context The application context
+	 * @param context The application glContext
 	 * @param resId   The res glsl file id
 	 * @return The shader code
 	 */

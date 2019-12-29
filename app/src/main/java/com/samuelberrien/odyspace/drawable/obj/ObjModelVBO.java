@@ -54,7 +54,7 @@ public class ObjModelVBO implements GLItemDrawable {
 	private float ambColorCoef;
 
 	/**
-	 * @param context           the application context
+	 * @param context           the application glContext
 	 * @param resId             the res id of the obj file
 	 * @param red               the red color of the object
 	 * @param green             the green color of the object

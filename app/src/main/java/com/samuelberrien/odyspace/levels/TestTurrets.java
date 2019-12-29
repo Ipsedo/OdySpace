@@ -2,19 +2,20 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
+import com.samuelberrien.odyspace.core.fire.Fire;
 import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.objects.baseitem.BaseItem;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Ship;
-import com.samuelberrien.odyspace.objects.baseitem.shooters.Turret;
-import com.samuelberrien.odyspace.objects.crashable.CrashableMesh;
+import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.core.objects.shooters.Ship;
+import com.samuelberrien.odyspace.core.objects.shooters.Turret;
+import com.samuelberrien.odyspace.core.objects.CrashableMesh;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
-import com.samuelberrien.odyspace.core.FireType;
+import com.samuelberrien.odyspace.core.fire.FireType;
 import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.Shooter;
@@ -115,7 +116,7 @@ public class TestTurrets implements Level {
 					new float[]{triangles[12], triangles[13], triangles[14]},
 					new float[]{triangles[15], triangles[16], triangles[17]}, x, z) / 2f;
 
-			FireType fireType = FireType.GUIDED_MISSILE;
+			Fire fireType = FireType.GUIDED_MISSILE.getFire(context);
 			//TODO modèles simplifiés pr crashable ?
 			Turret tmp = new Turret(context,
 					tmpTurret, crashableMesh,

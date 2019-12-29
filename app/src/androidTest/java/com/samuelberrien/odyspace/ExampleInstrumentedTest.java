@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.samuelberrien.odyspace.objects.baseitem.Icosahedron;
+import com.samuelberrien.odyspace.core.objects.Icosahedron;
 import com.samuelberrien.odyspace.core.collision.Box;
 
 import org.junit.Test;

@@ -289,7 +289,7 @@ public class Explosion implements GLDrawable {
 
 	private List<Particule> particules;
 
-	public Explosion(Context context, float[] rgb) {
+	public Explosion(Context glContext, float[] rgb) {
 		rand = new Random(System.currentTimeMillis());
 
 		rangeSpeed = rand.nextFloat() * 3f;
@@ -302,7 +302,7 @@ public class Explosion implements GLDrawable {
 
 		color = rgb;
 
-		makeProgram(context);
+		makeProgram(glContext);
 
 		vertexBuffer = (FloatBuffer) ByteBuffer.allocateDirect(vertices.length * 4)
 				.order(ByteOrder.nativeOrder())
@@ -311,13 +311,13 @@ public class Explosion implements GLDrawable {
 				.position(0);
 	}
 
-	private void makeProgram(Context context) {
+	private void makeProgram(Context glContext) {
 		int vertexShader = ShaderLoader.loadShader(
 				GLES20.GL_VERTEX_SHADER,
-				ShaderLoader.openShader(context, R.raw.exlosion_vs));
+				ShaderLoader.openShader(glContext, R.raw.exlosion_vs));
 		int fragmentShader = ShaderLoader.loadShader(
 				GLES20.GL_FRAGMENT_SHADER,
-				ShaderLoader.openShader(context, R.raw.explosion_fs));
+				ShaderLoader.openShader(glContext, R.raw.explosion_fs));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
