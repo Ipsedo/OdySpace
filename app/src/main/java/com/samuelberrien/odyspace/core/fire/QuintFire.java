@@ -4,8 +4,8 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.core.Item;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
-import com.samuelberrien.odyspace.core.objects.ammos.RocketItem;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
+import com.samuelberrien.odyspace.core.baseitem.ammos.RocketItem;
 
 import java.util.List;
 

@@ -3,9 +3,9 @@ package com.samuelberrien.odyspace.core.fire;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.core.Item;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 
 import java.util.List;
 

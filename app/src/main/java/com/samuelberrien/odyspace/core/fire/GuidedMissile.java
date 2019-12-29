@@ -3,8 +3,8 @@ package com.samuelberrien.odyspace.core.fire;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.core.Item;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
-import com.samuelberrien.odyspace.core.objects.ammos.GuidedMissileItem;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
+import com.samuelberrien.odyspace.core.baseitem.ammos.GuidedMissileItem;
 
 import java.util.List;
 
