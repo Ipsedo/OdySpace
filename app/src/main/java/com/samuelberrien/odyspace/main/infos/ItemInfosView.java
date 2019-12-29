@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Display;
@@ -378,4 +379,34 @@ public class ItemInfosView extends LinearLayout implements SharedPreferences.OnS
 		layoutParams.setMargins(5, 5, 5, 5 + (int) px);
 		return layoutParams;
 	}
+
+	public void setGLViewOnTop(boolean onTop) {
+		item3DView.setZOrderOnTop(onTop);
+	}
+
+	/*@Override
+	protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+		super.onVisibilityChanged(changedView, visibility);
+		if (visibility == View.VISIBLE) item3DView.onResume();
+    	else item3DView.onPause();
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasWindowFocus) {
+		super.onWindowFocusChanged(hasWindowFocus);
+		if (hasWindowFocus) item3DView.onResume();
+    	else item3DView.onPause();
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		// onDestroy() called
+	}
+
+	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		// onCreate() called
+	}*/
 }

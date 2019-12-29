@@ -162,12 +162,15 @@ public class MainActivity
 
 		fireView = new ItemInfosView(this, Purchases.FIRE);
 		((LinearLayout) findViewById(R.id.used_items)).addView(fireView, layoutParams);
+		fireView.setGLViewOnTop(true);
 
 		shipView = new ItemInfosView(this, Purchases.SHIP);
 		((LinearLayout) findViewById(R.id.used_items)).addView(shipView, layoutParams);
+		shipView.setGLViewOnTop(true);
 
 		bonusView = new ItemInfosView(this, Purchases.BONUS);
 		((LinearLayout) findViewById(R.id.used_items)).addView(bonusView, layoutParams);
+		bonusView.setGLViewOnTop(true);
 
 		int currMoney = savedShop.getInt(getString(R.string.saved_money), getResources().getInteger(R.integer.saved_init_money));
 		TextView textView = (TextView) findViewById(R.id.money_text);
