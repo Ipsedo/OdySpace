@@ -255,9 +255,11 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 		lifeDraw.draw(ratio);
 	}
 
-	public void runGLStuff() {
+	@Override
+	public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		while (!toRunOnGLThread.empty())
 			toRunOnGLThread.pop().run();
+		super.draw(pMatrix, vMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
 	@Override

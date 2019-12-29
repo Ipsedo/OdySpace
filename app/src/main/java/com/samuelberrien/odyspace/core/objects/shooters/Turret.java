@@ -7,7 +7,7 @@ import com.samuelberrien.odyspace.core.fire.Fire;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.objects.BaseItem;
-import com.samuelberrien.odyspace.core.objects.CrashableMesh;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.Shooter;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -42,8 +42,8 @@ public class Turret extends BaseItem implements Shooter {
 		this.rockets = rockets;
 	}
 
-	public Turret(Context context, ObjModelMtlVBO turret, CrashableMesh crashableMesh, float[] mPosition, Fire fire, Ship ship, List<BaseItem> rockets) {
-		super(context, turret, crashableMesh, 1, mPosition, new float[3], new float[3], 4f);
+	public Turret(Context context, ObjModelMtlVBO turret, CollisionMesh collisionMesh, float[] mPosition, Fire fire, Ship ship, List<BaseItem> rockets) {
+		super(context, turret, collisionMesh, 1, mPosition, new float[3], new float[3], 4f);
 		rand = new Random(System.currentTimeMillis());
 		this.fire = fire;
 		this.ship = ship;

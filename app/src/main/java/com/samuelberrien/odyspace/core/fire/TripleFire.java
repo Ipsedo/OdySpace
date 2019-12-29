@@ -10,7 +10,8 @@ import com.samuelberrien.odyspace.core.objects.ammos.RocketItem;
 import java.util.List;
 
 public class TripleFire extends Fire {
-	public TripleFire(Context glContext) {
+
+	TripleFire(Context glContext) {
 		super(glContext, "obj/rocket.obj", "obj/rocket.mtl");
 	}
 
@@ -19,14 +20,14 @@ public class TripleFire extends Fire {
 		float[] tmpMat = new float[16];
 		Matrix.setRotateM(tmpMat, 0, -1f, 1f, 0f, 0f);
 		Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
-		rockets.add(new RocketItem(glContext, ammo, crashableMesh, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
+		rockets.add(new RocketItem(glContext, ammo, collisionMesh, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
 
 		Matrix.setRotateM(tmpMat, 0, 1f, (float) Math.cos(Math.PI / 3d), (float) Math.sin(Math.PI / 3d), 0f);
 		Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
-		rockets.add(new RocketItem(glContext, ammo, crashableMesh, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
+		rockets.add(new RocketItem(glContext, ammo, collisionMesh, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
 
 		Matrix.setRotateM(tmpMat, 0, 1f, (float) Math.cos(Math.PI / 3d), -(float) Math.sin(Math.PI / 3d), 0f);
 		Matrix.multiplyMM(tmpMat, 0, rotationMatrix, 0, tmpMat.clone(), 0);
-		rockets.add(new RocketItem(glContext, ammo, crashableMesh, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
+		rockets.add(new RocketItem(glContext, ammo, collisionMesh, position.clone(), originalSpeedVec.clone(), tmpMat.clone(), maxSpeed));
 	}
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.objects.CrashableMesh;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
@@ -27,11 +27,11 @@ public class GuidedMissileItem extends Ammos {
 	private boolean willReduceAngle;
 
 	public GuidedMissileItem(Context context,
-							 ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh,
+							 ObjModelMtlVBO objModelMtl, CollisionMesh collisionMesh,
 							 float[] mPosition, float[] mSpeed,
 							 float[] mRotationMatrix, float maxSpeed, Item target) {
 		super(context,
-				objModelMtl, crashableMesh, mPosition, mSpeed, new float[3],
+				objModelMtl, collisionMesh, mPosition, mSpeed, new float[3],
 				mRotationMatrix, maxSpeed, Scale, Life);
 		this.target = target;
 		currentDuration = 0;

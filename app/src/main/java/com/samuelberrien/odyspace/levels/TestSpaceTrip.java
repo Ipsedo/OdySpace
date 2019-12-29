@@ -9,7 +9,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.objects.BaseItem;
 import com.samuelberrien.odyspace.core.objects.SuperIcosahedron;
 import com.samuelberrien.odyspace.core.objects.shooters.Ship;
-import com.samuelberrien.odyspace.core.objects.CrashableMesh;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.Item;
@@ -71,7 +71,7 @@ public class TestSpaceTrip implements Level {
 
 		ObjModelMtlVBO model = new ObjModelMtlVBO(context,
 				"obj/asteroid2.obj", "obj/asteroid2.mtl", 1f, 0f, true);
-		CrashableMesh crashableMesh = new CrashableMesh(context, "obj/icosahedron.obj");
+		CollisionMesh collisionMesh = new CollisionMesh(context, "obj/icosahedron.obj");
 		Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < nbAsteroids; i++) {
 			float[] randomPos = new float[3];
@@ -80,7 +80,7 @@ public class TestSpaceTrip implements Level {
 				randomPos[j] = random.nextFloat() * levelLimitSize * 2f / (3f * 5f) - levelLimitSize * 1f / (3f * 5f);
 				randomSpeed[j] = random.nextFloat() * 0.01f;
 			}
-			asteroids.add(new SuperIcosahedron(context, model, crashableMesh, 1,
+			asteroids.add(new SuperIcosahedron(context, model, collisionMesh, 1,
 					randomPos, randomSpeed, random.nextFloat() * 4f));
 			asteroids.get(i).queueExplosion();
 		}

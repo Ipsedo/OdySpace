@@ -6,7 +6,7 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.objects.BaseItem;
-import com.samuelberrien.odyspace.core.objects.CrashableMesh;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 
 /**
  * Created by samuel on 03/08/17.
@@ -17,10 +17,10 @@ public class Ammos extends BaseItem {
 	protected float maxSpeed;
 
 	Ammos(Context context,
-		  ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh,
+		  ObjModelMtlVBO objModelMtl, CollisionMesh collisionMesh,
 		  float[] mPosition, float[] mSpeed, float[] mAcceleration,
 		  float[] mRotationMatrix, float maxSpeed, float scale, int life) {
-		super(context, objModelMtl, crashableMesh, life, mPosition, mSpeed, mAcceleration, scale);
+		super(context, objModelMtl, collisionMesh, life, mPosition, mSpeed, mAcceleration, scale);
 		super.mRotationMatrix = mRotationMatrix;
 		this.maxSpeed = maxSpeed;
 	}

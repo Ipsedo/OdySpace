@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.core.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.collision.TriangleCollision;
 import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
@@ -55,7 +56,7 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 
 	protected ObjModelMtlVBO objModelMtlVBO;
 
-	private CrashableMesh crashableMesh;
+	private CollisionMesh collisionMesh;
 
 	protected Context glContext;
 
@@ -69,17 +70,17 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 					float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		objModelMtlVBO = new ObjModelMtlVBO(glContext,
 				objFileName, mtlFileName, lightAugmentation, distanceCoef, randomColor);
-		crashableMesh = new CrashableMesh(glContext, objCrashableMeshFileName);
+		collisionMesh = new CollisionMesh(glContext, objCrashableMeshFileName);
 
 		init(glContext, life, mPosition, mSpeed, mAcceleration, scale);
 	}
 
 	public BaseItem(Context glContext,
-					ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh,
+					ObjModelMtlVBO objModelMtl, CollisionMesh collisionMesh,
 					int life,
 					float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
 		objModelMtlVBO = objModelMtl;
-		this.crashableMesh = crashableMesh;
+		this.collisionMesh = collisionMesh;
 
 		init(glContext, life, mPosition, mSpeed, mAcceleration, scale);
 	}
@@ -111,13 +112,13 @@ public abstract class BaseItem implements Item, GLDrawable, UpdatableItem {
 	@Override
 	public boolean collideTest(float[] triangleArray, float[] modelMatrix, Box unused) {
 		return TriangleCollision.AreCollided(
-				crashableMesh.cloneVertices(), mModelMatrix.clone(),
+				collisionMesh.cloneVertices(), mModelMatrix.clone(),
 				triangleArray, modelMatrix);
 	}
 
 	@Override
 	public boolean isCollided(Item other) {
-		return other.collideTest(crashableMesh.cloneVertices(), mModelMatrix.clone(), makeBox());
+		return other.collideTest(collisionMesh.cloneVertices(), mModelMatrix.clone(), makeBox());
 	}
 
 	public Box makeBox() {

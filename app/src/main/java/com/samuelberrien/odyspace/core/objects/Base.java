@@ -2,6 +2,7 @@ package com.samuelberrien.odyspace.core.objects;
 
 import android.content.Context;
 
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
@@ -14,15 +15,13 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
 public class Base extends BaseItem {
 
-	private Explosion mExplosion;
-
 	//TODO vrai Crashable ?
 	public Base(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef, boolean randomColor, int life, float[] mPosition, float scale) {
 		super(context, objFileName, mtlFileName, objFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, new float[3], new float[3], scale);
 	}
 
-	public Base(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, int life, float[] mPosition, float scale) {
-		super(context, objModelMtl, crashableMesh, life, mPosition, new float[3], new float[3], scale);
+	public Base(Context context, ObjModelMtlVBO objModelMtl, CollisionMesh collisionMesh, int life, float[] mPosition, float scale) {
+		super(context, objModelMtl, collisionMesh, life, mPosition, new float[3], new float[3], scale);
 	}
 
 	@Override

@@ -5,7 +5,17 @@ package com.samuelberrien.odyspace.core;
  */
 
 public enum Purchases {
-	SHIP,
-	FIRE,
-	BONUS
+	SHIP("Ship"),
+	FIRE("Fire"),
+	BONUS("Bonus");
+
+	private String name;
+
+	Purchases(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

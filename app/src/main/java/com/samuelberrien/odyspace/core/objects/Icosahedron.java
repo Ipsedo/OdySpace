@@ -2,6 +2,7 @@ package com.samuelberrien.odyspace.core.objects;
 
 import android.content.Context;
 
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.drawable.explosion.Explosion;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
@@ -19,8 +20,8 @@ public class Icosahedron extends BaseItem {
 		super(context, "obj/icosahedron.obj", "obj/icosahedron.mtl", "obj/icosahedron.obj", 0.7f, 0f, true, life, mPosition, new float[]{0f, 0f, 0f}, new float[]{0f, 0f, 0f}, scale);
 	}
 
-	public Icosahedron(Context context, ObjModelMtlVBO model, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float scale) {
-		super(context, model, crashableMesh, life, mPosition, mSpeed, new float[3], scale);
+	public Icosahedron(Context context, ObjModelMtlVBO model, CollisionMesh collisionMesh, int life, float[] mPosition, float[] mSpeed, float scale) {
+		super(context, model, collisionMesh, life, mPosition, mSpeed, new float[3], scale);
 	}
 
 	@Override

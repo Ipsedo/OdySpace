@@ -15,7 +15,7 @@ import com.samuelberrien.odyspace.core.objects.BaseItem;
 import com.samuelberrien.odyspace.core.objects.Icosahedron;
 import com.samuelberrien.odyspace.core.objects.SuperIcosahedron;
 import com.samuelberrien.odyspace.core.objects.shooters.Ship;
-import com.samuelberrien.odyspace.core.objects.CrashableMesh;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.Item;
@@ -44,7 +44,7 @@ public class TestProtectionLevel implements Level {
 
 	private Ship ship;
 	private ObjModelMtlVBO icosahedron;
-	private CrashableMesh crashableIco;
+	private CollisionMesh crashableIco;
 	private List<BaseItem> icosahedrons;
 	private ObjModelVBO particule;
 	private List<Explosion> explosions;
@@ -114,14 +114,14 @@ public class TestProtectionLevel implements Level {
 				1f, 0f, true);
 		directionToIco = new Compass(this.context, Float.MAX_VALUE - 10.f);
 		//TODO crashable
-		crashableIco = new CrashableMesh(context, "obj/icosahedron.obj");
+		crashableIco = new CollisionMesh(context, "obj/icosahedron.obj");
 
 
 		rand = new Random(System.currentTimeMillis());
 
 		base = new ObjModelMtlVBO(this.context, "obj/base.obj", "obj/base.mtl", 1f, 0f, false);
 		//TODO faire vrai crashable?
-		CrashableMesh crashableMesh = new CrashableMesh(context, "obj/base.obj");
+		CollisionMesh collisionMesh = new CollisionMesh(context, "obj/base.obj");
 		for (int i = 0; i < nbBase; i++) {
 			float x = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
 			float z = rand.nextFloat() * (levelLimitSize - 10f) * 2f - levelLimitSize + 5f;
@@ -139,7 +139,7 @@ public class TestProtectionLevel implements Level {
 
 			float[] pos = new float[]{x, moy + 5f, z};
 
-			Base tmpBase = new Base(context, base, crashableMesh, 1, pos, 25f);
+			Base tmpBase = new Base(context, base, collisionMesh, 1, pos, 25f);
 			tmpBase.update();
 			tmpBase.queueExplosion();
 			bases.add(tmpBase);

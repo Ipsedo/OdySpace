@@ -12,7 +12,7 @@ import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.objects.BaseItem;
 import com.samuelberrien.odyspace.core.objects.shooters.Ship;
 import com.samuelberrien.odyspace.core.objects.shooters.Turret;
-import com.samuelberrien.odyspace.core.objects.CrashableMesh;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.fire.FireType;
@@ -99,7 +99,7 @@ public class TestTurrets implements Level {
 		ObjModelMtlVBO tmpTurret = new ObjModelMtlVBO(context,
 				"obj/turret.obj", "obj/turret.mtl",
 				1f, 0f, false);
-		CrashableMesh crashableMesh = new CrashableMesh(context, "obj/turret.obj");
+		CollisionMesh collisionMesh = new CollisionMesh(context, "obj/turret.obj");
 		Random rand = new Random(System.currentTimeMillis());
 		for (int i = 0; i < nbTurret; i++) {
 			float x = rand.nextFloat() * levelLimitSize - levelLimitSize / 2f;
@@ -119,7 +119,7 @@ public class TestTurrets implements Level {
 			Fire fireType = FireType.GUIDED_MISSILE.getFire(context);
 			//TODO modèles simplifiés pr crashable ?
 			Turret tmp = new Turret(context,
-					tmpTurret, crashableMesh,
+					tmpTurret, collisionMesh,
 					new float[]{x, moy + 3f, z}, fireType, ship, rocketsTurret);
 			tmp.update();
 			tmp.queueExplosion();

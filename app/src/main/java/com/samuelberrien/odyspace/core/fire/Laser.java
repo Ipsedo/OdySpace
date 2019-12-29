@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Laser extends Fire {
 
-	public Laser(Context glContext) {
+	Laser(Context glContext) {
 		super(glContext, "obj/laser.obj", "obj/laser.mtl");
 	}
 
@@ -29,7 +29,7 @@ public class Laser extends Fire {
 		mPositions[0][1] = position[1];
 		mPositions[0][2] = position[2];
 
-		rockets.add(new LaserItem(glContext, ammo, crashableMesh, new float[]{mPositions[0][0], mPositions[0][1], mPositions[0][2]}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 10f));
+		rockets.add(new LaserItem(glContext, ammo, collisionMesh, new float[]{mPositions[0][0], mPositions[0][1], mPositions[0][2]}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 10f));
 		for (int i = 1; i < nbElements; i++) {
 			realSpeed = new float[]{originalSpeedVec[0], originalSpeedVec[1], originalSpeedVec[2], 0f};
 
@@ -40,7 +40,7 @@ public class Laser extends Fire {
 			mPositions[i][0] = mPositions[i - 1][0] + realSpeed[0] * length * 10f;
 			mPositions[i][1] = mPositions[i - 1][1] + realSpeed[1] * length * 10f;
 			mPositions[i][2] = mPositions[i - 1][2] + realSpeed[2] * length * 10f;
-			rockets.add(new LaserItem(glContext, ammo, crashableMesh, new float[]{mPositions[i][0], mPositions[i][1], mPositions[i][2]}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 10f));
+			rockets.add(new LaserItem(glContext, ammo, collisionMesh, new float[]{mPositions[i][0], mPositions[i][1], mPositions[i][2]}, originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed, 10f));
 		}
 	}
 }

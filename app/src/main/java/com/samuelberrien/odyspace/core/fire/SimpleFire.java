@@ -10,13 +10,13 @@ import java.util.List;
 
 public class SimpleFire extends Fire {
 
-	public SimpleFire(Context glContext) {
+	SimpleFire(Context glContext) {
 		super(glContext, "obj/rocket.obj", "obj/rocket.mtl");
 	}
 
 	@Override
 	public void fire(List<BaseItem> rockets, float[] position, float[] originalSpeedVec, float[] rotationMatrix, float maxSpeed, Item... targets) {
-		rockets.add(new RocketItem(glContext, ammo, crashableMesh, position.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
+		rockets.add(new RocketItem(glContext, ammo, collisionMesh, position.clone(), originalSpeedVec.clone(), rotationMatrix.clone(), maxSpeed));
 	}
 
 }

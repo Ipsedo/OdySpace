@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.core.objects;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 
 import java.util.Random;
@@ -21,8 +22,8 @@ public class SuperIcosahedron extends Icosahedron {
 	private Random random;
 	private float[] rotAxis;
 
-	public SuperIcosahedron(Context context, ObjModelMtlVBO model, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float scale) {
-		super(context, model, crashableMesh, life, mPosition, mSpeed, scale);
+	public SuperIcosahedron(Context context, ObjModelMtlVBO model, CollisionMesh collisionMesh, int life, float[] mPosition, float[] mSpeed, float scale) {
+		super(context, model, collisionMesh, life, mPosition, mSpeed, scale);
 		init();
 	}
 

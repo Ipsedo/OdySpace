@@ -5,7 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.objects.BaseItem;
-import com.samuelberrien.odyspace.core.objects.CrashableMesh;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 
 /**
  * Created by samuel on 04/08/17.
@@ -22,8 +22,8 @@ public abstract class Leaf extends BaseItem {
 		super(context, objFileName, mtlFileName, objFileName, lightAugmentation, distanceCoef, randomColor, life, mPosition, mSpeed, mAcceleration, scale);
 	}
 
-	public Leaf(Context context, ObjModelMtlVBO objModelMtl, CrashableMesh crashableMesh, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
-		super(context, objModelMtl, crashableMesh, life, mPosition, mSpeed, mAcceleration, scale);
+	public Leaf(Context context, ObjModelMtlVBO objModelMtl, CollisionMesh collisionMesh, int life, float[] mPosition, float[] mSpeed, float[] mAcceleration, float scale) {
+		super(context, objModelMtl, collisionMesh, life, mPosition, mSpeed, mAcceleration, scale);
 	}
 
 	public void setParentModelMatrix(float[] parentModelMatrix) {

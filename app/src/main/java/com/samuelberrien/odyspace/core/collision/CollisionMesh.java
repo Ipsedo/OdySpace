@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.core.objects;
+package com.samuelberrien.odyspace.core.collision;
 
 import android.content.Context;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Samuel on 09/10/2017.
  */
 
-public class CrashableMesh {
+public class CollisionMesh {
 
 	private Context context;
 
@@ -20,7 +20,7 @@ public class CrashableMesh {
 	private final int NB_VERTEX_PER_TRIANLGE = 3;
 	private float[] vertices;
 
-	public CrashableMesh(Context context, String objFileName) {
+	public CollisionMesh(Context context, String objFileName) {
 		this.context = context;
 		try {
 			InputStream inputStream = this.context.getAssets().open(objFileName);
