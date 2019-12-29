@@ -2,19 +2,19 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.core.objects.Dome;
+import com.samuelberrien.odyspace.core.baseitem.Dome;
 import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Forest;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
-import com.samuelberrien.odyspace.drawable.explosion.Explosion;
+import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 import com.samuelberrien.odyspace.drawable.maps.NoiseMap;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
-import com.samuelberrien.odyspace.core.objects.Icosahedron;
-import com.samuelberrien.odyspace.core.objects.SuperIcosahedron;
-import com.samuelberrien.odyspace.core.objects.shooters.Ship;
+import com.samuelberrien.odyspace.drawable.ObjModelVBO;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
+import com.samuelberrien.odyspace.core.baseitem.Icosahedron;
+import com.samuelberrien.odyspace.core.baseitem.SuperIcosahedron;
+import com.samuelberrien.odyspace.core.baseitem.Ship;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
