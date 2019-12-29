@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
+import com.samuelberrien.odyspace.drawable.ObjModelVBO;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
