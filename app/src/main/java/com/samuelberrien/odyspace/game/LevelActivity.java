@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.main.MainActivity;
-import com.samuelberrien.odyspace.main.params.GameParamsView;
+import com.samuelberrien.odyspace.main.SettingsView;
 
 public class LevelActivity extends AppCompatActivity {
 
@@ -146,7 +146,7 @@ public class LevelActivity extends AppCompatActivity {
 
 		//GameParamsView.buildGameParams(this, layout, gamePreferences);
 		((LinearLayout) layout.findViewById(R.id.game_settings_pause))
-				.addView(new GameParamsView(this));
+				.addView(new SettingsView(this));
 
 		SharedPreferences savedShop = getSharedPreferences(
 				getString(R.string.shop_preferences),
