@@ -1,11 +1,9 @@
-package com.samuelberrien.odyspace.core.objects.shooters.boss;
+package com.samuelberrien.odyspace.core.baseitem;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.explosion.Explosion;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
-import com.samuelberrien.odyspace.core.objects.shooters.Ship;
+import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.core.fire.FireType;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 

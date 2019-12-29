@@ -1,11 +1,11 @@
-package com.samuelberrien.odyspace.core.objects.ammos;
+package com.samuelberrien.odyspace.core.baseitem.ammos;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.explosion.Explosion;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 
 /**

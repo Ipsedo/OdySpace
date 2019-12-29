@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.core.objects;
+package com.samuelberrien.odyspace.core.baseitem;
 
 import android.content.Context;
 import android.opengl.Matrix;
@@ -6,8 +6,8 @@ import android.opengl.Matrix;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.collision.TriangleCollision;
 import com.samuelberrien.odyspace.drawable.GLDrawable;
-import com.samuelberrien.odyspace.drawable.explosion.Explosion;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Ray;
 import com.samuelberrien.odyspace.core.Item;

@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.core.objects;
+package com.samuelberrien.odyspace.core.baseitem;
 
 import android.content.Context;
 import android.opengl.Matrix;

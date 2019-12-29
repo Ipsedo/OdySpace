@@ -1,10 +1,10 @@
-package com.samuelberrien.odyspace.core.objects;
+package com.samuelberrien.odyspace.core.baseitem;
 
 import android.content.Context;
 
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
-import com.samuelberrien.odyspace.drawable.explosion.Explosion;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 
 /**
  * Created by samuel on 23/06/17.

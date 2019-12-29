@@ -1,8 +1,8 @@
-package com.samuelberrien.odyspace.core.objects;
+package com.samuelberrien.odyspace.core.baseitem;
 
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtl;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.Item;
 
@@ -68,7 +68,7 @@ public class BaseItemWithoutModel implements Item {
 		this.mModelMatrix = tmp.clone();
 	}
 
-	public void draw(ObjModelMtl objModelMtl, float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(ObjModelMtlVBO objModelMtl, float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] mvMatrix = new float[16];
 		Matrix.multiplyMM(mvMatrix, 0, vMatrix, 0, this.mModelMatrix, 0);
 		float[] mvpMatrix = new float[16];

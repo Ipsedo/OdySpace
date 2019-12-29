@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.core.objects.group;
+package com.samuelberrien.odyspace.core.baseitem.group;
 
 import android.opengl.Matrix;
 

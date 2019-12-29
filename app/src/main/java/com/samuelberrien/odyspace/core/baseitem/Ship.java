@@ -1,6 +1,5 @@
-package com.samuelberrien.odyspace.core.objects.shooters;
+package com.samuelberrien.odyspace.core.baseitem;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.opengl.Matrix;
@@ -10,14 +9,12 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.core.fire.Fire;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
-import com.samuelberrien.odyspace.drawable.explosion.Explosion;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.core.Bonus;
 import com.samuelberrien.odyspace.core.fire.FireType;
 import com.samuelberrien.odyspace.core.Shooter;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 

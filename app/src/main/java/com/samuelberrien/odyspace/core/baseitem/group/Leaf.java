@@ -1,10 +1,10 @@
-package com.samuelberrien.odyspace.core.objects.group;
+package com.samuelberrien.odyspace.core.baseitem.group;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.objects.BaseItem;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 
 /**
