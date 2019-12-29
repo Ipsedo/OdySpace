@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main.infos;
+package com.samuelberrien.odyspace.ui.infos;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Display;

@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main.infos;
+package com.samuelberrien.odyspace.ui.infos;
 
 import android.content.Context;
 import android.opengl.GLES20;

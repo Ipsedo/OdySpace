@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main;
+package com.samuelberrien.odyspace.ui;
 
 import android.app.Activity;
 import android.content.Context;

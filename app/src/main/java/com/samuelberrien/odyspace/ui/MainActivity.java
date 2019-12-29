@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main;
+package com.samuelberrien.odyspace.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -29,8 +29,8 @@ import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
-import com.samuelberrien.odyspace.main.infos.BossKilledView;
-import com.samuelberrien.odyspace.main.infos.ItemInfosView;
+import com.samuelberrien.odyspace.ui.infos.BossKilledView;
+import com.samuelberrien.odyspace.ui.infos.ItemInfosView;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.Purchases;
 

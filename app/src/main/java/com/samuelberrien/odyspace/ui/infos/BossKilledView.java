@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main.infos;
+package com.samuelberrien.odyspace.ui.infos;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,7 +14,6 @@ import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.core.Level;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;

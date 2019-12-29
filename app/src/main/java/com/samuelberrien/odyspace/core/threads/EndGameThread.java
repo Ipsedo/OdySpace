@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.samuelberrien.odyspace.game.LevelActivity;
-import com.samuelberrien.odyspace.main.MainActivity;
+import com.samuelberrien.odyspace.ui.MainActivity;
 import com.samuelberrien.odyspace.core.Level;
 
 /**

@@ -5,7 +5,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:keepScreenOn="true"
-                                        tools:glContext="com.samuelberrien.odyspace.main.MainActivity">
+                                        tools:glContext="com.samuelberrien.odyspace.ui.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:layout_gravity="start"
         android:orientation="vertical">
 
-        <com.samuelberrien.odyspace.main.infos.BossKilledView
+        <com.samuelberrien.odyspace.ui.infos.BossKilledView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.8"/>

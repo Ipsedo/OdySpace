@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.main;
+package com.samuelberrien.odyspace.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,14 +6,13 @@ import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.main.infos.Item3DView;
+import com.samuelberrien.odyspace.ui.infos.Item3DView;
 import com.samuelberrien.odyspace.core.Purchases;
 
 /**

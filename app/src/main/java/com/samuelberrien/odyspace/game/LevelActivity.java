@@ -23,8 +23,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.main.MainActivity;
-import com.samuelberrien.odyspace.main.SettingsView;
+import com.samuelberrien.odyspace.ui.MainActivity;
+import com.samuelberrien.odyspace.ui.SettingsView;
 
 public class LevelActivity extends AppCompatActivity {
 
