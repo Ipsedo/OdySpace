@@ -61,5 +61,17 @@
     <string name="reset_settings_text">Reset game settings</string>
     <string name="reset_ship_text">Reset items and money</string>
     <string name="reset_level_text">Reset level progression</string>
-    <string name="cheat_text">Developers cheat all the time,\nwhy dont\'t try ?\nJust click here</string>
+    <string name="cheat_text">Developers cheat all the time,\nwhy don\'t try ?\nJust click here</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="money">%d $</string>
+    <string name="buy">Buy</string>
+    <string name="ship_info_shop">%s\nlife : %d\ncost : %d</string>
+    <string name="fire_info_shop">%s\ncost : %d</string>
+    <string name="bonus_info_shop">%s\nduration : %d\ncost : %d</string>
+    <string name="ship_info_drawer">%s\nLife : %d + %d</string>
+    <string name="bonus_info_drawer">%s\nTime : %d + %d</string>
+    <string name="bought_ships">Bought ships</string>
+    <string name="bought_fires">Bought fires</string>
+    <string name="bought_bonus">Bought bonus</string>
 </resources>
