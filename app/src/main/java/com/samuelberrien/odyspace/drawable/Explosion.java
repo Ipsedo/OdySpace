@@ -1,15 +1,13 @@
-package com.samuelberrien.odyspace.drawable.explosion;
+package com.samuelberrien.odyspace.drawable;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
-import java.lang.reflect.ParameterizedType;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;

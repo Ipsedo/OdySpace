@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.text;
+package com.samuelberrien.odyspace.drawable;
 
 import android.content.Context;
 

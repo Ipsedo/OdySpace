@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.drawable.obj;
+package com.samuelberrien.odyspace.drawable;
 
 import android.content.Context;
 import android.opengl.GLES20;

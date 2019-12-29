@@ -1,10 +1,8 @@
-package com.samuelberrien.odyspace.drawable.text;
+package com.samuelberrien.odyspace.drawable;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.GLInfoDrawable;
-import com.samuelberrien.odyspace.drawable.obj.ObjModelVBO;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
 /**
