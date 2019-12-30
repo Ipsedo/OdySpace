@@ -7,7 +7,8 @@ package com.samuelberrien.odyspace.core;
 public enum Purchases {
 	SHIP("Ship"),
 	FIRE("Fire"),
-	BONUS("Bonus");
+	BONUS("Bonus"),
+	ENHANCEMENT("Enhancement");
 
 	private String name;
 

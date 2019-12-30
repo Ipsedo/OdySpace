@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.ui;
+package com.samuelberrien.odyspace.ui.shop;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

@@ -36,15 +36,17 @@
         <item>@integer/torus_cost</item>
     </integer-array>
     <integer-array name="ship_shop_price">
-        <item>1</item>
         <item>@integer/zero</item>
         <item>@integer/ship_bird_cost</item>
         <item>@integer/ship_supreme_cost</item>
         <item>@integer/ship_interceptor_cost</item>
     </integer-array>
     <integer-array name="bonus_shop_price">
-        <item>1</item>
         <item>@integer/zero</item>
         <item>@integer/bonus_2_cost</item>
+    </integer-array>
+    <integer-array name="enhancement_shop_price">
+        <item>1</item>
+        <item>1</item>
     </integer-array>
 </resources>

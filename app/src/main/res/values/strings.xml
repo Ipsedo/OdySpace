@@ -39,16 +39,20 @@
         <item>@string/fire_6</item>
     </string-array>
     <string-array name="ship_shop_list_item">
-        <item>@string/bought_life</item>
+        <!--<item>@string/bought_life</item>-->
         <item>@string/ship_simple</item>
         <item>@string/ship_bird</item>
         <item>@string/ship_supreme</item>
         <item>@string/ship_interceptor</item>
     </string-array>
     <string-array name="bonus_shop_list_item">
-        <item>@string/bought_duration</item>
+        <!--<item>@string/bought_duration</item>-->
         <item>@string/bonus_1</item>
         <item>@string/bonus_2</item>
+    </string-array>
+    <string-array name="enhancement_shop_list_item">
+        <item>@string/bought_duration</item>
+        <item>@string/bought_life</item>
     </string-array>
     <string name="game_preferences">Game</string>
     <string name="saved_joystick_inversed">JoystickInversed</string>
@@ -69,6 +73,7 @@
     <string name="ship_info_shop">%s\nlife : %d\ncost : %d</string>
     <string name="fire_info_shop">%s\ncost : %d</string>
     <string name="bonus_info_shop">%s\nduration : %d\ncost : %d</string>
+    <string name="enhancement_info_shop">%s\nadded : %d\ncost : %d</string>
     <string name="ship_info_drawer">%s\nLife : %d + %d</string>
     <string name="bonus_info_drawer">%s\nTime : %d + %d</string>
     <string name="bought_ships">Bought ships</string>

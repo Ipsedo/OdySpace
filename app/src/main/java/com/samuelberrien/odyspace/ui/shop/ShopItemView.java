@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.ui;
+package com.samuelberrien.odyspace.ui.shop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,24 +19,22 @@ import com.samuelberrien.odyspace.core.Purchases;
  * Created by samuel on 13/10/17.
  */
 
-public class ShopItemView extends LinearLayout {
+public abstract class ShopItemView extends LinearLayout {
 
-	private Item3DView item3DView;
+	protected Item3DView item3DView;
 
-	private TextView infos;
+	protected TextView infos;
 
-	private Purchases kind;
-	private int index;
+	protected int index;
 
-	private SharedPreferences savedShop;
+	protected SharedPreferences savedShop;
 
-	private Button buyButton;
+	protected Button buyButton;
 
-	public ShopItemView(Context context, Purchases kind, int indexItem) {
+	public ShopItemView(Context context, int indexItem) {
 		super(context);
 		setOrientation(HORIZONTAL);
 
-		this.kind = kind;
 		index = indexItem;
 		savedShop = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
 		infos = new TextView(context);
@@ -73,7 +71,7 @@ public class ShopItemView extends LinearLayout {
 		setBackground(ContextCompat.getDrawable(context, R.drawable.button_unpressed));
 	}
 
-	private void makeItem3D() {
+	protected abstract void makeItem3D(); /*{
 		String[] names;
 		switch (kind) {
 			case SHIP:
@@ -89,58 +87,58 @@ public class ShopItemView extends LinearLayout {
 				item3DView = new Item3DView(getContext(), Purchases.BONUS, names[index]);
 				break;
 		}
-	}
+	}*/
 
-	private void setText() {
+	protected abstract void setText(); /* {
 		String[] items;
-		int[] price;
+		int[] prices;
 		int cost;
 		switch (kind) {
 			case SHIP:
 				items = getResources().getStringArray(R.array.ship_shop_list_item);
-				price = getResources().getIntArray(R.array.ship_shop_price);
+				prices = getResources().getIntArray(R.array.ship_shop_price);
 				int life;
-				if (index == 0) {
-					int currentBoughtLife = savedShop.getInt(
-							getContext().getString(R.string.bought_life),
-							getResources().getInteger(R.integer.zero));
-					cost = (int) Math.pow(currentBoughtLife, 2d) * price[index];
-					life = currentBoughtLife;
-				} else {
+
 					int[] lifes = getResources().getIntArray(R.array.ship_life_shop_list_item);
-					life = lifes[index - 1];
-					cost = price[index];
-				}
+					life = lifes[index];
+					cost = prices[index];
+				//}
 				infos.setText(getResources().getString(R.string.ship_info_shop, items[index], life, cost));
 				break;
 			case FIRE:
 				items = getResources().getStringArray(R.array.fire_shop_list_item);
-				price = getResources().getIntArray(R.array.fire_shop_price);
-				infos.setText(getResources().getString(R.string.fire_info_shop, items[index], price[index]));
+				prices = getResources().getIntArray(R.array.fire_shop_price);
+				infos.setText(getResources().getString(R.string.fire_info_shop, items[index], prices[index]));
 				break;
 			case BONUS:
 				items = getResources().getStringArray(R.array.bonus_shop_list_item);
-				price = getResources().getIntArray(R.array.bonus_shop_price);
+				prices = getResources().getIntArray(R.array.bonus_shop_price);
 
 				int duration;
-				if (index == 0) {
-					int currentBoughtDuration = savedShop.getInt(
-							getContext().getString(R.string.bought_duration),
-							getResources().getInteger(R.integer.zero));
-					cost = (int) Math.pow(currentBoughtDuration / 10., 2d) * price[index];
-					duration = currentBoughtDuration;
-				} else {
 					int[] durations = getResources().getIntArray(R.array.bonus_duration_shop_list_item);
-					duration = durations[index - 1];
-					cost = price[index];
-				}
+					duration = durations[index];
+					cost = prices[index];
+				//}
 				infos.setText(getResources().getString(R.string.bonus_info_shop, items[index], duration, cost));
 				break;
+			case ENHANCEMENT:
+				int currentBoughtDuration = savedShop.getInt(
+						getContext().getString(R.string.bought_duration),
+						getResources().getInteger(R.integer.zero));
+				cost = (int) Math.pow(currentBoughtDuration / 10., 2d) * prices[index];
+				duration = currentBoughtDuration;
+
+	int currentBoughtDuration = savedShop.getInt(
+			getContext().getString(R.string.bought_duration),
+			getResources().getInteger(R.integer.zero));
+	cost = (int) Math.pow(currentBoughtDuration / 10., 2d) * price[index];
+	duration = currentBoughtDuration;
+				break;
 		}
-	}
+	}*/
 
 
-	private void updateButton() {
+	protected abstract void updateButton(); /* {
 		final int[] price;
 		final String[] items;
 		final SharedPreferences.Editor editor = savedShop.edit();
@@ -287,5 +285,5 @@ public class ShopItemView extends LinearLayout {
 				}
 				break;
 		}
-	}
+	}*/
 }

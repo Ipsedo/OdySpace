@@ -16,7 +16,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by samuel on 12/10/17.
  */
 
-public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer {
+public abstract class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
 	private final float[] mProjectionMatrix = new float[16];
 	private final float[] mViewMatrix = new float[16];
@@ -28,86 +28,26 @@ public class Item3DView extends GLSurfaceView implements GLSurfaceView.Renderer 
 	private final float[] mLightModelMatrix = new float[16];
 	private final float[] mLightPosInWorldSpace = new float[4];
 
-	private String objFileName;
-	private String mtlFileName;
+	protected String objFileName;
+	protected String mtlFileName;
 	//private Context glContext;
 
 	private ObjModelMtlVBO objModelMtlVBO;
 
-	private boolean willCreateObj;
+	protected boolean willCreateObj;
 
-	public Item3DView(Context context, Purchases purchases, String name) {
+	public Item3DView(Context context, String name) {
 		super(context);
 		//this.glContext = glContext;
 		angle = (float) (Math.random() * 360d);
 
-		changeObj(purchases, name);
+		changeObj(name);
 
 		setEGLContextClientVersion(2);
 		setRenderer(this);
 	}
 
-	public void changeObj(Purchases purchases, String name) {
-		//TODO faire truc propre string.xml avec list des noms de fichier obj et mtl (biens indéxés)
-		objFileName = "obj/none_model.obj";
-		mtlFileName = "obj/none_model.mtl";
-		switch (purchases) {
-			case SHIP:
-				if (name.equals(getContext().getString(R.string.ship_simple))) {
-					objFileName = "obj/ship_3.obj";
-					mtlFileName = "obj/ship_3.mtl";
-				} else if (name.equals(getContext().getString(R.string.ship_bird))) {
-					objFileName = "obj/ship_bird.obj";
-					mtlFileName = "obj/ship_bird.mtl";
-				} else if (name.equals(getContext().getString(R.string.ship_supreme))) {
-					objFileName = "obj/ship_supreme.obj";
-					mtlFileName = "obj/ship_supreme.mtl";
-				} else if (name.equals(getContext().getString(R.string.bought_life))) {
-					objFileName = "obj/heart.obj";
-					mtlFileName = "obj/heart.mtl";
-				} else if (name.equals(getContext().getString(R.string.ship_interceptor))) {
-					objFileName = "obj/interceptor.obj";
-					mtlFileName = "obj/interceptor.mtl";
-				}
-				break;
-			case FIRE:
-				if (name.equals(getContext().getString(R.string.fire_1))) {
-					objFileName = "obj/rocket.obj";
-					mtlFileName = "obj/rocket.mtl";
-				} else if (name.equals(getContext().getString(R.string.fire_2))) {
-					objFileName = "obj/quint_fire.obj";
-					mtlFileName = "obj/quint_fire.mtl";
-				} else if (name.equals(getContext().getString(R.string.fire_3))) {
-					objFileName = "obj/bomb.obj";
-					mtlFileName = "obj/bomb.mtl";
-				} else if (name.equals(getContext().getString(R.string.fire_4))) {
-					objFileName = "obj/triple_fire.obj";
-					mtlFileName = "obj/triple_fire.mtl";
-				} else if (name.equals(getContext().getString(R.string.fire_5))) {
-					objFileName = "obj/laser_item_menu.obj";
-					mtlFileName = "obj/laser_item_menu.mtl";
-				} else if (name.equals(getContext().getString(R.string.fire_6))) {
-					objFileName = "obj/torus.obj";
-					mtlFileName = "obj/torus.mtl";
-				}
-				break;
-			case BONUS:
-				//TODO item bonus en 3D
-				if (name.equals(getContext().getString(R.string.bonus_1))) {
-					objFileName = "obj/arrow_speed.obj";
-					mtlFileName = "obj/arrow_speed.mtl";
-				} else if (name.equals(getContext().getString(R.string.bought_duration))) {
-					objFileName = "obj/clock.obj";
-					mtlFileName = "obj/clock.mtl";
-				} else if (name.equals(getContext().getString(R.string.bonus_2))) {
-					objFileName = "obj/shield.obj";
-					mtlFileName = "obj/shield.mtl";
-				}
-				break;
-		}
-		willCreateObj = true;
-	}
-
+	public abstract void changeObj(String name);
 
 	@Override
 	public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {

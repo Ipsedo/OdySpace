@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.ui;
+package com.samuelberrien.odyspace.ui.shop;
 
 
 import android.support.v4.app.Fragment;
@@ -19,7 +19,8 @@ class ShopFragmentPagerAdapter extends FragmentPagerAdapter {
 	static String SHIP_TAB = Purchases.SHIP.getName();
 	static String FIRE_TAB = Purchases.FIRE.getName();
 	static String BONUS_TAB = Purchases.BONUS.getName();
-	static String[] TAB_TITLES = new String[]{SHIP_TAB, FIRE_TAB, BONUS_TAB};
+	static String ENHANCEMENT_TAB = Purchases.ENHANCEMENT.getName();
+	static String[] TAB_TITLES = new String[]{SHIP_TAB, FIRE_TAB, BONUS_TAB, ENHANCEMENT_TAB};
 
 	ShopFragmentPagerAdapter(FragmentManager fm) {
 		super(fm);
@@ -27,7 +28,7 @@ class ShopFragmentPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return 3;
+		return 4;
 	}
 
 	@Override

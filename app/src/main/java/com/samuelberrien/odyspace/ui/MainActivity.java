@@ -29,10 +29,14 @@ import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.game.LevelActivity;
+import com.samuelberrien.odyspace.ui.infos.BonusInfosView;
 import com.samuelberrien.odyspace.ui.infos.BossKilledView;
+import com.samuelberrien.odyspace.ui.infos.FireInfosView;
 import com.samuelberrien.odyspace.ui.infos.ItemInfosView;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.Purchases;
+import com.samuelberrien.odyspace.ui.infos.ShipInfosView;
+import com.samuelberrien.odyspace.ui.shop.ShopFragment;
 
 public class MainActivity
 		extends AppCompatActivity
@@ -151,15 +155,15 @@ public class MainActivity
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams.weight = 1f;
 
-		fireView = new ItemInfosView(this, Purchases.FIRE);
+		fireView = new FireInfosView(this);
 		((LinearLayout) findViewById(R.id.used_items)).addView(fireView, layoutParams);
 		fireView.setGLViewOnTop(true);
 
-		shipView = new ItemInfosView(this, Purchases.SHIP);
+		shipView = new ShipInfosView(this);
 		((LinearLayout) findViewById(R.id.used_items)).addView(shipView, layoutParams);
 		shipView.setGLViewOnTop(true);
 
-		ItemInfosView bonusView = new ItemInfosView(this, Purchases.BONUS);
+		ItemInfosView bonusView = new BonusInfosView(this);
 		((LinearLayout) findViewById(R.id.used_items)).addView(bonusView, layoutParams);
 		bonusView.setGLViewOnTop(true);
 
@@ -362,11 +366,11 @@ public class MainActivity
 					editor.remove(f);
 				}
 				String[] ship = getResources().getStringArray(R.array.ship_shop_list_item);
-				for (int i = 1; i < ship.length; i++) {
+				for (int i = 0; i < ship.length; i++) {
 					editor.remove(ship[i]);
 				}
 				String[] bonus = getResources().getStringArray(R.array.bonus_shop_list_item);
-				for (int i = 1; i < bonus.length; i++) {
+				for (int i = 0; i < bonus.length; i++) {
 					editor.remove(bonus[i]);
 				}
 				editor.remove(getString(R.string.bought_life));

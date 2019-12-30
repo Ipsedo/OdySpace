@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.ui;
+package com.samuelberrien.odyspace.ui.shop;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -53,21 +53,25 @@ public class ShopFragment extends Fragment {
 		if (ShopFragmentPagerAdapter.TAB_TITLES[page]
 				.equals(ShopFragmentPagerAdapter.FIRE_TAB)) {
 			String[] fires = getResources().getStringArray(R.array.fire_shop_list_item);
-			for (int i = 0; i < fires.length; i++) {
-				subLayout.addView(new ShopItemView(getContext(), Purchases.FIRE, i));
-			}
+			for (int i = 0; i < fires.length; i++)
+				subLayout.addView(new ShopFireItemView(getContext(), i));
+
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page]
 				.equals(ShopFragmentPagerAdapter.SHIP_TAB)) {
 			String[] shipsItem = getResources().getStringArray(R.array.ship_shop_list_item);
-			for (int i = 0; i < shipsItem.length; i++) {
-				subLayout.addView(new ShopItemView(getContext(), Purchases.SHIP, i));
-			}
+			for (int i = 0; i < shipsItem.length; i++)
+				subLayout.addView(new ShopShipItemView(getContext(), i));
+
 		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page]
 				.equals(ShopFragmentPagerAdapter.BONUS_TAB)) {
 			String[] bonusItem = getResources().getStringArray(R.array.bonus_shop_list_item);
-			for (int i = 0; i < bonusItem.length; i++) {
-				subLayout.addView(new ShopItemView(getContext(), Purchases.BONUS, i));
-			}
+			for (int i = 0; i < bonusItem.length; i++)
+				subLayout.addView(new ShopBonusItemView(getContext(), i));
+
+		} else if (ShopFragmentPagerAdapter.TAB_TITLES[page].equals(ShopFragmentPagerAdapter.ENHANCEMENT_TAB)) {
+			String[] enhancementItems = getResources().getStringArray(R.array.enhancement_shop_list_item);
+			for (int i = 0; i < enhancementItems.length; i++)
+				subLayout.addView(new ShopEnhancementItemView(getContext(), i));
 		}
 		return linearLayout;
 	}
