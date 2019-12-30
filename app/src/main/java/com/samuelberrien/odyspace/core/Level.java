@@ -2,7 +2,7 @@ package com.samuelberrien.odyspace.core;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.core.baseitem.Ship;
+import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestSpaceTrip;

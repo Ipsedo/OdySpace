@@ -3,6 +3,7 @@ package com.samuelberrien.odyspace.core.baseitem;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
 import com.samuelberrien.odyspace.core.fire.FireType;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.utils.maths.Vector;
@@ -24,12 +25,22 @@ public class FstBoss extends Boss {
 	private float theta;
 	private Random rand;
 
+	private int colorCounter;
+	private boolean changingColor;
+
+	private int counter;
+
+	private final int MAX_COUNT = 200;
+
 	public FstBoss(Context context, float[] mPosition, Ship ship, List<BaseItem> rockets) {
 		super(context, "obj/skull.obj", "obj/skull.mtl", 20, mPosition, 3f, FireType.SIMPLE_FIRE.getFire(context), rockets);
 		this.ship = ship;
 		phi = 0f;
 		theta = 0f;
+		counter = 0;
 		rand = new Random(System.currentTimeMillis());
+		colorCounter = 0;
+		changingColor = false;
 	}
 
 	@Override
@@ -43,6 +54,26 @@ public class FstBoss extends Boss {
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
 			fire.fire(super.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.3f);
 		}
+	}
+
+	private void count() {
+		counter = (counter > MAX_COUNT ? 0 : counter + 1);
+		if (changingColor && colorCounter > 75) {
+			objModelMtlVBO.changeColor();
+			changingColor = false;
+			colorCounter = 0;
+		} else if (changingColor) {
+			colorCounter++;
+		}
+	}
+
+	@Override
+	public void decrementLife(int minus) {
+		if (minus > 0 && !changingColor) {
+			changingColor = true;
+			objModelMtlVBO.changeColor();
+		}
+		super.life = super.life - minus >= 0 ? super.life - minus : 0;
 	}
 
 	@Override
@@ -78,6 +109,12 @@ public class FstBoss extends Boss {
 		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
 		return mModelMatrix;
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		count();
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.baseitem.Icosahedron;
-import com.samuelberrien.odyspace.core.baseitem.Ship;
+import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
 import com.samuelberrien.odyspace.core.baseitem.Tunnel;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
@@ -42,8 +42,10 @@ public class TestTunnelLevel implements Level {
 
 	private SoundPoolBuilder soundPoolBuilder;
 
+	private Box wordBox;
+
 	public TestTunnelLevel() {
-		levelLimitSize = 100f;
+		levelLimitSize = 1000f;
 	}
 
 	@Override
@@ -59,6 +61,8 @@ public class TestTunnelLevel implements Level {
 		tunnel = new Tunnel(context, new Random(System.currentTimeMillis()), 200,
 				new float[]{0f, 0f, -250f});
 
+		wordBox = Box.englobingBox(tunnel.getItems());
+
 		tunnel.putIcoAtCircleCenter(context, icos, 0.1f);
 
 		soundPoolBuilder = new SoundPoolBuilder(context);
@@ -66,11 +70,11 @@ public class TestTunnelLevel implements Level {
 		isInit = true;
 	}
 
-	private Box makeBoundingBox(float sizeCollideBox) {
-		float[] shipPos = ship.clonePosition();
-		return new Box(shipPos[0] - sizeCollideBox * 0.5f,
-				shipPos[1] - sizeCollideBox * 0.5f,
-				shipPos[2] - sizeCollideBox * 0.5f,
+	private Box makeBoundingBox(BaseItem from, float sizeCollideBox) {
+		float[] fromPos = from.clonePosition();
+		return new Box(fromPos[0] - sizeCollideBox * 0.5f,
+				fromPos[1] - sizeCollideBox * 0.5f,
+				fromPos[2] - sizeCollideBox * 0.5f,
 				sizeCollideBox,
 				sizeCollideBox,
 				sizeCollideBox);
@@ -128,18 +132,19 @@ public class TestTunnelLevel implements Level {
 		ArrayList<Item> ennemis = new ArrayList<>();
 		Octree octree;
 
+		amis.add(ship);
 		amis.addAll(rockets);
 		ennemis.addAll(icos);
-		octree = new Octree(makeBoundingBox(levelLimitSize * 10f), amis, ennemis, 2f);
+		octree = new Octree(makeBoundingBox(ship, 1000.f), amis, ennemis, 10.f);
 		octree.computeOctree();
 
 		amis.clear();
 		ennemis.clear();
 
 		amis.add(ship);
-		ennemis.addAll(tunnel.getItemsInBox(makeBoundingBox(2f)));
 		ennemis.addAll(icos);
-		octree = new Octree(makeBoundingBox(levelLimitSize), amis, ennemis, 4f);
+		ennemis.addAll(tunnel.get3NearestStretchs(ship.clonePosition()));
+		octree = new Octree(makeBoundingBox(ship, 5.f), amis, ennemis, 5.f);
 		octree.computeOctree();
 	}
 
@@ -168,7 +173,7 @@ public class TestTunnelLevel implements Level {
 
 		for (int i = rockets.size() - 1; i >= 0; i--)
 			if (!rockets.get(i).isAlive()
-					|| !rockets.get(i).isInside(makeBoundingBox(levelLimitSize * 2f)))
+					|| !rockets.get(i).isInside(makeBoundingBox(ship, 1000.f)))
 				rockets.remove(i);
 
 		ship.fire();
@@ -191,7 +196,7 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public float getMaxProjection() {
-		return levelLimitSize * 10f;
+		return levelLimitSize;
 	}
 
 	@Override

@@ -1,5 +1,9 @@
 package com.samuelberrien.odyspace.core.collision;
 
+import com.samuelberrien.odyspace.core.Item;
+
+import java.util.List;
+
 /**
  * Created by samuel on 13/06/17.
  * Copyright samuel, 2016 - 2017.
@@ -113,5 +117,25 @@ public class Box {
 	@Override
 	public String toString() {
 		return "Box : { x = " + x + ", y = " + y + ", z = " + z + " ; sX = " + sizeX + ", sY = " + sizeY + ", sZ = " + sizeZ + " }";
+	}
+
+	public static Box englobingBox(List<Item> items) {
+		float x_min = Float.MAX_VALUE, x_max = -Float.MAX_VALUE;
+		float y_min = Float.MAX_VALUE, y_max = -Float.MAX_VALUE;
+		float z_min = Float.MAX_VALUE, z_max = -Float.MAX_VALUE;
+
+		for (Item i : items) {
+			float[] pos = i.clonePosition();
+
+			x_min = pos[0] < x_min ? pos[0] : x_min;
+			y_min = pos[1] < y_min ? pos[1] : y_min;
+			z_min = pos[2] < z_min ? pos[2] : z_min;
+
+			x_max = pos[0] > x_max ? pos[0] : x_max;
+			y_max = pos[1] > y_max ? pos[1] : y_max;
+			z_max = pos[2] > z_max ? pos[2] : z_max;
+		}
+
+		return new Box(x_min, y_min, z_min, x_max - x_min, y_max - y_min, z_max - z_min);
 	}
 }

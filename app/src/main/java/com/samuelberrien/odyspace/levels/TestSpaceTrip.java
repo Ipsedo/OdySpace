@@ -5,7 +5,7 @@ import android.content.Context;
 import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.baseitem.BaseItem;
-import com.samuelberrien.odyspace.core.baseitem.Ship;
+import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
 import com.samuelberrien.odyspace.core.baseitem.SuperIcosahedron;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;

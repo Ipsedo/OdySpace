@@ -6,7 +6,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.core.baseitem.BaseItem;
-import com.samuelberrien.odyspace.core.baseitem.Ship;
+import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 

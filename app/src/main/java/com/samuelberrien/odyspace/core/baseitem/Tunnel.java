@@ -8,6 +8,7 @@ import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.SimplexNoise;
+import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,29 @@ public class Tunnel implements GLDrawable {
 		for (Stretch s : stretches)
 			if (s.isInside(box))
 				res.add(s);
+		return res;
+	}
+
+	public List<Item> get3NearestStretchs(float[] pos) {
+		float min = Float.MAX_VALUE;
+		int i = -1;
+		int cpt = 0;
+
+		for (Stretch s : stretches) {
+			float[] stretchPos = s.clonePosition();
+			float dist = Vector.length3f(Vector.sub3f(stretchPos, pos));
+
+			if (min > dist) {
+				min = dist;
+				i = cpt;
+			}
+			cpt++;
+		}
+
+		List<Item> res = new ArrayList<>();
+		for (int j = i - 1 >= 0 ? i - 1 : 0; j <= i + 1 && j < stretches.size(); j++)
+			res.add(stretches.get(j));
+
 		return res;
 	}
 
