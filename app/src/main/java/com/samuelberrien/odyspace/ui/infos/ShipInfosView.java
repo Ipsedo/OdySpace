@@ -44,7 +44,7 @@ public class ShipInfosView extends ItemInfosView {
 
 			int rBool = items[i].equals(getContext().getString(R.string.ship_simple)) ?
 					R.bool.vrai : R.bool.faux;
-
+			
 			if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
 				RadioButton tmpRadioButton = new RadioButton(getContext());
 				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(
@@ -74,6 +74,7 @@ public class ShipInfosView extends ItemInfosView {
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		super.onSharedPreferenceChanged(sharedPreferences, key);
 		if (key.equals(getContext().getString(R.string.current_ship_used)) || key.equals(getContext().getString(R.string.bought_life)))
 			reinit();
 	}

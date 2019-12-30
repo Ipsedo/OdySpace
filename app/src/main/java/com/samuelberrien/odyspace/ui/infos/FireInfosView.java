@@ -68,6 +68,7 @@ public class FireInfosView extends ItemInfosView {
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		super.onSharedPreferenceChanged(sharedPreferences, key);
 		if (key.equals(getContext().getString(R.string.current_fire_type)))
 			reinit();
 	}

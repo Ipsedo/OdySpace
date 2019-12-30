@@ -76,6 +76,7 @@ public class BonusInfosView extends ItemInfosView {
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		super.onSharedPreferenceChanged(sharedPreferences, key);
 		if (key.equals(getContext().getString(R.string.current_bonus_used)) || key.equals(getContext().getString(R.string.bought_duration)))
 			reinit();
 	}

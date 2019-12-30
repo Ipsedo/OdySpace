@@ -148,4 +148,9 @@ public abstract class ItemInfosView extends LinearLayout implements SharedPrefer
 		item3DView.setZOrderOnTop(onTop);
 	}
 
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		if (key.equals(getContext().getString(R.string.saved_money)))
+			reloadItemChooser();
+	}
 }
