@@ -1,4 +1,4 @@
-package com.samuelberrien.odyspace.core.baseitem;
+package com.samuelberrien.odyspace.core.baseitem.ship;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +9,7 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.core.Bonus;
 import com.samuelberrien.odyspace.core.Shooter;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.fire.Fire;
 import com.samuelberrien.odyspace.core.fire.FireType;
 import com.samuelberrien.odyspace.drawable.Explosion;
@@ -18,7 +19,6 @@ import com.samuelberrien.odyspace.utils.graphics.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 
 /**
  * Created by samuel on 18/04/17.
@@ -56,55 +56,47 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 	private Queue<Runnable> toRunOnGLThread;
 
-	public static Ship makeShip(Context context, GamePad gamePad) {
+
+
+		//Bonus bonus;
+		//String savedBonus = savedShip.getString(context.getString(R.string.current_bonus_used), context.getString(R.string.bonus_1));
+		//int currBonusDur = savedShip.getInt(context.getString(R.string.current_bonus_duration), context.getResources().getInteger(R.integer.bonus_1_duration));
+		//int bonusDurationBought = savedShop.getInt(context.getString(R.string.bought_duration), context.getResources().getInteger(R.integer.zero));
+
+		//if (savedBonus.equals(context.getString(R.string.bonus_1))) bonus = Bonus.SPEED;
+		//else bonus = Bonus.SHIELD;
+
+
+	//TODO modèles simplifiés pr crashable ?
+	protected Ship(Context context, String objFileName, String mtlFileName, int shipLife,
+				   GamePad gamePad) {
+
+		super(context, objFileName, mtlFileName, objFileName, 1f, 0f, false,
+				context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE)
+						.getInt(context.getString(R.string.bought_life), context.getResources().getInteger(R.integer.saved_ship_life_shop_default))
+				+ shipLife,
+				new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
+
+		maxLife = life;
+		lifeDraw = new ProgressBar(context, maxLife, 0.9f, 0.9f, Color.LifeRed);
+
 		SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
-		SharedPreferences savedShop = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE);
-		int currBoughtLife = savedShop.getInt(context.getString(R.string.bought_life), context.getResources().getInteger(R.integer.saved_ship_life_shop_default));
-		int currShipLife = savedShip.getInt(context.getString(R.string.current_life_number), context.getResources().getInteger(R.integer.saved_ship_life_default));
-
-		int life = currBoughtLife + currShipLife;
-
 		String defaultValue = context.getString(R.string.saved_fire_type_default);
 		String fireType = savedShip.getString(context.getString(R.string.current_fire_type), defaultValue);
 		FireType shipFireType = FireType.valueOf(fireType.toUpperCase().replace(" ", "_"));
-		Fire fire = shipFireType.getFire(context);
+		this.fire = shipFireType.getFire(context);
 
-		Bonus bonus;
-		String savedBonus = savedShip.getString(context.getString(R.string.current_bonus_used), context.getString(R.string.bonus_1));
-		int currBonusDur = savedShip.getInt(context.getString(R.string.current_bonus_duration), context.getResources().getInteger(R.integer.bonus_1_duration));
-		int bonusDurationBought = savedShop.getInt(context.getString(R.string.bought_duration), context.getResources().getInteger(R.integer.zero));
-
-		if (savedBonus.equals(context.getString(R.string.bonus_1))) bonus = Bonus.SPEED;
-		else bonus = Bonus.SHIELD;
-
-		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
-		Ship resShip;
-
-		if (shipUsed.equals(context.getString(R.string.ship_bird))) {
-			resShip = new Ship(context, "obj/ship_bird.obj", "obj/ship_bird.mtl", life, fire, gamePad, bonus, currBonusDur, bonusDurationBought);
-		} else if (shipUsed.equals(context.getString(R.string.ship_supreme))) {
-			resShip = new Ship(context, "obj/ship_supreme.obj", "obj/ship_supreme.mtl", life, fire, gamePad, bonus, currBonusDur, bonusDurationBought);
-		} else if (shipUsed.equals(context.getString(R.string.ship_interceptor))) {
-			resShip = new Ship(context, "obj/interceptor.obj", "obj/interceptor.mtl", life, fire, gamePad, bonus, currBonusDur, bonusDurationBought);
-		} else {
-			resShip = new Ship(context, "obj/ship_3.obj", "obj/ship_3.mtl", life, fire, gamePad, bonus, currBonusDur, bonusDurationBought);
-		}
-		savedShip.registerOnSharedPreferenceChangeListener(resShip);
-		return resShip;
-	}
-
-	//TODO modèles simplifiés pr crashable ?
-	private Ship(Context context, String objFileName, String mtlFileName, int life, Fire fire, GamePad gamePad, Bonus bonus, int bonusDuration, int bonusDurationBought) {
-		super(context, objFileName, mtlFileName, objFileName, 1f, 0f, false, life, new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
-		maxLife = life;
-		lifeDraw = new ProgressBar(context, maxLife, 0.9f, 0.9f, Color.LifeRed);
-		this.fire = fire;
 		mBoostSpeed = 0f;
 		this.gamePad = gamePad;
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-		this.bonus = bonus;
-		this.bonusDuration = bonusDuration;
-		this.bonusDurationBought = bonusDurationBought;
+		this.bonus = Bonus.SPEED;
+
+		//TODO utiliser enum avec temps bonus plutot ?
+		this.bonusDuration = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE)
+				.getInt(context.getString(R.string.current_bonus_duration), context.getResources().getInteger(R.integer.bonus_1_duration));
+
+		this.bonusDurationBought = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE)
+				.getInt(context.getString(R.string.bought_duration), context.getResources().getInteger(R.integer.zero));
 		toRunOnGLThread = new LinkedList<>();
 	}
 

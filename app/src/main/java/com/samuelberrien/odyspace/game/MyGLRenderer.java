@@ -8,13 +8,16 @@ package com.samuelberrien.odyspace.game;
  */
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.controls.GamePad;
 import com.samuelberrien.odyspace.core.Level;
-import com.samuelberrien.odyspace.core.baseitem.Ship;
+import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
+import com.samuelberrien.odyspace.core.baseitem.ship.ShipType;
 import com.samuelberrien.odyspace.drawable.GameOver;
 import com.samuelberrien.odyspace.drawable.LevelDone;
 
@@ -76,7 +79,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 			gamePad.initGraphics(context);
 
-			ship = Ship.makeShip(context, gamePad);
+			SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
+			String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
+			ship = ShipType.valueOf(shipUsed.toUpperCase().replace(' ', '_')).getShip(context, gamePad);
 			ship.update();
 
 			mCameraPosition = new float[]{0f, 0f, -10f};
