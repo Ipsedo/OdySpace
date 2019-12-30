@@ -44,7 +44,7 @@ public class ShipInfosView extends ItemInfosView {
 
 			int rBool = items[i].equals(getContext().getString(R.string.ship_simple)) ?
 					R.bool.vrai : R.bool.faux;
-			
+
 			if (savedShop.getBoolean(items[i], getResources().getBoolean(rBool))) {
 				RadioButton tmpRadioButton = new RadioButton(getContext());
 				tmpRadioButton.setLayoutParams(new LinearLayout.LayoutParams(
