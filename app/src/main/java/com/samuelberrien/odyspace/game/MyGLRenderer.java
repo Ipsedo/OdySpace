@@ -13,10 +13,10 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
 import com.samuelberrien.odyspace.controls.GamePad;
+import com.samuelberrien.odyspace.core.Level;
+import com.samuelberrien.odyspace.core.baseitem.Ship;
 import com.samuelberrien.odyspace.drawable.GameOver;
 import com.samuelberrien.odyspace.drawable.LevelDone;
-import com.samuelberrien.odyspace.core.baseitem.Ship;
-import com.samuelberrien.odyspace.core.Level;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

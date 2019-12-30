@@ -2,8 +2,8 @@ package com.samuelberrien.odyspace.core.baseitem.ammos;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 
 /**
  * Created by samuel on 03/08/17.

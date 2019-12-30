@@ -3,13 +3,11 @@ package com.samuelberrien.odyspace.ui.infos;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.core.Purchases;
 
 public class ShipInfosView extends ItemInfosView {
 
@@ -31,7 +29,7 @@ public class ShipInfosView extends ItemInfosView {
 
 	@Override
 	protected void setText() {
-		int currBoughtLife = savedShop.getInt(getContext().getString(R.string.bought_life),getResources().getInteger(R.integer.saved_ship_life_shop_default));
+		int currBoughtLife = savedShop.getInt(getContext().getString(R.string.bought_life), getResources().getInteger(R.integer.saved_ship_life_shop_default));
 		int currShipLife = savedShip.getInt(getContext().getString(R.string.current_life_number), getResources().getInteger(R.integer.saved_ship_life_default));
 		infos.setText(getContext().getString(R.string.ship_info_drawer, itemName, currShipLife, currBoughtLife));
 	}

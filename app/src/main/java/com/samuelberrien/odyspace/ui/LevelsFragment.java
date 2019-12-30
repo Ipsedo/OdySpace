@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.core.Level;
+import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.utils.widget.ExpandButton;
 import com.samuelberrien.odyspace.utils.widget.RadioExpand;
 
@@ -27,7 +27,9 @@ public class LevelsFragment
 
 	private SharedPreferences savedLevelInfo;
 	private RadioExpand radioExpand;
-	 /** needed for non-attached case */
+	/**
+	 * needed for non-attached case
+	 */
 	private Context context;
 
 	@Nullable

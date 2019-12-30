@@ -2,18 +2,18 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.drawable.GLDrawable;
-import com.samuelberrien.odyspace.drawable.Explosion;
-import com.samuelberrien.odyspace.drawable.maps.CubeMap;
-import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.baseitem.BaseItem;
-import com.samuelberrien.odyspace.core.baseitem.SuperIcosahedron;
-import com.samuelberrien.odyspace.core.baseitem.Ship;
-import com.samuelberrien.odyspace.core.collision.CollisionMesh;
-import com.samuelberrien.odyspace.core.collision.Box;
-import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.core.Level;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
+import com.samuelberrien.odyspace.core.baseitem.Ship;
+import com.samuelberrien.odyspace.core.baseitem.SuperIcosahedron;
+import com.samuelberrien.odyspace.core.collision.Box;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
+import com.samuelberrien.odyspace.core.collision.Octree;
+import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
+import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.drawable.maps.CubeMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,7 +111,7 @@ public class TestSpaceTrip implements Level {
 		drawables.addAll(rockets);
 		drawables.addAll(explosions);
 
-		for(GLDrawable d : drawables)
+		for (GLDrawable d : drawables)
 			d.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
@@ -124,7 +124,7 @@ public class TestSpaceTrip implements Level {
 	public void update() {
 		ArrayList<BaseItem> ast = new ArrayList<>(asteroids);
 
-		for(BaseItem si : ast)
+		for (BaseItem si : ast)
 			si.update();
 
 		ast.clear();

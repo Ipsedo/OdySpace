@@ -2,10 +2,10 @@ package com.samuelberrien.odyspace.core.baseitem.group;
 
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.GLDrawable;
-import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.core.UpdatableItem;
+import com.samuelberrien.odyspace.core.collision.Box;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
 
 /**
  * Created by samuel on 04/08/17.

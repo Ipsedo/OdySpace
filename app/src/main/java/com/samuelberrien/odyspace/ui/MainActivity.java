@@ -28,13 +28,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.ui.infos.BonusInfosView;
 import com.samuelberrien.odyspace.ui.infos.BossKilledView;
 import com.samuelberrien.odyspace.ui.infos.FireInfosView;
 import com.samuelberrien.odyspace.ui.infos.ItemInfosView;
-import com.samuelberrien.odyspace.core.Level;
-import com.samuelberrien.odyspace.core.Purchases;
 import com.samuelberrien.odyspace.ui.infos.ShipInfosView;
 import com.samuelberrien.odyspace.ui.shop.ShopFragment;
 
@@ -183,27 +182,27 @@ public class MainActivity
 		switchOrientation(getResources().getConfiguration().orientation);
 
 		if (requestCode == MainActivity.RESULT_VALUE) {
-				if (resultCode == Activity.RESULT_OK) {
-					int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
-					int currMoney = this.savedShop.getInt(
-							getString(R.string.saved_money),
-							defaultMoney);
-					int score = data.getIntExtra(LevelActivity.LEVEL_SCORE, 0);
-					SharedPreferences.Editor editor = this.savedShop.edit();
-					editor.putInt(getString(R.string.saved_money), currMoney + score);
-					editor.apply();
-					String result = data.getStringExtra(LevelActivity.LEVEL_RESULT);
-					int levelDoneIndex = data.getIntExtra(MainActivity.LEVEL_ID, -1);
-					if (result.equals(LevelActivity.WIN)) {
-						/* level done */
-						increaseLevel(levelDoneIndex);
-					} else if (result.equals(LevelActivity.FAIIL)) {
-						/* level failed */
-					}
-				} else if (resultCode == Activity.RESULT_CANCELED) {
-					/* level canceled */
+			if (resultCode == Activity.RESULT_OK) {
+				int defaultMoney = getResources().getInteger(R.integer.saved_init_money);
+				int currMoney = this.savedShop.getInt(
+						getString(R.string.saved_money),
+						defaultMoney);
+				int score = data.getIntExtra(LevelActivity.LEVEL_SCORE, 0);
+				SharedPreferences.Editor editor = this.savedShop.edit();
+				editor.putInt(getString(R.string.saved_money), currMoney + score);
+				editor.apply();
+				String result = data.getStringExtra(LevelActivity.LEVEL_RESULT);
+				int levelDoneIndex = data.getIntExtra(MainActivity.LEVEL_ID, -1);
+				if (result.equals(LevelActivity.WIN)) {
+					/* level done */
+					increaseLevel(levelDoneIndex);
+				} else if (result.equals(LevelActivity.FAIIL)) {
+					/* level failed */
 				}
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+				/* level canceled */
 			}
+		}
 
 	}
 
@@ -357,34 +356,34 @@ public class MainActivity
 
 	public void resetShop(View v) {
 		showDialogConfirm(() -> {
-				SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shop_preferences),
-						Context.MODE_PRIVATE)
-						.edit();
-				editor.remove(getString(R.string.saved_money));
-				String[] fire = getResources().getStringArray(R.array.fire_shop_list_item);
-				for (String f : fire) {
-					editor.remove(f);
-				}
-				String[] ship = getResources().getStringArray(R.array.ship_shop_list_item);
-				for (int i = 0; i < ship.length; i++) {
-					editor.remove(ship[i]);
-				}
-				String[] bonus = getResources().getStringArray(R.array.bonus_shop_list_item);
-				for (int i = 0; i < bonus.length; i++) {
-					editor.remove(bonus[i]);
-				}
-				editor.remove(getString(R.string.bought_life));
-				editor.remove(getString(R.string.bought_duration));
-				editor.apply();
+			SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shop_preferences),
+					Context.MODE_PRIVATE)
+					.edit();
+			editor.remove(getString(R.string.saved_money));
+			String[] fire = getResources().getStringArray(R.array.fire_shop_list_item);
+			for (String f : fire) {
+				editor.remove(f);
+			}
+			String[] ship = getResources().getStringArray(R.array.ship_shop_list_item);
+			for (int i = 0; i < ship.length; i++) {
+				editor.remove(ship[i]);
+			}
+			String[] bonus = getResources().getStringArray(R.array.bonus_shop_list_item);
+			for (int i = 0; i < bonus.length; i++) {
+				editor.remove(bonus[i]);
+			}
+			editor.remove(getString(R.string.bought_life));
+			editor.remove(getString(R.string.bought_duration));
+			editor.apply();
 
-				editor = getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE)
-						.edit();
-				editor.remove(getString(R.string.current_bonus_used))
-						.remove(getString(R.string.current_ship_used))
-						.remove(getString(R.string.current_fire_type))
-						.remove(getString(R.string.current_bonus_duration))
-						.remove(getString(R.string.current_life_number))
-						.apply();
+			editor = getSharedPreferences(getString(R.string.ship_info_preferences), Context.MODE_PRIVATE)
+					.edit();
+			editor.remove(getString(R.string.current_bonus_used))
+					.remove(getString(R.string.current_ship_used))
+					.remove(getString(R.string.current_fire_type))
+					.remove(getString(R.string.current_bonus_duration))
+					.remove(getString(R.string.current_life_number))
+					.apply();
 		});
 	}
 
@@ -399,14 +398,14 @@ public class MainActivity
 
 	public void cheat(View v) {
 		showDialogConfirm(() -> {
-				getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE)
-						.edit()
-						.putInt(getString(R.string.saved_money), 999999999)
-						.apply();
-				getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE)
-						.edit()
-						.putInt(getString(R.string.saved_max_level), Level.LEVELS.length)
-						.apply();
+			getSharedPreferences(getString(R.string.shop_preferences), Context.MODE_PRIVATE)
+					.edit()
+					.putInt(getString(R.string.saved_money), 999999999)
+					.apply();
+			getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE)
+					.edit()
+					.putInt(getString(R.string.saved_max_level), Level.LEVELS.length)
+					.apply();
 		});
 	}
 
@@ -421,8 +420,8 @@ public class MainActivity
 
 	private void showDialogConfirm(final Runnable runnable) {
 		resetYes.setOnClickListener((view) -> {
-				runnable.run();
-				resetDialog.dismiss();
+			runnable.run();
+			resetDialog.dismiss();
 		});
 		Point screenSize = getScreenSize();
 		resetDialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 3);
@@ -439,7 +438,8 @@ public class MainActivity
 
 	@Override
 	public void onBackPressed() {
-		if (drawerLayout.isDrawerOpen(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
+		if (drawerLayout.isDrawerOpen(GravityCompat.START))
+			drawerLayout.closeDrawer(GravityCompat.START);
 		else super.onBackPressed();
 	}
 }

@@ -3,9 +3,9 @@ package com.samuelberrien.odyspace.core.baseitem;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.drawable.GLDrawable;
-import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.Item;
+import com.samuelberrien.odyspace.core.collision.Box;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.SimplexNoise;
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.opengl.GLES20;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.drawable.GLItemDrawable;
 import com.samuelberrien.odyspace.utils.graphics.ShaderLoader;
 
 import java.io.BufferedReader;
@@ -362,7 +361,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		}
 
 		float[] allDataPacked = new float[objPackedData.size()];
-		for(int i = 0; i < allDataPacked.length; i++) {
+		for (int i = 0; i < allDataPacked.length; i++) {
 			allDataPacked[i] = objPackedData.get(i);
 		}
 

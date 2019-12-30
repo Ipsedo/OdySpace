@@ -2,15 +2,15 @@ package com.samuelberrien.odyspace.levels;
 
 import android.content.Context;
 
-import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.core.Item;
+import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.baseitem.Icosahedron;
 import com.samuelberrien.odyspace.core.baseitem.Ship;
 import com.samuelberrien.odyspace.core.baseitem.Tunnel;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
-import com.samuelberrien.odyspace.core.Item;
-import com.samuelberrien.odyspace.core.Level;
+import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 import com.samuelberrien.odyspace.utils.sounds.SoundPoolBuilder;
 

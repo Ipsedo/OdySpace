@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.core.Purchases;
 
 /**
  * Created by samuel on 12/10/17.

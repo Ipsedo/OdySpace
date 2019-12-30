@@ -5,9 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
-import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.Purchases;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

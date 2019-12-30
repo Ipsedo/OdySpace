@@ -9,9 +9,9 @@ import android.opengl.Matrix;
 import android.util.AttributeSet;
 
 import com.samuelberrien.odyspace.R;
+import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.levels.TestBossThread;
-import com.samuelberrien.odyspace.core.Level;
 
 import java.util.ArrayList;
 import java.util.Random;

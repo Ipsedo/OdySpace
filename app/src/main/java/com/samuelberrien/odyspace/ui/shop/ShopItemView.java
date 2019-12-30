@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.ui.infos.Item3DView;
-import com.samuelberrien.odyspace.core.Purchases;
 
 /**
  * Created by samuel on 13/10/17.

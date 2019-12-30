@@ -2,13 +2,13 @@ package com.samuelberrien.odyspace.core;
 
 import android.content.Context;
 
+import com.samuelberrien.odyspace.core.baseitem.Ship;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestSpaceTrip;
 import com.samuelberrien.odyspace.levels.TestThread;
 import com.samuelberrien.odyspace.levels.TestTunnelLevel;
 import com.samuelberrien.odyspace.levels.TestTurrets;
-import com.samuelberrien.odyspace.core.baseitem.Ship;
 
 /**
  * Created by samuel on 18/04/17.

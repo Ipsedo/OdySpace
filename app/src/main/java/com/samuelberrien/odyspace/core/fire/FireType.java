@@ -2,11 +2,8 @@ package com.samuelberrien.odyspace.core.fire;
 
 import android.arch.core.util.Function;
 import android.content.Context;
-import android.support.v4.util.Consumer;
 
 import com.samuelberrien.odyspace.R;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by samuel on 03/05/17.

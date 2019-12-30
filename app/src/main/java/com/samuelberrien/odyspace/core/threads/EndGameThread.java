@@ -3,9 +3,9 @@ package com.samuelberrien.odyspace.core.threads;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.game.LevelActivity;
 import com.samuelberrien.odyspace.ui.MainActivity;
-import com.samuelberrien.odyspace.core.Level;
 
 /**
  * Created by samuel on 09/05/17.
@@ -67,8 +67,8 @@ public class EndGameThread extends CancelableThread {
 	}
 
 	private int findLevelIndex() {
-		for(int i = 0; i < Level.LEVELS.length; i++) {
-			if(Level.LEVELS[i].equals(level.toString()))
+		for (int i = 0; i < Level.LEVELS.length; i++) {
+			if (Level.LEVELS[i].equals(level.toString()))
 				return i;
 		}
 		return -1;

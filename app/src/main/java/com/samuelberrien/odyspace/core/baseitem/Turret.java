@@ -3,11 +3,11 @@ package com.samuelberrien.odyspace.core.baseitem;
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.core.Shooter;
+import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.fire.Fire;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
-import com.samuelberrien.odyspace.core.collision.CollisionMesh;
-import com.samuelberrien.odyspace.core.Shooter;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 
 import java.util.List;

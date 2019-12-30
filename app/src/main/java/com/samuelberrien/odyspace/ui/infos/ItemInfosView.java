@@ -12,19 +12,12 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.core.Purchases;
-
-import static com.samuelberrien.odyspace.core.Purchases.BONUS;
-import static com.samuelberrien.odyspace.core.Purchases.FIRE;
-import static com.samuelberrien.odyspace.core.Purchases.SHIP;
 
 /**
  * Created by samuel on 12/10/17.
@@ -87,10 +80,10 @@ public abstract class ItemInfosView extends LinearLayout implements SharedPrefer
 		dialog.setCanceledOnTouchOutside(true);
 
 		setOnClickListener((view) -> {
-				Point screenSize = getScreenSize();
-				dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
-				selectItemLayout.requestLayout();
-				dialog.show();
+			Point screenSize = getScreenSize();
+			dialog.getWindow().setLayout(screenSize.x * 3 / 4, screenSize.y / 2);
+			selectItemLayout.requestLayout();
+			dialog.show();
 		});
 	}
 
