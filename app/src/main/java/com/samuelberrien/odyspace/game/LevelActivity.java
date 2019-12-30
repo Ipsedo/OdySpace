@@ -39,9 +39,6 @@ public class LevelActivity extends AppCompatActivity {
 	private ProgressBar progressBar;
 	private Button pauseButton;
 
-	private SharedPreferences gamePreferences;
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,7 +51,7 @@ public class LevelActivity extends AppCompatActivity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		gamePreferences = getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE);
+		//SharedPreferences  gamePreferences = getSharedPreferences(getString(R.string.game_preferences), Context.MODE_PRIVATE);
 
 		progressBar = new ProgressBar(this);
 		progressBar.getIndeterminateDrawable()
@@ -161,7 +158,7 @@ public class LevelActivity extends AppCompatActivity {
 			}
 		}
 
-		radioGroup = (RadioGroup) layout.findViewById(R.id.select_bonus_radio_group);
+		radioGroup = layout.findViewById(R.id.select_bonus_radio_group);
 		final String[] bonus = getResources().getStringArray(R.array.bonus_shop_list_item);
 		final int[] duration = getResources().getIntArray(R.array.bonus_duration_shop_list_item);
 		for (int i = 0; i < bonus.length; i++) {

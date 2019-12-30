@@ -26,11 +26,6 @@ import java.util.ArrayList;
 
 public class NoiseMap implements Item, Map {
 
-	/*private native boolean areCollided(float[] mPointItem1,
-									   float[] mModelMatrix1,
-									   float[] mPointItem2,
-									   float[] mModelMatrix2);*/
-
 	private static final int POSITION_DATA_SIZE = 3;
 
 	private static final int NORMAL_DATA_SIZE = 3;
@@ -38,10 +33,6 @@ public class NoiseMap implements Item, Map {
 	private static final int BYTES_PER_FLOAT = 4;
 
 	private static final int STRIDE = (POSITION_DATA_SIZE + NORMAL_DATA_SIZE) * BYTES_PER_FLOAT;
-
-	/*static {
-		System.loadLibrary("collision");
-	}*/
 
 	private final int SIZE = 30;
 
@@ -111,7 +102,6 @@ public class NoiseMap implements Item, Map {
 		bindBuffer();
 
 		makeBox();
-		;
 	}
 
 	private void initPlan() {
@@ -140,21 +130,21 @@ public class NoiseMap implements Item, Map {
 				//Triangle 1
 				//Normal 1
 				float[] v1 = new float[]{
-						tmpPoints[j * 3 + 6] - tmpPoints[j * 3 + 0],
+						tmpPoints[j * 3 + 6] - tmpPoints[j * 3],
 						tmpPoints[j * 3 + 7] - tmpPoints[j * 3 + 1],
 						tmpPoints[j * 3 + 8] - tmpPoints[j * 3 + 2]};
 				float[] v2 = new float[]{
-						tmpPoints[j * 3 + 3] - tmpPoints[j * 3 + 0],
+						tmpPoints[j * 3 + 3] - tmpPoints[j * 3],
 						tmpPoints[j * 3 + 4] - tmpPoints[j * 3 + 1],
 						tmpPoints[j * 3 + 5] - tmpPoints[j * 3 + 2]};
 				float[] normal = Vector.normalize3f(Vector.cross3f(v2, v1));
 
 				//POINT 1
-				triangles.add(tmpPoints[j * 3 + 0]);
+				triangles.add(tmpPoints[j * 3]);
 				triangles.add(tmpPoints[j * 3 + 1]);
 				triangles.add(tmpPoints[j * 3 + 2]);
 
-				packedData.add(tmpPoints[j * 3 + 0]);
+				packedData.add(tmpPoints[j * 3]);
 				packedData.add(tmpPoints[j * 3 + 1]);
 				packedData.add(tmpPoints[j * 3 + 2]);
 				packedData.add(normal[0]);
@@ -211,11 +201,11 @@ public class NoiseMap implements Item, Map {
 				packedData.add(normal[2]);
 
 				//POINT 2
-				triangles.add(tmpPoints[(j + 1) * 3 + 0]);
+				triangles.add(tmpPoints[(j + 1) * 3]);
 				triangles.add(tmpPoints[(j + 1) * 3 + 1]);
 				triangles.add(tmpPoints[(j + 1) * 3 + 2]);
 
-				packedData.add(tmpPoints[(j + 1) * 3 + 0]);
+				packedData.add(tmpPoints[(j + 1) * 3]);
 				packedData.add(tmpPoints[(j + 1) * 3 + 1]);
 				packedData.add(tmpPoints[(j + 1) * 3 + 2]);
 				packedData.add(normal[0]);
@@ -237,14 +227,12 @@ public class NoiseMap implements Item, Map {
 		}
 
 		points = new float[triangles.size()];
-		for (int i = 0; i < points.length; i++) {
+		for (int i = 0; i < points.length; i++)
 			points[i] = triangles.get(i);
-		}
 
 		float[] packedDataArray = new float[packedData.size()];
-		for (int i = 0; i < packedDataArray.length; i++) {
+		for (int i = 0; i < packedDataArray.length; i++)
 			packedDataArray[i] = packedData.get(i);
-		}
 
 		mDataPackedBuffer = ByteBuffer.allocateDirect(packedDataArray.length * BYTES_PER_FLOAT)
 				.order(ByteOrder.nativeOrder())
@@ -265,20 +253,6 @@ public class NoiseMap implements Item, Map {
 		mDataPackedBufferId = buffers[0];
 		mDataPackedBuffer.limit(0);
 		mDataPackedBuffer = null;
-
-		/*GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
-				mNormals.capacity() * 4, mNormals, GLES20.GL_STATIC_DRAW);
-
-		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-
-		mPositionsBufferId = buffers[0];
-		mNormalsBufferId = buffers[1];
-
-		mPositions.limit(0);
-		mPositions = null;
-		mNormals.limit(0);
-		mNormals = null;*/
 	}
 
 	@Override
@@ -323,7 +297,7 @@ public class NoiseMap implements Item, Map {
 			for (int a = j * 2 * SIZE; a <= j * 2 * SIZE; a++) {
 				for (int b = i * 2; b <= i * 2 + 1; b++) {
 					int tmp = (a + b) * 3 * 3;
-					res[indRes + 0] = points[tmp + 0];
+					res[indRes] = points[tmp];
 					res[indRes + 1] = points[tmp + 1];
 					res[indRes + 2] = points[tmp + 2];
 
@@ -405,7 +379,6 @@ public class NoiseMap implements Item, Map {
 				mModelMatrix.clone(),
 				triangleArray,
 				modelMatrix);
-		//return areCollided(points.clone(), mModelMatrix.clone(), triangleArray, modelMatrix);
 	}
 
 	@Override

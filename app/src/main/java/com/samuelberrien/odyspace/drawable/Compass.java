@@ -83,6 +83,7 @@ public class Compass implements GLInfoDrawable {
 	public void update(Ship from, BaseItem to, boolean isAccent) {
 		float[] vecShipToOther = from.vector3fTo(to);
 		float length3f = Vector.length3f(vecShipToOther);
+
 		if (maxLength > length3f) {
 			float[] vecUpShip = from.getCamUpVec();
 			float[] vecFrontShip = Vector.normalize3f(from.getCamLookAtVec());
@@ -96,14 +97,14 @@ public class Compass implements GLInfoDrawable {
 				return;
 			}
 
-			float[] vecProjeté = Vector.cross3f(
+			float[] vecProjete = Vector.cross3f(
 					vecFrontShip,
 					Vector.cross3f(vecShipToOther, vecFrontShip));
 
 			double angle = Math.acos(Vector.dot3f(
 					Vector.normalize3f(vecUpShip),
-					Vector.normalize3f(vecProjeté)));
-			float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjeté));
+					Vector.normalize3f(vecProjete)));
+			float[] vecDansRepereShip = Vector.normalize3f(from.invVecWithRotMatrix(vecProjete));
 
 			if (vecDansRepereShip[0] > 0)
 				angle = -angle;

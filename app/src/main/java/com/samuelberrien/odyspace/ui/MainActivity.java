@@ -214,12 +214,14 @@ public class MainActivity
 		int maxLevel = sevedLevelInfo.getInt(
 				getString(R.string.saved_max_level),
 				defaultValue);
+		System.out.println("Yo " + currentLevelIndex + " " + maxLevel);
 		if (currentLevelIndex == maxLevel) {
 			sevedLevelInfo.edit()
 					.putInt(getString(R.string.saved_max_level),
 							maxLevel + 1 < Level.LEVELS.length ?
 									maxLevel + 1 : Level.LEVELS.length)
 					.apply();
+			System.out.println("Yo level increased");
 		}
 
 	}
@@ -316,9 +318,10 @@ public class MainActivity
 				Context.MODE_PRIVATE)
 				.getInt(getString(R.string.saved_max_level),
 						getResources().getInteger(R.integer.saved_max_level_default));
-		if (maxLevel >= Level.LEVELS.length) {
-			maxLevel = Level.LEVELS.length - 1;
-		}
+
+		/*if (maxLevel >= Level.LEVELS.length)
+			maxLevel = Level.LEVELS.length - 1;*/
+
 		Intent intent = new Intent(this, LevelActivity.class);
 		intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(maxLevel));
 		startActivityForResult(intent, MainActivity.RESULT_VALUE);
@@ -360,18 +363,19 @@ public class MainActivity
 					Context.MODE_PRIVATE)
 					.edit();
 			editor.remove(getString(R.string.saved_money));
+
 			String[] fire = getResources().getStringArray(R.array.fire_shop_list_item);
-			for (String f : fire) {
+			for (String f : fire)
 				editor.remove(f);
-			}
+
 			String[] ship = getResources().getStringArray(R.array.ship_shop_list_item);
-			for (int i = 0; i < ship.length; i++) {
-				editor.remove(ship[i]);
-			}
+			for (String s : ship)
+				editor.remove(s);
+
 			String[] bonus = getResources().getStringArray(R.array.bonus_shop_list_item);
-			for (int i = 0; i < bonus.length; i++) {
-				editor.remove(bonus[i]);
-			}
+			for (String b : bonus)
+				editor.remove(b);
+
 			editor.remove(getString(R.string.bought_life));
 			editor.remove(getString(R.string.bought_duration));
 			editor.apply();
@@ -404,7 +408,7 @@ public class MainActivity
 					.apply();
 			getSharedPreferences(getString(R.string.level_info_preferences), Context.MODE_PRIVATE)
 					.edit()
-					.putInt(getString(R.string.saved_max_level), Level.LEVELS.length)
+					.putInt(getString(R.string.saved_max_level), Level.LEVELS.length - 1)
 					.apply();
 		});
 	}

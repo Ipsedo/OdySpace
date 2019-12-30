@@ -138,7 +138,7 @@ public class ObjModelVBO implements GLItemDrawable {
 	}
 
 	private void bindBuffer() {
-		final int buffers[] = new int[1];
+		final int[] buffers = new int[1];
 		GLES20.glGenBuffers(1, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
@@ -153,18 +153,18 @@ public class ObjModelVBO implements GLItemDrawable {
 		packedDataBuffer = null;
 	}
 
-	private void parseObj(InputStreamReader inputreader, float red, float green, float blue) {
+	private void parseObj(InputStreamReader inputStreamReader, float red, float green, float blue) {
 		nbVertex = 0;
-		BufferedReader buffreader1 = new BufferedReader(inputreader);
+		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		String line;
 
-		ArrayList<Float> vertixsList = new ArrayList<>();
+		ArrayList<Float> vertexList = new ArrayList<>();
 		ArrayList<Float> normalsList = new ArrayList<>();
 		ArrayList<Integer> vertexDrawOrderList = new ArrayList<>();
 		ArrayList<Integer> normalDrawOrderList = new ArrayList<>();
 
 		try {
-			while ((line = buffreader1.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) {
 				if (line.startsWith("vn")) {
 					String[] tmp = line.split(" ");
 					normalsList.add(Float.parseFloat(tmp[1]));
@@ -172,9 +172,9 @@ public class ObjModelVBO implements GLItemDrawable {
 					normalsList.add(Float.parseFloat(tmp[3]));
 				} else if (line.startsWith("v ")) {
 					String[] tmp = line.split(" ");
-					vertixsList.add(Float.parseFloat(tmp[1]));
-					vertixsList.add(Float.parseFloat(tmp[2]));
-					vertixsList.add(Float.parseFloat(tmp[3]));
+					vertexList.add(Float.parseFloat(tmp[1]));
+					vertexList.add(Float.parseFloat(tmp[2]));
+					vertexList.add(Float.parseFloat(tmp[3]));
 				} else if (line.startsWith("f")) {
 					String[] tmp = line.split(" ");
 					vertexDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[0]));
@@ -187,16 +187,16 @@ public class ObjModelVBO implements GLItemDrawable {
 				}
 			}
 
-			buffreader1.close();
+			bufferedReader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		ArrayList<Float> packedData = new ArrayList<>();
 		for (int i = 0; i < vertexDrawOrderList.size(); i++) {
-			packedData.add(vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3));
-			packedData.add(vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 1));
-			packedData.add(vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 2));
+			packedData.add(vertexList.get((vertexDrawOrderList.get(i) - 1) * 3));
+			packedData.add(vertexList.get((vertexDrawOrderList.get(i) - 1) * 3 + 1));
+			packedData.add(vertexList.get((vertexDrawOrderList.get(i) - 1) * 3 + 2));
 
 			packedData.add(normalsList.get((normalDrawOrderList.get(i) - 1) * 3));
 			packedData.add(normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 1));
@@ -211,9 +211,8 @@ public class ObjModelVBO implements GLItemDrawable {
 		}
 
 		float[] tmp = new float[packedData.size()];
-		for (int i = 0; i < tmp.length; i++) {
+		for (int i = 0; i < tmp.length; i++)
 			tmp[i] = packedData.get(i);
-		}
 
 		packedDataBuffer = ByteBuffer.allocateDirect(tmp.length * BYTES_PER_FLOAT)
 				.order(ByteOrder.nativeOrder())

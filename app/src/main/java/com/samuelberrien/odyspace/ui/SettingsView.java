@@ -26,8 +26,6 @@ public class SettingsView
 
 	private Context context;
 
-	private View v;
-
 	private final AudioManager tmp;
 
 	private final SeekBar sb1;
@@ -38,7 +36,7 @@ public class SettingsView
 	public SettingsView(Activity activity) {
 		super(activity);
 
-		v = activity.getLayoutInflater().inflate(R.layout.game_params, new LinearLayout(activity));
+		View v = activity.getLayoutInflater().inflate(R.layout.game_params, new LinearLayout(activity));
 
 		context = activity;
 

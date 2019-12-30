@@ -15,7 +15,9 @@ import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.utils.graphics.Color;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -41,7 +43,6 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 	private GamePad gamePad;
 
-	private int maxLife;
 	private ProgressBar lifeDraw;
 
 	private List<BaseItem> rockets;
@@ -53,7 +54,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 	private Vibrator vibrator;
 
-	private Stack<Runnable> toRunOnGLThread;
+	private Queue<Runnable> toRunOnGLThread;
 
 	public static Ship makeShip(Context context, GamePad gamePad) {
 		SharedPreferences savedShip = context.getSharedPreferences(context.getString(R.string.ship_info_preferences), Context.MODE_PRIVATE);
@@ -73,11 +74,8 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 		int currBonusDur = savedShip.getInt(context.getString(R.string.current_bonus_duration), context.getResources().getInteger(R.integer.bonus_1_duration));
 		int bonusDurationBought = savedShop.getInt(context.getString(R.string.bought_duration), context.getResources().getInteger(R.integer.zero));
 
-		if (savedBonus.equals(context.getString(R.string.bonus_1))) {
-			bonus = Bonus.SPEED;
-		} else {
-			bonus = Bonus.SHIELD;
-		}
+		if (savedBonus.equals(context.getString(R.string.bonus_1))) bonus = Bonus.SPEED;
+		else bonus = Bonus.SHIELD;
 
 		String shipUsed = savedShip.getString(context.getString(R.string.current_ship_used), context.getString(R.string.saved_ship_used_default));
 		Ship resShip;
@@ -107,7 +105,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 		this.bonus = bonus;
 		this.bonusDuration = bonusDuration;
 		this.bonusDurationBought = bonusDurationBought;
-		toRunOnGLThread = new Stack<>();
+		toRunOnGLThread = new LinkedList<>();
 	}
 
 	public void setRockets(List<BaseItem> rockets) {
@@ -254,8 +252,8 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 	@Override
 	public void draw(float[] pMatrix, float[] vMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		while (!toRunOnGLThread.empty())
-			toRunOnGLThread.pop().run();
+		while (!toRunOnGLThread.isEmpty())
+			toRunOnGLThread.remove().run();
 		super.draw(pMatrix, vMatrix, mLightPosInEyeSpace, mCameraPosition);
 	}
 
@@ -266,7 +264,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 			String fireType = sharedPreferences.getString(key, defaultValue);
 			FireType shipFireType = FireType.valueOf(fireType.toUpperCase().replace(" ", "_"));
 
-			toRunOnGLThread.push(() -> fire = shipFireType.getFire(glContext));
+			toRunOnGLThread.add(() -> fire = shipFireType.getFire(glContext));
 		} else if (key.equals(glContext.getString(R.string.current_bonus_used))) {
 			String savedBonus = sharedPreferences.getString(glContext.getString(R.string.current_bonus_used), glContext.getString(R.string.bonus_1));
 			if (savedBonus.equals(glContext.getString(R.string.bonus_1))) {

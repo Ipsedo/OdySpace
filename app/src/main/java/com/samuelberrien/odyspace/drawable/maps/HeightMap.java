@@ -25,8 +25,6 @@ public class HeightMap implements Item, Map {
 
 	private final int NBSLICES = 30;
 	private final int NBSTRIPS = 30;
-	private int nbFaces;
-	private float[] points;
 
 	private FloatBuffer mPositions;
 
@@ -45,8 +43,8 @@ public class HeightMap implements Item, Map {
 	private int mDistanceCoefHandle;
 	private int mProgram;
 
-	private final int mBytesPerFloat = 4;
-	private final int mPositionDataSize = 3;
+	private static final int mBytesPerFloat = 4;
+	private static final int mPositionDataSize = 3;
 
 	private float coeff;
 	private float lightCoeff;
@@ -103,8 +101,8 @@ public class HeightMap implements Item, Map {
 	}
 
 	private void initPlan() {
-		nbFaces = NBSTRIPS * (NBSLICES + 1) * 2;
-		points = new float[nbFaces * 3];
+		int nbFaces = NBSTRIPS * (NBSLICES + 1) * 2;
+		float[] points = new float[nbFaces * 3];
 		for (int indStrip = 0; indStrip < NBSTRIPS; indStrip++) {
 			for (int indFace = 0; indFace <= NBSLICES; indFace++) {
 				int indPoint = indStrip * (NBSLICES + 1) * 2 + indFace * 2;

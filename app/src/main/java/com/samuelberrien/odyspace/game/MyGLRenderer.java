@@ -54,7 +54,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	private boolean isInit = false;
 
-	public MyGLRenderer(Context context, Level currentLevel, GamePad gamePad) {
+	MyGLRenderer(Context context, Level currentLevel, GamePad gamePad) {
 		this.context = context;
 		this.gamePad = gamePad;
 		this.currentLevel = currentLevel;
@@ -67,8 +67,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.1f, 0.0f, 0.3f, 1.0f);
-
-		//FireType.initAmmos(glContext);
 
 		if (!isInit) {
 			mCameraDirection = new float[]{
@@ -160,11 +158,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		ship.drawLife(ratio);
 		currentLevel.drawLevelInfo(ratio);
 
-		if (currentLevel.isDead()) {
-			gameOver.draw(ratio);
-		} else if (currentLevel.isWinner()) {
-			levelDone.draw(ratio);
-		}
+		if (currentLevel.isDead()) gameOver.draw(ratio);
+		else if (currentLevel.isWinner()) levelDone.draw(ratio);
 
 		//System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - currTime));
 		currTime = System.currentTimeMillis();

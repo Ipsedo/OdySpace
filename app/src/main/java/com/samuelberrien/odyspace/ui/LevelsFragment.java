@@ -57,13 +57,13 @@ public class LevelsFragment
 
 		radioExpand.removeAllViews();
 
-		for (int i = 0; i < maxLevel; i++) {
+		for (int i = 0; i <= maxLevel; i++) {
 			final int indexLevel = i;
 
 			ExpandButton expandButton = new ExpandButton(context, () -> {
 				Intent intent = new Intent(getActivity(), LevelActivity.class);
 				intent.putExtra(MainActivity.LEVEL_ID, Integer.toString(indexLevel));
-				startActivityForResult(intent, MainActivity.RESULT_VALUE);
+				getActivity().startActivityForResult(intent, MainActivity.RESULT_VALUE);
 			});
 			expandButton.setText((i + 1) + " - " + Level.LEVELS[i]);
 
@@ -75,8 +75,7 @@ public class LevelsFragment
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-		if (s.equals(context.getString(R.string.saved_max_level))) {
+		if (s.equals(context.getString(R.string.saved_max_level)))
 			updateLevelList();
-		}
 	}
 }

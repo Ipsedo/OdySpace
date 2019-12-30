@@ -92,7 +92,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
+		makeProgram(context);
 		bindBuffer();
 	}
 
@@ -125,17 +125,17 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
-		makeProgram(context, R.raw.specular_vs_2, R.raw.specular_fs_2);
+		makeProgram(context);
 		bindBuffer();
 	}
 
-	private void makeProgram(Context context, int vertexShaderResId, int fragmentShaderResId) {
+	private void makeProgram(Context context) {
 		int vertexShader = ShaderLoader.loadShader(
 				GLES20.GL_VERTEX_SHADER,
-				ShaderLoader.openShader(context, vertexShaderResId));
+				ShaderLoader.openShader(context, R.raw.specular_vs_2));
 		int fragmentShader = ShaderLoader.loadShader(
 				GLES20.GL_FRAGMENT_SHADER,
-				ShaderLoader.openShader(context, fragmentShaderResId));
+				ShaderLoader.openShader(context, R.raw.specular_fs_2));
 
 		mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
 		GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -164,7 +164,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 	}
 
 	private void bindBuffer() {
-		final int buffers[] = new int[1];
+		final int[] buffers = new int[1];
 		GLES20.glGenBuffers(1, buffers, 0);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
@@ -225,11 +225,11 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 	 * @param inputStream The input stream of the file
 	 */
 	private void parseObj(InputStream inputStream, boolean randomColor) {
-		InputStreamReader inputreader = new InputStreamReader(inputStream);
-		BufferedReader buffreader = new BufferedReader(inputreader);
+		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		String line;
 
-		ArrayList<Float> currVertixsList = new ArrayList<>();
+		ArrayList<Float> currVertexList = new ArrayList<>();
 		ArrayList<Float> currNormalsList = new ArrayList<>();
 		ArrayList<Integer> currVertexDrawOrderList = new ArrayList<>();
 		ArrayList<Integer> currNormalDrawOrderList = new ArrayList<>();
@@ -240,7 +240,7 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		int idMtl = 0;
 
 		try {
-			while ((line = buffreader.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) {
 				if (line.startsWith("usemtl")) {
 					mtlToUse.add(line.split(" ")[1]);
 					if (idMtl != 0) {
@@ -257,9 +257,9 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 					currNormalsList.add(Float.parseFloat(tmp[3]));
 				} else if (line.startsWith("v ")) {
 					String[] tmp = line.split(" ");
-					currVertixsList.add(Float.parseFloat(tmp[1]));
-					currVertixsList.add(Float.parseFloat(tmp[2]));
-					currVertixsList.add(Float.parseFloat(tmp[3]));
+					currVertexList.add(Float.parseFloat(tmp[1]));
+					currVertexList.add(Float.parseFloat(tmp[2]));
+					currVertexList.add(Float.parseFloat(tmp[3]));
 				} else if (line.startsWith("f")) {
 					String[] tmp = line.split(" ");
 					currVertexDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[0]));
@@ -271,8 +271,8 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 					currNormalDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[2]));
 				}
 			}
-			buffreader.close();
-			inputreader.close();
+			bufferedReader.close();
+			inputStreamReader.close();
 			inputStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -320,13 +320,13 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 
 			for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
 				objPackedData.add(
-						currVertixsList.get(
+						currVertexList.get(
 								(allVertexDrawOrderList.get(i).get(j) - 1) * 3));
 				objPackedData.add(
-						currVertixsList.get(
+						currVertexList.get(
 								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 1));
 				objPackedData.add(
-						currVertixsList.get(
+						currVertexList.get(
 								(allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 2));
 
 				objPackedData.add(
@@ -361,9 +361,8 @@ public class ObjModelMtlVBO implements GLItemDrawable {
 		}
 
 		float[] allDataPacked = new float[objPackedData.size()];
-		for (int i = 0; i < allDataPacked.length; i++) {
+		for (int i = 0; i < allDataPacked.length; i++)
 			allDataPacked[i] = objPackedData.get(i);
-		}
 
 		packedDataBuffer = ByteBuffer.allocateDirect(allDataPacked.length * BYTES_PER_FLOAT)
 				.order(ByteOrder.nativeOrder())

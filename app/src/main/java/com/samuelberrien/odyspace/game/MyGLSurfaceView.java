@@ -26,10 +26,7 @@ import com.samuelberrien.odyspace.levels.TestTurrets;
 
 public class MyGLSurfaceView extends GLSurfaceView {
 
-	private Context context;
 	private LevelActivity levelActivity;
-
-	private MyGLRenderer renderer;
 
 	private Level currentLevel;
 	private GamePad gamePad;
@@ -46,14 +43,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	 */
 	public MyGLSurfaceView(Context context, LevelActivity levelActivity, int levelID) {
 		super(context);
-		this.context = context;
 		this.levelActivity = levelActivity;
 		setEGLContextClientVersion(2);
 		gamePad = new GamePad();
 
 		currentLevel = getCurrentLevel(levelID);
 
-		renderer = new MyGLRenderer(this.context, currentLevel, gamePad);
+		MyGLRenderer renderer = new MyGLRenderer(context, currentLevel, gamePad);
 		setRenderer(renderer);
 
 		setPreserveEGLContextOnPause(true);
@@ -64,19 +60,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	}
 
 	private Level getCurrentLevel(int currLevelId) {
-		if (currLevelId == 0) {
-			return new TestThread();
-		} else if (currLevelId == 1) {
-			return new TestProtectionLevel();
-		} else if (currLevelId == 2) {
-			return new TestTurrets();
-		} else if (currLevelId == 3) {
-			return new TestBossThread();
-		} else if (currLevelId == 4) {
-			return new TestTunnelLevel();
-		} else {
-			return new TestSpaceTrip();
-		}
+		if (currLevelId == 0)  return new TestThread();
+		else if (currLevelId == 1)  return new TestProtectionLevel();
+		else if (currLevelId == 2)  return new TestTurrets();
+		else if (currLevelId == 3)  return new TestBossThread();
+		else if (currLevelId == 4)  return new TestTunnelLevel();
+		else  return new TestSpaceTrip();
 	}
 
 	@Override

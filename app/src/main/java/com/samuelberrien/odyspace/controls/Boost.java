@@ -35,7 +35,7 @@ class Boost extends Control {
 	private int mMVPMatrixHandle;
 	private int mProgram;
 
-	private float color[] = Color.ControlsColor;
+	private float[] color = Color.ControlsColor;
 
 	Boost() {
 		mBoostPosition[0] = -1f + 1e-2f;
@@ -119,17 +119,10 @@ class Boost extends Control {
 
 	@Override
 	boolean canCatchID(float x, float y, float ratio) {
-		if (x * ratio < mBoostPosition[0] * ratio - boostWidth * 0.5f + FireButtonRay) {
-			return false;
-		} else if (x * ratio > mBoostPosition[0] * ratio + boostWidth * 0.5f + FireButtonRay) {
-			return false;
-		} else if (y < mBoostPosition[1] - boostHeight * 0.5f + boostWidth * 0.5f) {
-			return false;
-		} else if (y > mBoostPosition[1] + boostHeight * 0.5f - boostWidth * 0.5f) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(x * ratio < mBoostPosition[0] * ratio - boostWidth * 0.5f + FireButtonRay ||
+				x * ratio > mBoostPosition[0] * ratio + boostWidth * 0.5f + FireButtonRay ||
+				y < mBoostPosition[1] - boostHeight * 0.5f + boostWidth * 0.5f ||
+				y > mBoostPosition[1] + boostHeight * 0.5f - boostWidth * 0.5f);
 	}
 
 	@Override
