@@ -79,9 +79,7 @@ public class LevelActivity extends AppCompatActivity {
 		pauseButton.setLayoutParams(tmp);
 		//pauseButton.setText("❚❚");
 
-		pauseButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
+		pauseButton.setOnClickListener((view) -> {
 				mSurfaceView.pauseGame();
 
 				View v = getPauseView();
@@ -89,30 +87,13 @@ public class LevelActivity extends AppCompatActivity {
 				AlertDialog pauseDialog = new AlertDialog.Builder(LevelActivity.this)
 						.setTitle("Pause menu")
 						.setView(v)
-						.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {
-								finish();
-							}
-						})
-						.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {
-							}
-						})
-						.setOnDismissListener(new DialogInterface.OnDismissListener() {
-							@Override
-							public void onDismiss(DialogInterface dialogInterface) {
-								mSurfaceView.resumeGame();
-							}
-						})
+						.setNegativeButton("Quit", (dialogInterface, i) -> finish())
+						.setPositiveButton("Resume", (dialogInterface, i) -> {})
+						.setOnDismissListener((dialogInterface) -> mSurfaceView.resumeGame())
 						.setMessage("Current Score : " + mSurfaceView.getScore())
 						.create();
-				pauseDialog.getWindow()
-						.setBackgroundDrawable(
-								ContextCompat.getDrawable(
-										LevelActivity.this,
-										R.drawable.grey_corner));
+				pauseDialog.getWindow().setBackgroundDrawable(
+						ContextCompat.getDrawable(LevelActivity.this, R.drawable.grey_corner));
 				pauseDialog.setCanceledOnTouchOutside(false);
 				pauseDialog.show();
 				pauseDialog.getWindow()
@@ -120,7 +101,6 @@ public class LevelActivity extends AppCompatActivity {
 								getScreenWidth() * 4 / 5,
 								pauseDialog.getWindow().getAttributes().height);
 				v.requestLayout();
-			}
 		});
 
 		RelativeLayout relativeLayout = new RelativeLayout(this);
@@ -155,7 +135,7 @@ public class LevelActivity extends AppCompatActivity {
 				getString(R.string.ship_info_preferences),
 				Context.MODE_PRIVATE);
 
-		RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.select_weapon_radio_group);
+		RadioGroup radioGroup = layout.findViewById(R.id.select_weapon_radio_group);
 		String[] fireType = getResources().getStringArray(R.array.fire_shop_list_item);
 		for (final String fire : fireType) {
 			int rBool = fire.equals(getString(R.string.fire_1)) ? R.bool.vrai : R.bool.faux;
@@ -167,14 +147,11 @@ public class LevelActivity extends AppCompatActivity {
 				radioGroup.addView(tmpRadioButton);
 				tmpRadioButton.setText(fire);
 
-				tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
+				tmpRadioButton.setOnClickListener((view) ->
 						savedShip.edit()
 								.putString(getString(R.string.current_fire_type), fire)
-								.apply();
-					}
-				});
+								.apply()
+				);
 				if (savedShip.getString(
 						getString(R.string.current_fire_type),
 						getString(R.string.saved_fire_type_default))
@@ -200,15 +177,12 @@ public class LevelActivity extends AppCompatActivity {
 					tmpRadioButton.setText(bonus[i]);
 
 					final int index = i;
-					tmpRadioButton.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
+					tmpRadioButton.setOnClickListener((view) ->
 							savedShip.edit()
 									.putString(getString(R.string.current_bonus_used), bonus[index])
 									.putInt(getString(R.string.current_bonus_duration), duration[index])
-									.apply();
-						}
-					});
+									.apply()
+					);
 					if (savedShip.getString(getString(R.string.current_bonus_used),
 							getString(R.string.bonus_1))
 							.equals(bonus[i])) {
