@@ -204,10 +204,8 @@ public class LevelActivity extends AppCompatActivity {
 						@Override
 						public void onClick(View view) {
 							savedShip.edit()
-									.putString(getString(R.string.current_bonus_used),
-											bonus[index])
-									.putInt(getString(R.string.current_bonus_duration),
-											duration[index - 1])
+									.putString(getString(R.string.current_bonus_used), bonus[index])
+									.putInt(getString(R.string.current_bonus_duration), duration[index])
 									.apply();
 						}
 					});

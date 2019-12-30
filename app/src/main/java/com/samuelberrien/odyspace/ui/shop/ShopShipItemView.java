@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
 
 import com.samuelberrien.odyspace.R;
-import com.samuelberrien.odyspace.core.Purchases;
-import com.samuelberrien.odyspace.ui.infos.Item3DView;
 import com.samuelberrien.odyspace.ui.infos.Ship3DView;
 
 public class ShopShipItemView extends ShopItemView {
