@@ -3,8 +3,6 @@ package com.samuelberrien.odyspace.core.baseitem.ship;
 import android.content.Context;
 
 import com.samuelberrien.odyspace.controls.GamePad;
-import com.samuelberrien.odyspace.core.Bonus;
-import com.samuelberrien.odyspace.core.fire.Fire;
 
 import java.util.function.BiFunction;
 

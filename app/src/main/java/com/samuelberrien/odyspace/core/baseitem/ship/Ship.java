@@ -73,8 +73,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 
 		super(context, objFileName, mtlFileName, objFileName, 1f, 0f, false,
 				context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE)
-						.getInt(context.getString(R.string.bought_life), context.getResources().getInteger(R.integer.saved_ship_life_shop_default))
-				+ shipLife,
+						.getInt(context.getString(R.string.bought_life), context.getResources().getInteger(R.integer.saved_ship_life_shop_default)) + shipLife,
 				new float[]{0f, 0f, -250f}, new float[]{0f, 0f, 1f}, new float[]{0f, 0f, 0f}, 1f);
 
 		maxLife = life;
