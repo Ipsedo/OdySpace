@@ -126,12 +126,12 @@ public class TestSpaceTrip implements Level {
 		drawables.add(deepSpace);
 		drawables.add(ship);
 		drawables.addAll(asteroids);
+		drawables.addAll(bossRockets);
 		drawables.addAll(shipRockets);
 		drawables.addAll(explosions);
 		drawables.add(boss);
 
-		for (GLDrawable d : drawables)
-			d.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		drawables.forEach(glDrawable -> glDrawable.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition));
 	}
 
 	@Override
@@ -144,27 +144,17 @@ public class TestSpaceTrip implements Level {
 	@Override
 	public void update() {
 		ArrayList<BaseItem> items = new ArrayList<>(asteroids);
-
-		for (BaseItem si : items)
-			si.update();
-
-		boss.update();
-
-		items.clear();
 		items.addAll(bossRockets);
-		for (BaseItem r : items)
-			r.update();
-
-		items.clear();
 		items.addAll(shipRockets);
-		for (BaseItem r : items)
-			r.update();
+
+		items.forEach(BaseItem::update);
 
 		ArrayList<Explosion> tmpArr2 = new ArrayList<>(explosions);
 		for (Explosion e : tmpArr2)
 			e.move();
 
 		ship.update();
+		boss.update();
 
 		boss.updateLifeProgress(progressBar);
 		compass.update(ship, boss, boss.isDanger());
@@ -172,12 +162,10 @@ public class TestSpaceTrip implements Level {
 
 	@Override
 	public void collide() {
-		ArrayList<Item> amis = new ArrayList<>();
+		ArrayList<Item> amis = new ArrayList<>(shipRockets);
 		amis.add(ship);
-		amis.addAll(shipRockets);
 
-		ArrayList<Item> ennemis = new ArrayList<>();
-		ennemis.addAll(asteroids);
+		ArrayList<Item> ennemis = new ArrayList<>(asteroids);
 		ennemis.add(boss);
 		ennemis.addAll(bossRockets);
 
@@ -193,26 +181,19 @@ public class TestSpaceTrip implements Level {
 	@Override
 	public void removeAddObjects() {
 		ship.fire();
+		boss.fire();
 
-		for (int i = shipRockets.size() - 1; i >= 0; i--)
-			if (!shipRockets.get(i).isAlive() || !shipRockets.get(i).isInside(levelLimits))
-				shipRockets.remove(i);
+		bossRockets.removeIf(baseItem -> !baseItem.isAlive() || !baseItem.isInside(levelLimits));
+		shipRockets.removeIf(baseItem -> !baseItem.isAlive() || !baseItem.isInside(levelLimits));
 
 		if (!ship.isAlive() || !ship.isInside(levelLimits))
 			ship.addExplosion(explosions);
 
-		for (int i = explosions.size() - 1; i >= 0; i--)
-			if (!explosions.get(i).isAlive())
-				explosions.remove(i);
+		explosions.removeIf(explosion -> !explosion.isAlive());
 
-		for (int i = asteroids.size() - 1; i >= 0; i--) {
-			if (!asteroids.get(i).isAlive()) {
-				asteroids.get(i).addExplosion(explosions);
-				//soundPoolBuilder.playSimpleBoom(getSoundLevel(ico), getSoundLevel(ico));
-				asteroids.remove(i);
-			} else if (!asteroids.get(i).isInside(levelLimits))
-				asteroids.remove(i);
-		}
+		asteroids.forEach(ast -> { if (!ast.isAlive()) ast.addExplosion(explosions); });
+
+		asteroids.removeIf(ast -> !ast.isAlive() || !ast.isInside(levelLimits));
 	}
 
 	@Override

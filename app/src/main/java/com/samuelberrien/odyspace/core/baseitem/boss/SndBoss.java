@@ -73,14 +73,15 @@ public class SndBoss extends Boss {
 
 	@Override
 	public void fire() {
-		if (rand.nextFloat() < 5e-2f) {
-			float[] speedVec = Vector.normalize3f(vector3fTo(ship));
+		if (rand.nextFloat() < 1e-1f) {
+			float[] vectorTo = super.vector3fTo(ship);
+			float[] speedVec = Vector.normalize3f(vectorTo);
 			float[] originaleVec = new float[]{0f, 0f, 1f};
 			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			fire.fire(rockets, mPosition, mSpeed, tmpMat, 0.7f, ship);
+			fire.fire(rockets, mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f, ship);
 		}
 	}
 
