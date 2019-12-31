@@ -5,15 +5,19 @@ import android.content.Context;
 import com.samuelberrien.odyspace.core.Item;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.baseitem.BaseItem;
+import com.samuelberrien.odyspace.core.baseitem.boss.SndBoss;
 import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
 import com.samuelberrien.odyspace.core.baseitem.SuperIcosahedron;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.CollisionMesh;
 import com.samuelberrien.odyspace.core.collision.Octree;
+import com.samuelberrien.odyspace.drawable.Compass;
 import com.samuelberrien.odyspace.drawable.Explosion;
 import com.samuelberrien.odyspace.drawable.GLDrawable;
 import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
+import com.samuelberrien.odyspace.drawable.ProgressBar;
 import com.samuelberrien.odyspace.drawable.maps.CubeMap;
+import com.samuelberrien.odyspace.utils.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +36,12 @@ public class TestSpaceTrip implements Level {
 
 	private Ship ship;
 
+	private SndBoss boss;
+
 	private Box levelLimits;
+
+	private Compass compass;
+	private ProgressBar progressBar;
 
 	private boolean isInit;
 
@@ -41,7 +50,8 @@ public class TestSpaceTrip implements Level {
 	private final int nbAsteroids;
 	private List<BaseItem> asteroids;
 
-	private List<BaseItem> rockets;
+	private List<BaseItem> shipRockets;
+	private List<BaseItem> bossRockets;
 
 	private List<Explosion> explosions;
 
@@ -65,9 +75,10 @@ public class TestSpaceTrip implements Level {
 				levelLimitSize * 2f,
 				levelLimitSize * 2f);
 
-		rockets = Collections.synchronizedList(new ArrayList<BaseItem>());
-		asteroids = Collections.synchronizedList(new ArrayList<BaseItem>(nbAsteroids));
-		explosions = Collections.synchronizedList(new ArrayList<Explosion>());
+		shipRockets = Collections.synchronizedList(new ArrayList<>());
+		bossRockets = Collections.synchronizedList(new ArrayList<>());
+		asteroids = Collections.synchronizedList(new ArrayList<>(nbAsteroids));
+		explosions = Collections.synchronizedList(new ArrayList<>());
 
 		ObjModelMtlVBO model = new ObjModelMtlVBO(context,
 				"obj/asteroid2.obj", "obj/asteroid2.mtl", 1f, 0f, true);
@@ -85,8 +96,15 @@ public class TestSpaceTrip implements Level {
 			asteroids.get(i).queueExplosion();
 		}
 
-		ship.setRockets(rockets);
+		ship.setRockets(shipRockets);
 		ship.queueExplosion();
+
+		boss = new SndBoss(context, new float[]{0f, 0f, 50f}, bossRockets, ship);
+
+		compass = new Compass(context, Float.MAX_VALUE - 10.0f);
+
+		progressBar = new ProgressBar(context, 40, -1f + 0.15f, 0.9f,
+				Color.LevelProgressBarColor);
 
 		isInit = true;
 	}
@@ -108,8 +126,9 @@ public class TestSpaceTrip implements Level {
 		drawables.add(deepSpace);
 		drawables.add(ship);
 		drawables.addAll(asteroids);
-		drawables.addAll(rockets);
+		drawables.addAll(shipRockets);
 		drawables.addAll(explosions);
+		drawables.add(boss);
 
 		for (GLDrawable d : drawables)
 			d.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
@@ -118,18 +137,27 @@ public class TestSpaceTrip implements Level {
 	@Override
 	public void drawLevelInfo(float ratio) {
 		ship.drawLife(ratio);
+		progressBar.draw(ratio);
+		compass.draw(ratio);
 	}
 
 	@Override
 	public void update() {
-		ArrayList<BaseItem> ast = new ArrayList<>(asteroids);
+		ArrayList<BaseItem> items = new ArrayList<>(asteroids);
 
-		for (BaseItem si : ast)
+		for (BaseItem si : items)
 			si.update();
 
-		ast.clear();
-		ast.addAll(rockets);
-		for (BaseItem r : ast)
+		boss.update();
+
+		items.clear();
+		items.addAll(bossRockets);
+		for (BaseItem r : items)
+			r.update();
+
+		items.clear();
+		items.addAll(shipRockets);
+		for (BaseItem r : items)
 			r.update();
 
 		ArrayList<Explosion> tmpArr2 = new ArrayList<>(explosions);
@@ -137,16 +165,21 @@ public class TestSpaceTrip implements Level {
 			e.move();
 
 		ship.update();
+
+		boss.updateLifeProgress(progressBar);
+		compass.update(ship, boss, boss.isDanger());
 	}
 
 	@Override
 	public void collide() {
 		ArrayList<Item> amis = new ArrayList<>();
 		amis.add(ship);
-		amis.addAll(rockets);
+		amis.addAll(shipRockets);
 
 		ArrayList<Item> ennemis = new ArrayList<>();
 		ennemis.addAll(asteroids);
+		ennemis.add(boss);
+		ennemis.addAll(bossRockets);
 
 		Octree octree = new Octree(levelLimits, amis, ennemis, 4f);
 		octree.computeOctree();
@@ -161,9 +194,9 @@ public class TestSpaceTrip implements Level {
 	public void removeAddObjects() {
 		ship.fire();
 
-		for (int i = rockets.size() - 1; i >= 0; i--)
-			if (!rockets.get(i).isAlive() || !rockets.get(i).isInside(levelLimits))
-				rockets.remove(i);
+		for (int i = shipRockets.size() - 1; i >= 0; i--)
+			if (!shipRockets.get(i).isAlive() || !shipRockets.get(i).isInside(levelLimits))
+				shipRockets.remove(i);
 
 		if (!ship.isAlive() || !ship.isInside(levelLimits))
 			ship.addExplosion(explosions);
@@ -184,7 +217,7 @@ public class TestSpaceTrip implements Level {
 
 	@Override
 	public int getScore() {
-		return 0;
+		return 1000000;
 	}
 
 	@Override
@@ -194,7 +227,7 @@ public class TestSpaceTrip implements Level {
 
 	@Override
 	public boolean isWinner() {
-		return false;
+		return ship.isAlive() && !boss.isAlive();
 	}
 
 	@Override
