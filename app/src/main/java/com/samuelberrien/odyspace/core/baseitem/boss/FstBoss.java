@@ -80,8 +80,6 @@ public class FstBoss extends Boss {
 	@Override
 	protected float[] computeModelMatrix() {
 		float[] vecToShip = Vector.normalize3f(super.vector3fTo(ship));
-		float[] originaleVec = new float[]{0f, 0f, 1f};
-		float angle;
 
 		if (rand.nextFloat() < 1e-2f) {
 			super.mSpeed[0] = 0.1f * vecToShip[0];
@@ -103,9 +101,14 @@ public class FstBoss extends Boss {
 		Matrix.setIdentityM(mModelMatrix, 0);
 		Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
 
-		angle = (float) Math.toDegrees(Math.acos(Vector.dot3f(vecToShip, originaleVec)));
-		float[] mRotationMatrix = new float[16];
-		Matrix.setRotateM(mRotationMatrix, 0, angle, 0f, 1f, 0f);
+		float[] from = new float[]{0.f, 0.f, -1.f};
+		float[] to = Vector.normalize3f(vector3fTo(ship));
+
+		float[] axis = Vector.cross3f(from, to);
+
+		float angle = (float) Math.acos(Vector.dot3f(from, to));
+		Matrix.setRotateM(mRotationMatrix, 0, angle * 360.f, axis[0], axis[1], axis[2]);
+
 		Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, mRotationMatrix, 0);
 		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 

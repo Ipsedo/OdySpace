@@ -60,8 +60,15 @@ public class SndBoss extends Boss {
 
 	@Override
 	public void fire() {
-		if (rand.nextFloat() < 5e-2f)
-			fire.fire(rockets, mPosition, mSpeed, mRotationMatrix, 0.7f, ship);
+		if (rand.nextFloat() < 5e-2f) {
+			float[] speedVec = Vector.normalize3f(vector3fTo(ship));
+			float[] originaleVec = new float[]{0f, 0f, 1f};
+			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
+			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
+			float[] tmpMat = new float[16];
+			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
+			fire.fire(rockets, mPosition, mSpeed, tmpMat, 0.7f, ship);
+		}
 	}
 
 	@Override
@@ -74,13 +81,18 @@ public class SndBoss extends Boss {
 
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
+		Matrix.translateM(mModelMatrix, 0, mPosition[0], mPosition[1], mPosition[2]);
 
-		float angle = 0.f;
-		float[] mRotationMatrix = new float[16];
-		Matrix.setRotateM(mRotationMatrix, 0, angle, 0f, 1f, 0f);
+		float[] from = new float[]{0.f, 0.f, -1.f};
+		float[] to = Vector.normalize3f(vector3fTo(ship));
+
+		float[] axis = Vector.cross3f(from, to);
+
+		float angle = (float) Math.acos(Vector.dot3f(from, to));
+		Matrix.setRotateM(mRotationMatrix, 0, angle * 360.f, axis[0], axis[1], axis[2]);
+
 		Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, mRotationMatrix, 0);
-		Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
+		Matrix.scaleM(mModelMatrix, 0, scale, scale, scale);
 
 		return mModelMatrix;
 	}
@@ -102,13 +114,13 @@ public class SndBoss extends Boss {
 			bezierCurveZ.clear();
 
 			for (int i = 0; i < maxBezierPoint; i++) {
-				lastPoint[0] += rand.nextFloat() * 10.f - 5.f;
-				lastPoint[1] += rand.nextFloat() * 10.f - 5.f;
-				lastPoint[2] += rand.nextFloat() * 10.f - 5.f;
-
 				bezierCurveX.add(lastPoint[0]);
 				bezierCurveY.add(lastPoint[1]);
 				bezierCurveZ.add(lastPoint[2]);
+
+				lastPoint[0] += rand.nextFloat() * 10.f - 5.f;
+				lastPoint[1] += rand.nextFloat() * 10.f - 5.f;
+				lastPoint[2] += rand.nextFloat() * 10.f - 5.f;
 			}
 		}
 
