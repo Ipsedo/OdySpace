@@ -129,8 +129,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 			float[] realSpeed = new float[4];
 			Matrix.multiplyMV(realSpeed, 0, super.mRotationMatrix, 0, currSpeed, 0);
 
-			float[] tmpMat = super.mRotationMatrix.clone();
-			Matrix.multiplyMM(super.mRotationMatrix, 0, tmpMat, 0, currRotMatrix, 0);
+			Matrix.multiplyMM(super.mRotationMatrix, 0, super.mRotationMatrix.clone(), 0, currRotMatrix, 0);
 
 			super.mPosition[0] += mMaxSpeed * realSpeed[0];
 			super.mPosition[1] += mMaxSpeed * realSpeed[1];
@@ -139,8 +138,7 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 			float[] mModelMatrix = new float[16];
 			Matrix.setIdentityM(mModelMatrix, 0);
 			Matrix.translateM(mModelMatrix, 0, super.mPosition[0], super.mPosition[1], super.mPosition[2]);
-			tmpMat = mModelMatrix.clone();
-			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, super.mRotationMatrix, 0);
+			Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix.clone(), 0, super.mRotationMatrix, 0);
 			Matrix.scaleM(mModelMatrix, 0, super.scale, super.scale, super.scale);
 
 			super.mModelMatrix = mModelMatrix;
@@ -234,6 +232,20 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 		Matrix.multiplyMV(tmpRes, 0, invModel, 0, tmp, 0);
 
 		return new float[]{tmpRes[0], tmpRes[1], tmpRes[2]};
+	}
+
+	public float[] passToRotMatrix(float[] vec3) {
+		float[] tmp = new float[]{vec3[0], vec3[1], vec3[2], 0f};
+		Matrix.multiplyMV(tmp, 0, mRotationMatrix, 0, tmp.clone(), 0);
+		return new float[]{tmp[0], tmp[1], tmp[2]};
+	}
+
+	public float[] getFrontVec() {
+		return passToRotMatrix(originalSpeedVec);
+	}
+
+	public float[] getSpeed() {
+		return mSpeed.clone();
 	}
 
 	public void drawLife(float ratio) {
