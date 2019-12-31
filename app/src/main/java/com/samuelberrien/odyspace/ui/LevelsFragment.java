@@ -57,7 +57,7 @@ public class LevelsFragment
 
 		radioExpand.removeAllViews();
 
-		for (int i = 0; i <= maxLevel; i++) {
+		for (int i = 0; i <= maxLevel && i < Level.LEVELS.length; i++) {
 			final int indexLevel = i;
 
 			ExpandButton expandButton = new ExpandButton(context, () -> {
