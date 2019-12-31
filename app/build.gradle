@@ -7,8 +7,8 @@ android {
         applicationId "com.samuelberrien.odyspace"
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 9
-        versionName "1.1b"
+        versionCode 10
+        versionName "1.1c"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
