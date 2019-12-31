@@ -214,14 +214,13 @@ public class MainActivity
 		int maxLevel = sevedLevelInfo.getInt(
 				getString(R.string.saved_max_level),
 				defaultValue);
-		System.out.println("Yo " + currentLevelIndex + " " + maxLevel);
+
 		if (currentLevelIndex == maxLevel) {
 			sevedLevelInfo.edit()
 					.putInt(getString(R.string.saved_max_level),
 							maxLevel + 1 < Level.LEVELS.length ?
 									maxLevel + 1 : Level.LEVELS.length)
 					.apply();
-			System.out.println("Yo level increased");
 		}
 
 	}
