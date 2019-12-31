@@ -22,6 +22,9 @@ public class SndBoss extends Boss {
 
 	private Ship ship;
 
+	private int colorCounter;
+	private boolean changingColor;
+
 	private int maxBezierPoint;
 	private float[] lastPoint;
 	private BezierCurve bezierCurveX;
@@ -52,10 +55,20 @@ public class SndBoss extends Boss {
 			bezierCurveZ.add(lastPoint[2]);
 		}
 
+		colorCounter = 0;
+		changingColor = false;
 	}
 
 	private void count() {
 		counter = (counter + 1) % MAX_COUNT;
+
+		if (changingColor && colorCounter > 75) {
+			objModelMtlVBO.changeColor();
+			changingColor = false;
+			colorCounter = 0;
+		} else if (changingColor) {
+			colorCounter++;
+		}
 	}
 
 	@Override
@@ -125,5 +138,14 @@ public class SndBoss extends Boss {
 		}
 
 		super.update();
+	}
+
+	@Override
+	public void decrementLife(int minus) {
+		if (minus > 0 && !changingColor) {
+			changingColor = true;
+			objModelMtlVBO.changeColor();
+		}
+		super.life = super.life - minus >= 0 ? super.life - minus : 0;
 	}
 }
