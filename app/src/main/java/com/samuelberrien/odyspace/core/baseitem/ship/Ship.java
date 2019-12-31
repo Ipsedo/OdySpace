@@ -97,6 +97,8 @@ public class Ship extends BaseItem implements Shooter, SharedPreferences.OnShare
 		this.bonusDurationBought = context.getSharedPreferences(context.getString(R.string.shop_preferences), Context.MODE_PRIVATE)
 				.getInt(context.getString(R.string.bought_duration), context.getResources().getInteger(R.integer.zero));
 		toRunOnGLThread = new LinkedList<>();
+
+		savedShip.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	public void setRockets(List<BaseItem> rockets) {
