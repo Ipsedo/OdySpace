@@ -1,8 +1,9 @@
-package com.samuelberrien.odyspace.core.baseitem;
+package com.samuelberrien.odyspace.core.baseitem.boss;
 
 import android.content.Context;
 import android.opengl.Matrix;
 
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.baseitem.ship.Ship;
 import com.samuelberrien.odyspace.core.fire.FireType;
 import com.samuelberrien.odyspace.drawable.Explosion;

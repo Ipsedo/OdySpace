@@ -1,8 +1,9 @@
-package com.samuelberrien.odyspace.core.baseitem;
+package com.samuelberrien.odyspace.core.baseitem.boss;
 
 import android.content.Context;
 
 import com.samuelberrien.odyspace.core.Shooter;
+import com.samuelberrien.odyspace.core.baseitem.BaseItem;
 import com.samuelberrien.odyspace.core.fire.Fire;
 import com.samuelberrien.odyspace.drawable.ProgressBar;
 
