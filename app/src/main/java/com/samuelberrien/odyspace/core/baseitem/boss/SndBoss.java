@@ -16,7 +16,7 @@ import java.util.Random;
 public class SndBoss extends Boss {
 
 	private int counter;
-	private static final int MAX_COUNT = 300;
+	private static final int MAX_COUNT = 200;
 
 	private Random rand;
 
@@ -81,7 +81,7 @@ public class SndBoss extends Boss {
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			fire.fire(rockets, mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f, ship);
+			fire.fire(rockets, mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.8f, ship);
 		}
 	}
 

@@ -63,14 +63,14 @@ public class Turret extends BaseItem implements Shooter {
 	@Override
 	public void fire() {
 		float[] vectorTo = super.vector3fTo(ship);
-		if (Vector.length3f(vectorTo) < 200f && rand.nextFloat() < 1e-2f) {
+		if (Vector.length3f(vectorTo) < 200f && rand.nextFloat() < 1e-1f) {
 			float[] speedVec = Vector.normalize3f(vectorTo);
 			float[] originaleVec = new float[]{0f, 0f, 1f};
 			float angle = (float) (Math.acos(Vector.dot3f(speedVec, originaleVec)) * 360d / (Math.PI * 2d));
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			fire.fire(rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f, ship);
+			fire.fire(rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.8f, ship);
 		}
 	}
 

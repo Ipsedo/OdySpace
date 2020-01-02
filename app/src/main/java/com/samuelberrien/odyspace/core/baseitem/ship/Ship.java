@@ -29,7 +29,7 @@ import java.util.Queue;
 
 public class Ship extends BaseItem implements Shooter, SharedPreferences.OnSharedPreferenceChangeListener {
 
-	private static float SHIP_MAX_SPEED = 0.0125f;
+	private static float SHIP_MAX_SPEED = 0.015f;
 	private float mMaxSpeed = Ship.SHIP_MAX_SPEED;
 	private float mBoostSpeed;
 	private final float ROCKET_MAX_SPEED = 0.020f;

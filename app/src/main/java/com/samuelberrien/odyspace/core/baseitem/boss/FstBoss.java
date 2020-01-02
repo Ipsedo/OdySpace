@@ -53,7 +53,7 @@ public class FstBoss extends Boss {
 			float[] rotAxis = Vector.cross3f(originaleVec, speedVec);
 			float[] tmpMat = new float[16];
 			Matrix.setRotateM(tmpMat, 0, angle, rotAxis[0], rotAxis[1], rotAxis[2]);
-			fire.fire(super.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.3f);
+			fire.fire(super.rockets, super.mPosition.clone(), originaleVec.clone(), tmpMat.clone(), 0.5f);
 		}
 	}
 
