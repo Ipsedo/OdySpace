@@ -12,6 +12,7 @@ import com.samuelberrien.odyspace.R;
 import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.drawable.ObjModelMtlVBO;
 import com.samuelberrien.odyspace.levels.TestBossThread;
+import com.samuelberrien.odyspace.levels.TestSpaceTrip;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -69,6 +70,7 @@ public class BossKilledView
 
 		objFileNames = new ArrayList<>();
 		objFileNames.add("skull");
+		objFileNames.add("skull_2");
 		random = new Random(System.currentTimeMillis());
 		willCreateBoss = false;
 		levelPreferences = getContext().getSharedPreferences(
@@ -87,9 +89,8 @@ public class BossKilledView
 		boss.clear();
 		nbBeatedBoss = 0;
 		for (int i = 0; i < currLevel; i++) {
-			if (Level.LEVELS[i].equals(TestBossThread.NAME)) {
+			if (Level.LEVELS[i].equals(TestBossThread.NAME) || Level.LEVELS[i].equals(TestSpaceTrip.NAME))
 				nbBeatedBoss++;
-			}
 		}
 		willCreateBoss = true;
 	}
@@ -146,7 +147,7 @@ public class BossKilledView
 		for (int i = 0; i < mItemModelMatrix.size(); i++) {
 			float[] tmp = new float[16];
 			Matrix.setIdentityM(tmp, 0);
-			Matrix.translateM(tmp, 0, 6f - i * 2f, 0f, 0f);
+			Matrix.translateM(tmp, 0, 4f - i * 3f, 0f, 0f);
 			float[] tmp2 = new float[16];
 			Matrix.setRotateM(tmp2, 0, mAngles.get(i), 0f, 1f, 0f);
 			Matrix.multiplyMM(tmp, 0, tmp.clone(), 0, tmp2, 0);
