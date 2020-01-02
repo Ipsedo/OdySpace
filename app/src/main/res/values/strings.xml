@@ -39,14 +39,12 @@
         <item>@string/fire_6</item>
     </string-array>
     <string-array name="ship_shop_list_item">
-        <!--<item>@string/bought_life</item>-->
         <item>@string/ship_simple</item>
         <item>@string/ship_bird</item>
         <item>@string/ship_supreme</item>
         <item>@string/ship_interceptor</item>
     </string-array>
     <string-array name="bonus_shop_list_item">
-        <!--<item>@string/bought_duration</item>-->
         <item>@string/bonus_1</item>
         <item>@string/bonus_2</item>
     </string-array>
@@ -58,10 +56,6 @@
     <string name="saved_joystick_inversed">JoystickInversed</string>
     <string name="saved_yaw_roll_switched">YawRollSwitched</string>
     <string name="saved_sound_effect_volume">SavedSoundEffectVolume</string>
-    <string name="pause">⏸</string>
-    <string name="check">✖</string>
-    <string name="next">▶</string>
-    <string name="retry">▲</string>
     <string name="reset_settings_text">Reset game settings</string>
     <string name="reset_ship_text">Reset items and money</string>
     <string name="reset_level_text">Reset level progression</string>
