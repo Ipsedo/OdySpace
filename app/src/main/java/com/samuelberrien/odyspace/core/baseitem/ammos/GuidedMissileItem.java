@@ -17,7 +17,7 @@ public class GuidedMissileItem extends Ammos {
 	private final static int Life = 1;
 	private final static float Scale = 1f;
 	private final static double AngleLimitInit = 50d;
-	private final static float LimitLength = 1000f;
+	private float limitLength;
 	private final static int Auto_Destruction_Max_Duration = 200;
 
 	private Item target;
@@ -38,6 +38,7 @@ public class GuidedMissileItem extends Ammos {
 		angle = AngleLimitInit;
 		willAutoDestruct = false;
 		willReduceAngle = false;
+		limitLength = 200.f;
 	}
 
 
@@ -53,11 +54,11 @@ public class GuidedMissileItem extends Ammos {
 
 		float length = Vector.length3f(
 				Vector.make3f(super.clonePosition(), target.clonePosition()));
-		if (length < LimitLength) {
+		if (length < limitLength) {
 			willReduceAngle = true;
 		}
 		if (willReduceAngle) {
-			angle -= length * AngleLimitInit / LimitLength;
+			angle -= length * AngleLimitInit / limitLength;
 			angle = angle <= 0d ? 0d : angle;
 		}
 
