@@ -46,13 +46,11 @@ public class TestProtectionLevel implements Level {
 	private ObjModelMtlVBO icosahedron;
 	private CollisionMesh crashableIco;
 	private List<BaseItem> icosahedrons;
-	private ObjModelVBO particule;
 	private List<Explosion> explosions;
 	private List<BaseItem> rockets;
 	private Compass directionToIco;
 
 	private int nbBase = 64;
-	private ObjModelMtlVBO dome;
 	private List<BaseItem> domes;
 
 	private float levelLimitSize;
@@ -64,7 +62,7 @@ public class TestProtectionLevel implements Level {
 	private boolean isInit;
 
 	private ProgressBar currLevelProgression;
-	private static int maxLevelTime = 1 << 14;
+	private static int maxLevelTime = 1 << 13;
 	private int currLevelTime;
 
 	private Random rand;
@@ -105,7 +103,7 @@ public class TestProtectionLevel implements Level {
 
 		this.ship.setRockets(rockets);
 
-		particule = new ObjModelVBO(context, "obj/triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
+		//ObjModelVBO particule = new ObjModelVBO(context, "obj/triangle.obj", 1f, 1f, 1f, 1f, 0f, 1f);
 		/*icosahedron = new ObjModelMtlVBO(this.glContext,
 				"obj/icosahedron.obj", "obj/icosahedron.mtl",
 				1f, 0f, true);*/
@@ -119,7 +117,7 @@ public class TestProtectionLevel implements Level {
 
 		rand = new Random(System.currentTimeMillis());
 
-		dome = new ObjModelMtlVBO(this.context, "obj/dome.obj", "obj/dome.mtl", 1f, 0f, false);
+		ObjModelMtlVBO dome = new ObjModelMtlVBO(this.context, "obj/dome.obj", "obj/dome.mtl", 1f, 0f, false);
 		//TODO faire vrai crashable?
 		CollisionMesh collisionMesh = new CollisionMesh(context, "obj/dome.obj");
 		for (int i = 0; i < nbBase; i++) {
