@@ -124,6 +124,16 @@ public class Tunnel implements GLDrawable {
 	}
 
 	public List<Item> get3NearestStretchs(float[] pos) {
+		int i = getCurrentSection(pos);
+
+		List<Item> res = new ArrayList<>();
+		for (int j = i - 2 >= 0 ? i - 1 : 0; j <= i + 2 && j < stretches.size(); j++)
+			res.add(stretches.get(j));
+
+		return res;
+	}
+
+	public int getCurrentSection(float[] pos) {
 		float min = Float.MAX_VALUE;
 		int i = -1;
 		int cpt = 0;
@@ -139,11 +149,7 @@ public class Tunnel implements GLDrawable {
 			cpt++;
 		}
 
-		List<Item> res = new ArrayList<>();
-		for (int j = i - 1 >= 0 ? i - 1 : 0; j <= i + 1 && j < stretches.size(); j++)
-			res.add(stretches.get(j));
-
-		return res;
+		return i;
 	}
 
 	public void putIcoAtCircleCenter(Context context, List<Icosahedron> icos, float probability) {

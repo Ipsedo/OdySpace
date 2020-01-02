@@ -11,6 +11,9 @@ import com.samuelberrien.odyspace.core.baseitem.Tunnel;
 import com.samuelberrien.odyspace.core.collision.Box;
 import com.samuelberrien.odyspace.core.collision.Octree;
 import com.samuelberrien.odyspace.drawable.Explosion;
+import com.samuelberrien.odyspace.drawable.GLDrawable;
+import com.samuelberrien.odyspace.drawable.ProgressBar;
+import com.samuelberrien.odyspace.utils.graphics.Color;
 import com.samuelberrien.odyspace.utils.maths.Vector;
 import com.samuelberrien.odyspace.utils.sounds.SoundPoolBuilder;
 
@@ -32,6 +35,8 @@ public class TestTunnelLevel implements Level {
 
 	private boolean isInit = false;
 
+	private final static int NbStretch = 200;
+
 	private Ship ship;
 	private Tunnel tunnel;
 	private List<BaseItem> rockets;
@@ -42,7 +47,7 @@ public class TestTunnelLevel implements Level {
 
 	private SoundPoolBuilder soundPoolBuilder;
 
-	private Box wordBox;
+	private ProgressBar progressBar;
 
 	public TestTunnelLevel() {
 		levelLimitSize = 1000f;
@@ -58,12 +63,12 @@ public class TestTunnelLevel implements Level {
 
 		ship.setRockets(rockets);
 
-		tunnel = new Tunnel(context, new Random(System.currentTimeMillis()), 200,
+		tunnel = new Tunnel(context, new Random(System.currentTimeMillis()), NbStretch,
 				new float[]{0f, 0f, -250f});
 
-		wordBox = Box.englobingBox(tunnel.getItems());
-
 		tunnel.putIcoAtCircleCenter(context, icos, 0.1f);
+
+		progressBar = new ProgressBar(context, NbStretch, -1f + 0.15f, 0.9f, Color.LevelProgressBarColor);
 
 		soundPoolBuilder = new SoundPoolBuilder(context);
 
@@ -90,40 +95,32 @@ public class TestTunnelLevel implements Level {
 					 float[] mViewMatrix,
 					 float[] mLightPosInEyeSpace,
 					 float[] mCameraPosition) {
-		ship.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 
-		ArrayList<BaseItem> tmp = new ArrayList<>(rockets);
-		for (BaseItem r : tmp)
-			r.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-
-		tmp.clear();
+		ArrayList<GLDrawable> tmp = new ArrayList<>(rockets);
 		tmp.addAll(icos);
-		for (BaseItem i : tmp)
-			i.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		tmp.addAll(explosions);
+		tmp.add(tunnel);
+		tmp.add(ship);
 
-		ArrayList<Explosion> tmp2 = new ArrayList<>(explosions);
-		for (Explosion e : tmp2)
-			e.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
-
-		tunnel.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+		tmp.forEach(glDrawable -> glDrawable.draw(mProjectionMatrix, mViewMatrix, mLightPosInEyeSpace, mCameraPosition));
 	}
 
 	@Override
 	public void drawLevelInfo(float ratio) {
-
+		progressBar.draw(ratio);
 	}
 
 	@Override
 	public void update() {
-		ship.update();
-
 		ArrayList<BaseItem> tmpArr = new ArrayList<>(rockets);
-		for (BaseItem r : tmpArr)
-			r.update();
+		tmpArr.addAll(icos);
+		tmpArr.add(ship);
+		tmpArr.forEach(BaseItem::update);
 
 		ArrayList<Explosion> tmpArr2 = new ArrayList<>(explosions);
-		for (Explosion e : tmpArr2)
-			e.move();
+		tmpArr2.forEach(Explosion::move);
+
+		progressBar.updateProgress(tunnel.getCurrentSection(ship.clonePosition()));
 	}
 
 	@Override
@@ -159,23 +156,17 @@ public class TestTunnelLevel implements Level {
 
 	@Override
 	public void removeAddObjects() {
-		for (int i = icos.size() - 1; i >= 0; i--)
-			if (!icos.get(i).isAlive()) {
-				Icosahedron ico = icos.get(i);
-				ico.addExplosion(explosions);
-				soundPoolBuilder.playSimpleBoom(getSoundLevel(ico), getSoundLevel(ico));
-				icos.remove(i);
+		icos.forEach(i -> {
+			if (!i.isAlive()) {
+				i.addExplosion(explosions);
+				soundPoolBuilder.playSimpleBoom(getSoundLevel(i), getSoundLevel(i));
 			}
+		});
+		icos.removeIf(i -> !i.isAlive());
 
-		for (int i = explosions.size() - 1; i >= 0; i--)
-			if (!explosions.get(i).isAlive())
-				explosions.remove(i);
 
-		for (int i = rockets.size() - 1; i >= 0; i--)
-			if (!rockets.get(i).isAlive()
-					|| !rockets.get(i).isInside(makeBoundingBox(ship, 1000.f)))
-				rockets.remove(i);
-
+		explosions.removeIf(e -> !e.isAlive());
+		rockets.removeIf(r -> !r.isAlive() || !r.isInside(makeBoundingBox(ship, 1000.f)));
 		ship.fire();
 	}
 
