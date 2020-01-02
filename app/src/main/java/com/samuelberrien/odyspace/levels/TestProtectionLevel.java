@@ -283,7 +283,7 @@ public class TestProtectionLevel implements Level {
 					icosahedron, crashableIco,
 					(int) Math.ceil(rand.nextDouble() * 3),
 					randomIcoPosition(),
-					randomIcoSpeed(rand.nextFloat() * 0.1f + 0.2f),
+					randomIcoSpeed(rand.nextFloat() * 0.2f + 0.3f),
 					rand.nextFloat() * 10f + 10f);
 			tmp.update();
 			tmp.queueExplosion();
