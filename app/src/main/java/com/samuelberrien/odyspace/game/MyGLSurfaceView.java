@@ -9,7 +9,6 @@ import com.samuelberrien.odyspace.core.Level;
 import com.samuelberrien.odyspace.core.threads.CollisionThread;
 import com.samuelberrien.odyspace.core.threads.EndGameThread;
 import com.samuelberrien.odyspace.core.threads.RemoveThread;
-import com.samuelberrien.odyspace.core.threads.UpdateThread;
 import com.samuelberrien.odyspace.levels.TestBossThread;
 import com.samuelberrien.odyspace.levels.TestProtectionLevel;
 import com.samuelberrien.odyspace.levels.TestSpaceTrip;
@@ -32,7 +31,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private GamePad gamePad;
 
 	private CollisionThread collisionThread;
-	private UpdateThread updateThread;
 	private RemoveThread removeThread;
 	private EndGameThread endGameThread;
 
@@ -85,10 +83,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			collisionThread = new CollisionThread(currentLevel);
 			collisionThread.start();
 		}
-		if (updateThread == null || updateThread.isCanceled()) {
-			updateThread = new UpdateThread(currentLevel);
-			updateThread.start();
-		}
 		if (removeThread == null || removeThread.isCanceled()) {
 			removeThread = new RemoveThread(currentLevel);
 			removeThread.start();
@@ -101,12 +95,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	private void killThread() {
 		collisionThread.cancel();
-		updateThread.cancel();
 		removeThread.cancel();
 		endGameThread.cancel();
 		try {
 			collisionThread.join();
-			updateThread.join();
 			removeThread.join();
 			endGameThread.join();
 		} catch (InterruptedException e) {
